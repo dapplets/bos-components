@@ -1,0 +1,7 @@
+{
+  "wrapperSrc": "near/widget/DIG.Theme",
+  "wrapperProps": {},
+  "networkId": "mainnet",
+  "accessKey": "ed25519:<SET_YOUR_KEY_HERE>",
+  "accountId": "bos.dapplets.near"
+}
