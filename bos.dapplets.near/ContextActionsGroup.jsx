@@ -81,7 +81,7 @@ const TriggerShowLabel = styled.div`
       margin-left: 0px;
     }
     100% {
-      opacity: 0;
+      opacity: 1;
       width: 40px;
       margin-left: 0px;
     }
@@ -93,27 +93,22 @@ const TriggerShowLabel = styled.div`
 const ActionsWrapper = styled.div`
   background: #fff;
   width: 40px;
-
+  min-height: 34px;
+  z-index: 1080;
   border-radius: 0px 4px 4px 0px;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   @keyframes translateAnimation {
     0% {
       display: none;
-      height: 0;
-      opacity: 0;
-      transform: scaleY(0);
-    }
-    50% {
-      display: none;
-      height: 0;
+
       opacity: 0;
       transform: scaleY(0);
     }
 
     100% {
-      height: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       padding-top: 6px;
       border: 1px solid #db504a;
       opacity: 1;
@@ -122,7 +117,6 @@ const ActionsWrapper = styled.div`
     }
   }
   animation: translateAnimation 1.3s linear forwards;
-  transition: all 0.3s;
 `;
 
 const TriggerEar = styled.div`
@@ -314,20 +308,22 @@ const iconRemoveAction = (
 );
 
 const ActionBlock = styled.span`
-position:relative;
-`;
-const RemoveAction = styled.div`
-position:absolute;
-right:0;
-top:0;
-cursor:pointer;
-  &:hover {
-    svg{
-          transform: scale(1.2); 
-    }
- 
+  position: relative;
+  div {
+    z-index: 1000;
   }
-
+`;
+const RemoveAction = styled.span`
+  position: absolute;
+  right: 0;
+  top: 0;
+  cursor: pointer;
+  z-index: 1070;
+  &:hover {
+    svg {
+      transform: scale(1.2);
+    }
+  }
 `;
 
 return (
@@ -336,10 +332,13 @@ return (
       <TriggerEar />
     </div>
     {state.show ? (
-      <TriggerShowPanel style={{ margin: "0px -7px" }}>
+      <TriggerShowPanel
+        onMouseLeave={handleOnMouseLeave}
+        style={{ margin: "0px -7px" }}
+      >
         <TriggerShowLabel />
 
-        <ActionsWrapper onMouseLeave={handleOnMouseLeave}>
+        <ActionsWrapper>
           {props.widgets.map((widget, i) => (
             <ActionBlock key={i}>
               <RemoveAction>{iconRemoveAction}</RemoveAction>
@@ -348,10 +347,7 @@ return (
           ))}
         </ActionsWrapper>
 
-        <ButtonPlus
-          onClick={handleOpenMenu}
-          onMouseLeave={handleOnMouseLeave}
-        />
+        <ButtonPlus onClick={handleOpenMenu} />
       </TriggerShowPanel>
     ) : null}
 
