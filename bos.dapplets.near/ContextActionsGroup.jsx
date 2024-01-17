@@ -60,40 +60,30 @@ const TriggerShowLabel = styled.div`
   background: #db504a;
   display: flex;
   border-radius: 0px 4px 4px 0px;
-  z-index: 1070;
+  z-index: 1100;
   cursor: pointer;
   position: absolute;
-  height: 49px;
+  height: calc(100% - 22px);
+  top: -1px;
   @keyframes scaleAnimation {
     0% {
       opacity: 1;
       width: 0;
-      margin-left: -40px;
+      margin-left: -33px;
     }
-    50% {
-      opacity: 1;
-      width: 40px;
-      margin-left: 0px;
-    }
-    90% {
-      opacity: 1;
-      width: 40px;
-      margin-left: 0px;
-    }
+
     100% {
-      opacity: 1;
+      opacity: 0.1;
       width: 40px;
       margin-left: 0px;
+      display: none;
     }
   }
-  animation: scaleAnimation 1s linear forwards;
+  animation: scaleAnimation 0.5s linear forwards;
   transition: all 0.3s;
 `;
 
 const ActionsWrapper = styled.div`
-  background: #fff;
-  width: 40px;
-  min-height: 34px;
   z-index: 1080;
   border-radius: 0px 4px 4px 0px;
   transition: all 0.3s;
@@ -103,20 +93,27 @@ const ActionsWrapper = styled.div`
   @keyframes translateAnimation {
     0% {
       display: none;
-
-      opacity: 0;
-      transform: scaleY(0);
+      width: 0px;
+      opacity: 0.3;
+      min-height: 0px;
+      height: 0px;
+      background: transparent;
     }
-
+    80% {
+      opacity: 1;
+    }
     100% {
       padding-top: 6px;
       border: 1px solid #db504a;
       opacity: 1;
       right: 60px;
-      transform: scaleY(1);
+      height: auto;
+      width: 40px;
+      min-height: 34px;
+      background: #fff;
     }
   }
-  animation: translateAnimation 1.3s linear forwards;
+  animation: translateAnimation 0.5s linear forwards;
 `;
 
 const TriggerEar = styled.div`
@@ -183,14 +180,12 @@ const ButtonPlus = styled.div`
     0% {
       opacity: 0;
     }
-    50% {
-      opacity: 0;
-    }
+
     100% {
       opacity: 1;
     }
   }
-  animation: translateAnimationBtn 1.5s linear forwards;
+  animation: translateAnimationBtn 0.5s linear forwards;
   transition: all 0.3s;
   &:hover {
     box-shadow: 0px 4px 20px 0px rgba(11, 87, 111, 0.15),
@@ -318,7 +313,18 @@ const RemoveAction = styled.span`
   right: 0;
   top: 0;
   cursor: pointer;
-  z-index: 1070;
+  z-index: 1200;
+  @keyframes translateAnimationBtn {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+  animation: translateAnimationBtn 0.5s linear forwards;
+  transition: all 0.3s;
   &:hover {
     svg {
       transform: scale(1.2);
@@ -336,9 +342,8 @@ return (
         onMouseLeave={handleOnMouseLeave}
         style={{ margin: "0px -7px" }}
       >
-        <TriggerShowLabel />
-
         <ActionsWrapper>
+          <TriggerShowLabel />
           {props.widgets.map((widget, i) => (
             <ActionBlock key={i}>
               <RemoveAction>{iconRemoveAction}</RemoveAction>
