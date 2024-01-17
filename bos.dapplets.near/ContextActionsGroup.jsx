@@ -65,21 +65,23 @@ const TriggerShowLabel = styled.div`
   position: absolute;
   height: calc(100% - 22px);
   top: -1px;
+  width: 40px;
   @keyframes scaleAnimation {
     0% {
       opacity: 1;
-      width: 0;
-      margin-left: -33px;
+      transform-origin: top left;
+      transform: scaleX(0) scaleY(0);
     }
 
     100% {
-      opacity: 0.1;
-      width: 40px;
-      margin-left: 0px;
+      opacity: 0.5;
+
+      transform-origin: top left;
+      transform: scaleX(1) scaleY(1.2);
       display: none;
     }
   }
-  animation: scaleAnimation 0.5s linear forwards;
+  animation: scaleAnimation 0.5s ease forwards;
   transition: all 0.3s;
 `;
 
@@ -97,7 +99,8 @@ const ActionsWrapper = styled.div`
       opacity: 0.3;
       min-height: 0px;
       height: 0px;
-      background: transparent;
+      transform-origin: top left;
+      transform: scale(0);
     }
     80% {
       opacity: 1;
@@ -111,9 +114,11 @@ const ActionsWrapper = styled.div`
       width: 40px;
       min-height: 34px;
       background: #fff;
+      transform-origin: top left;
+      transform: scale(1);
     }
   }
-  animation: translateAnimation 0.5s linear forwards;
+  animation: translateAnimation 0.5s ease forwards;
 `;
 
 const TriggerEar = styled.div`
@@ -318,7 +323,9 @@ const RemoveAction = styled.span`
     0% {
       opacity: 0;
     }
-
+    50% {
+      opacity: 0;
+    }
     100% {
       opacity: 1;
     }
