@@ -10,26 +10,22 @@ const RemoveIcon = (
       <path
         d="M9.24976 4.75L4.74999 9.24977"
         stroke="white"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M4.75 4.75L9.24977 9.24977"
         stroke="white"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
 );
   
 const RemoveAction = styled.span`
-  position: absolute;
-  right: 0;
-  top: 0;
   cursor: pointer;
-  z-index: 1200;
 
   @keyframes translateAnimationBtn {
     0% {
@@ -54,7 +50,7 @@ const RemoveAction = styled.span`
 `;
 
 return (
-    <RemoveAction onClick={() => props.onClick}>
+    <RemoveAction onClick={props.onClick}>
         {RemoveIcon}
     </RemoveAction>
 )
