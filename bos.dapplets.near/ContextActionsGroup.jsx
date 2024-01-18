@@ -315,6 +315,25 @@ const ActionBlock = styled.span`
   }
 `;
 
+const FloatingModal = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  animation: falling-animation 0.3s linear forwards;
+
+  @keyframes falling-animation {
+    from {
+      transform: translate(-50%, -200%);
+    }
+
+    to {
+      transform: translate(-50%, -50%);
+    }
+  }
+`;
+
 return (
   <OverlayTriggerWrapper onMouseEnter={handleOnMouseEnter}>
     <div style={{ opacity: state.show ? 0 : 1 }} className="OverlayTrigger">
@@ -361,13 +380,15 @@ return (
 
     {state.showMenu ? (
       <DappletOverlay>
-        <Widget
-          props={{
-            handleCloseMenu: handleCloseMenu,
-            onSelect: handleSelectComponent,
-          }}
-          src="bos.dapplets.near/widget/ComponentsSearch"
-        />
+        <FloatingModal>
+          <Widget
+            props={{
+              handleCloseMenu: handleCloseMenu,
+              onSelect: handleSelectComponent,
+            }}
+            src="bos.dapplets.near/widget/ComponentsSearch"
+          />
+        </FloatingModal>
       </DappletOverlay>
     ) : null}
   </OverlayTriggerWrapper>
