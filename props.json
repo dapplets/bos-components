@@ -1,1 +1,8 @@
-{}
+{
+    "widgets": [{
+        "src": "bos.dapplets.near/widget/Cat"
+    },{
+        "src": "bos.dapplets.near/widget/Dog"
+    }],
+    "isEditMode": true
+}
