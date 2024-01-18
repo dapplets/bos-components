@@ -28,6 +28,14 @@ const handleRemoveWidget = (bosWidgetId, linkId) => {
   props.deleteUserLink(bosWidgetId, linkId);
 }
 
+const handleEditClick = () => {
+  props.enableEditMode();
+}
+
+const handleApplyClick = () => {
+  props.disableEditMode();
+}
+
 const OverlayTriggerWrapper = styled.div`
   display: flex;
   position: relative;
@@ -257,9 +265,17 @@ const iconDropdown = (
   </svg>
 );
 
+// ToDo: add styles
+const ButtonEdit = styled.button`
+  &:before {
+    content: 'edit';
+  }
+`;
+
+// ToDo: add styles
 const ButtonApply = styled.button`
-  &:hover {
-    background: #eb9dab;
+  &:before {
+    content: 'apply';
   }
 `;
 
@@ -285,61 +301,10 @@ const iconSwitch = (
   </svg>
 );
 
-const iconRemoveAction = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="14"
-    height="14"
-    viewBox="0 0 14 14"
-    fill="none"
-  >
-    <circle cx="7" cy="7" r="6.5" fill="#DB504A" stroke="white" />
-    <path
-      d="M9.24976 4.75L4.74999 9.24977"
-      stroke="white"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-    <path
-      d="M4.75 4.75L9.24977 9.24977"
-      stroke="white"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-  </svg>
-);
-
 const ActionBlock = styled.span`
   position: relative;
   div {
     z-index: 1000;
-  }
-`;
-const RemoveAction = styled.span`
-  position: absolute;
-  right: 0;
-  top: 0;
-  cursor: pointer;
-  z-index: 1200;
-  @keyframes translateAnimationBtn {
-    0% {
-      opacity: 0;
-    }
-    50% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-  animation: translateAnimationBtn 0.5s linear forwards;
-  transition: all 0.3s;
-  &:hover {
-    svg {
-      transform: scale(1.2);
-    }
   }
 `;
 
@@ -355,12 +320,24 @@ return (
       >
         <ActionsWrapper>
           <TriggerShowLabel />
+
           {props.widgets.map((widget, i) => (
             <ActionBlock key={i}>
-              <RemoveAction onClick={() => handleRemoveWidget(widget.src, widget.linkId)}>{iconRemoveAction}</RemoveAction>
+              {props.isEditMode ? (
+                <Widget 
+                  src="bos.dapplets.near/widget/LayoutManager.DeleteWidgetButton" 
+                  props={{ onClick: () => handleRemoveWidget(widget.src, widget.linkId) }}
+                />
+              ) : null}
               <Widget src={widget.src} props={widget.props} />
             </ActionBlock>
           ))}
+
+          {props.isEditMode ? (
+            <ButtonApply onClick={handleApplyClick} />
+          ) : (
+            <ButtonEdit onClick={handleEditClick} />)
+          }
         </ActionsWrapper>
 
         <ButtonPlus onClick={handleOpenMenu} />
