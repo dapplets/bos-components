@@ -3,6 +3,7 @@ State.init({
   isUpload: false,
   amount: 1,
 });
+
 const uploadFileUpdateState = (body) => {
   asyncFetch("https://ipfs.near.social/add", {
     method: "POST",
@@ -38,6 +39,7 @@ const cancelOnChange = () => {
     amount: 1,
   });
 };
+
 const iconBtnUpload = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
