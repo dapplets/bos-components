@@ -1,4 +1,4 @@
-const LockedIcon = (
+const RemoveIcon = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="14"
@@ -51,6 +51,6 @@ const RemoveAction = styled.span`
 
 return (
     <RemoveAction onClick={props.onClick}>
-        {LockedIcon}
+        {RemoveIcon}
     </RemoveAction>
 )
