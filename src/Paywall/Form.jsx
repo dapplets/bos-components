@@ -131,6 +131,7 @@ const WrapperWidget = styled.div`
   border: 1px solid #8899a6;
   background: #fff;
   box-sizing: border-box;
+  width: 100%;
 
   .ButtonUpload {
     cursor: pointer;
@@ -148,6 +149,7 @@ const WrapperWidget = styled.div`
     font-size: 14px;
     font-weight: 400;
     line-height: normal;
+
     &:hover {
       opacity: 0.5;
     }
@@ -156,6 +158,7 @@ const WrapperWidget = styled.div`
 
 const Title = styled.div`
   color: #222;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   font-size: 18px;
   font-weight: 700;
   line-height: normal;
@@ -184,6 +187,7 @@ const FileInput = styled.input`
   display: flex;
   height: 44px;
   padding: 10px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: normal;
@@ -215,6 +219,7 @@ const BlockAmount = styled.div`
 
 const LabelAmount = styled.div`
   color: #919191;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   font-size: 12px;
   font-weight: 400;
   line-height: normal;
@@ -222,6 +227,7 @@ const LabelAmount = styled.div`
 
 const InputAmount = styled.input`
   color: #222;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   font-size: 14px;
   background: #fff;
   font-weight: 400;
@@ -235,6 +241,7 @@ const InputAmount = styled.input`
 const WrongAmountMessage = styled.div`
   color: red;
   padding: 8px 8px 0 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   font-size: 14px;
 `;
 
@@ -255,6 +262,7 @@ const ButtonCancel = styled.button`
   justify-content: center;
   align-items: center;
   color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   font-size: 14px;
   width: 230px;
   height: 44px;
@@ -278,6 +286,7 @@ const ButtonSend = styled.button`
   justify-content: center;
   align-items: center;
   color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   font-size: 14px;
   width: 230px;
   height: 44px;
