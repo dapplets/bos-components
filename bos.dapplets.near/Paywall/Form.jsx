@@ -1,4 +1,4 @@
-const { linkId, CONTRACT_ADDRESS } = props
+const { linkId, CONTRACT_ADDRESS } = props;
 
 /**
  * From near-api-js/packages/near-api-js/src/utils/format.ts
@@ -6,27 +6,31 @@ const { linkId, CONTRACT_ADDRESS } = props
 const NEAR_NOMINATION_EXP = 24;
 
 function cleanupAmount(amount) {
-  return amount.replace(/,/g, '').trim();
+  return amount.replace(/,/g, "").trim();
 }
 
 function trimLeadingZeroes(value) {
-  value = value.replace(/^0+/, '');
-  if (value === '') {
-      return '0';
+  value = value.replace(/^0+/, "");
+  if (value === "") {
+    return "0";
   }
   return value;
 }
 
 function parseNearAmount(amt) {
-  if (!amt) { return null; }
-  amt = cleanupAmount(amt);
-  const split = amt.split('.');
-  const wholePart = split[0];
-  const fracPart = split[1] || '';
-  if (split.length > 2 || fracPart.length > NEAR_NOMINATION_EXP) {
-      throw new Error(`Cannot parse '${amt}' as NEAR amount`);
+  if (!amt) {
+    return null;
   }
-  return trimLeadingZeroes(wholePart + fracPart.padEnd(NEAR_NOMINATION_EXP, '0'));
+  amt = cleanupAmount(amt);
+  const split = amt.split(".");
+  const wholePart = split[0];
+  const fracPart = split[1] || "";
+  if (split.length > 2 || fracPart.length > NEAR_NOMINATION_EXP) {
+    throw new Error(`Cannot parse '${amt}' as NEAR amount`);
+  }
+  return trimLeadingZeroes(
+    wholePart + fracPart.padEnd(NEAR_NOMINATION_EXP, "0")
+  );
 }
 /**
  * End
@@ -57,24 +61,20 @@ const filesOnChange = (files) => {
 };
 
 const amountOnChange = ({ target }) => {
-   State.update({ amount: target.value.trim(), wrongPrice: false });
+  State.update({ amount: target.value.trim(), wrongPrice: false });
 };
 
 const sendOnChange = () => {
   if (!/^\d+([.]\d+)?$/g.test(state.amount)) {
-    State.update({ wrongPrice: true })
+    State.update({ wrongPrice: true });
   } else {
     try {
       // State.update({ loading: true })
-      Near.call(
-        CONTRACT_ADDRESS,
-        "add_paid_content",
-        {
-          link: `https://ipfs.near.social/ipfs/${state.img.cid}`,
-          cost: parseNearAmount(state.amount),
-          context_id: linkId
-        }
-      );
+      Near.call(CONTRACT_ADDRESS, "add_paid_content", {
+        link: `https://ipfs.near.social/ipfs/${state.img.cid}`,
+        cost: parseNearAmount(state.amount),
+        context_id: linkId,
+      });
       // setTimeout(() => State.update({ loading: false }), 3000)
     } catch (err) {
       console.error(err);
@@ -102,23 +102,23 @@ const iconBtnUpload = (
     <path
       d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15"
       stroke="white"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
     />
     <path
       d="M17 8L12 3L7 8"
       stroke="white"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
     />
     <path
       d="M12 3V15"
       stroke="white"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
     />
   </svg>
 );
@@ -131,7 +131,7 @@ const WrapperWidget = styled.div`
   border: 1px solid #8899a6;
   background: #fff;
   box-sizing: border-box;
-
+  width: calc(100% - 4px);
   .ButtonUpload {
     cursor: pointer;
     border-radius: 4px;
@@ -315,7 +315,7 @@ return (
           </UploadBlock>
 
           <BlockAmount>
-            <div className={state.wrongPrice? "default error" : "default"}>
+            <div className={state.wrongPrice ? "default error" : "default"}>
               <LabelAmount>Price (NEAR)</LabelAmount>
               <InputAmount
                 value={state.amount || ""}
@@ -323,11 +323,11 @@ return (
               />
             </div>
           </BlockAmount>
-          {state.wrongPrice
-            ? (<WrongAmountMessage>
+          {state.wrongPrice ? (
+            <WrongAmountMessage>
               The price must consist only of numbers separated by "."
-              </WrongAmountMessage>)
-            : null}
+            </WrongAmountMessage>
+          ) : null}
         </InputsBlock>
         <ButtonsBlock>
           <ButtonCancel
