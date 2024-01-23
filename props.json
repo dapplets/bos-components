@@ -1,8 +1,30 @@
 {
-    "widgets": [{
-        "src": "bos.dapplets.near/widget/Cat"
-    },{
-        "src": "bos.dapplets.near/widget/Dog"
-    }],
-    "isEditMode": true
+    "widgets": [
+        {
+            "src": "bos.dapplets.near/widget/Cat"
+        },
+        {
+            "src": "bos.dapplets.near/widget/Dog"
+        }
+    ],
+    "isEditMode": true,
+    "contentId": "1694995203663290832",
+    "link": {
+        "authorId": "bos.dapplets.near",
+        "id": "f43ce7bdc6a26d1ab2582c1e6a4ebbd0"
+    },
+    "context": {
+        "id": "1694995203663290832"
+    },
+    "content": {
+        "content": {
+            "id": "f43ce7bdc6a26d1ab2582c1e6a4ebbd1",
+            "link": "https://miscellaneous.s3-website.fr-par.scw.cloud/web3hackfest-2023/MrConCreator/0001.png",
+            "author": "mock.dapplets.mear",
+            "cost": "200000000000000000000000",
+            "context_id": "1694994895662977529"
+        },
+        "is_purchased": false
+    },
+    "CONTRACT_ADDRESS": "app.paywall.near"
 }
