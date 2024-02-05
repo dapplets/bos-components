@@ -16,12 +16,13 @@ if (props.accountGId && props.itemGId) {
   return <></>;
 }
 
+const TIPPING_CONTRACT_NAME = "v2.tipping.near";
 const MAX_AMOUNT_PER_ITEM = '10000000000000000000000000'; // 10 NEAR
 const MAX_AMOUNT_PER_TIP = '1000000000000000000000000'; // 1 NEAR
-const TIPPING_CONTRACT_NAME = "v2.tipping.near";
-
+const STEP_YOCTO = '50000000000000000000000'; // 0.05 NEAR
+const LIMIT_PER_ITEM = 10;
 const STEP = 0.05
-const DELAY = 2;
+const DEBOUNCE_DELAY = 2000; // in ms
 
 State.update({
   totalTipsByItemId: Near.view(TIPPING_CONTRACT_NAME, "getTotalTipsByItemId", {
@@ -30,7 +31,7 @@ State.update({
 })
 
 /**
- * From near-api-js/packages/near-api-js/src/utils/format.ts
+ * From near-api-js/blob/master/packages/utils/src/format.ts
  */
 const NEAR_NOMINATION_EXP = 24;
 const NEAR_NOMINATION = new BN('10', 10).pow(new BN(NEAR_NOMINATION_EXP, 10));
@@ -54,6 +55,14 @@ function formatWithCommas(value) {
   return value;
 }
 
+/**
+ * Convert account balance value from internal indivisible units to NEAR. 1 NEAR is defined by {@link NEAR_NOMINATION}.
+ * Effectively this divides given amount by {@link NEAR_NOMINATION}.
+ *
+ * @param {string} balance decimal string representing balance in smallest non-divisible NEAR units (as specified by {@link NEAR_NOMINATION})
+ * @param {number} fracDigits number of fractional digits to preserve in formatted string. Balance is rounded to match given number of digits.
+ * @returns {string} Value in Ⓝ
+ */
 function formatNearAmount(balance, fracDigitsExternal) {
   const fracDigits = fracDigitsExternal || NEAR_NOMINATION
 
@@ -75,33 +84,17 @@ function formatNearAmount(balance, fracDigitsExternal) {
   return trimTrailingZeroes(`${formatWithCommas(wholeStr)}.${fractionStr}`);
 }
 
-function cleanupAmount(amount) {
-  return amount.replace(/,/g, '').trim();
-}
-
-function trimLeadingZeroes(value) {
-  value = value.replace(/^0+/, '');
-  if (value === '') {
-      return '0';
-  }
-  return value;
-}
-
-function parseNearAmount(amt) {
-  if (!amt) { return null; }
-  amt = cleanupAmount(amt);
-  const split = amt.split('.');
-  const wholePart = split[0];
-  const fracPart = split[1] || '';
-  if (split.length > 2 || fracPart.length > NEAR_NOMINATION_EXP) {
-      throw new Error(`Cannot parse '${amt}' as NEAR amount`);
-  }
-  return trimLeadingZeroes(wholePart + fracPart.padEnd(NEAR_NOMINATION_EXP, '0'));
-}
+/**
+ * Converts a yocto number to a number with two digits after the dot
+ * 
+ * @param {string} amount decimal string representing balance in smallest non-divisible NEAR units
+ * @returns {number} examples: 0.3, 0.05, 0
+ */
 
 function formatNear(amount) {
-  return Number(formatNearAmount(amount, 4)).toFixed(2);
+  return Number(formatNearAmount(amount, 2))
 }
+
 /**
  * End
  */
@@ -138,10 +131,6 @@ const equals = (a, b) => {
   return _a.eq(_b);
 }
 
-function getMilliseconds(seconds) {
-  return seconds * 1000;
-}
-
 function debounce(func, timeout, id) {
   return () => {
     state[`debounceTimer#${id}`] && clearTimeout(state[`debounceTimer#${id}`]);
@@ -158,27 +147,21 @@ function calculateFee(num) {
   return b.toString()
 }
 
-const limitPerItem = Number(formatNear(MAX_AMOUNT_PER_ITEM));
-
 useEffect(() => {
   if (equals(state.totalTipsByItemId, '0')) {
     State.update({
       accountId,
       disabled: false,
       loading: false,
-      label: 'Tip',
       tooltip: 'Send donation',
-      donationsAmount: state.totalTipsByItemId,
       amount: state.amount || '0',
     })
-  } else if (Number(formatNear(state.totalTipsByItemId)) === limitPerItem) {
+  } else if (formatNear(state.totalTipsByItemId) === LIMIT_PER_ITEM) {
     State.update({
       accountId,
       disabled: true,
       loading: false,
-      label: formatNear(state.totalTipsByItemId) + ' NEAR',
-      tooltip: `The ${limitPerItem} NEAR limit for this content has been exceeded`,
-      donationsAmount: state.totalTipsByItemId,
+      tooltip: `The ${LIMIT_PER_ITEM} NEAR limit for this content has been exceeded`,
       amount: state.amount || '0',
     })
   } else {
@@ -186,9 +169,7 @@ useEffect(() => {
       accountId,
       disabled: false,
       loading: false,
-      label: formatNear(state.totalTipsByItemId) + ' NEAR',
       tooltip: 'Send donation',
-      donationsAmount: state.totalTipsByItemId,
       amount: state.amount || '0',
     })
   }
@@ -212,97 +193,99 @@ const onDebounceDonate = () => {
       '50000000000000',
       total,
     );
-    setTimeout(() => State.update({
-      disabled: false,
-      loading: false,
-      label: equals(state.donationsAmount, '0') ? 'Tip' : formatNear(state.donationsAmount) + ' NEAR',
-      donationsAmount: state.totalTipsByItemId,
-      amount: '0',
-    }), 3000)
   } catch (e) {
     console.error(e);
     State.update({
       disabled: false,
       loading: false,
-      label: equals(state.donationsAmount, '0') ? 'Tip' : formatNear(state.donationsAmount) + ' NEAR',
-      donationsAmount: state.totalTipsByItemId,
       amount: '0',
     });
   }
 };
 
-const stepYocto = parseNearAmount(STEP.toString());
-const debounceDelay = getMilliseconds(DELAY);
-const debouncedDonate = debounce(onDebounceDonate, debounceDelay, 'donate')
+const debouncedDonate = debounce(onDebounceDonate, DEBOUNCE_DELAY, 'donate')
 
 const onClick = () => {
-  const donationsAmountStr = formatNear(state.donationsAmount)
-  const donationsAmount = Number(donationsAmountStr);
-  const donation = Number(formatNear(state.amount));
-  const result = Number((donationsAmount + donation + STEP).toFixed(2));
-  if (result > limitPerItem) {
-    if (donation === 0) {
+  const result = formatNear(sum(state.totalTipsByItemId, state.amount, STEP_YOCTO));
+  if (result > LIMIT_PER_ITEM) {
+    if (state.amount === '0') {
       State.update({
         disabled: true,
-        label: donationsAmountStr + ' + ' + STEP + ' NEAR',
-        tooltip: `The ${limitPerItem} NEAR limit for this content has been exceeded`,
+        exceeded: true,
+        tooltip: `The ${LIMIT_PER_ITEM} NEAR limit for this content has been exceeded`,
       })
       setTimeout(() => State.update({
         disabled: false,
-        label: donationsAmountStr + ' NEAR',
+        exceeded: false,
         tooltip: 'Send donation',
       }), 3000)
       return 
     }
     State.update({
       disabled: true,
-      tooltip: `The ${limitPerItem} NEAR limit for this content has been exceeded`,
+      tooltip: `The ${LIMIT_PER_ITEM} NEAR limit for this content has been exceeded`,
     })
     return
   }
-  const expectedItemAmount = sum(state.donationsAmount, state.amount, stepYocto)
-  const expectedExpenses = sum(state.amount, stepYocto)
+  const expectedItemAmount = sum(state.totalTipsByItemId, state.amount, STEP_YOCTO)
+  const expectedExpenses = sum(state.amount, STEP_YOCTO)
   if (lte(expectedItemAmount, MAX_AMOUNT_PER_ITEM) && lte(expectedExpenses, MAX_AMOUNT_PER_TIP)) {
-    const newLabel = formatNear(state.donationsAmount) + ' + ' + formatNear(expectedExpenses) + ' NEAR'
     State.update({
-      disabled: result === limitPerItem,
-      label: newLabel,
+      disabled: result === LIMIT_PER_ITEM,
       amount: expectedExpenses,
     })
   }
+
   debouncedDonate();
 };
 
-// styles
-const LikeButton = styled.button`
-  line-height: 20px;
-  min-height: 20px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: left;
-  background: inherit;
-  color: inherit;
-  font-size: 16px;
-  user-select: none;
-  border: none;
-  margin: 0;
+const TippingButton = styled.button`
+  display: flex;
+  position: relative;
+  width: 85px;
+  height: 18px;
+  margin-left: 8px;
   padding: 0;
+  align-items: center;
+  flex-shrink: 0;
+  overflow: hidden;
+
+  border: 1px solid #C1C6CE;
+  border-radius: 9em;
+  background: none;
+
+  color: #5B7083;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+  user-select: none;
+  transition: color .3s ease-out;
+
   .icon {
-    position: relative;
-    &:before {
-      margin: -8px;
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      border-radius: 50%;
-    }
+    display: flex;
+    padding: 3px 3px 3px 6px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex: 1 0 0;
+    align-self: stretch;
+    border-right: 1px solid #C1C6CE;
+    z-index: 2;
   }
 
-  .count {
-    margin-left: 8px;
+  .cost {
+    display: flex;
+    width: 51px;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    flex-grow: 1;
+    z-index: 2;
   }
 
   &:not([disabled]) {
@@ -311,47 +294,79 @@ const LikeButton = styled.button`
 
   &:not([disabled]):hover {
     opacity: 1 !important;
-    color: green;
-
-    .icon:before {
-      background: rgba(0, 255, 0, 0.1);
-    }
+    color: #3D7FFF;
   }
 
-  .loading {
-    @keyframes scaleAnimation {
-     0%, 100% {
-        transform: scale(1) rotate(0deg);
+  .progress-bar { 
+    display: block;
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #3D7FFF;
+    z-index: 1;
+  }
+
+  &.loading {
+    @keyframes progressAnimationStrike {
+        from { width: 0 }
+        to   { width: 100% }
+    }
+  
+    @keyframes waitingAnimation {
+      0% {
+        background: none;
+        border-color: #C1C6CE;
+        color: #5B7083;
       }
-      25% {
-        transform: scale(1.2) rotate(-15deg);
+      98% {
+        background: none;
+        border-color: #3D7FFF;
+        color: white;
       }
-      50% {
-        transform: scale(1) rotate(0deg);
-      }
-      75% {
-        transform: scale(1.2) rotate(15deg);
+      100% {
+        background: rgb(61, 127, 255);
+        border-color: #3D7FFF;
+        color: white;
       }
     }
 
-    transform-origin: center;
-    animation: scaleAnimation 1s ease-in-out infinite;
+    animation: waitingAnimation 10s linear forwards;
+
+    .progress-bar {
+      animation: progressAnimationStrike 10s linear forwards;
+    }
   }
 `;
 
+const createLabel = () => {
+  if (state.totalTipsByItemId === '0' && state.amount === '0') return state.isHovered ? '+ ' + STEP : 'Tip'
+  if (state.amount === '0') {
+    return state.isHovered ? '+ ' + STEP : formatNear(state.totalTipsByItemId)
+  } else {
+    return '+ ' + (state.isHovered ? formatNear(sum(state.amount, STEP_YOCTO)) : formatNear(state.amount))
+  }
+}
+
 return (
-  <div className="d-inline-flex align-items-center">
-    <LikeButton
+    <TippingButton
       disabled={state.disabled}
       title={state.tooltip}
+      onMouseEnter={() => State.update({ isHovered: true })}
+      onMouseLeave={() => State.update({ isHovered: false })}
       onClick={onClick}
+      className={state.loading ? "loading " : ""}
     >
-      <span className={`icon ${state.loading ? "loading " : ""}`}>
+      <div className="progress-bar"/>
+      <div className="icon">
         <Widget src="bos.dapplets.near/widget/Tipping.TipIcon" />
-      </span>
-      <span className={`count`}>
-        {state.label}
-      </span>
-    </LikeButton>
-  </div>
+      </div>
+      <div className="cost">
+        {createLabel()}
+        <Widget src="bos.dapplets.near/widget/Tipping.NearIcon" />
+      </div>
+    </TippingButton>
 );
