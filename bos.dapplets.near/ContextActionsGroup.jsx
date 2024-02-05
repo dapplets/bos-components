@@ -218,6 +218,66 @@ const ButtonPlus = styled.div`
       0px 4px 5px 0px rgba(45, 52, 60, 0.1);
   }
 `;
+const WrapperButtonPlusDefault = styled.div`
+    width: 43px;
+    height: 49px;
+    border-radius: 0px 4px 4px 0px;
+    position: absolute;
+    top: 30px;
+    background: #DB504A;
+    z-index: 1081;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+const ButtonPlusDefault = styled.div`
+  display: flex;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+bottom: 7px;
+    background: #DB504A;
+  position: relative;
+  transform: translateY(6px);
+  cursor: pointer;
+  border: 1px solid #fff;
+  &:before {
+    content: "";
+    display: block;
+    width: 1.5px;
+    height: 11px;
+    border-radius: 2px;
+    background: #fff;
+    position: absolute;
+    top: 6px;
+    left: 10.5px;
+  }
+  &:after {
+    content: "";
+    display: block;
+    height: 1.5px;
+    width: 11px;
+    border-radius: 2px;
+    background: #fff;
+    position: absolute;
+    top: 11px;
+    left: 6px;
+  }
+  @keyframes translateAnimationBtn {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+  animation: translateAnimationBtn 0.5s linear forwards;
+  transition: all 0.3s;
+  &:hover {
+    transform: scale(1.2) translateY(6px);
+  }
+`;
 
 const WidgetBadgeWrapper = styled.div`
   position: absolute;
@@ -428,11 +488,19 @@ return (
     {state.show ? (
       <TriggerShowPanel
         onMouseOut={handleOnMouseLeave}
-        style={{ margin: "0px -7px" }}
+        style={{
+          margin: "0px -7px",
+          top: props.widgets && props.widgets.length ? "" : "-10px",
+        }}
       >
         <SupportingSpan />
 
-        <ActionsWrapper>
+        <ActionsWrapper
+          style={{
+            backgroundColor:
+              props.widgets && props.widgets.length ? "" : "#DB504A!important",
+          }}
+        >
           <TriggerShowLabel />
 
           {props.widgets.map((widget) => (
@@ -483,20 +551,26 @@ return (
             </ButtonEdit>
           )}
         </ActionsWrapper>
+        {props.widgets && props.widgets.length ? (
+          <ButtonPlus
+            style={{
+              transform:
+                props.widgets && props.widgets.length
+                  ? "translateY(6px)"
+                  : "translateY(39px)",
 
-        <ButtonPlus
-          style={{
-            transform:
-              props.widgets && props.widgets.length
-                ? "translateY(6px)"
-                : "translateY(39px)",
-
-            position:
-              props.widgets && props.widgets.length ? "unset" : "absolute",
-            zIndex: "1081",
-          }}
-          onClick={handleOpenMenu}
-        />
+              position:
+                props.widgets && props.widgets.length ? "unset" : "absolute",
+              zIndex: "1081",
+            }}
+            onClick={handleOpenMenu}
+          />
+        ) : (
+          <WrapperButtonPlusDefault>
+            {" "}
+            <ButtonPlusDefault onClick={handleOpenMenu} />
+          </WrapperButtonPlusDefault>
+        )}
       </TriggerShowPanel>
     ) : null}
 
