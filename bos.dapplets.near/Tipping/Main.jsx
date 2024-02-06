@@ -176,31 +176,29 @@ useEffect(() => {
 }, [accountId, state.totalTipsByItemId]);
 
 const onDebounceDonate = () => {
-  try {
-    State.update({
-      loading: true,
-      disabled: true,
-    })
-    const fee = calculateFee(state.amount);
-    const total = sum(state.amount, fee);
-    Near.call(
-      TIPPING_CONTRACT_NAME,
-      "sendTips",
-      {
-        accountGId: accountId,
-        itemId: itemGlobalId,
-      },
-      '50000000000000',
-      total,
-    );
-  } catch (e) {
+  State.update({
+    loading: true,
+    disabled: true,
+  })
+  const fee = calculateFee(state.amount);
+  const total = sum(state.amount, fee);
+  Near.call(
+    TIPPING_CONTRACT_NAME,
+    "sendTips",
+    {
+      accountGId: accountId,
+      itemId: itemGlobalId,
+    },
+    '50000000000000',
+    total,
+  ).catch((e) => {
     console.error(e);
     State.update({
       disabled: false,
       loading: false,
       amount: '0',
-    });
-  }
+    })
+  })
 };
 
 const debouncedDonate = debounce(onDebounceDonate, DEBOUNCE_DELAY, 'donate')

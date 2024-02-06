@@ -31,6 +31,10 @@ return (
         {props.isEditMode ? (
           <WidgetBadgeWrapper
             title={`Remove ${widget.src.split("widget/").pop()}`}
+            style={{
+              display:
+                widget.linkAuthorId === context.accountId ? "flex" : "none",
+            }}
           >
             {widget.linkAuthorId === context.accountId ? (
               <Widget
