@@ -41,6 +41,14 @@ if (data) {
         if (!hasAppTag) return;
       }
 
+      const widgetId = `${accountId}/widget/${widgetName}`;
+      if (
+        props.apps &&
+        !props.apps.some((app) => app.componentId === widgetId)
+      ) {
+        return;
+      }
+
       result.push({
         accountId,
         widgetName,
