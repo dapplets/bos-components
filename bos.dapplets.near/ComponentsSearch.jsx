@@ -42,10 +42,7 @@ if (data) {
       }
 
       const widgetId = `${accountId}/widget/${widgetName}`;
-      if (
-        props.apps &&
-        !props.apps.some((app) => app.componentId === widgetId)
-      ) {
+      if (props.apps && !props.apps.some(app => app.componentId === widgetId)) {
         return;
       }
 
