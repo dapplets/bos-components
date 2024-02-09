@@ -19,6 +19,9 @@ if (props.accountGId && props.itemGId) {
   return <></>;
 }
 
+const { nearAccountId } = props
+const userAccountId = nearAccountId || context.accountId
+
 const TIPPING_CONTRACT_NAME = "v2.tipping.near";
 const MAX_AMOUNT_PER_ITEM = '10000000000000000000000000'; // 10 NEAR
 const MAX_AMOUNT_PER_TIP = '1000000000000000000000000'; // 1 NEAR
@@ -151,7 +154,15 @@ function calculateFee(num) {
 }
 
 useEffect(() => {
-  if (equals(state.totalTipsByItemId, '0')) {
+  if (!userAccountId) {
+    State.update({
+      accountId,
+      disabled: true,
+      loading: false,
+      amount: '0',
+      tooltip: 'Connect wallet',
+    })
+  } else if (equals(state.totalTipsByItemId, '0')) {
     State.update({
       accountId,
       disabled: false,
