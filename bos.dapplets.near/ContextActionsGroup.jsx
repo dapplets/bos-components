@@ -8,7 +8,11 @@ const handleOnMouseEnter = () => {
 };
 
 const handleOnMouseLeave = () => {
-  state.showMenu ? null : State.update({ show: false });
+  state.showMenu
+    ? null
+    : props.isEditMode
+    ? null
+    : State.update({ show: false });
 };
 
 const handleOpenMenu = () => {
@@ -556,7 +560,7 @@ return (
           ) : (
             <ButtonEdit
               style={{
-                opacity:
+                display:
                   props.widgets && props.widgets.length ? "flex" : "none",
               }}
               onClick={handleEditClick}
