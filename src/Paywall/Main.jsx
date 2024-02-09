@@ -1,22 +1,35 @@
-const { nearAccountId } = props;
-const { authorId, id } = props.link;
+const { nearAccountId } = props
+const { authorId, id } = props.link
 
-if (!id) return <></>;
+if (!id) return <></>
 
 const userAccountId = context.accountId || nearAccountId
-const MOCKED_ADDRESS = "ncownthflapqowieuryt.near" // ToDo: one needs account address to get content for context
-const CONTRACT_ADDRESS = "v2.paywall.near";
+const CONTRACT_ADDRESS = "v2.paywall.near"
 
 State.update({
-  content: Near.view(
+  hasContent: Near.view(
       CONTRACT_ADDRESS,
-      "get_content_by_post_for_account",
-      {
-        context_id: id,
-        account_id: userAccountId || MOCKED_ADDRESS
-      }
-    )[0]
+      "has_content",
+      { context_id: id },
+      'final',
+      true
+    )
 })
+
+if (state.hasContent) {
+  State.update({
+    content: Near.view(
+        CONTRACT_ADDRESS,
+        "get_one",
+        {
+          context_id: id,
+          account_id: userAccountId || ''
+        },
+        'final',
+        true
+      )
+  })
+}
 
 return (
   <>
@@ -36,4 +49,4 @@ return (
         />
       : <></>}
   </>
-);
+)

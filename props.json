@@ -14,7 +14,15 @@
         "id": "f43ce7bdc6a26d1ab2582c1e6a4ebbd0"
     },
     "context": {
-        "id": "1694995203663290832"
+        "parsed": {
+            "id": "1694995203663290832",
+            "authorUsername": "MrConCreator"
+        },
+        "parent": {
+            "parsed": {
+                "websiteName": "YouTube"
+            }
+        }
     },
     "content": {
         "content": {

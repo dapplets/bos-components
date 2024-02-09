@@ -75,7 +75,6 @@ const onBuy = () => {
       '50000000000000',
       content.cost
     );
-    setTimeout(() => State.update({ loading: false }), 3000)
   } catch (err) {
     console.error(err);
     State.update({ loading: false });
@@ -86,12 +85,12 @@ const Wrapper = styled.div`
   .content-blur-wrapper {
     overflow: hidden;
     width: 100%;
-    margin-top: 12px;
     border-radius: 16px;
     border: 1px solid rgb(207, 217, 222);
     aspect-ratio: 1.777;
     cursor: default;
     position: relative;
+    box-sizing: border-box;
   }
 
   .content-wrapper-basic {
@@ -100,6 +99,7 @@ const Wrapper = styled.div`
     border-radius: 4px;
     aspect-ratio: 1.777;
     position: relative;
+    box-sizing: border-box;
   }
 
   .unlock-content-overlay {

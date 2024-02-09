@@ -34,8 +34,8 @@ function parseNearAmount(amt) {
 
 State.init({
   img: null,
-  isUpload: false,
   amount: null,
+  loading: false,
 });
 
 const uploadFileUpdateState = (body) => {
@@ -65,7 +65,7 @@ const sendOnChange = () => {
     State.update({ wrongPrice: true })
   } else {
     try {
-      // State.update({ loading: true })
+      State.update({ loading: true })
       Near.call(
         CONTRACT_ADDRESS,
         "add_paid_content",
@@ -75,10 +75,9 @@ const sendOnChange = () => {
           context_id: linkId
         }
       );
-      // setTimeout(() => State.update({ loading: false }), 3000)
     } catch (err) {
       console.error(err);
-      // State.update({ isUpload: false });
+      State.update({ loading: false })
     }
   }
 };
@@ -86,7 +85,6 @@ const sendOnChange = () => {
 const cancelOnChange = () => {
   State.update({
     img: null,
-    isUpload: false,
     amount: null,
   });
 };
@@ -102,23 +100,23 @@ const iconBtnUpload = (
     <path
       d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15"
       stroke="white"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M17 8L12 3L7 8"
       stroke="white"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M12 3V15"
       stroke="white"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );
@@ -131,6 +129,7 @@ const WrapperWidget = styled.div`
   border: 1px solid #8899a6;
   background: #fff;
   box-sizing: border-box;
+  width: 100%;
 
   .ButtonUpload {
     cursor: pointer;
@@ -155,6 +154,7 @@ const WrapperWidget = styled.div`
 `;
 
 const Title = styled.div`
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   color: #222;
   font-size: 18px;
   font-weight: 700;
@@ -179,6 +179,7 @@ const UploadBlock = styled.div`
 `;
 
 const FileInput = styled.input`
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   border-radius: 4px;
   background: #e7ecef;
   display: flex;
@@ -214,6 +215,7 @@ const BlockAmount = styled.div`
 `;
 
 const LabelAmount = styled.div`
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   color: #919191;
   font-size: 12px;
   font-weight: 400;
@@ -221,6 +223,7 @@ const LabelAmount = styled.div`
 `;
 
 const InputAmount = styled.input`
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   color: #222;
   font-size: 14px;
   background: #fff;
@@ -233,6 +236,7 @@ const InputAmount = styled.input`
 `;
 
 const WrongAmountMessage = styled.div`
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   color: red;
   padding: 8px 8px 0 12px;
   font-size: 14px;
@@ -247,6 +251,7 @@ const ButtonsBlock = styled.div`
 `;
 
 const ButtonCancel = styled.button`
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   border-radius: 4px;
   display: flex;
   background: #c1c6ce;
@@ -262,14 +267,20 @@ const ButtonCancel = styled.button`
   line-height: 149%;
   box-sizing: border-box;
   margin: 0 4px;
+  cursor: pointer;
 
-  &:disabled,
+  &:disabled {
+    background: #dbdfe5 !important;
+    cursor: default;
+  }
+
   &:hover {
-    opacity: 0.3;
+    background: #a9aeb5;
   }
 `;
 
 const ButtonSend = styled.button`
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   border-radius: 4px;
   display: flex;
   background: #3d7fff;
@@ -285,65 +296,95 @@ const ButtonSend = styled.button`
   line-height: 149%;
   box-sizing: border-box;
   margin: 0 4px;
+  cursor: pointer;
 
-  &:disabled,
+  &:disabled {
+    background: #8db4ff !important;
+    cursor: default;
+  }
+
   &:hover {
-    opacity: 0.5;
+    background: #2564df;
   }
 `;
 
+const Loader = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20px"
+    height="20px"
+    viewBox="0 0 100 100"
+    preserveAspectRatio="xMidYMid"
+  >
+    <circle
+      cx="50"
+      cy="50"
+      fill="none"
+      stroke="#ffffff"
+      strokeWidth="10"
+      r="35"
+      strokeDasharray="164.93361431346415 56.97787143782138"
+    >
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        repeatCount="indefinite"
+        dur="1s"
+        values="0 50 50;360 50 50"
+        keyTimes="0;1"
+      ></animateTransform>
+    </circle>
+  </svg>
+);
+
 return (
-  <>
-    {state.img.cid && state.isUpload ? null : (
-      <WrapperWidget>
-        <Title>Configure your content</Title>
-        <InputsBlock>
-          <UploadBlock>
-            <FileInput readOnly value={state.img.cid ? state.img.cid : ""} />
+  <WrapperWidget>
+    <Title>Configure your content</Title>
+    <InputsBlock>
+      <UploadBlock>
+        <FileInput readOnly value={state.img.cid ? state.img.cid : ""} />
 
-            <Files
-              multiple={false}
-              accepts={["image/*"]}
-              minFileSize={1}
-              clickable
-              className="ButtonUpload"
-              onChange={filesOnChange}
-            >
-              {iconBtnUpload}
-              {state.img?.uploading ? <> Uploading </> : "Upload image"}
-            </Files>
-          </UploadBlock>
+        <Files
+          multiple={false}
+          accepts={["image/*"]}
+          minFileSize={1}
+          clickable
+          className="ButtonUpload"
+          onChange={filesOnChange}
+        >
+          {iconBtnUpload}
+          {state.img?.uploading ? <> Uploading </> : "Upload image"}
+        </Files>
+      </UploadBlock>
 
-          <BlockAmount>
-            <div className={state.wrongPrice? "default error" : "default"}>
-              <LabelAmount>Price (NEAR)</LabelAmount>
-              <InputAmount
-                value={state.amount || ""}
-                onChange={amountOnChange}
-              />
-            </div>
-          </BlockAmount>
-          {state.wrongPrice
-            ? (<WrongAmountMessage>
-              The price must consist only of numbers separated by "."
-              </WrongAmountMessage>)
-            : null}
-        </InputsBlock>
-        <ButtonsBlock>
-          <ButtonCancel
-            onClick={cancelOnChange}
-            disabled={!state.img && !state.amount}
-          >
-            Cancel
-          </ButtonCancel>
-          <ButtonSend
-            onClick={sendOnChange}
-            disabled={!state.img || !state.amount || state.wrongPrice}
-          >
-            Send
-          </ButtonSend>
-        </ButtonsBlock>
-      </WrapperWidget>
-    )}
-  </>
+      <BlockAmount>
+        <div className={state.wrongPrice? "default error" : "default"}>
+          <LabelAmount>Price (NEAR)</LabelAmount>
+          <InputAmount
+            value={state.amount || ""}
+            onChange={amountOnChange}
+          />
+        </div>
+      </BlockAmount>
+      {state.wrongPrice
+        ? (<WrongAmountMessage>
+          The price must consist only of numbers separated by "."
+          </WrongAmountMessage>)
+        : null}
+    </InputsBlock>
+    <ButtonsBlock>
+      <ButtonCancel
+        onClick={cancelOnChange}
+        disabled={!state.img && !state.amount || state.loading}
+      >
+        Clear
+      </ButtonCancel>
+      <ButtonSend
+        onClick={sendOnChange}
+        disabled={!state.img || !state.amount || state.wrongPrice || state.loading}
+      >
+        {state.loading ? <Loader /> : "Add"}
+      </ButtonSend>
+    </ButtonsBlock>
+  </WrapperWidget>
 );
