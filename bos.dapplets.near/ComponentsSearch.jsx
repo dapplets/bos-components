@@ -1,78 +1,9 @@
-const limitPerPage = 4;
-let components = [];
-let totalComponents = 0;
-let totalApps = 0;
-const componentsUrl = "/#/near/widget/ComponentsPage";
-
-State.init({
-  currentPage: 0,
-  selectedTab: props.tab || "apps",
-  selectedComponent: props.selectedComponent || null,
-});
-
-if (props.tab && props.tab !== state.selectedTab) {
-  State.update({
-    selectedTab: props.tab,
-  });
-}
-
-const tagsData = Social.get("*/widget/*/metadata/tags/*", "final");
-
-const data = Social.keys("*/widget/*", "final", {
-  return_type: "BlockHeight",
-});
-
-if (data) {
-  const result = [];
-
-  Object.keys(data).forEach((accountId) => {
-    return Object.keys(data[accountId].widget).forEach((widgetName) => {
-      totalComponents++;
-
-      const hasAppTag =
-        tagsData[accountId].widget[widgetName]?.metadata?.tags["dapplet"] ===
-        "";
-      if (hasAppTag) totalApps++;
-
-      if (state.selectedTab === "apps") {
-        const hasAppTag =
-          tagsData[accountId].widget[widgetName]?.metadata?.tags["dapplet"] ===
-          "";
-        if (!hasAppTag) return;
-      }
-
-      const widgetId = `${accountId}/widget/${widgetName}`;
-      if (props.apps && !props.apps.some(app => app.componentId === widgetId)) {
-        return;
-      }
-
-      result.push({
-        accountId,
-        widgetName,
-        blockHeight: data[accountId].widget[widgetName],
-      });
-    });
-  });
-
-  result.sort((a, b) => b.blockHeight - a.blockHeight);
-  components = result.slice(0, state.currentPage * limitPerPage + limitPerPage);
-}
-
-function onSearchChange({ result, term }) {
-  if (term.trim()) {
-    State.update({ searchResults: result || [] });
-  } else {
-    State.update({ searchResults: null });
-  }
-}
-
-const items = state.searchResults || components;
-const selectedComponent = state.selectedComponent;
+const { apps } = props;
 
 const CloseModal = styled.span`
   position: absolute;
-  top: -40px;
-  right: 0;
+  top: 15px;
+  right: 15px;
   cursor: pointer;
   transition: all 0.3s;
   &:hover {
@@ -105,20 +36,6 @@ const Header = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-`;
-
-const Search = styled.div`
-  width: 392px;
-  height: 46px;
-  position: relative;
-  @media (max-width: 500px) {
-    width: 100%;
-  }
-  input {
-    border-radius: 10px;
-    border: 1px solid #d9d9d9;
-    background: #fff;
-  }
 `;
 
 const H1 = styled.h1`
@@ -232,45 +149,26 @@ const iconCloseModal = (
 
 return (
   <Wrapper>
-    <Search>
-      <CloseModal onClick={props.handleCloseMenu}> {iconCloseModal}</CloseModal>
-
-      <Widget
-        src="bos.dapplets.near/widget/ComponentSearchWidget"
-        props={{
-          limit: 4,
-          onChange: onSearchChange,
-        }}
-      />
-    </Search>
-    {state.searchResults?.length === 0 && (
-      <Text>No components matched your search.</Text>
-    )}
-    {items.length > 0 && (
-      <Items style={{ paddingRight: items && items.length >= 5 ? "20px" : "" }}>
-        {items.map((component, i) => {
+    <CloseModal onClick={props.handleCloseMenu}>{iconCloseModal}</CloseModal>
+    {apps.length > 0 ? (
+      <Items style={{ paddingRight: apps && apps.length >= 5 ? "20px" : "" }}>
+        {apps.map((app) => {
           return (
-            <Item key={component.accountId + component.widgetName}>
+            <Item key={app.id}>
               <Widget
-                src="lisofffa.near/widget/SearchCard"
+                src="bos.dapplets.near/widget/SearchCard"
                 props={{
-                  src: `${component.accountId}/widget/${component.widgetName}`,
-                  blockHeight: component.blockHeight,
-                  onComponentSelect: () => props.onSelect(component),
+                  src: app.id,
+                  metadata: app.metadata,
+                  onComponentSelect: () => props.onSelect(app),
                 }}
               />
             </Item>
           );
         })}
       </Items>
-    )}
-    {!state.searchResults && (
-      <Button
-        type="button"
-        onClick={() => State.update({ currentPage: state.currentPage + 1 })}
-      >
-        Load More
-      </Button>
+    ) : (
+      <Text>No apps available for this context</Text>
     )}
   </Wrapper>
 );
