@@ -68,7 +68,7 @@ const OverlayTriggerWrapper = styled.div`
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    z-index: 600;
+    z-index: 79;
   }
 `;
 const SupportingSpan = styled.span`
@@ -88,6 +88,7 @@ const TriggerShowPanel = styled.div`
   position: absolute;
   right: -33px;
   top: 10px;
+  z-index: 79;
 `;
 
 const TriggerShowLabel = styled.div`
@@ -571,19 +572,22 @@ return (
           )}
         </ActionsWrapper>
         {props.widgets && props.widgets.length ? (
-          <ButtonPlus
-            style={{
-              transform:
-                props.widgets && props.widgets.length
-                  ? "translateY(6px)"
-                  : "translateY(39px)",
+          <>
+            <SupportingSpan />
+            <ButtonPlus
+              style={{
+                transform:
+                  props.widgets && props.widgets.length
+                    ? "translateY(-25px)"
+                    : "translateY(39px)",
 
-              position:
-                props.widgets && props.widgets.length ? "unset" : "absolute",
-              zIndex: "1081",
-            }}
-            onClick={handleOpenMenu}
-          />
+                position:
+                  props.widgets && props.widgets.length ? "unset" : "absolute",
+                zIndex: "1081",
+              }}
+              onClick={handleOpenMenu}
+            />
+          </>
         ) : (
           <WrapperButtonPlusDefault>
             {" "}
