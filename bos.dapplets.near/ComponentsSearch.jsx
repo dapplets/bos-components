@@ -77,6 +77,11 @@ const Text = styled.p`
   &[href] {
     display: inline-flex;
     gap: 0.25rem;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
   }
 `;
 
