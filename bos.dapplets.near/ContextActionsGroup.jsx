@@ -46,8 +46,8 @@ const OverlayTriggerWrapper = styled.div`
 
   .OverlayTrigger {
     position: absolute;
-    background: #db504a;
-    border: 1px solid #db504a;
+    background: #384BFF;
+    border: 1px solid #384BFF;
     width: 6px;
     height: 49px;
     right: -6px;
@@ -82,7 +82,7 @@ const TriggerShowPanel = styled.div`
 `;
 
 const TriggerShowLabel = styled.div`
-  background: #db504a;
+  background: #384BFF;
   display: flex;
   border-radius: 0px 4px 4px 0px;
   z-index: 1100;
@@ -132,7 +132,7 @@ const ActionsWrapper = styled.div`
     }
     100% {
       padding-top: 6px;
-      border: 1px solid #db504a;
+      border: 1px solid #384BFF;
       opacity: 1;
       right: 60px;
       height: auto;
@@ -180,18 +180,18 @@ const ButtonPlus = styled.div`
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #fff;
+  background: #384BFF;
   position: relative;
   transform: translateY(6px);
   cursor: pointer;
-  border: 1px solid #e3e3e3;
+  border: 1px solid #384BFF;
   &:before {
     content: "";
     display: block;
     width: 1.5px;
     height: 11px;
     border-radius: 2px;
-    background: #747376;
+    background: #fff;
     position: absolute;
     top: 6px;
     left: 11px;
@@ -202,7 +202,7 @@ const ButtonPlus = styled.div`
     height: 1px;
     width: 11px;
     border-radius: 2px;
-    background: #747376;
+    background: #fff;
     position: absolute;
     top: 11px;
     left: 6px;
@@ -229,7 +229,7 @@ const WrapperButtonPlusDefault = styled.div`
   border-radius: 0px 4px 4px 0px;
   position: absolute;
   top: 30px;
-  background: #db504a;
+  background: #384BFF;
   z-index: 1081;
   display: flex;
   align-items: center;
@@ -241,7 +241,7 @@ const ButtonPlusDefault = styled.div`
   height: 22px;
   border-radius: 50%;
   bottom: 7px;
-  background: #db504a;
+  background: #384BFF;
   position: relative;
   transform: translateY(6px);
   cursor: pointer;
@@ -370,9 +370,9 @@ const ButtonEdit = styled.button`
   border-radius: 50%;
   padding: 0;
 
-  border: 1px solid #e3e3e3;
+  border: 1px solid #384BFF;
   box-sizing: border-box;
-  background: #fff;
+  background: #384BFF;
   transition: all 0.3s;
   &:hover {
     transform: scale(1.2);
@@ -391,7 +391,8 @@ const ButtonApply = styled.button`
   justify-content: center;
   border-radius: 50%;
   padding: 0;
-
+background: #384BFF;
+padding-right: 2px;
   cursor: pointer;
   box-sizing: border-box;
   transition: all 0.3s;
@@ -458,7 +459,7 @@ const iconEdit = (
   >
     <path
       d="M12 7L2 7"
-      stroke="#747376"
+      stroke="#fff"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
@@ -467,18 +468,17 @@ const iconEdit = (
 const iconApply = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="22"
-    height="22"
-    viewBox="0 0 22 22"
+    width="15"
+    height="14"
+    viewBox="0 0 15 14"
     fill="none"
   >
-    <circle cx="11" cy="11" r="11" fill="#3D7FFF" />
     <path
-      d="M17 7L8.75 15L5 11.3636"
+      d="M2 7H9.125M3.5 9.25L1.25 7L3.5 4.75M7.25 3.25V2.5C7.25 2.10218 7.40804 1.72064 7.68934 1.43934C7.97064 1.15804 8.35218 1 8.75 1H12.5C12.8978 1 13.2794 1.15804 13.5607 1.43934C13.842 1.72064 14 2.10218 14 2.5V11.5C14 11.8978 13.842 12.2794 13.5607 12.5607C13.2794 12.842 12.8978 13 12.5 13H8.75C8.35218 13 7.97064 12.842 7.68934 12.5607C7.40804 12.2794 7.25 11.8978 7.25 11.5V10.75"
       stroke="white"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
     />
   </svg>
 );
@@ -559,13 +559,17 @@ return (
                   props.widgets && props.widgets.length ? "unset" : "absolute",
                 zIndex: "1081",
               }}
-              onClick={handleOpenMenu}
+              title={!context.accountId ? "Connect wallet" : null}
+              onClick={!context.accountId ? null : handleOpenMenu}
             />
           </>
         ) : (
           <WrapperButtonPlusDefault>
             {" "}
-            <ButtonPlusDefault onClick={handleOpenMenu} />
+            <ButtonPlusDefault
+              title={!context.accountId ? "Connect wallet" : null}
+              onClick={!context.accountId ? null : handleOpenMenu}
+            />
           </WrapperButtonPlusDefault>
         )}
       </TriggerShowPanel>
