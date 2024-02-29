@@ -34,5 +34,6 @@
         },
         "is_purchased": false
     },
-    "CONTRACT_ADDRESS": "app.paywall.near"
+    "CONTRACT_ADDRESS": "app.paywall.near",
+    "handleClose": null
 }
