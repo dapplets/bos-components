@@ -182,7 +182,7 @@ const ButtonPlus = styled.div`
   border-radius: 50%;
   background: #f8f9ff;
   position: relative;
-  transform: translateY(6px);
+  transform: ${(p) => (p.default ? "translateY(-25px)" : "translateY(39px)")};
   cursor: pointer;
   border: 1px solid #384bff;
   &:before {
@@ -194,7 +194,7 @@ const ButtonPlus = styled.div`
     background: #384bff;
     position: absolute;
     top: 6px;
-    left: 11px;
+    left: 10.5px;
   }
   &:after {
     content: "";
@@ -204,7 +204,7 @@ const ButtonPlus = styled.div`
     border-radius: 2px;
     background: #384bff;
     position: absolute;
-    top: 11px;
+    top: 10.8px;
     left: 6px;
   }
   @keyframes translateAnimationBtn {
@@ -217,11 +217,11 @@ const ButtonPlus = styled.div`
     }
   }
   animation: translateAnimationBtn 0.5s linear forwards;
-  transition: all 0.3s;
+
   &:hover {
-    box-shadow: 0px 4px 20px 0px rgba(11, 87, 111, 0.15),
-      0px 4px 5px 0px rgba(45, 52, 60, 0.1);
+    transform: translateY(-25px) scale(1.1);
   }
+  transition: all 0.3s;
 `;
 const WrapperButtonPlusDefault = styled.div`
   width: 43px;
@@ -235,6 +235,7 @@ const WrapperButtonPlusDefault = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
 `;
 const ButtonPlusDefault = styled.div`
   display: flex;
@@ -283,10 +284,11 @@ const ButtonPlusDefault = styled.div`
     }
   }
   animation: translateAnimationBtn 0.5s linear forwards;
-  transition: all 0.3s;
+
   &:hover {
     transform: scale(1.1) translateY(20px);
   }
+  transition: all 0.3s;
 `;
 
 const WidgetBadgeWrapper = styled.div`
@@ -294,7 +296,6 @@ const WidgetBadgeWrapper = styled.div`
   right: 0;
 
   z-index: 1200;
-  // styles for edit mode
   background: rgba(255, 255, 255, 0.35);
   width: 100%;
   height: 100%;
@@ -333,7 +334,7 @@ const iconClose = (
 
 const CloseMenu = styled.span`
   &:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
   }
 `;
 
@@ -378,7 +379,7 @@ const ButtonEdit = styled.button`
   border: 1px solid #384bff;
   box-sizing: border-box;
   background: ${(p) => (p.default ? "#384bff !important" : "#fff !important")};
-  transition: all 0.3s;
+
   &:hover {
     transform: scale(1.1);
   }
@@ -387,6 +388,7 @@ const ButtonEdit = styled.button`
       stroke: ${(p) => (p.default ? "#fff !important" : "#384bff !important")};
     }
   }
+  transition: all 0.3s;
 `;
 
 const ButtonApply = styled.button`
@@ -404,8 +406,9 @@ const ButtonApply = styled.button`
   padding-right: 2px;
   cursor: pointer;
   box-sizing: border-box;
-  transition: all 0.3s;
+
   border: 1px solid #384bff;
+
   background: ${(p) => (p.default ? "#384bff !important" : "#fff !important")};
   &:hover {
     transform: scale(1.1);
@@ -415,6 +418,7 @@ const ButtonApply = styled.button`
       stroke: ${(p) => (p.default ? "#fff !important" : "#384bff !important")};
     }
   }
+  transition: all 0.3s;
 `;
 
 const ButtonCancel = styled.button`
@@ -561,12 +565,8 @@ return (
           <>
             <SupportingSpan />
             <ButtonPlus
+              default={props.widgets && props.widgets.length ? true : false}
               style={{
-                transform:
-                  props.widgets && props.widgets.length
-                    ? "translateY(-25px)"
-                    : "translateY(39px)",
-
                 position:
                   props.widgets && props.widgets.length ? "unset" : "absolute",
                 zIndex: "1081",
