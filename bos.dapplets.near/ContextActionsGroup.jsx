@@ -81,35 +81,6 @@ const TriggerShowPanel = styled.div`
   z-index: 79;
 `;
 
-const TriggerShowLabel = styled.div`
-  background: #384bff;
-  display: flex;
-  border-radius: 0px 4px 4px 0px;
-  z-index: 1100;
-  cursor: pointer;
-  position: absolute;
-  height: calc(100% - 22px);
-  top: -1px;
-  width: 40px;
-  @keyframes scaleAnimation {
-    0% {
-      opacity: 1;
-      transform-origin: top left;
-      transform: scaleX(0) scaleY(0);
-    }
-
-    100% {
-      opacity: 0.5;
-
-      transform-origin: top left;
-      transform: scaleX(1) scaleY(1.2);
-      display: none;
-    }
-  }
-  animation: scaleAnimation 0.5s ease forwards;
-  transition: all 0.3s;
-`;
-
 const ActionsWrapper = styled.div`
   z-index: 1080;
   border-radius: 0px 4px 4px 0px;
@@ -180,7 +151,7 @@ const ButtonPlus = styled.div`
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #f8f9ff;
+  background: #fff;
   position: relative;
   transform: ${(p) => (p.default ? "translateY(-25px)" : "translateY(39px)")};
   cursor: pointer;
@@ -211,7 +182,9 @@ const ButtonPlus = styled.div`
     0% {
       opacity: 0;
     }
-
+    30% {
+      opacity: 0;
+    }
     100% {
       opacity: 1;
     }
@@ -246,7 +219,7 @@ const ButtonPlusDefault = styled.div`
   background: ${(p) =>
     p.default ? "#384bff !important" : "#f8f9ff !important"};
   position: relative;
-  transform: translateY(20px);
+  margin-top: 40px;
   cursor: pointer;
   border: 1px solid #384bff;
   &:before {
@@ -259,8 +232,8 @@ const ButtonPlusDefault = styled.div`
       p.default ? "#fff !important" : "#384bff !important"};
 
     position: absolute;
-    top: 6px;
-    left: 10.5px;
+    top: 5.8px;
+    left: 10.7px;
   }
   &:after {
     content: "";
@@ -271,22 +244,12 @@ const ButtonPlusDefault = styled.div`
     background: ${(p) =>
       p.default ? "#fff !important" : "#384bff !important"};
     position: absolute;
-    top: 11px;
-    left: 6px;
+    top: 10.7px;
+    left: 5.8px;
   }
-  @keyframes translateAnimationBtn {
-    0% {
-      opacity: 0;
-    }
-
-    100% {
-      opacity: 1;
-    }
-  }
-  animation: translateAnimationBtn 0.5s linear forwards;
 
   &:hover {
-    transform: scale(1.1) translateY(20px);
+    transform: scale(1.1);
   }
   transition: all 0.3s;
 `;
@@ -517,8 +480,6 @@ return (
               props.widgets && props.widgets.length ? "" : "#DB504A!important",
           }}
         >
-          <TriggerShowLabel />
-
           {props.widgets.map((widget) => (
             <ActionBlock key={widget.linkId}>
               {props.isEditMode ? (
