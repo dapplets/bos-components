@@ -46,8 +46,8 @@ const OverlayTriggerWrapper = styled.div`
 
   .OverlayTrigger {
     position: absolute;
-    background: #384BFF;
-    border: 1px solid #384BFF;
+    background: #384bff;
+    border: 1px solid #384bff;
     width: 6px;
     height: 49px;
     right: -6px;
@@ -81,42 +81,16 @@ const TriggerShowPanel = styled.div`
   z-index: 79;
 `;
 
-const TriggerShowLabel = styled.div`
-  background: #384BFF;
-  display: flex;
-  border-radius: 0px 4px 4px 0px;
-  z-index: 1100;
-  cursor: pointer;
-  position: absolute;
-  height: calc(100% - 22px);
-  top: -1px;
-  width: 40px;
-  @keyframes scaleAnimation {
-    0% {
-      opacity: 1;
-      transform-origin: top left;
-      transform: scaleX(0) scaleY(0);
-    }
-
-    100% {
-      opacity: 0.5;
-
-      transform-origin: top left;
-      transform: scaleX(1) scaleY(1.2);
-      display: none;
-    }
-  }
-  animation: scaleAnimation 0.5s ease forwards;
-  transition: all 0.3s;
-`;
-
 const ActionsWrapper = styled.div`
   z-index: 1080;
   border-radius: 0px 4px 4px 0px;
-  transition: all 0.3s;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 6px;
+  border: 1px solid #384bff;
+
   @keyframes translateAnimation {
     0% {
       display: none;
@@ -125,14 +99,14 @@ const ActionsWrapper = styled.div`
       min-height: 0px;
       height: 0px;
       transform-origin: top left;
-      transform: scale(0);
+      transform: scale(0) translateX(-30px);
     }
     80% {
       opacity: 1;
     }
     100% {
       padding-top: 6px;
-      border: 1px solid #384BFF;
+      border: 1px solid #384bff;
       opacity: 1;
       right: 60px;
       height: auto;
@@ -140,10 +114,11 @@ const ActionsWrapper = styled.div`
       min-height: 34px;
       background: #fff;
       transform-origin: top left;
-      transform: scale(1);
+      transform: scale(1) translateX(0px);
     }
   }
   animation: translateAnimation 0.5s ease forwards;
+  transition: all 0.3s;
 `;
 
 const TriggerEar = styled.div`
@@ -180,79 +155,18 @@ const ButtonPlus = styled.div`
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #384BFF;
+  background: #fff;
   position: relative;
-  transform: translateY(6px);
+  transform: ${(p) => (p.default ? "translateY(-25px)" : "translateY(39px)")};
   cursor: pointer;
-  border: 1px solid #384BFF;
+  border: 1px solid #384bff;
   &:before {
     content: "";
     display: block;
     width: 1.5px;
     height: 11px;
     border-radius: 2px;
-    background: #fff;
-    position: absolute;
-    top: 6px;
-    left: 11px;
-  }
-  &:after {
-    content: "";
-    display: block;
-    height: 1px;
-    width: 11px;
-    border-radius: 2px;
-    background: #fff;
-    position: absolute;
-    top: 11px;
-    left: 6px;
-  }
-  @keyframes translateAnimationBtn {
-    0% {
-      opacity: 0;
-    }
-
-    100% {
-      opacity: 1;
-    }
-  }
-  animation: translateAnimationBtn 0.5s linear forwards;
-  transition: all 0.3s;
-  &:hover {
-    box-shadow: 0px 4px 20px 0px rgba(11, 87, 111, 0.15),
-      0px 4px 5px 0px rgba(45, 52, 60, 0.1);
-  }
-`;
-const WrapperButtonPlusDefault = styled.div`
-  width: 43px;
-  height: 49px;
-  border-radius: 0px 4px 4px 0px;
-  position: absolute;
-  top: 30px;
-  background: #384BFF;
-  z-index: 1081;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-const ButtonPlusDefault = styled.div`
-  display: flex;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  bottom: 7px;
-  background: #384BFF;
-  position: relative;
-  transform: translateY(6px);
-  cursor: pointer;
-  border: 1px solid #fff;
-  &:before {
-    content: "";
-    display: block;
-    width: 1.5px;
-    height: 11px;
-    border-radius: 2px;
-    background: #fff;
+    background: #384bff;
     position: absolute;
     top: 6px;
     left: 10.5px;
@@ -260,28 +174,66 @@ const ButtonPlusDefault = styled.div`
   &:after {
     content: "";
     display: block;
-    height: 1.5px;
+    height: 1px;
     width: 11px;
     border-radius: 2px;
-    background: #fff;
+    background: #384bff;
     position: absolute;
-    top: 11px;
+    top: 10.8px;
     left: 6px;
   }
   @keyframes translateAnimationBtn {
     0% {
       opacity: 0;
     }
-
+    30% {
+      opacity: 0;
+    }
     100% {
       opacity: 1;
     }
   }
   animation: translateAnimationBtn 0.5s linear forwards;
-  transition: all 0.3s;
+
   &:hover {
-    transform: scale(1.2) translateY(6px);
+    transform: translateY(-25px) scale(1.1);
   }
+  transition: all 0.3s;
+`;
+const WrapperButtonPlusDefault = styled.div`
+  width: 43px;
+  height: 62px;
+  border-radius: 0px 4px 4px 0px;
+  border: 1px solid rgb(56, 75, 255);
+  position: absolute;
+  top: 30px;
+  background: #f8f9ff;
+  z-index: 1081;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+`;
+const ButtonPlusDefault = styled.div`
+  display: flex;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  bottom: 7px;
+  background: ${(p) =>
+    p.default ? "#384bff !important" : "#f8f9ff !important"};
+  position: relative;
+  margin-top: 40px;
+  cursor: pointer;
+  border: 1px solid #384bff;
+
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  &:hover {
+    transform: scale(1.1);
+  }
+  transition: all 0.3s;
 `;
 
 const WidgetBadgeWrapper = styled.div`
@@ -289,7 +241,6 @@ const WidgetBadgeWrapper = styled.div`
   right: 0;
 
   z-index: 1200;
-  // styles for edit mode
   background: rgba(255, 255, 255, 0.35);
   width: 100%;
   height: 100%;
@@ -328,7 +279,7 @@ const iconClose = (
 
 const CloseMenu = styled.span`
   &:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
   }
 `;
 
@@ -370,13 +321,19 @@ const ButtonEdit = styled.button`
   border-radius: 50%;
   padding: 0;
 
-  border: 1px solid #384BFF;
+  border: 1px solid #384bff;
   box-sizing: border-box;
-  background: #384BFF;
-  transition: all 0.3s;
+  background: ${(p) => (p.default ? "#384bff !important" : "#fff !important")};
+
   &:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
   }
+  svg {
+    path {
+      stroke: ${(p) => (p.default ? "#fff !important" : "#384bff !important")};
+    }
+  }
+  transition: all 0.3s;
 `;
 
 const ButtonApply = styled.button`
@@ -391,14 +348,22 @@ const ButtonApply = styled.button`
   justify-content: center;
   border-radius: 50%;
   padding: 0;
-background: #384BFF;
-padding-right: 2px;
+  padding-right: 2px;
   cursor: pointer;
   box-sizing: border-box;
-  transition: all 0.3s;
+
+  border: 1px solid #384bff;
+
+  background: ${(p) => (p.default ? "#384bff !important" : "#fff !important")};
   &:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
   }
+  svg {
+    path {
+      stroke: ${(p) => (p.default ? "#fff !important" : "#384bff !important")};
+    }
+  }
+  transition: all 0.3s;
 `;
 
 const ButtonCancel = styled.button`
@@ -457,12 +422,7 @@ const iconEdit = (
     viewBox="0 0 14 14"
     fill="none"
   >
-    <path
-      d="M12 7L2 7"
-      stroke="#fff"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
+    <path d="M12 7L2 7" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 const iconApply = (
@@ -475,6 +435,30 @@ const iconApply = (
   >
     <path
       d="M2 7H9.125M3.5 9.25L1.25 7L3.5 4.75M7.25 3.25V2.5C7.25 2.10218 7.40804 1.72064 7.68934 1.43934C7.97064 1.15804 8.35218 1 8.75 1H12.5C12.8978 1 13.2794 1.15804 13.5607 1.43934C13.842 1.72064 14 2.10218 14 2.5V11.5C14 11.8978 13.842 12.2794 13.5607 12.5607C13.2794 12.842 12.8978 13 12.5 13H8.75C8.35218 13 7.97064 12.842 7.68934 12.5607C7.40804 12.2794 7.25 11.8978 7.25 11.5V10.75"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+);
+
+const plusDefault = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="12"
+    height="13"
+    viewBox="0 0 12 13"
+    fill="none"
+  >
+    <path
+      d="M6 1.5V11.5"
+      stroke="white"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M1 6.5H11"
       stroke="white"
       stroke-width="1.5"
       stroke-linecap="round"
@@ -503,8 +487,6 @@ return (
               props.widgets && props.widgets.length ? "" : "#DB504A!important",
           }}
         >
-          <TriggerShowLabel />
-
           {props.widgets.map((widget) => (
             <ActionBlock key={widget.linkId}>
               {props.isEditMode ? (
@@ -539,22 +521,20 @@ return (
             </ActionBlock>
           ))}
 
-          {props.isEditMode ? (
-            <ButtonApply onClick={handleApplyClick}>{iconApply}</ButtonApply>
-          ) : (
-            <ButtonEdit onClick={handleEditClick}>{iconEdit}</ButtonEdit>
-          )}
+          {props.widgets && props.widgets.length ? (
+            props.isEditMode ? (
+              <ButtonApply onClick={handleApplyClick}>{iconApply}</ButtonApply>
+            ) : (
+              <ButtonEdit onClick={handleEditClick}>{iconEdit}</ButtonEdit>
+            )
+          ) : null}
         </ActionsWrapper>
         {props.widgets && props.widgets.length ? (
           <>
             <SupportingSpan />
             <ButtonPlus
+              default={props.widgets && props.widgets.length ? true : false}
               style={{
-                transform:
-                  props.widgets && props.widgets.length
-                    ? "translateY(-25px)"
-                    : "translateY(39px)",
-
                 position:
                   props.widgets && props.widgets.length ? "unset" : "absolute",
                 zIndex: "1081",
@@ -565,11 +545,34 @@ return (
           </>
         ) : (
           <WrapperButtonPlusDefault>
-            {" "}
+            {props.isEditMode ? (
+              <ButtonApply
+                style={{
+                  top: "5px",
+                }}
+                onClick={handleApplyClick}
+                default
+              >
+                {iconApply}
+              </ButtonApply>
+            ) : (
+              <ButtonEdit
+                default
+                style={{
+                  top: "5px",
+                }}
+                onClick={handleEditClick}
+              >
+                {iconEdit}
+              </ButtonEdit>
+            )}
             <ButtonPlusDefault
+              default
               title={!context.accountId ? "Connect wallet" : null}
               onClick={!context.accountId ? null : handleOpenMenu}
-            />
+            >
+              {plusDefault}
+            </ButtonPlusDefault>
           </WrapperButtonPlusDefault>
         )}
       </TriggerShowPanel>
