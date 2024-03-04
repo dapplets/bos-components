@@ -6,7 +6,7 @@ const Container = styled.div`
   position: relative;
   flex-direction: column;
   box-sizing: border-box;
-  width: 510px;
+  width: 760px;
   background: #FFFFFE;
   border: 1px solid #02193A;
   border-radius: 20px;
@@ -17,20 +17,6 @@ const Container = styled.div`
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   align-items: center;
   justify-content: center;
-
-  > a {
-    padding: 0;
-    margin: 0;
-    align-self: flex-start;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 149%;
-    text-decoration-line: underline !important;
-    color: #384BFF;
-    cursor: 'poiner';
-  }
 `
 
 const Header = styled.div`
@@ -60,12 +46,27 @@ const CloseButton = styled.button`
   border: none;
   background: none;
   cursor: pointer;
+
+  svg {
+    path {
+      stroke: #838891;
+      transition-duration: .2s;
+    }
+  }
+  
+  :hover {
+    svg {
+      path {
+        stroke: #555555;
+      }
+    }
+  }
 `
 
 const CloseIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M18 6L6 18" stroke="#838891" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M6 6.5L18 18.5" stroke="#838891" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18 6L6 18"  strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M6 6.5L18 18.5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 )
 
@@ -112,6 +113,7 @@ const AlertIcon = () => (
 
 const Description = styled.div`
   display: flex;
+  flex-direction: column;
   position: relative;
   width: 100%;
   
@@ -136,30 +138,30 @@ const CardsContainer = styled.div`
   background: white;
   border-radius: 20px;
   align-items: flex-start;
-  padding: 20px;
+  padding: 0 0 10px;
   gap: 20px;
   width: 100%;
   flex: none;
   flex-grow: 0;
 `
 
-const CardsHeader = styled.div`
-  display: flex;
-  position: relative;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  color: #02193A;
+// const CardsHeader = styled.div`
+//   display: flex;
+//   position: relative;
+//   width: 100%;
+//   justify-content: space-between;
+//   align-items: center;
+//   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+//   color: #02193A;
 
-  h2 {
-    padding: 0;
-    margin: 0;
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 36px;
-  }
-`
+//   h2 {
+//     padding: 0;
+//     margin: 0;
+//     font-size: 24px;
+//     font-weight: 600;
+//     line-height: 36px;
+//   }
+// `
 
 const Cards = styled.div`
   display: flex;
@@ -181,7 +183,7 @@ const Card = styled.div`
   flex 1;
 
   h3 {
-    padding: 0;
+    padding: 8px 0 0;
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     font-style: normal;
@@ -192,21 +194,24 @@ const Card = styled.div`
     flex: none;
     align-self: stretch;
     flex-grow: 0;
+    text-indent: 16px;
   }
 
   div {
-    height: 100px;
+    box-sizing: border-box;
+    height: 260px;
     border-radius: 10px;
     flex: none;
     align-self: stretch;
     flex-grow: 0;
+    border: 1px solid rgb(207, 217, 222);
 
     &.first {
-      background: -106px top / 400px no-repeat url("https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-001.png");
+      background: -460px top  no-repeat url("https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-001.png");
     }
 
     &.second {
-      background: -10px -70px / 330px no-repeat url("https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-002.png");
+      background: -160px -134px no-repeat url("https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-002.png");
     }
   }
 
@@ -227,12 +232,38 @@ const Card = styled.div`
 
 const Footer = styled.div`
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding: 0px;
   gap: 20px;
   width: 100%;
+  flex: none;
+  align-self: stretch;
+  flex-grow: 0;
+
+  a {
+    padding: 0;
+    margin: 0;
+    /* align-self: flex-start; */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 149%;
+    text-decoration-line: underline !important;
+    color: #384BFF;
+    cursor: 'poiner';
+  }
+`
+
+const Form = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
   flex: none;
   align-self: stretch;
   flex-grow: 0;
@@ -293,6 +324,11 @@ const SuccessButton = styled.button`
   line-height: 149%;
   text-align: center;
   color: #FFFFFF;
+  transition-duration: 0.2s;
+
+  :hover {
+    background-color: rgb(32 45 63);
+  }
 `
 
 return (
@@ -308,35 +344,38 @@ return (
       <p>You must be Logged In to start using this</p>
     </WarningMessage>) : null}
     <Description>
-      <p>Dapplets presents you with the Mutatable Web. It's a new web concept based on Mutations — these are community member-supported sets of applications that extend the functionality of familiar sites by making them web3-friendly.</p>
+      <p>Mutable Web is a new web3 paradigm that allows anyone to add custom functionality to existing websites and share them within your community— no matter who owns the website.</p>
+      <p>Become the co-owner of any website you are using!</p>
     </Description>
     <CardsContainer>
       <Cards>
         <Card>
           <h3>Mutation switch</h3>
           <div className='first' title='Mutation changer picture'/>
-          <p>You can see the mutations (application sets) selector at the top of the page</p>
+          <p>Here, you can switch between website mutations created by different communities.</p>
         </Card>
         <Card>
-          <h3>Multifunctional control</h3>
+          <h3>Widgets control element</h3>
           <div className='second' title='Multifunctional control picture'/>
-          <p>Each post has an "ear" with controls (adding and removing) widgets from the current mutation's applications</p>
+          <p>EXAMPLE: every post becomes a tray where you can add new application widgets. They become visible to anyone inside your community. This is how the Mutable Web works.</p>
         </Card>
       </Cards>
     </CardsContainer>
-    <a
-      href='https://social.dapplets.org/mob.near/widget/ProfilePage?accountId=dappletsproject.near'
-    >
-      You can see how our applications work here
-    </a>
     <Footer>
-      <SuccessButton onClick={() => handleClose(doNotShowAgain)}>Got it</SuccessButton>
-      <Checkbox>
-        <label>
-          <input type="checkbox" checked={doNotShowAgain} onChange={(e) => setDoNotShowAgain(e.target.checked)} />
-          Don't show it again
-        </label>
-      </Checkbox>
+      <a
+        href='https://social.dapplets.org/mob.near/widget/ProfilePage?accountId=dappletsproject.near'
+      >
+        See more examples on our playground
+      </a>
+      <Form>
+        <SuccessButton onClick={() => handleClose(doNotShowAgain)}>Got it</SuccessButton>
+        <Checkbox>
+          <label>
+            <input type="checkbox" checked={doNotShowAgain} onChange={(e) => setDoNotShowAgain(e.target.checked)} />
+            Don't show it again
+          </label>
+        </Checkbox>
+      </Form>
     </Footer>
   </Container>
 )
