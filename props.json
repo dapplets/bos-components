@@ -1,10 +1,14 @@
 {
     "widgets": [
         {
-            "src": "bos.dapplets.near/widget/Cat"
+            "src": "bos.dapplets.near/widget/Cat",
+            "linkId": "f43ce7bdc6a26d1ab2582c1e6a4ebbd0",
+            "linkAuthorId": "bos.dapplets.near"
         },
         {
-            "src": "bos.dapplets.near/widget/Dog"
+            "src": "bos.dapplets.near/widget/Dog",
+            "linkId": "f43ce7bdc6a26d1ab2582c1e6a4ebbd0",
+            "linkAuthorId": "bos.dapplets.near"
         }
     ],
     "isEditMode": true,
@@ -35,5 +39,10 @@
         "is_purchased": false
     },
     "CONTRACT_ADDRESS": "app.paywall.near",
-    "handleClose": null
+    "handleClose": null,
+    "createUserLink": null,
+    "deleteUserLink": null,
+    "enableEditMode": null,
+    "disableEditMode": null,
+    "apps": null
 }
