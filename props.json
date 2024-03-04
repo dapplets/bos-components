@@ -44,5 +44,24 @@
     "deleteUserLink": null,
     "enableEditMode": null,
     "disableEditMode": null,
-    "apps": null
+    "apps": [
+        {
+            "id": "bos.dapplets.near/app/Paywall",
+            "metadata": {
+                "name": "Paywall",
+                "description": "The Paywall Dapplet seamlessly integrates with Twitter, utilizing the NEAR Protocol and NEAR BOS to display paid content",
+                "image": {
+                    "ipfs_cid": "bafkreif7roycllkswl2sveqpt4zbzce3e4vjasr756bdh4a2334i55upnq"
+                }
+            }
+        }
+    ],
+    "show": true,
+    "handleOnMouseLeave": null,
+    "handleOpenMenu": null,
+    "onSelect": null,
+    "handleCloseMenu": null,
+    "src": "bos.dapplets.near/widget/Dog",
+    "top": true,
+    "onClick": null
 }
