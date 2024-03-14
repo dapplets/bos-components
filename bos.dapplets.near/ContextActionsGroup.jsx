@@ -1,11 +1,11 @@
+const widgets = props.widgets ?? [];
+const apps = props.apps ?? [];
 const {
   isEditMode,
   createUserLink,
   deleteUserLink,
   enableEditMode,
   disableEditMode,
-  widgets,
-  apps,
 } = props;
 
 State.init({
@@ -59,9 +59,7 @@ return (
     {state.show ? (
       <Widget
         props={{
-          widgets: widgets.filter(
-            (w) => w.isSuitable === undefined || w.isSuitable === true
-          ),
+          widgets,
           isEditMode,
           enableEditMode,
           disableEditMode,
