@@ -15,8 +15,9 @@ State.init({
 
 const handleOnMouseEnter = () => State.update({ show: true });
 
-const handleOnMouseLeave = () =>
+const handleOnMouseLeave = () => {
   state.showMenu ? null : isEditMode ? null : State.update({ show: false });
+};
 
 const handleOpenMenu = () => State.update({ showMenu: true, show: false });
 
@@ -38,13 +39,15 @@ const FloatingModal = styled.div`
   top: 50%;
   transform: translate(-50%, -50%);
   animation: falling-animation 0.3s linear forwards;
-
+translate: all ease 0.2s;
   @keyframes falling-animation {
     from {
       transform: translate(-50%, -200%);
-    }
 
+    }
+ 
     to {
+   
       transform: translate(-50%, -50%);
     }
   }
