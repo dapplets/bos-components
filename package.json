@@ -1,0 +1,30 @@
+{
+  "name": "@dapplets/bos-components",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "bos-loader bos.dapplets.near -p ./src",
+    "pull:mainnet": "bos components download bos.dapplets.near network-config mainnet"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/dapplets/bos-components.git"
+  },
+  "keywords": [
+    "near",
+    "bos",
+    "dapplets",
+    "mutable-web",
+    "web3"
+  ],
+  "author": "Dapplets Project",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dapplets/bos-components/issues"
+  },
+  "homepage": "https://github.com/dapplets/bos-components#readme",
+  "devDependencies": {
+    "bos-cli": "^0.3.13"
+  }
+}
