@@ -160,7 +160,7 @@ useEffect(() => {
       disabled: true,
       loading: false,
       amount: '0',
-      tooltip: 'Connect wallet',
+      tooltip: 'You must be Logged In to start using this',
     })
   } else if (equals(state.totalTipsByItemId, '0')) {
     State.update({
@@ -187,7 +187,7 @@ useEffect(() => {
       tooltip: 'Send donation',
     })
   }
-}, [accountId, state.totalTipsByItemId]);
+}, [accountId, state.totalTipsByItemId, userAccountId]);
 
 const onDebounceDonate = () => {
   State.update({
