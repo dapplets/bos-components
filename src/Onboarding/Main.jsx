@@ -1,5 +1,5 @@
-const TIME_UNTIL_RESHOW = 1000 * 60 // TESTING
-// const TIME_UNTIL_RESHOW = 1000 * 60 * 60 * 3 // PROD
+// const TIME_UNTIL_RESHOW = 1000 * 60 // TESTING
+const TIME_UNTIL_RESHOW = 1000 * 60 * 60 * 3 // PROD
 
 const [show, setShow] = useState(false)
 const [start, setStart] = useState(false)
@@ -37,10 +37,10 @@ useEffect(() => {
       if (!lastShow[key]) continue
 
       // TESTING
-      if (lastShow[key].doNotShowAgain && currentTime - lastShow[key].time > TIME_UNTIL_RESHOW * 3) {
-        lastShow[key].doNotShowAgain = false
-        lastShow[key].isViewed = false
-      }
+      // if (lastShow[key].doNotShowAgain && currentTime - lastShow[key].time > TIME_UNTIL_RESHOW * 3) {
+      //   lastShow[key].doNotShowAgain = false
+      //   lastShow[key].isViewed = false
+      // }
       //
 
       // DO NOT refactor the following code block to stay the logic clear!!!
@@ -77,8 +77,8 @@ useEffect(() => {
   if (!lastShow && context.accountId === props?.link?.authorId) {
     // show form to the author
     setShow(true)
-  } else if (lastShow && Object.values(lastShow).some((a) => a?.show)) {
-    // with sort - some chapters have been displayed
+  } else if (lastShow && Object.values(lastShow).some((a) => a === undefined || a?.show)) {
+    // with sort - some chapters have been displayed or new
     data.sort(
       (a, b) =>
         !lastShow[a.id] && !lastShow[b.id]
@@ -89,10 +89,8 @@ useEffect(() => {
               ? lastShow[a.id].show ? 0 : -1
               : lastShow[a.id].show - lastShow[b.id].show
     )
-    setShowFrom(Object.values(lastShow).filter((a) => a && !a.show).length)
-    setShow(true)
-  } else if (lastShow && Object.values(lastShow).every((a) => !a)) {
-    // without sort - for the first time
+    const index = Object.values(lastShow).filter((a) => a && !a.show)?.length
+    setShowFrom(index)
     setShow(true)
   }
 }, [start, lastShow])
@@ -140,21 +138,23 @@ const Onboarding = styled.div`
   }
 `;
 
-const handleClose = (doNotShowAgain, viewedPages) => {
+const handleClose = (isDoNotShowAgainChecked, viewedPages) => {
   if (data) {
     const time = Date.now()
     const mutation = data.find((ch) => ch?.id.includes('mutation'))?.id
-    data.forEach((chapter) =>
+    data.forEach((chapter) => {
+      const isViewed = !!(viewedPages.includes(chapter.id) || lastShow[chapter.id].isViewed)
+      const doNotShowAgain = !!((isDoNotShowAgainChecked && viewedPages.includes(chapter.id)) || lastShow[chapter.id].doNotShowAgain)
       Storage.privateSet(
         chapter.id + '/lastShow',
         {
           time,
-          doNotShowAgain: !!(doNotShowAgain || lastShow[chapter.id].doNotShowAgain),
+          doNotShowAgain,
           mutation,
-          isViewed: !!(viewedPages.includes(chapter.id) || lastShow[chapter.id].isViewed),
+          isViewed,
         }
       )
-    )
+    })
   }
   setShow(false)
 }
@@ -178,8 +178,16 @@ return (
       <DappletOverlay>
         <Onboarding>
           <Widget
-            props={{ handleClose, data, saveData, setShow, link: props.link, showFrom }}
-            src="bos.dapplets.near/widget/OnboardingTest.SandboxOnboarding"
+            props={{
+              handleClose,
+              data,
+              saveData,
+              setShow,
+              link: props.link,
+              showFrom,
+              oldRawData: response
+            }}
+            src="bos.dapplets.near/widget/Onboarding.SandboxOnboarding"
           />
         </Onboarding>
       </DappletOverlay>

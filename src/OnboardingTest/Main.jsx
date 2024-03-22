@@ -8,7 +8,7 @@ const [showFrom, setShowFrom] = useState(0)
 const response = Near.view('app.webguide.near', 'get_guide', { guide_id: props?.link?.id })
 const data = response && JSON.parse(response)
 const lastShow = data && data?.reduce((acc, chapter) => {
-  acc[chapter.id] = Storage.privateGet(chapter.id + '/lastShow')
+  acc[chapter.id] = Storage.privateGet(chapter.id + '/lastShow-test')
   return acc
 }, {})
 
@@ -77,8 +77,8 @@ useEffect(() => {
   if (!lastShow && context.accountId === props?.link?.authorId) {
     // show form to the author
     setShow(true)
-  } else if (lastShow && Object.values(lastShow).some((a) => a?.show)) {
-    // with sort - some chapters have been displayed
+  } else if (lastShow && Object.values(lastShow).some((a) => a === undefined || a?.show)) {
+    // with sort - some chapters have been displayed or new
     data.sort(
       (a, b) =>
         !lastShow[a.id] && !lastShow[b.id]
@@ -89,10 +89,8 @@ useEffect(() => {
               ? lastShow[a.id].show ? 0 : -1
               : lastShow[a.id].show - lastShow[b.id].show
     )
-    setShowFrom(Object.values(lastShow).filter((a) => a && !a.show).length)
-    setShow(true)
-  } else if (lastShow && Object.values(lastShow).every((a) => !a)) {
-    // without sort - for the first time
+    const index = Object.values(lastShow).filter((a) => a && !a.show)?.length
+    setShowFrom(index)
     setShow(true)
   }
 }, [start, lastShow])
@@ -140,21 +138,23 @@ const Onboarding = styled.div`
   }
 `;
 
-const handleClose = (doNotShowAgain, viewedPages) => {
+const handleClose = (isDoNotShowAgainChecked, viewedPages) => {
   if (data) {
     const time = Date.now()
     const mutation = data.find((ch) => ch?.id.includes('mutation'))?.id
-    data.forEach((chapter) =>
+    data.forEach((chapter) => {
+      const isViewed = !!(viewedPages.includes(chapter.id) || lastShow[chapter.id].isViewed)
+      const doNotShowAgain = !!((isDoNotShowAgainChecked && viewedPages.includes(chapter.id)) || lastShow[chapter.id].doNotShowAgain)
       Storage.privateSet(
-        chapter.id + '/lastShow',
+        chapter.id + '/lastShow-test',
         {
           time,
-          doNotShowAgain: !!(doNotShowAgain || lastShow[chapter.id].doNotShowAgain),
+          doNotShowAgain,
           mutation,
-          isViewed: !!(viewedPages.includes(chapter.id) || lastShow[chapter.id].isViewed),
+          isViewed,
         }
       )
-    )
+    })
   }
   setShow(false)
 }
@@ -178,7 +178,15 @@ return (
       <DappletOverlay>
         <Onboarding>
           <Widget
-            props={{ handleClose, data, saveData, setShow, link: props.link, showFrom }}
+            props={{
+              handleClose,
+              data,
+              saveData,
+              setShow,
+              link: props.link,
+              showFrom,
+              oldRawData: response
+            }}
             src="bos.dapplets.near/widget/OnboardingTest.SandboxOnboarding"
           />
         </Onboarding>
