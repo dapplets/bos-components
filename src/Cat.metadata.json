@@ -1,0 +1,10 @@
+{
+  "description": "Simple SVG icon for testing of the Mutable Web",
+  "image": {
+    "ipfs_cid": "bafkreie4tum66dxhl4twu6ak3d2vgtxkwc3rkoay2rriqzdwm4m2hflgwy"
+  },
+  "name": "Cat",
+  "tags": {
+    "dapplet": ""
+  }
+}
