@@ -1,8 +1,14 @@
+if (!props.selectedMutation) return <></>;
+const [accountId] = props.selectedMutation.id.split("/");
 State.init({
-  textSave: `Save`,
+  textSave:
+    context.accountId && accountId === context.accountId ? `Publish` : "Fork",
   isOpenParametersSave: false,
-  parametersSave: ["Publish", "Commit to origin"],
 });
+const parametersSave =
+  context.accountId && accountId === context.accountId
+    ? ["Publish", "Fork"]
+    : ["Fork"];
 const SelectedMutationEditorWrapper = styled.div`
 display: flex;
 flex-direction: column;
@@ -13,10 +19,11 @@ flex-direction: column;
 padding: 20px;
 gap: 20px;
 border-radius: 10px;
+font-family: sans-serif;
 border: 1px solid #02193A;
 background: #F8F9FF;
 width: 400px;
-max-height: 646px;
+max-height: 446px;
 `;
 
 const HeaderEditor = styled.div`
@@ -24,7 +31,6 @@ display: flex;
     justify-content: space-between;
     align-items: center;
     color: rgba(2, 25, 58, 1);
-    font-family: Roboto;
     font-size: 18px;
     font-weight: 600;
     line-height: 21.09px;
@@ -48,11 +54,11 @@ display: flex;
     width: 175px;
     height:42px;
     border-radius: 10px;
-      font-family: Roboto;
 font-size: 14px;
 font-weight: 400;
 line-height: 20.86px;
 text-align: center;
+cursor: pointer;
     `;
 const ButtonsSave = styled.div`
 display: flex;
@@ -61,15 +67,16 @@ display: flex;
       width: 175px;
     height:42px;
     border-radius: 10px;
-    background: rgba(56, 75, 255, 1);
+    background: ${
+      context.accountId ? "rgba(56, 75, 255, 1)" : "rgba(56, 75, 255, 0.5)"
+    } ;
     color:#fff;
-    font-family: Roboto;
 font-size: 14px;
 font-weight: 400;
 line-height: 20.86px;
 text-align: center;
 position: relative;
-
+cursor: pointer;
     `;
 const TextSave = styled.div`
     display: inline-block;
@@ -106,7 +113,6 @@ padding: 10px;
 gap: 10px;
 border-radius: 10px;
 background:rgba(231, 236, 239, 1);
-font-family: Roboto;
 font-size: 14px;
 font-weight: 400;
 line-height: 20.86px;
@@ -122,9 +128,51 @@ display: flex;
     width: 159px;
 height:41px;
 border-radius: 4px ; 
+cursor: pointer;
 &:hover{
    background:rgba(217, 222, 225, 1); 
 }
+`;
+
+const Input = styled.input`
+  display: block;
+  flex-grow: 1;
+  border: none;
+  background: none;
+  margin: 0;
+  min-width: 150px;
+  height: 40px;
+  line-height: 40px;
+  padding: 0;
+  color: var(--sand12);
+  font: var(--text-base);
+  outline: none !important;
+  text-align: left;
+  transition:
+    color 200ms,
+    opacity 200ms;
+
+  [data-textarea="true"] & {
+    line-height: 1.5;
+    padding: 8px 12px;
+    height: unset;
+    min-height: 5.5rem;
+  }
+
+  &::placeholder {
+    color: var(--sand10);
+    font: var(--text-base);
+    opacity: 1;
+  }
+
+  [data-disabled="true"] & {
+    opacity: 1;
+    color: var(--sand9);
+
+    &::placeholder {
+      color: var(--sand9);
+    }
+  }
 `;
 const closeIcon = (
   <svg
@@ -194,61 +242,88 @@ const arrow = (
 );
 
 return (
-  <div>
-    <SelectedMutationEditorWrapper>
-      <HeaderEditor>
-        {props.mutationName}
-        {closeIcon}
-      </HeaderEditor>
-      <div>
-        {" "}
-        <Widget
-          src="bos.dapplets.near/widget/ApplicationCard"
-          props={{
-            src: app.id,
-            metadata: app.metadata,
-            onComponentSelect: () => props.onSelect(app),
-            hideButtons: !context.accountId,
+  <SelectedMutationEditorWrapper>
+    <HeaderEditor>
+      <Input
+        onChange={props.handleEditMutationName}
+        value={props.mutationName ? props.mutationName : ""}
+      />
+      <span onClick={props.onClose}> {closeIcon}</span>
+    </HeaderEditor>
+    <div
+      style={{
+        overflow: "hidden",
+        overflowY: "auto",
+        maxHeight: "400px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "5px",
+      }}
+    >
+      {props.apps && props.apps.length
+        ? props.apps.map((app, i) => (
+            <Widget
+              key={i}
+              src="bos.dapplets.near/widget/ApplicationCard"
+              props={{
+                src: app.id,
+                metadata: app.metadata,
+                hideButtons: !context.accountId,
+                selectedApps: props.selectedApps.filter((x) => x === app.id)[0],
+                handleEditMutationApps: props.handleEditMutationApps,
+              }}
+            />
+          ))
+        : null}
+    </div>
+    <ButtonsBlock>
+      <ButtonsRevert onClick={props.handleResetMutation}>
+        Revert changes
+      </ButtonsRevert>
+      <ButtonsSave>
+        <TextSave
+          onClick={() =>
+            state.textSave === "Publish"
+              ? props.handleSaveMutation(props.selectedMutation, true)
+              : props.handleSaveMutation(props.selectedMutation, false)
+          }
+        >
+          {state.textSave}
+        </TextSave>
+        <ArrowWrapper
+          style={{
+            transform: state.isOpenParametersSave
+              ? "rotate(180deg)"
+              : "rotate(0deg)",
           }}
-        />
-      </div>
-      <ButtonsBlock>
-        <ButtonsRevert>Revert changes</ButtonsRevert>
-        <ButtonsSave>
-          <TextSave>{state.textSave}</TextSave>
-          <ArrowWrapper
-            style={{
-              transform: state.isOpenParametersSave
-                ? "rotate(180deg)"
-                : "rotate(0deg)",
-            }}
-            onClick={() =>
-              State.update({
-                isOpenParametersSave: !state.isOpenParametersSave,
-              })
-            }
-          >
-            {arrow}
-          </ArrowWrapper>
-          {state.isOpenParametersSave ? (
-            <SaveChanges>
-              {state.parametersSave.map((x, i) => (
-                <SaveChangesItem
-                  onClick={() =>
-                    State.update({
-                      isOpenParametersSave: !state.isOpenParametersSave,
-                      textSave: x,
-                    })
-                  }
-                  key={i}
-                >
-                  {x}
-                </SaveChangesItem>
-              ))}
-            </SaveChanges>
-          ) : null}
-        </ButtonsSave>
-      </ButtonsBlock>
-    </SelectedMutationEditorWrapper>
-  </div>
+          onClick={() =>
+            context.accountId
+              ? State.update({
+                  isOpenParametersSave: !state.isOpenParametersSave,
+                })
+              : null
+          }
+        >
+          {arrow}
+        </ArrowWrapper>
+        {state.isOpenParametersSave ? (
+          <SaveChanges>
+            {parametersSave.map((x, i) => (
+              <SaveChangesItem
+                onClick={() =>
+                  State.update({
+                    isOpenParametersSave: !state.isOpenParametersSave,
+                    textSave: x,
+                  })
+                }
+                key={i}
+              >
+                {x}
+              </SaveChangesItem>
+            ))}
+          </SaveChanges>
+        ) : null}
+      </ButtonsSave>
+    </ButtonsBlock>
+  </SelectedMutationEditorWrapper>
 );
