@@ -12,6 +12,8 @@ const {
   onMutationIdChange,
   isRevertDisable,
   isVisibleInputId,
+  setVisibleInputId,
+  editingMutation
 } = props;
 
 // ToDo: check null props
@@ -295,16 +297,16 @@ const ArrowIcon = () => (
 
 const handlePublishButtonClick = () => {
   State.update({ isSaveDropdownOpened: false });
-  onMutationEdit();
+  setVisibleInputId(false);
 };
 
 const handleForkButtonClick = () => {
   State.update({ isSaveDropdownOpened: false });
-  onMutationCreate();
+  setVisibleInputId(true);
 };
 
 const handleDropdownOpen = () => {
-  if (!loggedInAccountId) return;
+  if (!isUserOwner) return;
 
   State.update({
     isSaveDropdownOpened: !state.isSaveDropdownOpened,
@@ -362,23 +364,24 @@ return (
         ) : (
           <TextSave onClick={onMutationCreate}>Fork</TextSave>
         )}
+
         <ArrowWrapper
           $isOpened={state.isSaveDropdownOpened}
           onClick={handleDropdownOpen}
         >
           <ArrowIcon />
         </ArrowWrapper>
-        {state.isSaveDropdownOpened ? (
+        {state.isSaveDropdownOpened && isUserOwner ? (
           <SaveChanges>
-            {isUserOwner && !isVisibleInputId ? (
+            {/* {isUserOwner && !isVisibleInputId ? ( */}
               <SaveChangesItem onClick={handlePublishButtonClick}>
                 Publish
               </SaveChangesItem>
-            ) : (
+            {/* ) : ( */}
               <SaveChangesItem onClick={handleForkButtonClick}>
                 Fork
               </SaveChangesItem>
-            )}
+            {/* )} */}
           </SaveChanges>
         ) : null}
       </ButtonsSave>
