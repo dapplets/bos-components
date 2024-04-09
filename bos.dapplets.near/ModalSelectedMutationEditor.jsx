@@ -13,7 +13,12 @@ const {
   isRevertDisable,
   isVisibleInputId,
   setVisibleInputId,
-  editingMutation
+  selectedMutation,
+  editingMutation,
+  isSaveDisabled,
+  saveTooltype,
+  setSaveDisabled,
+  setSaveTooltype,
 } = props;
 
 // ToDo: check null props
@@ -108,13 +113,14 @@ const ButtonsRevert = styled.button`
   }
 `;
 
-const ButtonsSave = styled.div`
+const ButtonsSave = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 175px;
   height: 42px;
   border-radius: 10px;
+  border: none;
   background: ${loggedInAccountId
     ? "rgba(56, 75, 255, 1)"
     : "rgba(56, 75, 255, 0.5)"};
@@ -125,6 +131,9 @@ const ButtonsSave = styled.div`
   text-align: center;
   position: relative;
   cursor: pointer;
+  &:disabled {
+    opacity: 0.5;
+  }
 `;
 
 const TextSave = styled.div`
@@ -313,6 +322,38 @@ const handleDropdownOpen = () => {
   });
 };
 
+const arraysAreEqual = (a, b) => {
+  if (a.length != b.length) return false;
+  for (var i = 0; i <= a.length; i++) {
+    if (a[i] != b[i]) return false;
+  }
+  return true;
+};
+if (!loggedInAccountId) {
+  setSaveDisabled(true);
+  setSaveTooltype("Connect the Wallet");
+} else if (editingMutation.id === selectedMutation.id) {
+  setSaveDisabled(true);
+  setSaveTooltype("Change the mutation to create a new one");
+} else if (editingMutation.metadata.name === selectedMutation.metadata.name) {
+  setSaveDisabled(true);
+  setSaveTooltype("Mutation name has already been used");
+} else if (
+  editingMutation.metadata.name !== selectedMutation.metadata.name &&
+  editingMutation.id === selectedMutation.id
+) {
+  setSaveDisabled(true);
+  setSaveTooltype("Add mutation ID");
+} else if (!editingMutation.apps || !editingMutation.apps.length) {
+  setSaveDisabled(true);
+  setSaveTooltype("Select applications");
+} else {
+  setSaveDisabled(false);
+  setSaveTooltype(null);
+}
+console.log(selectedMutation, "selectedMutation");
+console.log(editingMutation, "editingMutation");
+console.log(loggedInAccountId, "loggedInAccountId");
 return (
   <SelectedMutationEditorWrapper>
     <HeaderEditor>
@@ -358,7 +399,7 @@ return (
       <ButtonsRevert disabled={isRevertDisable} onClick={onMutationReset}>
         Revert changes
       </ButtonsRevert>
-      <ButtonsSave>
+      <ButtonsSave title={saveTooltype} disabled={isSaveDisabled}>
         {isUserOwner && !isVisibleInputId ? (
           <TextSave onClick={onMutationEdit}>Publish</TextSave>
         ) : (
@@ -374,13 +415,13 @@ return (
         {state.isSaveDropdownOpened && isUserOwner ? (
           <SaveChanges>
             {/* {isUserOwner && !isVisibleInputId ? ( */}
-              <SaveChangesItem onClick={handlePublishButtonClick}>
-                Publish
-              </SaveChangesItem>
+            <SaveChangesItem onClick={handlePublishButtonClick}>
+              Publish
+            </SaveChangesItem>
             {/* ) : ( */}
-              <SaveChangesItem onClick={handleForkButtonClick}>
-                Fork
-              </SaveChangesItem>
+            <SaveChangesItem onClick={handleForkButtonClick}>
+              Fork
+            </SaveChangesItem>
             {/* )} */}
           </SaveChanges>
         ) : null}
