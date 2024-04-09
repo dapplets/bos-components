@@ -19,6 +19,8 @@ const {
   saveTooltype,
   setSaveDisabled,
   setSaveTooltype,
+  setVisibleInput,
+  isVisibleInput,
 } = props;
 
 // ToDo: check null props
@@ -329,24 +331,44 @@ const arraysAreEqual = (a, b) => {
   }
   return true;
 };
+
 if (!loggedInAccountId) {
   setSaveDisabled(true);
   setSaveTooltype("Connect the Wallet");
-} else if (editingMutation.id === selectedMutation.id) {
-  setSaveDisabled(true);
-  setSaveTooltype("Change the mutation to create a new one");
-} else if (editingMutation.metadata.name === selectedMutation.metadata.name) {
-  setSaveDisabled(true);
-  setSaveTooltype("Mutation name has already been used");
-} else if (
-  editingMutation.metadata.name !== selectedMutation.metadata.name &&
-  editingMutation.id === selectedMutation.id
-) {
-  setSaveDisabled(true);
-  setSaveTooltype("Add mutation ID");
-} else if (!editingMutation.apps || !editingMutation.apps.length) {
-  setSaveDisabled(true);
-  setSaveTooltype("Select applications");
+} else if (loggedInAccountId && selectedMutation) {
+  if (editingMutation.id === selectedMutation.id) {
+    setSaveDisabled(true);
+    setSaveTooltype("Change the mutation to create a new one");
+  } else if (editingMutation.metadata.name === selectedMutation.metadata.name) {
+    setSaveDisabled(true);
+    setSaveTooltype("Mutation name has already been used");
+  } else if (
+    editingMutation.metadata.name !== selectedMutation.metadata.name &&
+    editingMutation.id === selectedMutation.id
+  ) {
+    setSaveDisabled(true);
+    setSaveTooltype("Add mutation ID");
+  } else if (!editingMutation.apps || !editingMutation.apps.length) {
+    setSaveDisabled(true);
+    setSaveTooltype("Select applications");
+  } else {
+    setSaveDisabled(false);
+    setSaveTooltype(null);
+  }
+} else if (loggedInAccountId && !selectedMutation) {
+  if (!editingMutation.metadata.name) {
+    setSaveDisabled(true);
+    setSaveTooltype("Mutation name has already been used");
+  } else if (!editingMutation.id) {
+    setSaveDisabled(true);
+    setSaveTooltype("Add mutation ID");
+  } else if (!editingMutation.apps || !editingMutation.apps.length) {
+    setSaveDisabled(true);
+    setSaveTooltype("Select applications");
+  } else {
+    setSaveDisabled(false);
+    setSaveTooltype(null);
+  }
 } else {
   setSaveDisabled(false);
   setSaveTooltype(null);
@@ -356,26 +378,58 @@ console.log(editingMutation, "editingMutation");
 console.log(loggedInAccountId, "loggedInAccountId");
 return (
   <SelectedMutationEditorWrapper>
-    <HeaderEditor>
-      <Input
-        onChange={(e) => onMutationNameChange(e.target.value)}
-        value={mutationName ? mutationName : ""}
-      />
-      <EditIcon />
-      <Close onClick={onClose}>
-        <CloseIcon />
-      </Close>
-    </HeaderEditor>
-    {!isUserOwner || isVisibleInputId ? (
+    {isVisibleInput ? (
       <HeaderEditor>
         <Input
-          onChange={(e) => {
-            onMutationIdChange(e.target.value, loggedInAccountId);
-          }}
-          placeholder={"Enter Mutation ID"}
+          onChange={(e) => onMutationNameChange(e.target.value)}
+          value={
+            editingMutation
+              ? editingMutation.name
+              : mutationName
+              ? mutationName
+              : ""
+          }
         />
-        <EditIcon />
+        <Close onClick={onClose}>
+          <CloseIcon />
+        </Close>
       </HeaderEditor>
+    ) : (
+      <HeaderEditor>
+        {editingMutation
+          ? editingMutation.name
+          : mutationName
+          ? mutationName
+          : ""}
+        <span onClick={() => setVisibleInput(true)}>
+          <EditIcon />
+        </span>
+
+        <Close onClick={onClose}>
+          <CloseIcon />
+        </Close>
+      </HeaderEditor>
+    )}
+
+    {!isUserOwner || isVisibleInputId ? (
+      isVisibleInput ? (
+        <HeaderEditor>
+          <Input
+            onChange={(e) => {
+              onMutationIdChange(e.target.value, loggedInAccountId);
+            }}
+            placeholder={"Enter Mutation ID"}
+          />
+        </HeaderEditor>
+      ) : (
+        <HeaderEditor>
+          {loggedInAccountId}
+
+          <span onClick={() => setVisibleInput(true)}>
+            <EditIcon />
+          </span>
+        </HeaderEditor>
+      )
     ) : null}
     <AppsList>
       {allApps && allApps.length
