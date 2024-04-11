@@ -10,6 +10,17 @@ const {
   onMutationCreate,
   onMutationEdit,
   onMutationIdChange,
+  isRevertDisable,
+  isVisibleInputId,
+  setVisibleInputId,
+  selectedMutation,
+  editingMutation,
+  isSaveDisabled,
+  saveTooltype,
+  setSaveDisabled,
+  setSaveTooltype,
+  setVisibleInput,
+  isVisibleInput,
 } = props;
 
 // ToDo: check null props
@@ -43,6 +54,9 @@ const SelectedMutationEditorWrapper = styled.div`
 
 const Close = styled.span`
   cursor: pointer;
+  svg {
+    margin: 0;
+  }
   &:hover {
     opacity: 0.5;
   }
@@ -57,8 +71,9 @@ const HeaderEditor = styled.div`
   font-weight: 600;
   line-height: 21.09px;
   text-align: left;
-  svg {
-    margin-left: auto;
+  .edit {
+    margin-right: auto;
+    margin-bottom: 2px;
   }
 `;
 
@@ -77,7 +92,7 @@ const ButtonsBlock = styled.div`
   align-items: center;
 `;
 
-const ButtonsRevert = styled.div`
+const ButtonsRevert = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -94,18 +109,23 @@ const ButtonsRevert = styled.div`
   &:hover {
     opacity: 0.5;
   }
+  &:disabled {
+    cursor: auto;
+    opacity: 1;
+  }
 `;
 
-const ButtonsSave = styled.div`
+const ButtonsSave = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 175px;
   height: 42px;
   border-radius: 10px;
-  background: ${
-    loggedInAccountId ? "rgba(56, 75, 255, 1)" : "rgba(56, 75, 255, 0.5)"
-  };
+  border: none;
+  background: ${loggedInAccountId
+    ? "rgba(56, 75, 255, 1)"
+    : "rgba(56, 75, 255, 0.5)"};
   color: #fff;
   font-size: 14px;
   font-weight: 400;
@@ -113,7 +133,7 @@ const ButtonsSave = styled.div`
   text-align: center;
   position: relative;
   cursor: pointer;
-  &:hover {
+  &:disabled {
     opacity: 0.5;
   }
 `;
@@ -126,6 +146,9 @@ const TextSave = styled.div`
   width: 100%;
   padding: 0 10px;
   text-align: center;
+  &:hover {
+    opacity: 0.5;
+  }
 `;
 
 const ArrowWrapper = styled.div`
@@ -147,8 +170,8 @@ const SaveChanges = styled.div`
   flex-direction: column;
   right: 0;
   top: 52px;
-  width: 179px;
-  height: 112px;
+  width: 175px;
+  max-height: 112px;
   padding: 10px;
   gap: 10px;
   border-radius: 10px;
@@ -164,25 +187,27 @@ const SaveChangesItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 159px;
+  width: 100%;
   height: 41px;
   border-radius: 4px;
   cursor: pointer;
   &:hover {
-    opacity: 0.5;
+    background: rgba(217, 222, 225, 1);
+    color: rgba(56, 75, 255, 1);
   }
 `;
 
 const Input = styled.input`
-  display: block;
-  flex-grow: 1;
+  display: flex;
+  flex: 1;
   border: none;
   background: none;
   margin: 0;
-  min-width: 150px;
+  max-width: 250px;
   height: 40px;
   line-height: 40px;
   padding: 0;
+  padding-right: 20px;
   color: var(--sand12);
   font: var(--text-base);
   outline: none !important;
@@ -244,6 +269,7 @@ const EditIcon = () => (
     height="24"
     viewBox="0 0 24 24"
     fill="none"
+    className="edit"
   >
     <path
       d="M12 18H19"
@@ -282,39 +308,128 @@ const ArrowIcon = () => (
 
 const handlePublishButtonClick = () => {
   State.update({ isSaveDropdownOpened: false });
-  onMutationEdit();
+  setVisibleInputId(false);
 };
 
 const handleForkButtonClick = () => {
   State.update({ isSaveDropdownOpened: false });
-  onMutationCreate();
+  setVisibleInputId(true);
 };
 
 const handleDropdownOpen = () => {
-  if (!loggedInAccountId) return;
+  if (!isUserOwner) return;
 
   State.update({
     isSaveDropdownOpened: !state.isSaveDropdownOpened,
   });
 };
 
+const arraysAreEqual = (a, b) => {
+  if (a.length != b.length) return false;
+  for (var i = 0; i <= a.length; i++) {
+    if (a[i] != b[i]) return false;
+  }
+  return true;
+};
+
+if (!loggedInAccountId) {
+  setSaveDisabled(true);
+  setSaveTooltype("Connect the Wallet");
+} else if (loggedInAccountId && selectedMutation) {
+  if (editingMutation.id === selectedMutation.id) {
+    setSaveDisabled(true);
+    setSaveTooltype("Change the mutation to create a new one");
+  } else if (editingMutation.metadata.name === selectedMutation.metadata.name) {
+    setSaveDisabled(true);
+    setSaveTooltype("Mutation name has already been used");
+  } else if (
+    editingMutation.metadata.name !== selectedMutation.metadata.name &&
+    editingMutation.id === selectedMutation.id
+  ) {
+    setSaveDisabled(true);
+    setSaveTooltype("Add mutation ID");
+  } else if (!editingMutation.apps || !editingMutation.apps.length) {
+    setSaveDisabled(true);
+    setSaveTooltype("Select applications");
+  } else {
+    setSaveDisabled(false);
+    setSaveTooltype(null);
+  }
+} else if (loggedInAccountId && !selectedMutation) {
+  if (!editingMutation.metadata.name) {
+    setSaveDisabled(true);
+    setSaveTooltype("Mutation name has already been used");
+  } else if (!editingMutation.id) {
+    setSaveDisabled(true);
+    setSaveTooltype("Add mutation ID");
+  } else if (!editingMutation.apps || !editingMutation.apps.length) {
+    setSaveDisabled(true);
+    setSaveTooltype("Select applications");
+  } else {
+    setSaveDisabled(false);
+    setSaveTooltype(null);
+  }
+} else {
+  setSaveDisabled(false);
+  setSaveTooltype(null);
+}
+console.log(selectedMutation, "selectedMutation");
+console.log(editingMutation, "editingMutation");
+console.log(loggedInAccountId, "loggedInAccountId");
 return (
   <SelectedMutationEditorWrapper>
-    <HeaderEditor>
-      <Input
-        onChange={(e) => onMutationNameChange(e.target.value)}
-        value={mutationName ? mutationName : ""}
-      />
-      <Close onClick={onClose}>
-        <CloseIcon />
-      </Close>
-    </HeaderEditor>
-    {!isUserOwner ? (
-      <Input
-        onChange={(e) => onMutationIdChange(e.target.value)}
-        placeholder={"Enter Mutation ID"}
-        value={mutationId ? mutationId : ""}
-      />
+    {isVisibleInput ? (
+      <HeaderEditor>
+        <Input
+          onChange={(e) => onMutationNameChange(e.target.value)}
+          value={
+            editingMutation
+              ? editingMutation.name
+              : mutationName
+              ? mutationName
+              : ""
+          }
+        />
+        <Close onClick={onClose}>
+          <CloseIcon />
+        </Close>
+      </HeaderEditor>
+    ) : (
+      <HeaderEditor>
+        {editingMutation
+          ? editingMutation.name
+          : mutationName
+          ? mutationName
+          : ""}
+        <span onClick={() => setVisibleInput(true)}>
+          <EditIcon />
+        </span>
+
+        <Close onClick={onClose}>
+          <CloseIcon />
+        </Close>
+      </HeaderEditor>
+    )}
+
+    {!isUserOwner || isVisibleInputId ? (
+      isVisibleInput ? (
+        <HeaderEditor>
+          <Input
+            onChange={(e) => {
+              onMutationIdChange(e.target.value, loggedInAccountId);
+            }}
+            placeholder={"Enter Mutation ID"}
+          />
+        </HeaderEditor>
+      ) : (
+        <HeaderEditor>
+          {loggedInAccountId}
+
+          <span onClick={() => setVisibleInput(true)}>
+            <EditIcon />
+          </span>
+        </HeaderEditor>
+      )
     ) : null}
     <AppsList>
       {allApps && allApps.length
@@ -335,29 +450,33 @@ return (
         : null}
     </AppsList>
     <ButtonsBlock>
-      <ButtonsRevert onClick={onMutationReset}>Revert changes</ButtonsRevert>
-      <ButtonsSave>
-        {isUserOwner ? (
+      <ButtonsRevert disabled={isRevertDisable} onClick={onMutationReset}>
+        Revert changes
+      </ButtonsRevert>
+      <ButtonsSave title={saveTooltype} disabled={isSaveDisabled}>
+        {isUserOwner && !isVisibleInputId ? (
           <TextSave onClick={onMutationEdit}>Publish</TextSave>
         ) : (
           <TextSave onClick={onMutationCreate}>Fork</TextSave>
         )}
+
         <ArrowWrapper
           $isOpened={state.isSaveDropdownOpened}
           onClick={handleDropdownOpen}
         >
           <ArrowIcon />
         </ArrowWrapper>
-        {state.isSaveDropdownOpened ? (
+        {state.isSaveDropdownOpened && isUserOwner ? (
           <SaveChanges>
-            {isUserOwner ? (
-              <SaveChangesItem onClick={handlePublishButtonClick}>
-                Publish
-              </SaveChangesItem>
-            ) : null}
+            {/* {isUserOwner && !isVisibleInputId ? ( */}
+            <SaveChangesItem onClick={handlePublishButtonClick}>
+              Publish
+            </SaveChangesItem>
+            {/* ) : ( */}
             <SaveChangesItem onClick={handleForkButtonClick}>
               Fork
             </SaveChangesItem>
+            {/* )} */}
           </SaveChanges>
         ) : null}
       </ButtonsSave>
