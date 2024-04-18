@@ -11,6 +11,7 @@ const {
 State.init({
   show: false,
   showMenu: false,
+  isWaiting: new Set(),
 });
 
 const handleOnMouseEnter = () => State.update({ show: true });
@@ -24,8 +25,16 @@ const handleOpenMenu = () => State.update({ showMenu: true, show: false });
 const handleCloseMenu = () => State.update({ showMenu: false, show: false });
 
 const handleSelectComponent = (app) => {
-  State.update({ showMenu: false });
-  createUserLink(app.id);
+  State.update({ isWaiting: state.isWaiting.add(app.id) });
+  createUserLink(app.id).then(() => {
+    const isWaiting = state.isWaiting
+    isWaiting.delete(app.id)
+    State.update({ isWaiting });
+  }).catch(() => {
+    const isWaiting = state.isWaiting
+    isWaiting.delete(app.id)
+    State.update({ isWaiting });
+  });
 };
 
 const OverlayTriggerWrapper = styled.div`
@@ -82,6 +91,7 @@ return (
               handleCloseMenu,
               onSelect: handleSelectComponent,
               apps,
+              isWaiting: state.isWaiting,
             }}
             src="bos.dapplets.near/widget/ComponentsSearch"
           />
