@@ -1,4 +1,4 @@
-const { apps, isWaiting } = props;
+const { apps, waitingAppIdsSet } = props;
 
 const CloseModal = styled.span`
   position: absolute;
@@ -240,7 +240,7 @@ return (
                   metadata: app.metadata,
                   onComponentSelect: () => props.onSelect(app),
                   hideButtons: !context.accountId,
-                  isWaiting: isWaiting.has(app.id),
+                  isWaiting: waitingAppIdsSet.has(app.id),
                 }}
               />
             </Item>

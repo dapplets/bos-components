@@ -11,7 +11,7 @@ const {
 State.init({
   show: false,
   showMenu: false,
-  isWaiting: new Set(),
+  waitingAppIdsSet: new Set(),
 });
 
 const handleOnMouseEnter = () => State.update({ show: true });
@@ -25,15 +25,15 @@ const handleOpenMenu = () => State.update({ showMenu: true, show: false });
 const handleCloseMenu = () => State.update({ showMenu: false, show: false });
 
 const handleSelectComponent = (app) => {
-  State.update({ isWaiting: state.isWaiting.add(app.id) });
+  State.update({ waitingAppIdsSet: state.waitingAppIdsSet.add(app.id) });
   createUserLink(app.id).then(() => {
-    const isWaiting = state.isWaiting
-    isWaiting.delete(app.id)
-    State.update({ isWaiting });
+    const waitingAppIdsSet = state.waitingAppIdsSet
+    waitingAppIdsSet.delete(app.id)
+    State.update({ waitingAppIdsSet });
   }).catch(() => {
-    const isWaiting = state.isWaiting
-    isWaiting.delete(app.id)
-    State.update({ isWaiting });
+    const waitingAppIdsSet = state.waitingAppIdsSet
+    waitingAppIdsSet.delete(app.id)
+    State.update({ waitingAppIdsSet });
   });
 };
 
@@ -91,7 +91,7 @@ return (
               handleCloseMenu,
               onSelect: handleSelectComponent,
               apps,
-              isWaiting: state.isWaiting,
+              waitingAppIdsSet: state.waitingAppIdsSet,
             }}
             src="bos.dapplets.near/widget/ComponentsSearch"
           />
