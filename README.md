@@ -4,22 +4,40 @@
 
 1. Run DEV server
 
-   ```
-   npm i
-   npm run dev
-   ```
+```sh
+yarn
+yarn dev
+```
 
 2. Browser console
 
-   Start:
+Start:
 
-   ```js
-   await temp1.engine.enableDevMode({ polling: true }) // with autoupdate
-   await temp1.engine.enableDevMode() // without
-   ```
+```js
+await temp1.engine.enableDevMode({ polling: true }) // with autoupdate
+await temp1.engine.enableDevMode() // without
+```
 
-   Stop:
+Stop:
 
-   ```js
-   temp1.engine.disableDevMode()
-   ```
+```js
+temp1.engine.disableDevMode()
+```
+
+## Push BOS-components to NEAR mainnet
+
+```sh
+yarn push:mainnet
+```
+
+Probably you have to log in via NEAR CLI before
+
+```sh
+NEAR_ENV=mainnet near login
+```
+
+## Pull BOS-components from NEAR mainnet
+
+```sh
+yarn pull:mainnet
+```

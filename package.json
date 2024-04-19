@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "bos-loader bos.dapplets.near -p ./src",
-    "pull:mainnet": "bos components download bos.dapplets.near network-config mainnet"
+    "pull:mainnet": "bos components download bos.dapplets.near network-config mainnet",
+    "push:mainnet": "bos components deploy bos.dapplets.near sign-as bos.dapplets.near network-config mainnet sign-with-legacy-keychain send"
   },
   "repository": {
     "type": "git",
