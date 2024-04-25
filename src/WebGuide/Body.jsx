@@ -32,7 +32,7 @@ const TextAlert = styled.span`
 
 const IconAlert = styled.span``;
 
-const InfoIcon = () => (
+const infoIcon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="20"
@@ -71,7 +71,7 @@ const InfoIcon = () => (
   </svg>
 );
 
-const WarningIcon = () => (
+const warningIcon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="20"
@@ -103,7 +103,7 @@ const WarningIcon = () => (
   </svg>
 );
 
-const ErrorIcon = () => (
+const errorIcon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="20"
@@ -147,13 +147,11 @@ return (
     {props.status && props.status.text ? (
       <WrapperAlert $status={props.status.type}>
         <IconAlert>
-          {props.status.type === "warning" ? (
-            <WarningIcon />
-          ) : props.status.type === "error" ? (
-            <ErrorIcon />
-          ) : (
-            <InfoIcon />
-          )}
+          {props.status.type === "warning"
+            ? warningIcon
+            : props.status.type === "error"
+            ? errorIcon
+            : infoIcon}
         </IconAlert>
         <TextAlert>{props.status.text}</TextAlert>
       </WrapperAlert>

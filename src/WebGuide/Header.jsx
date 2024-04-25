@@ -33,7 +33,7 @@ const Container = styled.div`
 
 const Navi = styled.button`
   width: 10px;
-  height: 12px;
+  height: 10px;
   border-radius: 50%;
   background: ${(props) => (props.$active ? "#384BFF" : "#E3E3E3")};
   border: none;
