@@ -23,39 +23,39 @@ const handleOnMouseLeave = () => {
 };
 
 const CustomTooltip = styled("Tooltip")`
-  all: unset;
-  opacity: unset !important;
-
-  .tooltip-inner {
-    all: unset;
-  }
-
   .tooltip-arrow::before {
     border: none;
+    display: inline-block;
     content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='19' height='38' viewBox='18 0 20 38' fill='none' ><path d='M34.3818 22.1845L19.5654 36.0575L19.5654 1.8284L34.3715 15.6052C36.2802 17.3812 36.285 20.4025 34.3818 22.1845Z' fill='%23FFFFFE' stroke='%2302193A' /><path d='M16.5693 2.96185L20.0642 2.96185L21.0642 3.96185L21.0642 33.9619L20.0642 34.9619H16.5693L16.5693 2.96185Z' fill='%23FFFFFE' /></svg>");
   }
 
   &.bs-tooltip-top .tooltip-arrow {
+    bottom: -29px;
+
     &::before {
-      top: -12px;
       transform: rotate(90deg);
     }
   }
 
   &.bs-tooltip-end .tooltip-arrow {
+    left: -18px;
+
     &::before {
       transform: rotate(180deg);
     }
   }
 
   &.bs-tooltip-bottom .tooltip-arrow {
+    top: -29px;
+
     &::before {
-      top: -12px;
       transform: rotate(-90deg);
     }
   }
 
   &.bs-tooltip-start .tooltip-arrow {
+    right: -18px;
+
     &::before {
       transform: rotate(0deg);
     }
@@ -64,6 +64,7 @@ const CustomTooltip = styled("Tooltip")`
 
 const overlay = (
   <CustomTooltip
+    bsPrefix="wg-tooltip"
     onMouseEnter={handleOnMouseEnter}
     onMouseLeave={handleOnMouseLeave}
   >
@@ -72,7 +73,12 @@ const overlay = (
 );
 
 return (
-  <OverlayTrigger show={true} overlay={overlay} placement="auto">
+  <OverlayTrigger
+    show={true}
+    overlay={overlay}
+    placement="auto"
+    offset={[0, 20]}
+  >
     <span onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}>
       {props.children}
     </span>
