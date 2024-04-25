@@ -79,26 +79,6 @@ const iconClose = (
   </svg>
 );
 
-const iconArrow = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="39"
-    height="38"
-    viewBox="0 0 39 38"
-    fill="none"
-  >
-    <path
-      d="M34.3818 22.1845L19.5654 36.0575L19.5654 1.8284L34.3715 15.6052C36.2802 17.3812 36.285 20.4025 34.3818 22.1845Z"
-      fill="#FFFFFE"
-      stroke="#02193A"
-    />
-    <path
-      d="M16.5693 2.96185L20.0642 2.96185L21.0642 3.96185L21.0642 33.9619L20.0642 34.9619H16.5693L16.5693 2.96185Z"
-      fill="#FFFFFE"
-    />
-  </svg>
-);
-console.log(props)
 return (
   <CalloutHeader>
     <CalloutHeaderCaption>
@@ -116,6 +96,5 @@ return (
       )}
     </Container>
     <Close onClick={props.onClose}>{iconClose}</Close>
-    {props.type == "infobox" ? null : <Arrow>{iconArrow}</Arrow>}
   </CalloutHeader>
 );

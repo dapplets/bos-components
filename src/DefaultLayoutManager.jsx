@@ -1,18 +1,18 @@
 if (!props.widgets || props.widgets.length === 0) return <></>;
 
-const [waitingAppIdsSet, changeWaitingAppIdsSet] = useState(new Set())
+const [waitingAppIdsSet, changeWaitingAppIdsSet] = useState(new Set());
 
 const handleRemoveWidget = (linkId) => {
   changeWaitingAppIdsSet((val) => val.add(linkId));
   const callback = () => {
-    waitingAppIdsSet.delete(linkId)
+    waitingAppIdsSet.delete(linkId);
     changeWaitingAppIdsSet((val) => {
-      val.delete(linkId)
-      return val
+      val.delete(linkId);
+      return val;
     });
-  }
+  };
   props.deleteUserLink(linkId).then(callback).catch(callback);
-}
+};
 
 const Container = styled.div`
   display: flex;
@@ -63,19 +63,38 @@ return (
                 opacity: widget.linkAuthorId === context.accountId ? "1" : "0",
               }}
             >
-              {widget.linkAuthorId === context.accountId ? waitingAppIdsSet.has(widget.linkId) ? (
-                <span role="status" aria-hidden="true" class="spinner-grow spinner-grow-sm" />
-              ) : (
-                <Widget
-                  src="bos.dapplets.near/widget/LayoutManager.DeleteWidgetButton"
-                  props={{
-                    onClick: () => handleRemoveWidget(widget.linkId),
-                  }}
-                />
+              {widget.linkAuthorId === context.accountId ? (
+                waitingAppIdsSet.has(widget.linkId) ? (
+                  <span
+                    role="status"
+                    aria-hidden="true"
+                    class="spinner-grow spinner-grow-sm"
+                  />
+                ) : (
+                  <Widget
+                    src="bos.dapplets.near/widget/LayoutManager.DeleteWidgetButton"
+                    props={{
+                      onClick: () => handleRemoveWidget(widget.linkId),
+                    }}
+                  />
+                )
               ) : null}
             </WidgetBadgeWrapper>
           ) : null}
-          <Widget src={widget.src} props={widget.props} />
+          {widget.props.context.parsed.id === "1698564324586029148" ? (
+            <Widget
+              src="bos.dapplets.near/widget/WebGuide.OverlayTrigger"
+              props={{
+                children: (
+                  <div>
+                    <Widget src={widget.src} props={widget.props} />
+                  </div>
+                ),
+              }}
+            />
+          ) : (
+            <Widget src={widget.src} props={widget.props} />
+          )}
         </WidgetWrapper>
       ))}
   </Container>

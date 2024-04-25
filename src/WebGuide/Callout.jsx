@@ -9,8 +9,6 @@ const Callout = styled.div`
   border-radius: 10px;
   border: 1px solid #02193a;
   background: #fffffe;
-  position: relative;
-  left: 19px;
   font-family: sans-serif;
 `;
 
@@ -32,43 +30,39 @@ const CalloutDescription = styled.div`
 `;
 
 return (
-  <OverlayTrigger
-    show={isVisibleStep}
-    delay={{ show: 250, hide: 300 }}
-    placement="right"
-    // overlay={callout}
-  >
-    <Callout>
-      <Widget  props={{ type: "callout" }} src="bos.dapplets.near/widget/WebGuide.Header"></Widget>
-      <Widget
-        props={{
-          status: {
-            type: "info",
-            text: "this info",
+  <Callout>
+    <Widget
+      props={{ type: "callout" }}
+      src="bos.dapplets.near/widget/WebGuide.Header"
+    ></Widget>
+    <Widget
+      props={{
+        status: {
+          type: "info",
+          text: "this info",
+        },
+        content: "this content",
+      }}
+      src="bos.dapplets.near/widget/WebGuide.Body"
+    />
+    <Widget
+      props={{
+        buttons: [
+          {
+            variant: "secondary",
+            disabled: false,
+            onClick: () => {},
+            label: "Prev",
           },
-          content: "this content",
-        }}
-        src="bos.dapplets.near/widget/WebGuide.Body"
-      ></Widget>
-      <Widget
-        props={{
-          buttons: [
-            {
-              variant: "secondary",
-              disabled: false,
-              onClick: () => {},
-              label: "Prev",
-            },
-            {
-              variant: "primary",
-              disabled: false,
-              onClick: () => {},
-              label: "Next",
-            },
-          ],
-        }}
-        src="bos.dapplets.near/widget/WebGuide.Footer"
-      ></Widget>
-    </Callout>
-  </OverlayTrigger>
+          {
+            variant: "primary",
+            disabled: false,
+            onClick: () => {},
+            label: "Next",
+          },
+        ],
+      }}
+      src="bos.dapplets.near/widget/WebGuide.Footer"
+    />
+  </Callout>
 );
