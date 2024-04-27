@@ -2,29 +2,6 @@
  * Based on: mob.near/widget/N.Common.OverlayTrigger
  */
 
-const props = {
-  type: "callout",
-  buttons: [
-    {
-      variant: "secondary",
-      disabled: false,
-      onClick: () => {},
-      label: "Prev",
-    },
-    {
-      variant: "primary",
-      disabled: false,
-      onClick: () => {},
-      label: "Next",
-    },
-  ],
-  status: {
-    type: "info",
-    text: "this info",
-  },
-  content: "this content",
-};
-
 const showTimer = 250;
 const hideTimer = 300;
 
@@ -404,18 +381,15 @@ const overlay = (
     <Callout>
       <CalloutHeader>
         <CalloutHeaderCaption>
-          Step {props.navi.currentStepIndex ? props.navi.currentStepIndex : 1}{" "}
-          of {props.navi.totalSteps ? props.navi.totalSteps : 3}
+          Step {props.navi.currentStepIndex + 1} of {props.navi.totalSteps}
         </CalloutHeaderCaption>
         <Container>
-          {[...Array(props.navi.totalSteps ? props.navi.totalSteps : 3)].map(
-            (_, index) => (
-              <Navi
-                key={index}
-                $active={index == props.navi.currentStepIndex ? true : false}
-              />
-            )
-          )}
+          {[...Array(props.navi.totalSteps)].map((_, index) => (
+            <Navi
+              key={index}
+              $active={index == props.navi.currentStepIndex ? true : false}
+            />
+          ))}
         </Container>
         <Close onClick={props.onClose}>{iconClose}</Close>
       </CalloutHeader>
@@ -445,8 +419,9 @@ const overlay = (
       )}
 
       <ActionsGroup>
-        {props.buttons.map((btn, i) => (
+        {props.buttons.map((btn, index) => (
           <ActionButton
+            key={index}
             $primary={btn.variant == "primary" ? true : false}
             onClick={btn.onClick}
             disabled={btn.disabled}

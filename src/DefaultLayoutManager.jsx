@@ -50,52 +50,71 @@ return (
   <Container>
     {props.widgets
       .filter((w) => w.isSuitable === undefined || w.isSuitable === true)
-      .map((widget) => (
-        <WidgetWrapper key={widget.linkId}>
-          {props.isEditMode ? (
-            <WidgetBadgeWrapper
-              title={
-                widget.linkAuthorId === context.accountId
-                  ? `Remove ${widget.src.split("widget/").pop()}`
-                  : "disable in edit mode "
-              }
-              style={{
-                opacity: widget.linkAuthorId === context.accountId ? "1" : "0",
-              }}
-            >
-              {widget.linkAuthorId === context.accountId ? (
-                waitingAppIdsSet.has(widget.linkId) ? (
-                  <span
-                    role="status"
-                    aria-hidden="true"
-                    class="spinner-grow spinner-grow-sm"
-                  />
-                ) : (
-                  <Widget
-                    src="bos.dapplets.near/widget/LayoutManager.DeleteWidgetButton"
-                    props={{
-                      onClick: () => handleRemoveWidget(widget.linkId),
-                    }}
-                  />
-                )
-              ) : null}
-            </WidgetBadgeWrapper>
-          ) : null}
-          {widget.props.context.parsed.id === "1698564324586029148" ? (
-            <Widget
-              src="bos.dapplets.near/widget/WebGuide.OverlayTrigger"
-              props={{
-                children: (
-                  <div>
-                    <Widget src={widget.src} props={widget.props} />
-                  </div>
-                ),
-              }}
-            />
-          ) : (
-            <Widget src={widget.src} props={widget.props} />
-          )}
-        </WidgetWrapper>
-      ))}
+      .map((widget) => {
+        const WrapperComponent = props.components
+          ? props.components.find(
+              (cmp) => cmp.target.insteadOf?.linkId === widget.linkId
+            )?.component
+          : null;
+
+        return (
+          <WidgetWrapper key={widget.linkId}>
+            {props.isEditMode ? (
+              <WidgetBadgeWrapper
+                title={
+                  widget.linkAuthorId === context.accountId
+                    ? `Remove ${widget.src
+                        .split("widget/")
+                        .pop()} injected by ${widget.linkAuthorId} (link ID: ${
+                        widget.linkId
+                      })`
+                    : "disable in edit mode "
+                }
+                style={{
+                  opacity:
+                    widget.linkAuthorId === context.accountId ? "1" : "0",
+                }}
+              >
+                {widget.linkAuthorId === context.accountId ? (
+                  waitingAppIdsSet.has(widget.linkId) ? (
+                    <span
+                      role="status"
+                      aria-hidden="true"
+                      class="spinner-grow spinner-grow-sm"
+                    />
+                  ) : (
+                    <Widget
+                      src="bos.dapplets.near/widget/LayoutManager.DeleteWidgetButton"
+                      props={{
+                        onClick: () => handleRemoveWidget(widget.linkId),
+                      }}
+                    />
+                  )
+                ) : null}
+              </WidgetBadgeWrapper>
+            ) : null}
+            {WrapperComponent ? (
+              <WrapperComponent
+                context={props.context}
+                children={<Widget src={widget.src} props={widget.props} />}
+              />
+            ) : (
+              <Widget src={widget.src} props={widget.props} />
+            )}
+          </WidgetWrapper>
+        );
+      })}
+
+    {props.components
+      ? props.components
+          .filter(
+            (cmp) => !cmp.target.insteadOf || !cmp.target.insteadOf.linkId
+          )
+          .map((Component, i) => (
+            <WidgetWrapper key={i}>
+              <Component context={props.context} />
+            </WidgetWrapper>
+          ))
+      : null}
   </Container>
 );
