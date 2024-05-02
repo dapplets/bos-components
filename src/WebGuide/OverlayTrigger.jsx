@@ -441,8 +441,12 @@ return (
     placement="auto"
     offset={[0, 20]}
   >
-    <span onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}>
-      {props.children}
-    </span>
+    {typeof props.children === "function" ? (
+      props.children
+    ) : (
+      <span onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}>
+        {props.children}
+      </span>
+    )}
   </OverlayTrigger>
 );

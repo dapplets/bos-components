@@ -18,7 +18,12 @@ const handleDecrement = () => {
   setCounter((val) => Math.max(val - 1, 0));
 };
 
-const CalloutForContext = ({ children, context }) => {
+const CalloutForContext = ({
+  children,
+  context,
+  attachContextRef,
+  attachInsPointRef,
+}) => {
   if (ids[counter] !== context.id) return children;
 
   return (
@@ -29,7 +34,7 @@ const CalloutForContext = ({ children, context }) => {
         type: "callout",
         navi: {
           currentStepIndex: counter,
-          totalSteps: ids.length
+          totalSteps: ids.length,
         },
         buttons: [
           {
@@ -50,7 +55,18 @@ const CalloutForContext = ({ children, context }) => {
         //   text: counter,
         // },
         content: context.parsed.text,
-        children,
+        children:
+          counter === 1
+            ? ({ ref }) => {
+                attachContextRef(ref);
+                return children;
+              }
+            : counter === 2
+            ? ({ ref }) => {
+                attachInsPointRef(ref);
+                return children;
+              }
+            : children,
       }}
     />
   );
