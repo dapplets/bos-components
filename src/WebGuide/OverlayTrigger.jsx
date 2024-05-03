@@ -23,6 +23,8 @@ const handleOnMouseLeave = () => {
 };
 
 const CustomTooltip = styled("Tooltip")`
+  z-index: 9999999; // over the notch
+
   .tooltip-arrow::before {
     border: none;
     display: inline-block;

@@ -1,4 +1,8 @@
-if (!props.widgets || props.widgets.length === 0) return <></>;
+if (
+  (!props.widgets || props.widgets.length === 0) &&
+  (!props.components || props.components.length === 0)
+)
+  return <></>;
 
 const [waitingAppIdsSet, changeWaitingAppIdsSet] = useState(new Set());
 
