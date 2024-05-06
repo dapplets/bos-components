@@ -3,12 +3,7 @@
  */
 
 const CustomTooltip = styled("Tooltip")`
-  opacity: 0;
   z-index: 9999999; // over the notch
-
-  &.show {
-    opacity: 1;
-  }
 
   .tooltip-arrow::before {
     border: none;
@@ -382,9 +377,6 @@ const warningIcon = (
   </svg>
 )
 
-const showTimer = 250
-const hideTimer = 300
-
 const {
   children,
   content,
@@ -398,29 +390,8 @@ const {
   onDoNotShowChange,
 } = props
 
-const [show, setShow] = useState(false)
-const [debounce, setDebounce] = useState(null)
-
-const handleOnMouseEnter = () => {
-  setDebounce((debounce) => {
-    clearTimeout(debounce);
-    setTimeout(() => setShow(true), showTimer);
-  })
-}
-
-const handleOnMouseLeave = () => {
-  setDebounce((debounce) => {
-    clearTimeout(debounce);
-    setTimeout(() => setShow(false), showTimer);
-  })
-}
-
 const overlay = (
-  <CustomTooltip
-    bsPrefix="wg-tooltip"
-    onMouseEnter={handleOnMouseEnter}
-    onMouseLeave={handleOnMouseLeave}
-  >
+  <CustomTooltip bsPrefix="wg-tooltip">
     <Callout>
       <Header>
         <TopLine>
