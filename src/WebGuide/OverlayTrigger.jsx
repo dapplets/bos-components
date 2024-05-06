@@ -2,26 +2,6 @@
  * Based on: mob.near/widget/N.Common.OverlayTrigger
  */
 
-const showTimer = 250;
-const hideTimer = 300;
-
-const [show, setShow] = useState(false);
-const [debounce, setDebounce] = useState(null);
-
-const handleOnMouseEnter = () => {
-  setDebounce((debounce) => {
-    clearTimeout(debounce);
-    setTimeout(() => setShow(true), showTimer);
-  });
-};
-
-const handleOnMouseLeave = () => {
-  setDebounce((debounce) => {
-    clearTimeout(debounce);
-    setTimeout(() => setShow(false), showTimer);
-  });
-};
-
 const CustomTooltip = styled("Tooltip")`
   opacity: 0;
   z-index: 9999999; // over the notch
@@ -67,7 +47,7 @@ const CustomTooltip = styled("Tooltip")`
       transform: rotate(0deg);
     }
   }
-`;
+`
 
 const Callout = styled.div`
   display: flex;
@@ -81,7 +61,7 @@ const Callout = styled.div`
   border: 1px solid #02193a;
   background: #fffffe;
   font-family: sans-serif;
-`;
+`
 
 const CalloutTitle = styled.div`
   color: #02193a;
@@ -89,7 +69,7 @@ const CalloutTitle = styled.div`
   font-style: normal;
   font-weight: 600;
   line-height: 149%; /* 26.82px */
-`;
+`
 
 const CalloutDescription = styled.div`
   color: #7a818b;
@@ -98,16 +78,38 @@ const CalloutDescription = styled.div`
   font-style: normal;
   font-weight: 400;
   line-height: 149%; /* 17.88px */
-`;
+`
 
-const CalloutHeader = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  align-self: stretch;
-  justify-content: space-between;
+const Header = styled.div`
   position: relative;
-`;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  color: #02193A;
+
+  h1 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    padding: 0;
+    margin: 0;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 48px;
+  }
+`
+
+const TopLine = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+`
 
 const CalloutHeaderCaption = styled.div`
   display: inline-block;
@@ -120,7 +122,7 @@ const CalloutHeaderCaption = styled.div`
   font-style: normal;
   font-weight: 600;
   line-height: 149%;
-`;
+`
 const Container = styled.div`
   width: auto;
   height: 24px;
@@ -131,7 +133,7 @@ const Container = styled.div`
   align-items: center;
   box-sizing: border-box;
   justify-content: center;
-`;
+`
 
 const Navi = styled.button`
   padding: 0;
@@ -140,13 +142,13 @@ const Navi = styled.button`
   border-radius: 50%;
   background: ${(props) => (props.$active ? "#384BFF" : "#E3E3E3")};
   border: none;
-`;
+`
 
 const Close = styled.button`
   background: inherit;
   outline: none;
   border: none;
-`;
+`
 
 const Arrow = styled.button`
   position: absolute;
@@ -155,7 +157,7 @@ const Arrow = styled.button`
   background: inherit;
   border: none;
   outline: none;
-`;
+`
 
 const WrapperAlert = styled.div`
   display: flex;
@@ -163,7 +165,8 @@ const WrapperAlert = styled.div`
   gap: 6px;
   border-radius: 5px;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  width: 100%;
   margin-right: auto;
   background: ${(props) =>
     props.$status === "warning"
@@ -180,21 +183,21 @@ const WrapperAlert = styled.div`
       : "rgba(36, 110, 253, 1)"};
 
   outline: none;
-`;
+`
 
 const TextAlert = styled.span`
   font-size: 12px;
   font-weight: 400;
   line-height: 17.88px;
   text-align: left;
-`;
+`
 
-const IconAlert = styled.span``;
+const IconAlert = styled.span``
 
 const ContainerCheckbox = styled.div`
   display: flex;
   align-items: center;
-`;
+`
 
 const CheckboxInput = styled.input`
   width: 16px;
@@ -202,7 +205,7 @@ const CheckboxInput = styled.input`
   border-radius: 5px;
   border: 1px solid #384bff;
   margin-right: 8px;
-`;
+`
 
 const Label = styled.label`
   font-weight: 400;
@@ -210,7 +213,7 @@ const Label = styled.label`
   line-height: 17.88px;
   color: #7a818b;
   cursor: pointer;
-`;
+`
 
 const ActionsGroup = styled.div`
   display: flex;
@@ -218,7 +221,7 @@ const ActionsGroup = styled.div`
   align-items: center;
   gap: 10px;
   align-self: stretch;
-`;
+`
 
 const ActionButton = styled.div`
   display: flex;
@@ -242,7 +245,7 @@ const ActionButton = styled.div`
   &:active {
     background: ${(props) => (props.$primary ? "#020c19" : "#ddd")};
   }
-`;
+`
 
 const iconClose = (
   <svg
@@ -267,7 +270,7 @@ const iconClose = (
       strokeLinejoin="round"
     />
   </svg>
-);
+)
 
 const errorIcon = (
   <svg
@@ -306,7 +309,7 @@ const errorIcon = (
       </clipPath>
     </defs>
   </svg>
-);
+)
 
 const infoIcon = (
   <svg
@@ -345,7 +348,7 @@ const infoIcon = (
       </clipPath>
     </defs>
   </svg>
-);
+)
 
 const warningIcon = (
   <svg
@@ -377,7 +380,40 @@ const warningIcon = (
       strokeLinejoin="round"
     />
   </svg>
-);
+)
+
+const showTimer = 250
+const hideTimer = 300
+
+const {
+  children,
+  content,
+  title,
+  navi,
+  onClose,
+  // status, - conflict with deprecated Window.status property
+  buttons,
+  isDoNotShowChecked,
+  checked,
+  onDoNotShowChange,
+} = props
+
+const [show, setShow] = useState(false)
+const [debounce, setDebounce] = useState(null)
+
+const handleOnMouseEnter = () => {
+  setDebounce((debounce) => {
+    clearTimeout(debounce);
+    setTimeout(() => setShow(true), showTimer);
+  })
+}
+
+const handleOnMouseLeave = () => {
+  setDebounce((debounce) => {
+    clearTimeout(debounce);
+    setTimeout(() => setShow(false), showTimer);
+  })
+}
 
 const overlay = (
   <CustomTooltip
@@ -386,20 +422,23 @@ const overlay = (
     onMouseLeave={handleOnMouseLeave}
   >
     <Callout>
-      <CalloutHeader>
-        <CalloutHeaderCaption>
-          Step {props.navi.currentStepIndex + 1} of {props.navi.totalSteps}
-        </CalloutHeaderCaption>
-        <Container>
-          {[...Array(props.navi.totalSteps)].map((_, index) => (
-            <Navi
-              key={index}
-              $active={index == props.navi.currentStepIndex ? true : false}
-            />
-          ))}
-        </Container>
-        <Close onClick={props.onClose}>{iconClose}</Close>
-      </CalloutHeader>
+      <Header>
+        <TopLine>
+          <CalloutHeaderCaption>
+            Step {navi?.currentChapterIndex + 1} of {navi?.totalChapters}
+          </CalloutHeaderCaption>
+          <Container>
+            {navi.totalPages > 1 && [...Array(navi?.totalPages)].map((_, index) => (
+              <Navi
+                key={index}
+                $active={index == navi?.currentPageIndex ? true : false}
+              />
+            ))}
+          </Container>
+          <Close onClick={onClose}>{iconClose}</Close>
+        </TopLine>
+        <h1>{title}</h1>
+      </Header>
       {props.status && props.status.text ? (
         <WrapperAlert $status={props.status.type}>
           <IconAlert>
@@ -413,20 +452,20 @@ const overlay = (
         </WrapperAlert>
       ) : null}
 
-      <Markdown text={props.content} />
-      {props.isDoNotShowChecked ? null : (
+      <Markdown text={content} />
+      {isDoNotShowChecked ? null : (
         <ContainerCheckbox>
           <CheckboxInput
             type="checkbox"
-            checked={props.checked}
-            onChange={props.onDoNotShowChange}
+            checked={checked}
+            onChange={onDoNotShowChange}
           />
           <Label htmlFor="checkbox">Don't show this guide again</Label>
         </ContainerCheckbox>
       )}
 
       <ActionsGroup>
-        {props.buttons.map((btn, index) => (
+        {buttons.map((btn, index) => (
           <ActionButton
             key={index}
             $primary={btn.variant == "primary" ? true : false}
@@ -439,7 +478,7 @@ const overlay = (
       </ActionsGroup>
     </Callout>
   </CustomTooltip>
-);
+)
 
 return (
   <OverlayTrigger
@@ -456,4 +495,4 @@ return (
       </span>
     )}
   </OverlayTrigger>
-);
+)
