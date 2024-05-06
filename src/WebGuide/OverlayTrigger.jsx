@@ -3,6 +3,8 @@
  */
 
 const CustomTooltip = styled("Tooltip")`
+  z-index: 9999999; // over the notch
+
   .tooltip-arrow::before {
     border: none;
     display: inline-block;
@@ -454,8 +456,12 @@ return (
     placement="auto"
     offset={[0, 20]}
   >
-    <span onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}>
-      {children}
-    </span>
+    {typeof props.children === "function" ? (
+      props.children
+    ) : (
+      <span onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}>
+        {props.children}
+      </span>
+    )}
   </OverlayTrigger>
 )
