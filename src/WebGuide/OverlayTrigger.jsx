@@ -75,13 +75,35 @@ const CalloutDescription = styled.div`
   line-height: 149%; /* 17.88px */
 `
 
-const CalloutHeader = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  align-self: stretch;
-  justify-content: space-between;
+const Header = styled.div`
   position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  color: #02193A;
+
+  h1 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    padding: 0;
+    margin: 0;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 48px;
+  }
+`
+
+const TopLine = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 24px;
+  margin: 0;
+  padding: 0;
 `
 
 const CalloutHeaderCaption = styled.div`
@@ -361,6 +383,7 @@ const hideTimer = 300
 const {
   children,
   content,
+  title,
   navi,
   onClose,
   // status, - conflict with deprecated Window.status property
@@ -394,20 +417,23 @@ const overlay = (
     onMouseLeave={handleOnMouseLeave}
   >
     <Callout>
-      <CalloutHeader>
-        <CalloutHeaderCaption>
-          Step {navi?.currentStepIndex + 1} of {navi?.totalSteps}
-        </CalloutHeaderCaption>
-        <Container>
-          {[...Array(navi?.totalSteps)].map((_, index) => (
-            <Navi
-              key={index}
-              $active={index == navi?.currentStepIndex ? true : false}
-            />
-          ))}
-        </Container>
-        <Close onClick={onClose}>{iconClose}</Close>
-      </CalloutHeader>
+      <Header>
+        <TopLine>
+          <CalloutHeaderCaption>
+            Step {navi?.currentChapterIndex + 1} of {navi?.totalChapters}
+          </CalloutHeaderCaption>
+          <Container>
+            {navi.totalPages > 1 && [...Array(navi?.totalPages)].map((_, index) => (
+              <Navi
+                key={index}
+                $active={index == navi?.currentPageIndex ? true : false}
+              />
+            ))}
+          </Container>
+          <Close onClick={onClose}>{iconClose}</Close>
+        </TopLine>
+        <h1>{title}</h1>
+      </Header>
       {props.status && props.status.text ? (
         <WrapperAlert $status={props.status.type}>
           <IconAlert>

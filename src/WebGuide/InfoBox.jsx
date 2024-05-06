@@ -428,18 +428,18 @@ return (
       <Header>
         <TopLine>
           <CalloutHeaderCaption>
-            Step {navi?.currentStepIndex + 1} of {navi?.totalSteps}
+            Step {navi?.currentChapterIndex + 1} of {navi?.totalChapters}
           </CalloutHeaderCaption>
-          {<PagesIndicators>
-            {navi.totalSteps > 1 && [...Array(navi.totalSteps)].map(
+          <PagesIndicators>
+            {navi.totalPages > 1 && [...Array(navi.totalPages)].map(
               (_, index) => (
                 <Navi
                   key={index}
-                  $active={index == navi.currentStepIndex ? true : false}
+                  $active={index == navi.currentPageIndex ? true : false}
                 />
               )
             )}
-          </PagesIndicators>}
+          </PagesIndicators>
           <Close onClick={onClose}>{iconClose}</Close>
         </TopLine>
         <h1>{title}</h1>
