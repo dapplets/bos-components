@@ -289,7 +289,7 @@ const Card = styled.div`
   position: relative;
   overflow: auto;
   display: flex;
-  flex 1;
+  flex: 1;
   height: 100%;
   flex-direction: column;
   box-sizing: border-box;
