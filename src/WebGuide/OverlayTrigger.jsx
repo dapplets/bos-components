@@ -23,7 +23,12 @@ const handleOnMouseLeave = () => {
 };
 
 const CustomTooltip = styled("Tooltip")`
+  opacity: 0;
   z-index: 9999999; // over the notch
+
+  &.show {
+    opacity: 1;
+  }
 
   .tooltip-arrow::before {
     border: none;
