@@ -459,9 +459,7 @@ return (
     {typeof props.children === "function" ? (
       props.children
     ) : (
-      <span onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}>
-        {props.children}
-      </span>
+      <span>{props.children}</span>
     )}
   </OverlayTrigger>
 )
