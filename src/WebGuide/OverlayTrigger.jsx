@@ -59,6 +59,7 @@ const Callout = styled.div`
 `
 
 const CalloutTitle = styled.div`
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   color: #02193a;
   font-size: 18px;
   font-style: normal;
@@ -84,15 +85,6 @@ const Header = styled.div`
   align-items: center;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   color: #02193A;
-
-  h1 {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-    padding: 0;
-    margin: 0;
-    font-size: 32px;
-    font-weight: 600;
-    line-height: 48px;
-  }
 `
 
 const TopLine = styled.div`
@@ -118,6 +110,7 @@ const CalloutHeaderCaption = styled.div`
   font-weight: 600;
   line-height: 149%;
 `
+
 const Container = styled.div`
   width: auto;
   height: 24px;
@@ -385,10 +378,12 @@ const {
   onClose,
   // status, - conflict with deprecated Window.status property
   buttons,
-  isDoNotShowChecked,
+  showChecked,
   checked,
   onDoNotShowChange,
 } = props
+
+console.log({props})
 
 const overlay = (
   <CustomTooltip bsPrefix="wg-tooltip">
@@ -408,8 +403,8 @@ const overlay = (
           </Container>
           <Close onClick={onClose}>{iconClose}</Close>
         </TopLine>
-        <h1>{title}</h1>
       </Header>
+
       {props.status && props.status.text ? (
         <WrapperAlert $status={props.status.type}>
           <IconAlert>
@@ -423,8 +418,10 @@ const overlay = (
         </WrapperAlert>
       ) : null}
 
+      <CalloutTitle>{title}</CalloutTitle>
+
       <Markdown text={content} />
-      {isDoNotShowChecked ? null : (
+      {showChecked ? (
         <ContainerCheckbox>
           <CheckboxInput
             type="checkbox"
@@ -433,7 +430,7 @@ const overlay = (
           />
           <Label htmlFor="checkbox">Don't show this guide again</Label>
         </ContainerCheckbox>
-      )}
+      ) : null}
 
       <ActionsGroup>
         {buttons.map((btn, index) => (

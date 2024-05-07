@@ -142,11 +142,12 @@ const iconClose = (
 
 const WrapperAlert = styled.div`
   display: flex;
+  width: 100%;
   padding: 4px 6px;
   gap: 6px;
   border-radius: 5px;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   margin-right: auto;
   background: ${(props) =>
     props.$status === "warning"
@@ -358,7 +359,8 @@ const Card = styled.div`
 
 const ContainerCheckbox = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-end;
+  width: 100%;
 `
 
 const CheckboxInput = styled.input`
@@ -371,7 +373,7 @@ const CheckboxInput = styled.input`
 
 const Label = styled.label`
   font-weight: 400;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 17.88px;
   color: #7a818b;
   cursor: pointer;
@@ -417,7 +419,7 @@ const {
   onClose,
   // status, - conflict with deprecated Window.status property
   buttons,
-  isDoNotShowChecked,
+  showChecked,
   checked,
   onDoNotShowChange,
 } = props
@@ -460,7 +462,7 @@ return (
 
         <Markdown text={content} />
       </Card>
-      {isDoNotShowChecked ? null : (
+      {showChecked ? (
         <ContainerCheckbox>
           <CheckboxInput
             type="checkbox"
@@ -469,7 +471,7 @@ return (
           />
           <Label htmlFor="checkbox">Don't show this guide again</Label>
         </ContainerCheckbox>
-      )}
+      ) : null}
 
       <ActionsGroup>
         {buttons.map((btn, i) => (

@@ -64,6 +64,7 @@ const guideConfig = {
       id: "bos.dapplets.near/gateway/MutableWebExtension",
       type: 'infobox',
       if: { id: "1694995344461894022" }, // ToDo: should be another trigger
+      showChecked: true,
       pages: [
         {
           id: "bos.dapplets.near/gateway/MutableWebExtension/Welcome",
@@ -91,7 +92,47 @@ const guideConfig = {
       ]
     },
     {
-      id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown",
+      id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/1",
+      type: 'callout',
+      namespace: "mweb",
+      contextType: "mutation",
+      injectTo: "hidden",
+      if: { id: { eq: "bos.dapplets.near/mutation/Sandbox" } },
+      arrowTo: "context",
+      pages: [
+        {
+          id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/1/1",
+          title: "It's a sandbox story first (1/2)",
+          status: [],
+          content: "We are now in a sandbox mutation. Through it, we can suspendisse mattis interdum.",
+        },
+        {
+          id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/1/2",
+          title: "It's a sandbox story first (2/2)",
+          status: [],
+          content: "Auctor volutpat nisl quis. Scelerisque morbi eget volutpat aliquet vitae curabitur non.",
+        },
+      ]
+    },
+    {
+      id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/2",
+      type: 'callout',
+      namespace: "mweb",
+      contextType: "notch",
+      injectTo: "hidden",
+      if: { id: { eq: "mutations-list-block" } },
+      arrowTo: "context",
+      pages: [
+        {
+          id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/2/1",
+          title: "It's a sandbox story inner",
+          status: [],
+          content: "We are now in a sandbox mutation. Through it, we can suspendisse mattis interdum auctor volutpat nisl quis. Scelerisque morbi eget volutpat aliquet vitae curabitur non.",
+        },
+      ]
+    },
+    {
+      id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/3",
       type: 'callout',
       namespace: "mweb",
       contextType: "mutation",
@@ -100,19 +141,7 @@ const guideConfig = {
       arrowTo: "context",
       pages: [
         {
-          id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/1",
-          title: "It's a sandbox story first",
-          status: [],
-          content: "We are now in a sandbox mutation. Through it, we can suspendisse mattis interdum auctor volutpat nisl quis. Scelerisque morbi eget volutpat aliquet vitae curabitur non.",
-        },
-        {
-          id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/2",
-          title: "It's a sandbox story inner",
-          status: [],
-          content: "We are now in a sandbox mutation. Through it, we can suspendisse mattis interdum auctor volutpat nisl quis. Scelerisque morbi eget volutpat aliquet vitae curabitur non.",
-        },
-        {
-          id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/3",
+          id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/3/1",
           title: "It's a sandbox story last",
           status: [],
           content: "We are now in a sandbox mutation. Through it, we can suspendisse mattis interdum auctor volutpat nisl quis. Scelerisque morbi eget volutpat aliquet vitae curabitur non.",
@@ -261,6 +290,7 @@ const CalloutsWrapper = (arrowTo) => ({ children, attachContextRef, attachInsPoi
         },
         title: currentPage?.title,
         content: currentPage?.content,
+        showChecked: currentChapter.showChecked,
         children:
           arrowTo === "context"
             ? ({ ref }) => {
@@ -279,7 +309,8 @@ const CalloutsWrapper = (arrowTo) => ({ children, attachContextRef, attachInsPoi
 }
 
 const InfoBoxesWrapper = () => {
-  const pages = guideConfig?.chapters[chapterCounter]?.pages
+  const currentChapter = guideConfig?.chapters[chapterCounter]
+  const pages = currentChapter?.pages
   const currentPage = pages[pageCounter]
   const status = currentPage?.status.length && Object.entries(currentPage?.status[0])[0] // ToDo: mocked!!!
 
@@ -289,8 +320,10 @@ const InfoBoxesWrapper = () => {
       props={{
         type: currentPage.type,
         navi: {
-          currentStepIndex: pageCounter,
-          totalSteps: pages.length
+          currentChapterIndex: chapterCounter,
+          totalChapters: guideConfig?.chapters?.length,
+          currentPageIndex: pageCounter,
+          totalPages: pages.length,
         },
         buttons: [
           {
@@ -312,6 +345,7 @@ const InfoBoxesWrapper = () => {
         },
         title: currentPage?.title,
         content: currentPage?.content,
+        showChecked: currentChapter.showChecked,
       }}
     />
   )
