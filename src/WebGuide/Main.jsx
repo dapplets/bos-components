@@ -135,9 +135,9 @@ const guideConfig = {
       id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/3",
       type: 'callout',
       namespace: "mweb",
-      contextType: "mutation",
+      contextType: "notch",
       injectTo: "hidden",
-      if: { id: { eq: "bos.dapplets.near/mutation/Testing2" } },
+      if: { id: { eq: "mutate-button" } },
       arrowTo: "context",
       pages: [
         {
@@ -149,7 +149,7 @@ const guideConfig = {
       ]
     },
     {
-      id: "bos.dapplets.near/app/Tipping/0",
+      id: "bos.dapplets.near/app/Tipping/1",
       type: 'callout',
       namespace: "bos.dapplets.near/parser/twitter",
       contextType: "post",
@@ -158,28 +158,9 @@ const guideConfig = {
       arrowTo: "insPoint",
       pages: [
         {
-          id: "bos.dapplets.near/app/Tipping/0/1",
-          status: [],
-          title: "It's a Tip app.",
-          content: "Tortor massa massa placerat pulvinar vestibulum. Dapibus in lacus donec laoreet fringilla massa arcu.",
-        },
-      ],
-    },
-    {
-      id: "bos.dapplets.near/app/Tipping/1",
-      type: 'callout',
-      namespace: "bos.dapplets.near/parser/twitter",
-      contextType: "post",
-      injectTo: "southPanel",
-      if: { id: { eq: "1694995344461894022" } },
-      insteadOf: {
-        linkId: "2dec2fe13441c1432d7a881e9cb58659",
-      },
-      pages: [
-        {
           id: "bos.dapplets.near/app/Tipping/1/1",
-          status: [{ warning: 'Warning message for Page 1' }],
-          title: "It's a Tip app.",
+          status: [],
+          title: "It's a Tip app",
           content: "Tortor massa massa placerat pulvinar vestibulum. Dapibus in lacus donec laoreet fringilla massa arcu.",
         },
       ],
@@ -190,34 +171,33 @@ const guideConfig = {
       namespace: "bos.dapplets.near/parser/twitter",
       contextType: "post",
       injectTo: "southPanel",
-      if: { id: { eq: "1694995303642939408" } },
+      if: { id: { eq: "1694995344461894022" } },
       insteadOf: {
         linkId: "2dec2fe13441c1432d7a881e9cb58659",
       },
       pages: [
         {
           id: "bos.dapplets.near/app/Tipping/2/1",
-          status: [{ error: 'Error message for Page 2' }],
-          content: 'Page 2 content',
+          status: [],
+          title: "It's a Tip app",
+          content: "Tortor massa massa placerat pulvinar vestibulum. Dapibus in lacus donec laoreet fringilla massa arcu.",
         },
       ],
     },
     {
-      id: "bos.dapplets.near/app/Tipping/3",
+      id: "bos.dapplets.near/mutation/EarTrigger",
       type: 'callout',
-      namespace: "bos.dapplets.near/parser/twitter",
-      contextType: "post",
-      injectTo: "southPanel",
-      if: { id: { eq: "1694995269547438149" } },
-      insteadOf: {
-        linkId: "2dec2fe13441c1432d7a881e9cb58659",
-      },
+      namespace: "mweb",
+      contextType: "ear-trigger",
+      injectTo: "hidden",
+      if: { id: { eq: "1694995344461894022" } },
       pages: [
         {
-          id: "bos.dapplets.near/app/Tipping/3/1",
-          status: [{ info: 'Information message for Page 3' }],
-          content: 'Page 3 content',
-        }
+          id: "bos.dapplets.near/mutation/EarTrigger/1",
+          status: [],
+          title: "It's an Ear Trigger",
+          content: 'Page 2 content',
+        },
       ],
     },
   ],
