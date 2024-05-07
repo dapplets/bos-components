@@ -169,11 +169,19 @@ const [chapterCounter, setChapterCounter] = useState(0)
 const [pageCounter, setPageCounter] = useState(0)
 
 const handleChapterDecrement = () => {
-  setChapterCounter((val) => Math.max(val - 1, 0))
+  if (chapterCounter !== 0) {
+    setChapterCounter((val) => val - 1)
+    setPageCounter(
+      guideConfig?.chapters[chapterCounter - 1]?.pages?.length
+        ? guideConfig?.chapters[chapterCounter - 1]?.pages?.length - 1
+        : 0
+    )
+  }
 }
 
 const handleChapterIncrement = () => {
   setChapterCounter((val) => Math.min(val + 1, guideConfig?.chapters?.length - 1))
+  setPageCounter(0)
 }
 
 const handleClickPrev = () => {
