@@ -39,6 +39,8 @@ const guideConfig = {
     {
       id: "bos.dapplets.near/gateway/MutableWebExtensionNotch",
       type: 'callout',
+      placement: 'right',
+      strategy: 'fixed',
       namespace: "mweb",
       contextType: "notch",
       injectTo: "hidden",
@@ -56,6 +58,8 @@ const guideConfig = {
     {
       id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/1",
       type: 'callout',
+      placement: 'right',
+      strategy: 'fixed',
       namespace: "mweb",
       contextType: "mutation",
       injectTo: "hidden",
@@ -79,6 +83,8 @@ const guideConfig = {
     {
       id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/2",
       type: 'callout',
+      strategy: 'fixed',
+      placement: 'right-start',
       namespace: "mweb",
       contextType: "notch",
       injectTo: "hidden",
@@ -96,6 +102,7 @@ const guideConfig = {
     {
       id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/3",
       type: 'callout',
+      strategy: 'fixed',
       namespace: "mweb",
       contextType: "notch",
       injectTo: "hidden",
@@ -244,6 +251,8 @@ const CalloutsWrapper = (arrowTo) => ({ children, attachContextRef, attachInsPoi
       loading={children}
       props={{
         type: currentChapter?.type,
+        placement: currentChapter?.placement,
+        strategy: currentChapter?.strategy,
         navi: {
           currentChapterIndex: chapterCounter,
           totalChapters: guideConfig?.chapters?.length,
