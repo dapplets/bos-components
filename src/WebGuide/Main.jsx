@@ -26,7 +26,7 @@ const guideConfig = {
       id: "bos.dapplets.near/gateway/MutableWebExtension",
       type: 'infobox',
       if: { id: "1694995344461894022" }, // ToDo: should be another trigger
-      showChecked: true,
+      // showChecked: true,
       pages: [
         {
           id: "bos.dapplets.near/gateway/MutableWebExtension/Welcome",
