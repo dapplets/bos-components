@@ -84,11 +84,11 @@ const guideConfig = {
       id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/2",
       type: 'callout',
       strategy: 'fixed',
-      placement: 'right-start',
+      placement: 'right',
       namespace: "mweb",
       contextType: "notch",
-      injectTo: "unused-mutations",
-      if: { id: { eq: "unused-mutations" } },
+      injectTo: "hidden",
+      if: { id: { eq: "unused-mutations-title" } },
       arrowTo: "context",
       pages: [
         {
