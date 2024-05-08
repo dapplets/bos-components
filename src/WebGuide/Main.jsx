@@ -57,22 +57,22 @@ const guideConfig = {
       id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/1",
       type: 'callout',
       namespace: "mweb",
-      contextType: "mutation",
-      injectTo: "hidden",
-      if: { id: { eq: "bos.dapplets.near/mutation/Sandbox" } },
+      contextType: "notch",
+      injectTo: "recently-used-mutations",
+      if: { id: { eq: "recently-used-mutations" } },
       arrowTo: "context",
       pages: [
         {
           id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/1/1",
           title: "The list of recently used mutations (1/2)",
           status: [],
-          content: "The current mutation is highlighted with a “star” symbol. To add “favorite” status to a mutation on the current page, just click on the star.",
+          content: "The current mutation is highlighted with a “star” symbol. To add “favorite” status to a mutation on the current page, just click on the star. Now this mutation is active even if a new tab with the current site is open.",
         },
         {
           id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/1/2",
           title: "The list of recently used mutations (2/2)",
-          status: [],
-          content: "Now this mutation is active even if a new tab with the current site is open. The “trash” removes the mutation from the “recently used” list.",
+          status: [{ info: 'Click on the dropdown box below' }],
+          content: "The “trash” removes the mutation from the “recently used” list.",
         },
       ]
     },
@@ -81,15 +81,15 @@ const guideConfig = {
       type: 'callout',
       namespace: "mweb",
       contextType: "notch",
-      injectTo: "hidden",
-      if: { id: { eq: "mutations-list-block" } },
+      injectTo: "unused-mutations",
+      if: { id: { eq: "unused-mutations" } },
       arrowTo: "context",
       pages: [
         {
           id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/2/1",
           title: "All mutations",
           status: [],
-          content: "This is the list of all mutations.",
+          content: "This is the list of all available, previously unused mutations.",
         },
       ]
     },
