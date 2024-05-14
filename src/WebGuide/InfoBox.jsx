@@ -437,83 +437,92 @@ const {
   onDoNotShowChange,
 } = props
 
+const header = (
+  <Header>
+    <TopLine>
+      <CalloutHeaderCaption>
+        Step {navi?.currentChapterIndex + 1} of {navi?.totalChapters}
+      </CalloutHeaderCaption>
+      <PagesIndicators>
+        {navi.totalPages > 1 && [...Array(navi.totalPages)].map(
+          (_, index) => (
+            <Navi
+              key={index}
+              $active={index == navi.currentPageIndex ? true : false}
+            />
+          )
+        )}
+      </PagesIndicators>
+      <Close onClick={onClose}>{iconClose}</Close>
+    </TopLine>
+    <h1>{title}</h1>
+  </Header>
+)
+
+const statuses = (
+  <WrapperAlert $status={props.status.type}>
+    <IconAlert>
+      {props.status.type === "warning"
+        ? warningIcon
+        : props.status.type === "error"
+        ? errorIcon
+        : infoIcon}
+    </IconAlert>
+    <TextAlert>{props.status.text}</TextAlert>
+  </WrapperAlert>
+)
+
+const checkbox = (
+  <ContainerCheckbox>
+    <CheckboxInput
+      type="checkbox"
+      checked={checked}
+      onChange={onDoNotShowChange}
+    />
+    <Label htmlFor="checkbox">Don't show this guide again</Label>
+  </ContainerCheckbox>
+)
+
+const navButtons = buttons?.length > 1 ? (
+  <ActionsGroup>
+    <ActionButton
+      $primary={buttons[1].variant == "primary" ? true : false}
+      onClick={buttons[1].onClick}
+      disabled={buttons[1].disabled}
+    >
+      {buttons[1].label}
+    </ActionButton>
+    <ActionButton
+      $primary={buttons[0].variant == "primary" ? true : false}
+      onClick={buttons[0].onClick}
+      disabled={buttons[0].disabled}
+    >
+      {buttons[0].label}
+    </ActionButton>
+  </ActionsGroup>
+) : buttons?.length === 1 ? (
+  <ActionsGroup>
+    <ActionButton
+      $primary={buttons[0].variant == "primary" ? true : false}
+      onClick={buttons[0].onClick}
+      disabled={buttons[0].disabled}
+    >
+      {buttons[0].label}
+    </ActionButton>
+  </ActionsGroup>
+) : <></>
+
 return (
   <InfoBox>
     <Container>
-      <Header>
-        <TopLine>
-          <CalloutHeaderCaption>
-            Step {navi?.currentChapterIndex + 1} of {navi?.totalChapters}
-          </CalloutHeaderCaption>
-          <PagesIndicators>
-            {navi.totalPages > 1 && [...Array(navi.totalPages)].map(
-              (_, index) => (
-                <Navi
-                  key={index}
-                  $active={index == navi.currentPageIndex ? true : false}
-                />
-              )
-            )}
-          </PagesIndicators>
-          <Close onClick={onClose}>{iconClose}</Close>
-        </TopLine>
-        <h1>{title}</h1>
-      </Header>
+      {header}
       <Card>
-        {props.status && props.status.text ? (
-          <WrapperAlert $status={props.status.type}>
-            <IconAlert>
-              {props.status.type === "warning"
-                ? warningIcon
-                : props.status.type === "error"
-                ? errorIcon
-                : infoIcon}
-            </IconAlert>
-            <TextAlert>{props.status.text}</TextAlert>
-          </WrapperAlert>
-        ) : null}
-
+        {props.status && props.status.text ? statuses : null}
         <Markdown text={content} />
       </Card>
       <Footer>
-        {showChecked ? (
-          <ContainerCheckbox>
-            <CheckboxInput
-              type="checkbox"
-              checked={checked}
-              onChange={onDoNotShowChange}
-            />
-            <Label htmlFor="checkbox">Don't show this guide again</Label>
-          </ContainerCheckbox>
-        ) : null}
-        {buttons?.length > 1 ? (
-          <ActionsGroup>
-            <ActionButton
-              $primary={buttons[1].variant == "primary" ? true : false}
-              onClick={buttons[1].onClick}
-              disabled={buttons[1].disabled}
-            >
-              {buttons[1].label}
-            </ActionButton>
-            <ActionButton
-              $primary={buttons[0].variant == "primary" ? true : false}
-              onClick={buttons[0].onClick}
-              disabled={buttons[0].disabled}
-            >
-              {buttons[0].label}
-            </ActionButton>
-          </ActionsGroup>
-        ) : buttons?.length === 1 ? (
-          <ActionsGroup>
-            <ActionButton
-              $primary={buttons[0].variant == "primary" ? true : false}
-              onClick={buttons[0].onClick}
-              disabled={buttons[0].disabled}
-            >
-              {buttons[0].label}
-            </ActionButton>
-          </ActionsGroup>
-        ) : <></>}
+        {showChecked ? checkbox : null}
+        {navButtons}
       </Footer>
     </Container>
   </InfoBox>
