@@ -20,7 +20,7 @@ const OverlayTriggerWrapper = styled.div`
   }
 `
 
-const guideConfig = {
+const nearSocialConfig = {
   chapters: [
     {
       id: "bos.dapplets.near/gateway/MutableWeb",
@@ -131,6 +131,34 @@ const guideConfig = {
   ],
 }
 
+const nestedCalloutConfig = {
+  chapters: [{
+    id: "CalloutInCallout",
+    type: 'callout',
+    namespace: "mweb",
+    contextType: "wg-chapter",
+    injectTo: "hidden",
+    if: { id: { eq: "bos.dapplets.near/app/Tipping/2" } }, // ID of the last chapter
+    arrowTo: "context",
+    pages: [
+      {
+        id: "CalloutInCallout/1",
+        status: [],
+        title: "CalloutInCallout",
+        content: 'CalloutInCallout',
+      },
+    ],
+  }]
+}
+
+// ToDo: move to a smart contract
+const guideConfigByLinkId = {
+  '3f969452807cb9f0ccc4809e679b861b': nearSocialConfig,
+  '11700d19b9540c6539acc24e5aaf3bb8': nestedCalloutConfig
+}
+
+const guideConfig = guideConfigByLinkId[props.link.id]
+
 const [showApp, setShowApp] = useState(true)
 const [chapterCounter, setChapterCounter] = useState(0)
 const [pageCounter, setPageCounter] = useState(0)
@@ -217,6 +245,7 @@ const ChapterWrapper = (props) => {
       src='bos.dapplets.near/widget/WebGuideTest.OverlayTrigger'
       loading={props?.children}
       props={{
+        id: currentChapter.id,
         type: currentChapter.type,
         placement: currentChapter.placement,
         strategy: currentChapter.strategy,
@@ -251,7 +280,6 @@ const ChapterWrapper = (props) => {
     />
   )
 }
-
 
 return showApp ? (guideConfig.chapters[chapterCounter]?.type === 'infobox' ? (
   <OverlayTriggerWrapper>
