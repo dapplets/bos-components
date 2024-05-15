@@ -67,6 +67,7 @@ return (
     <Widget
       src="bos.dapplets.near/widget/LayoutManager.TriggerEar"
       props={{ show: state.show }}
+       loading={<></>}
     />
     {state.show ? (
       <Widget
@@ -80,6 +81,7 @@ return (
           deleteUserLink,
         }}
         src="bos.dapplets.near/widget/LayoutManager.EarOpened"
+         loading={<></>}
       />
     ) : null}
 
@@ -94,6 +96,7 @@ return (
               waitingAppIdsSet: state.waitingAppIdsSet,
             }}
             src="bos.dapplets.near/widget/ComponentsSearch"
+             loading={<></>}
           />
         </FloatingModal>
       </DappletOverlay>
