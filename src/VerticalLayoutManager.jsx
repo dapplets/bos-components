@@ -65,8 +65,20 @@ return (
               ) : null}
             </WidgetBadgeWrapper>
           ) : null}
-
-          <Widget src={widget.src} props={widget.props} />
+          <div
+            data-mweb-context-type="injected-widget"
+            data-mweb-context-parsed={JSON.stringify({
+              id: `${props.context.id}/${widget.linkId}`,
+              parentContextId: props.context.id,
+              widgetSrc: widget.src,
+            })}
+          >
+            <Widget src={widget.src} props={widget.props} />
+            <div
+              data-mweb-insertion-point="hidden"
+              style={{ display: "none" }}
+            />
+          </div>
         </div>
       ))}
   </Container>

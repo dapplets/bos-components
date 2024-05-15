@@ -32,7 +32,7 @@ const nearSocialConfig = {
           id: "bos.dapplets.near/gateway/MutableWeb/Welcome",
           title: "You’re entering Mutable Web",
           status: [{ info: 'You must be logged in to make all features available' }],
-          content: "\nMutable Web is a new web3 paradigm that allows anyone to add custom functionality to existing websites and share them within your community — no matter who owns the website.\n\nBecome the co-owner of any website you are using!\n\n### Mutation switch\n\n![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-008.png)\n\nYou can switch between website mutations created by different communities.\n\nMutable Web also works on [Twitter](https://twitter.com/MrConCreator) — check out the Web Guide there\n",
+          content: "Mutable Web is a new web3 paradigm that allows anyone to add custom functionality to existing websites and share them within your community — no matter who owns the website.\n\nBecome the co-owner of any website you are using!\n\n### Mutation switch\n\n![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-008.png)\n\nYou can switch between website mutations created by different communities.\n\n[Mutable Web also runs on X](https://augm.link/mutate/?t=https%3A%2F%2Ftwitter.com%2FMrConCreator&m=bos.dapplets.near%2FSandbox). Сheck its’ Web Guide there!",
         },
       ]
     },
@@ -51,7 +51,7 @@ const nearSocialConfig = {
           id: "bos.dapplets.near/gateway/MutableWebDropdown/1/1",
           title: "Mutation switch",
           status: [{ info: 'Click on the dropdown box' }],
-          content: "Mutation switch allows user to choose between applications’ sets.",
+          content: "This is a mutation switcher for choosing between applications' sets.",
         },
       ]
     },
@@ -70,7 +70,7 @@ const nearSocialConfig = {
           id: "bos.dapplets.near/gateway/MutableWebDropdown/2/1",
           title: "All mutations",
           status: [],
-          content: "This is the list of all available mutations.",
+          content: "Choose mutation (application set) from the list.",
         },
       ]
     },
@@ -87,7 +87,7 @@ const nearSocialConfig = {
           id: "bos.dapplets.near/app/Tipping/1/1",
           status: [],
           title: "Tipping app",
-          content: "If you want to modestly thank the author of the tweet you like...",
+          content: "If you want to modestly thank the author of the post you like...",
         },
       ],
     },
@@ -112,6 +112,26 @@ const nearSocialConfig = {
       ],
     },
     {
+      id: "bos.dapplets.near/app/Paywall",
+      type: "callout",
+      namespace: "mweb",
+      contextType: "injected-widget",
+      injectTo: "hidden",
+      if: {
+        parentContextId: { eq: "dappletsproject.near/104105338" },
+        widgetSrc: { eq: "bos.dapplets.near/widget/Paywall.Main" },
+      },
+      arrowTo: "context",
+      pages: [
+        {
+          id: "bos.dapplets.near/app/Paywall/1",
+          status: [],
+          title: "Paywall app",
+          content: "Paywall app allows users to add pictures to posts and sell an access to them.",
+        },
+      ],
+    },
+    {
       id: "bos.dapplets.near/mutation/EarTrigger",
       type: 'callout',
       namespace: "mweb",
@@ -124,7 +144,24 @@ const nearSocialConfig = {
           id: "bos.dapplets.near/mutation/EarTrigger/1",
           status: [],
           title: "Apps control panel",
-          content: 'We add the App control panel to every post. By using it the user can add to the right-on post or inside the panel widgets, which expands the browser workflow possibilities.',
+          content: 'We’ve added a special container to all posts. By using it, the user can attach widgets, which will expand Near Social possibilities.',
+        },
+      ],
+    },
+    {
+      id: "bos.dapplets.near/mutation/EarTrigger/copy",
+      type: 'callout',
+      namespace: "mweb",
+      contextType: "ear-trigger",
+      injectTo: "hidden",
+      if: { id: { eq: "dappletsproject.near/104105338" } },
+      arrowTo: "context",
+      pages: [
+        {
+          id: "bos.dapplets.near/mutation/EarTrigger/copy/1",
+          status: [],
+          title: "Apps control panel",
+          content: '[See other Mutable Web facilities on X](https://augm.link/mutate/?t=https%3A%2F%2Ftwitter.com%2FMrConCreator&m=bos.dapplets.near%2FSandbox)',
         },
       ],
     },
@@ -138,14 +175,26 @@ const nestedCalloutConfig = {
     namespace: "mweb",
     contextType: "wg-chapter",
     injectTo: "hidden",
-    if: { id: { eq: "bos.dapplets.near/app/Tipping/2" } }, // ID of the last chapter
+    if: { id: { eq: "bos.dapplets.near/mutation/EarTrigger/copy" } }, // ID of the last chapter
     arrowTo: "context",
     pages: [
       {
         id: "CalloutInCallout/1",
         status: [],
-        title: "CalloutInCallout",
-        content: 'CalloutInCallout',
+        title: "Web Guides 1/3",
+        content: 'This Web Guide is also an app. Any user can create the same guide in order to explain other users some interface or a workflow. Web Guide consist of callouts, which point out elements (original or imbedded by other apps).',
+      },
+      {
+        id: "CalloutInCallout/2",
+        status: [],
+        title: "Web Guides 2/3",
+        content: '![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/webguide-004.png)\n\nWeb Guides can consist of several chapters.',
+      },
+      {
+        id: "CalloutInCallout/3",
+        status: [],
+        title: "Web Guides 3/3",
+        content: '![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/webguide-003.png)\n\nWeb Guide navigation is occuring via buttons.',
       },
     ],
   }]
