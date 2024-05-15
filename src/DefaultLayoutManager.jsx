@@ -1,18 +1,22 @@
-if (!props.widgets || props.widgets.length === 0) return <></>;
+if (
+  (!props.widgets || props.widgets.length === 0) &&
+  (!props.components || props.components.length === 0)
+)
+  return <></>;
 
-const [waitingAppIdsSet, changeWaitingAppIdsSet] = useState(new Set())
+const [waitingAppIdsSet, changeWaitingAppIdsSet] = useState(new Set());
 
 const handleRemoveWidget = (linkId) => {
   changeWaitingAppIdsSet((val) => val.add(linkId));
   const callback = () => {
-    waitingAppIdsSet.delete(linkId)
+    waitingAppIdsSet.delete(linkId);
     changeWaitingAppIdsSet((val) => {
-      val.delete(linkId)
-      return val
+      val.delete(linkId);
+      return val;
     });
-  }
+  };
   props.deleteUserLink(linkId).then(callback).catch(callback);
-}
+};
 
 const Container = styled.div`
   display: flex;
@@ -56,28 +60,64 @@ return (
             <WidgetBadgeWrapper
               title={
                 widget.linkAuthorId === context.accountId
-                  ? `Remove ${widget.src.split("widget/").pop()}`
+                  ? `Remove ${widget.src.split("widget/").pop()} injected by ${
+                      widget.linkAuthorId
+                    } (link ID: ${widget.linkId})`
                   : "disable in edit mode "
               }
               style={{
                 opacity: widget.linkAuthorId === context.accountId ? "1" : "0",
               }}
             >
-              {widget.linkAuthorId === context.accountId ? waitingAppIdsSet.has(widget.linkId) ? (
-                <span role="status" aria-hidden="true" class="spinner-grow spinner-grow-sm" />
-              ) : (
-                <Widget
-                 loading={<></>}
-                  src="bos.dapplets.near/widget/LayoutManager.DeleteWidgetButton"
-                  props={{
-                    onClick: () => handleRemoveWidget(widget.linkId),
-                  }}
-                />
+              {widget.linkAuthorId === context.accountId ? (
+                waitingAppIdsSet.has(widget.linkId) ? (
+                  <span
+                    role="status"
+                    aria-hidden="true"
+                    class="spinner-grow spinner-grow-sm"
+                  />
+                ) : (
+                  <Widget
+                    src="bos.dapplets.near/widget/LayoutManager.DeleteWidgetButton"
+                    props={{
+                      onClick: () => handleRemoveWidget(widget.linkId),
+                    }}
+                    loading={<></>}
+                  />
+                )
               ) : null}
             </WidgetBadgeWrapper>
           ) : null}
-          <Widget  loading={<></>} src={widget.src} props={widget.props} />
+          <div
+            data-mweb-context-type="injected-widget"
+            data-mweb-context-parsed={JSON.stringify({
+              id: `${props.context.id}/${widget.linkId}`,
+              parentContextId: props.context.id,
+              widgetSrc: widget.src,
+            })}
+          >
+            <Widget src={widget.src} props={widget.props} loading={<></>} />
+            <div
+              data-mweb-insertion-point="hidden"
+              style={{ display: "none" }}
+            />
+          </div>
         </WidgetWrapper>
       ))}
+
+    {props.components
+      ? props.components.map((cmp, i) => {
+          const WrapperComponent = cmp.component;
+          return (
+            <WidgetWrapper key={i}>
+              <WrapperComponent
+                context={props.context}
+                attachContextRef={props.attachContextRef}
+                attachInsPointRef={props.attachInsPointRef}
+              />
+            </WidgetWrapper>
+          );
+        })
+      : null}
   </Container>
 );

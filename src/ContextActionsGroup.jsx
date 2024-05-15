@@ -1,6 +1,7 @@
 const widgets = props.widgets ?? [];
 const apps = props.apps ?? [];
 const {
+  context,
   isEditMode,
   createUserLink,
   deleteUserLink,
@@ -26,15 +27,17 @@ const handleCloseMenu = () => State.update({ showMenu: false, show: false });
 
 const handleSelectComponent = (app) => {
   State.update({ waitingAppIdsSet: state.waitingAppIdsSet.add(app.id) });
-  createUserLink(app.id).then(() => {
-    const waitingAppIdsSet = state.waitingAppIdsSet
-    waitingAppIdsSet.delete(app.id)
-    State.update({ waitingAppIdsSet });
-  }).catch(() => {
-    const waitingAppIdsSet = state.waitingAppIdsSet
-    waitingAppIdsSet.delete(app.id)
-    State.update({ waitingAppIdsSet });
-  });
+  createUserLink(app.id)
+    .then(() => {
+      const waitingAppIdsSet = state.waitingAppIdsSet;
+      waitingAppIdsSet.delete(app.id);
+      State.update({ waitingAppIdsSet });
+    })
+    .catch(() => {
+      const waitingAppIdsSet = state.waitingAppIdsSet;
+      waitingAppIdsSet.delete(app.id);
+      State.update({ waitingAppIdsSet });
+    });
 };
 
 const OverlayTriggerWrapper = styled.div`
@@ -48,15 +51,13 @@ const FloatingModal = styled.div`
   top: 50%;
   transform: translate(-50%, -50%);
   animation: falling-animation 0.3s linear forwards;
-translate: all ease 0.2s;
+  translate: all ease 0.2s;
   @keyframes falling-animation {
     from {
       transform: translate(-50%, -200%);
-
     }
- 
+
     to {
-   
       transform: translate(-50%, -50%);
     }
   }
@@ -66,11 +67,12 @@ return (
   <OverlayTriggerWrapper onMouseOver={handleOnMouseEnter}>
     <Widget
       src="bos.dapplets.near/widget/LayoutManager.TriggerEar"
-      props={{ show: state.show }}
-       loading={<></>}
+      props={{ show: state.show, context }}
+      loading={<></>}
     />
     {state.show ? (
       <Widget
+        loading={<></>}
         props={{
           widgets,
           isEditMode,
@@ -89,6 +91,7 @@ return (
       <DappletOverlay>
         <FloatingModal>
           <Widget
+            loading={<></>}
             props={{
               handleCloseMenu,
               onSelect: handleSelectComponent,
