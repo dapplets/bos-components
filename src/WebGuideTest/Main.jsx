@@ -23,18 +23,73 @@ const OverlayTriggerWrapper = styled.div`
 const guideConfig = {
   chapters: [
     {
-      id: "bos.dapplets.near/gateway/MutableWebExtension",
+      id: "bos.dapplets.near/gateway/MutableWeb",
       type: 'infobox',
       if: { id: "1694995344461894022" }, // ToDo: should be another trigger
       // showChecked: true,
       pages: [
         {
-          id: "bos.dapplets.near/gateway/MutableWebExtension/Welcome",
+          id: "bos.dapplets.near/gateway/MutableWeb/Welcome",
           title: "You’re entering Mutable Web",
           status: [{ info: 'You must be logged in to make all features available' }],
-          content: "\nMutable Web is a new web3 paradigm that allows anyone to add custom functionality to existing websites and share them within your community— no matter who owns the website.\n\nBecome the co-owner of any website you are using!\n\n### Mutation switch\n\n![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-video-001.webp)\n\nYou can switch between website mutations created by different communities.\n\n[See more examples on our playground](https://twitter.com/MrConCreator)\n",
+          content: "\nMutable Web is a new web3 paradigm that allows anyone to add custom functionality to existing websites and share them within your community — no matter who owns the website.\n\nBecome the co-owner of any website you are using!\n\n### Mutation switch\n\n![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-008.png)\n\nYou can switch between website mutations created by different communities.\n\nMutable Web also works on [Twitter](https://twitter.com/MrConCreator) — check out the Web Guide there\n",
         },
       ]
+    },
+    {
+      id: "bos.dapplets.near/gateway/MutableWebDropdown/1",
+      type: 'callout',
+      placement: 'right',
+      strategy: 'fixed',
+      namespace: "mweb",
+      contextType: "mweb-gateway",
+      injectTo: "mutation-wrapper",
+      if: { id: { eq: "mutation-wrapper" } },
+      arrowTo: "context",
+      pages: [
+        {
+          id: "bos.dapplets.near/gateway/MutableWebDropdown/1/1",
+          title: "Mutation switch",
+          status: [{ info: 'Click on the dropdown box' }],
+          content: "Mutation switch allows user to choose between applications’ sets.",
+        },
+      ]
+    },
+    {
+      id: "bos.dapplets.near/gateway/MutableWebDropdown/2",
+      type: 'callout',
+      strategy: 'fixed',
+      placement: 'right',
+      namespace: "mweb",
+      contextType: "mweb-gateway",
+      injectTo: "mutations-list",
+      if: { id: { eq: "mutations-list" } },
+      arrowTo: "context",
+      pages: [
+        {
+          id: "bos.dapplets.near/gateway/MutableWebDropdown/2/1",
+          title: "All mutations",
+          status: [],
+          content: "This is the list of all available mutations.",
+        },
+      ]
+    },
+    {
+      id: "bos.dapplets.near/app/Tipping/1",
+      type: 'callout',
+      namespace: "bos.dapplets.near/parser/near-social-json",
+      contextType: "post",
+      injectTo: "avatar",
+      if: { id: { eq: "dappletsproject.near/104105338" } },
+      arrowTo: "insPoint",
+      pages: [
+        {
+          id: "bos.dapplets.near/app/Tipping/1/1",
+          status: [],
+          title: "Tipping app",
+          content: "If you want to modestly thank the author of the tweet you like...",
+        },
+      ],
     },
     {
       id: "bos.dapplets.near/app/Tipping/2",
@@ -43,7 +98,7 @@ const guideConfig = {
       contextType: "injected-widget",
       injectTo: "hidden",
       if: {
-        parentContextId: { eq: "dapplets.near/104755842" },
+        parentContextId: { eq: "dappletsproject.near/104105338" },
         widgetSrc: { eq: "bos.dapplets.near/widget/Tipping.Main" },
       },
       arrowTo: "context",
@@ -62,7 +117,7 @@ const guideConfig = {
       namespace: "mweb",
       contextType: "ear-trigger",
       injectTo: "hidden",
-      if: { id: { eq: "dapplets.near/104755842" } },
+      if: { id: { eq: "dappletsproject.near/104105338" } },
       arrowTo: "context",
       pages: [
         {
