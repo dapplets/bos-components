@@ -232,7 +232,7 @@ const nearSocialConfig = {
       namespace: "bos.dapplets.near/parser/near-social-json",
       contextType: "post",
       injectTo: "avatar",
-      if: { id: { eq: "dappletsproject.near/104105338" } },
+      if: { id: { eq: "dappletsproject.near/119034910" } },
       arrowTo: "insPoint",
       pages: [
         {
@@ -250,7 +250,7 @@ const nearSocialConfig = {
       contextType: "injected-widget",
       injectTo: "hidden",
       if: {
-        parentContextId: { eq: "dappletsproject.near/104105338" },
+        parentContextId: { eq: "dappletsproject.near/119034910" },
         widgetSrc: { eq: "bos.dapplets.near/widget/Tipping.Main" },
       },
       arrowTo: "context",
@@ -269,7 +269,7 @@ const nearSocialConfig = {
       namespace: "mweb",
       contextType: "ear-trigger",
       injectTo: "hidden",
-      if: { id: { eq: "dappletsproject.near/104105338" } },
+      if: { id: { eq: "dappletsproject.near/119034910" } },
       arrowTo: "context",
       pages: [
         {
@@ -286,7 +286,7 @@ const nearSocialConfig = {
       namespace: "mweb",
       contextType: "ear-trigger",
       injectTo: "hidden",
-      if: { id: { eq: "dappletsproject.near/104105338" } },
+      if: { id: { eq: "dappletsproject.near/119034910" } },
       arrowTo: "context",
       pages: [
         {
