@@ -486,6 +486,7 @@ const ChapterWrapper = (props) => {
                 return props.children;
               }
             : props.children,
+        skin: currentChapter.skin ?? 'DEFAULT',
       }}
     />
   )
