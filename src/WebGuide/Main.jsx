@@ -9,8 +9,8 @@ const twitterConfig = {
         {
           id: "bos.dapplets.near/gateway/MutableWebExtension/Welcome",
           title: "You’re entering Mutable Web",
-          status: [{ info: 'You must be logged in to make all features available' }],
-          content: "\nMutable Web is a new web3 paradigm that allows anyone to add custom functionality to existing websites and share it with your community— no matter who owns the website.\n\nBecome a co-owner of any website you are use!\n\n### Mutation switch\n\n![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-video-001.webp)\n\nYou can switch between website mutations created by different communities.\n\n[See more examples in our playground](https://twitter.com/MrConCreator)\n",
+          status: [],
+          content: "\nMutable Web is a new web3 paradigm that allows anyone to add custom functionality to existing websites and share it with your community— no matter who owns the website.\n\nBecome a co-owner of any website you are use!\n\n### Mutation switch\n\n![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-video-001.webp)\n\nYou can switch between website mutations created by different communities.",
         },
       ],
       skin: 'META_GUIDE',
@@ -210,8 +210,8 @@ const nearSocialConfig = {
         {
           id: "bos.dapplets.near/gateway/MutableWeb/Welcome",
           title: "You’re entering Mutable Web",
-          status: [{ info: 'You must be logged in to make all features available' }],
-          content: "Mutable Web is a new web3 paradigm that allows anyone to add custom functionality to existing websites and share them within your community — no matter who owns the website.\n\nBecome the co-owner of any website you are using!\n\n### Mutation switch\n\n![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-008.png)\n\nYou can switch between website mutations created by different communities.\n\n[Mutable Web also runs on X](https://augm.link/mutate/?t=https%3A%2F%2Ftwitter.com%2FMrConCreator&m=bos.dapplets.near%2Fmutation%2FSandbox). Сheck its’ Web Guide there!",
+          status: [],
+          content: "[Mutable Web also runs on Legacy Web2.](https://augm.link/mutate/?t=https%3A%2F%2Ftwitter.com%2FMrConCreator&m=bos.dapplets.near%2Fmutation%2FSandbox) Check its’ Web Guide there!\n\nMutable Web is a new web3 paradigm that allows anyone to add custom functionality to existing websites and share them within your community — no matter who owns the website.\n\nBecome the co-owner of any website you are using!\n\n### Mutation switch\n\n![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-008.png)\n\nYou can switch between website mutations created by different communities.",
         },
       ],
       skin: 'META_GUIDE',
