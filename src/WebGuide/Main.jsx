@@ -276,7 +276,7 @@ const nearSocialConfig = {
           id: "bos.dapplets.near/mutation/EarTrigger/1",
           status: [],
           title: "Apps control panel",
-          content: 'We've added a special container to all posts. This allows users to attach widgets that extend the possibilities of Near Social.',
+          content: 'We’ve added a special container to all posts. This allows users to attach widgets that extend the possibilities of Near Social.',
         },
       ],
     },
