@@ -31,7 +31,7 @@ const ButtonIconWrapper = styled.button`
   }
 `;
 
-const ButtonActionWrapper = styled.button`
+const ButtonWrapper = styled.button`
   display: flex;
   box-sizing: border-box;
   overlow: hidden;
@@ -43,27 +43,47 @@ const ButtonActionWrapper = styled.button`
   outline: none;
   border: none;
   padding: 0;
-  background: ${(props) => (props.$active ? "#384BFF" : "#FFFFFF")};
   border-radius: 4px;
+  background: transparent;
   box-shadow: 0 4px 5px 0 rgba(45, 52, 60, 0.1);
   transition: all 0.2s ease;
-
-  &:hover {
-    transform: scale(1.1);
-  }
 `;
 
-const ImgButtonWrapper = styled.span`
-  display: flex;
-  box-sizing: border-box;
-  overlow: hidden;
-  cursor: pointer;
-  border-radius: 50%;
-  justify-content: center;
-  align-items: center;
-  width: 18px;
-  height: 18px;
-`;
+// todo: replace for WebGuide
+// const ButtonActionWrapper = styled.button`
+//   display: flex;
+//   box-sizing: border-box;
+//   overlow: hidden;
+//   cursor: pointer;
+//   justify-content: center;
+//   align-items: center;
+//   width: 46px;
+//   height: 22px;
+//   outline: none;
+//   border: none;
+//   padding: 0;
+//   background: ${(props) => (props.$active ? "#384BFF" : "#FFFFFF")};
+//   border-radius: 4px;
+//   box-shadow: 0 4px 5px 0 rgba(45, 52, 60, 0.1);
+//   transition: all 0.2s ease;
+
+//   &:hover {
+//     transform: scale(1.1);
+//   }
+// `;
+
+// todo: replace for WebGuide
+// const ImgButtonWrapper = styled.span`
+//   display: flex;
+//   box-sizing: border-box;
+//   overlow: hidden;
+//   cursor: pointer;
+//   border-radius: 50%;
+//   justify-content: center;
+//   align-items: center;
+//   width: 18px;
+//   height: 18px;
+// `;
 
 // todo: replace on iconDefault. Now - from layout
 const iconDefaultProfile = (
@@ -83,6 +103,7 @@ const iconDefaultProfile = (
   </svg>
 );
 
+// todo: replace for WebGuide
 const iconActiveGuide = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -99,6 +120,7 @@ const iconActiveGuide = (
   </svg>
 );
 
+// todo: replace for WebGuide
 const iconDefaultGuide = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -122,11 +144,10 @@ return (
     {/* todo: need  conditions for buttons*/}
     {/* todo: need  arrays  buttons*/}
     {/* todo: need  conditions  icons*/}
-    <ButtonActionWrapper>
-      <ImgButtonWrapper>{iconDefaultGuide}</ImgButtonWrapper>
-    </ButtonActionWrapper>
-    <ButtonActionWrapper $active>
-      <ImgButtonWrapper>{iconActiveGuide}</ImgButtonWrapper>
-    </ButtonActionWrapper>
+    <ButtonWrapper>
+      {
+        // todo: add widget action
+      }
+    </ButtonWrapper>
   </SidePanelWrapper>
 );
