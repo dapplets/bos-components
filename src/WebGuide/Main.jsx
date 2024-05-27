@@ -549,6 +549,7 @@ return (
         component={() => <Widget
           src='bos.dapplets.near/widget/WebGuide.Action'
           props={{
+            tooltype:'WebGuide',
             isActive: showApp,
             handleAction,
           }}
