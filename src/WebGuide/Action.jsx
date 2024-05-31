@@ -1,4 +1,4 @@
-const { isActive, handleAction, tooltype } = props
+const { isActive, handleAction, tooltip } = props
 
 const ButtonActionWrapper = styled.button`
   display: flex;
@@ -57,7 +57,7 @@ const iconQuestionMark = (isActive) => (
 );
 
 return (
-  <ButtonActionWrapper title={tooltype} $isActive={isActive} onClick={handleAction}>
+  <ButtonActionWrapper title={tooltip} $isActive={isActive} onClick={handleAction}>
     <ImgButtonWrapper>{iconQuestionMark(isActive)}</ImgButtonWrapper>
   </ButtonActionWrapper>
 );
