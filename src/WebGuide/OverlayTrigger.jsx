@@ -154,6 +154,7 @@ const Header = styled.div`
 const TopLine = styled.div`
   position: relative;
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
   align-items: center;
   width: 100%;
@@ -275,6 +276,8 @@ const Card = styled.div`
 `
 
 const MarkdownWrapper = styled.div`
+  width: 100%;
+
   h3 {
     padding: 8px 0 0;
     margin: 0;
@@ -607,26 +610,32 @@ const {
   skin,
 } = props
 
+console.log('props in Overlay Trigger', props)
+
 const header = (
   <Header $col={themes[skin].colorMain}>
     <TopLine>
-      <CalloutHeaderCaption $col={themes[skin].colorMain}>
-        Step {navi?.currentChapterIndex + 1} of {navi?.totalChapters}
-      </CalloutHeaderCaption>
-      <PagesIndicators>
-        {navi.totalPages > 1 && [...Array(navi?.totalPages)].map(
-          (_, index) => (
-            <Navi
-              key={index}
-              $active={index == navi?.currentPageIndex ? true : false}
-              $navActive={themes[skin].navActive}
-              $navInactiveBg={themes[skin].navInactiveBg}
-              $navInactiveBorder={themes[skin].navInactiveBorder}
-            />
-          )
-        )}
-      </PagesIndicators>
       <Close onClick={onClose}>{iconClose(themes[skin].colorMain)}</Close>
+      {navi ? (
+        <>
+          <PagesIndicators>
+            {navi.totalPages > 1 && [...Array(navi?.totalPages)].map(
+              (_, index) => (
+                <Navi
+                  key={index}
+                  $active={index == navi?.currentPageIndex ? true : false}
+                  $navActive={themes[skin].navActive}
+                  $navInactiveBg={themes[skin].navInactiveBg}
+                  $navInactiveBorder={themes[skin].navInactiveBorder}
+                />
+              )
+            )}
+          </PagesIndicators>
+          <CalloutHeaderCaption $col={themes[skin].colorMain}>
+            Step {navi?.currentChapterIndex + 1} of {navi?.totalChapters}
+          </CalloutHeaderCaption>
+        </>
+      ) : null}
     </TopLine>
   </Header>
 )
@@ -682,7 +691,7 @@ const actionButton = (btn) => (
   </ActionButton>
 )
 
-const navButtons = props.type === 'callout' ? (
+const navButtons = !buttons ? null : props.type === 'callout' ? (
   <ActionsGroup $type={props.type}>
     {buttons.map((btn) => actionButton(btn))}
   </ActionsGroup>
@@ -706,9 +715,9 @@ const callout = (
   >
     {header}
     {props.status?.text ? statuses : null}
-    <Title $type={props.type} $col={themes[skin].colorMain}>
+    {title ? (<Title $type={props.type} $col={themes[skin].colorMain}>
       {title}
-    </Title>
+    </Title>) : null}
     <MarkdownWrapper $colH={themes[skin].colorMain} $colP={themes[skin].colorP}>
       <Markdown text={content}/>
     </MarkdownWrapper>
@@ -737,9 +746,9 @@ const infobox = (
     $bg={themes[skin].bgMain}
   >
     {header}
-    <Title $type={props.type} $col={themes[skin].colorMain}>
+    {title ? (<Title $type={props.type} $col={themes[skin].colorMain}>
       {title}
-    </Title>
+    </Title>) : null}
     <Card $bg={themes[skin].cardBg}>
       {props.status?.text ? statuses : null}
       <MarkdownWrapper $colH={themes[skin].colorMain} $colP={themes[skin].colorP}>
