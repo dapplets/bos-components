@@ -155,7 +155,7 @@ const twitterConfig = {
       namespace: "mweb",
       contextType: "mweb-overlay-action",
       injectTo: "mweb-overlay-action",
-      if: { id: { eq: "web-guide-action" } },
+      if: { id: { eq: "web-guide-action-web-guide" } },
       arrowTo: "context",
       pages: [
         {
@@ -372,7 +372,7 @@ const nearSocialConfig = {
       namespace: "mweb",
       contextType: "mweb-overlay-action",
       injectTo: "mweb-overlay-action",
-      if: { id: { eq: "web-guide-action" } },
+      if: { id: { eq: "web-guide-action-web-guide" } },
       arrowTo: "context",
       pages: [
         {
@@ -711,6 +711,7 @@ return (
         component={() => <Widget
           src='bos.dapplets.near/widget/WebGuide.Action'
           props={{
+            appId: 'web-guide',
             tooltip: showApp ? 'Stop Web Guide' : 'Run Web Guide',
             isActive: showApp,
             handleAction,
