@@ -44,6 +44,7 @@
     "deleteUserLink": null,
     "enableEditMode": null,
     "disableEditMode": null,
+    "notify":null,
     "apps": [
         {
             "id": "bos.dapplets.near/app/Paywall",
