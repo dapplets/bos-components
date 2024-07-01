@@ -8,7 +8,8 @@ const Button = styled.button`
   font-weight: 500;
   line-height: 15px;
   text-align: left;
-  border: none;
+  border: 1px solid #5b7083;
+  border-radius:10px;
   background: none;
   gap: 6px;
 
@@ -23,56 +24,60 @@ const Button = styled.button`
 
 const handleInfoClick = () => {
   props.notify({
+    type: "info",
     subject: "This Info",
     body: "Text Info",
-
-    type: "INFO",
   });
 };
+
 const handleWarnClick = () => {
   props.notify({
+    type: "warning",
     subject: "This Warn",
     body: "Text Warning",
-
-    type: "WARN",
   });
 };
+
 const handleErrorClick = () => {
   props.notify({
+    type: "error",
     subject: "This Err",
     body: "Text Error",
-
-    type: "ERROR",
   });
 };
 
 const handleTxClick = () => {
   props.notify({
+    type: "info",
     subject: "This Tx",
     body: "Text Tx",
-    actions: [{
-      label: "OK",
-      onClick: () => console.log('OK'),
-    }, {
-      label: "Cancel",
-      onClick: () => console.log('Cancel'),
-    }]
+    onClick: () => 123,
+    actions: [
+      {
+        label: "OK",
+        onClick: () => {
+          console.log("OK");
+        },
+      },
+      {
+        label: "Cancel",
+        onClick: () => {
+          console.log("Cancel");
+        },
+      },
+    ],
   });
-
-  Near.call(
-    TIPPING_CONTRACT_NAME,
-    "sendTips",
-    {
-      accountGId: accountId,
-      itemId: itemGlobalId,
-    },
-    "50000000000000",
-    total
-  );
 };
 
 return (
-  <div>
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: "10px",
+    }}
+  >
     <Button onClick={() => handleInfoClick()}>
       <div style={{ color: "#384BFF" }}>INFO</div>
     </Button>
