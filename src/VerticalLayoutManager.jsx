@@ -81,7 +81,11 @@ return (
               widgetSrc: widget.src,
             })}
           >
-            <Widget loading={<></>} src={widget.src} props={widget.props} />
+            <Widget
+              loading={<></>}
+              src={widget.src}
+              props={{ ...widget.props, notify: props.notify }}
+            />
             <div
               data-mweb-insertion-point="hidden"
               style={{ display: "none" }}
