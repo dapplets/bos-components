@@ -1,5 +1,5 @@
 const CustomTooltipDefault = styled("DappletTooltip")`
-  z-index: 9999999; // over the notch
+  z-index: 99999999; // over the notch
 
   &[data-popper-reference-hidden="true"] {
     visibility: hidden;
@@ -46,7 +46,7 @@ const CustomTooltipDefault = styled("DappletTooltip")`
 `
 
 const CustomTooltipMeta = styled("DappletTooltip")`
-  z-index: 9999999; // over the notch
+  z-index: 99999999; // over the notch
 
   &[data-popper-reference-hidden="true"] {
     visibility: hidden;
@@ -129,11 +129,11 @@ const InfoBox = styled.div`
 const Callout = styled.div`
   display: flex;
   width: 320px;
-  padding: 20px;
+  padding: 12px 14px 14px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
   border-radius: 10px;
   border: 1px solid ${(props) => props.$border};
   background: ${(props) => props.$bg};
@@ -154,6 +154,7 @@ const Header = styled.div`
 const TopLine = styled.div`
   position: relative;
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
   align-items: center;
   width: 100%;
@@ -164,7 +165,6 @@ const TopLine = styled.div`
 
 const CalloutHeaderCaption = styled.div`
   display: inline-block;
-  max-width: 30%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -173,6 +173,7 @@ const CalloutHeaderCaption = styled.div`
   font-style: normal;
   font-weight: 600;
   line-height: 149%;
+  flex: 1;
 `
 
 const PagesIndicators = styled.div`
@@ -185,10 +186,12 @@ const PagesIndicators = styled.div`
   align-items: center;
   box-sizing: border-box;
   justify-content: center;
+  flex: 1;
 `
 
 // const Navi = styled.button` // ToDo: for navigation
 const Navi = styled.div`
+  box-sizing: border-box;
   padding: 0;
   width: 10px;
   height: 10px;
@@ -198,10 +201,14 @@ const Navi = styled.div`
 `
 
 const Close = styled.button`
+  display: flex;
+  flex-direction: row-reverse;
   background: inherit;
   outline: none;
   border: none;
+  padding: 0;
   cursor: pointer;
+  flex: 1;
 `
 
 const Title = styled.div`
@@ -217,6 +224,7 @@ const Title = styled.div`
 
 const WrapperAlert = styled.div`
   display: flex;
+  box-sizing: border-box;
   padding: 4px 6px;
   gap: 6px;
   border-radius: 5px;
@@ -275,6 +283,9 @@ const Card = styled.div`
 `
 
 const MarkdownWrapper = styled.div`
+  width: 100%;
+  word-break: break-word;
+
   h3 {
     padding: 8px 0 0;
     margin: 0;
@@ -610,23 +621,27 @@ const {
 const header = (
   <Header $col={themes[skin].colorMain}>
     <TopLine>
-      <CalloutHeaderCaption $col={themes[skin].colorMain}>
-        Step {navi?.currentChapterIndex + 1} of {navi?.totalChapters}
-      </CalloutHeaderCaption>
-      <PagesIndicators>
-        {navi.totalPages > 1 && [...Array(navi?.totalPages)].map(
-          (_, index) => (
-            <Navi
-              key={index}
-              $active={index == navi?.currentPageIndex ? true : false}
-              $navActive={themes[skin].navActive}
-              $navInactiveBg={themes[skin].navInactiveBg}
-              $navInactiveBorder={themes[skin].navInactiveBorder}
-            />
-          )
-        )}
-      </PagesIndicators>
       <Close onClick={onClose}>{iconClose(themes[skin].colorMain)}</Close>
+      {navi ? (
+        <>
+          <PagesIndicators>
+            {navi.totalPages > 1 && [...Array(navi?.totalPages)].map(
+              (_, index) => (
+                <Navi
+                  key={index}
+                  $active={index == navi?.currentPageIndex ? true : false}
+                  $navActive={themes[skin].navActive}
+                  $navInactiveBg={themes[skin].navInactiveBg}
+                  $navInactiveBorder={themes[skin].navInactiveBorder}
+                />
+              )
+            )}
+          </PagesIndicators>
+          <CalloutHeaderCaption $col={themes[skin].colorMain}>
+            Step {navi?.currentChapterIndex + 1} of {navi?.totalChapters}
+          </CalloutHeaderCaption>
+        </>
+      ) : null}
     </TopLine>
   </Header>
 )
@@ -682,7 +697,7 @@ const actionButton = (btn) => (
   </ActionButton>
 )
 
-const navButtons = props.type === 'callout' ? (
+const navButtons = !buttons ? null : props.type === 'callout' ? (
   <ActionsGroup $type={props.type}>
     {buttons.map((btn) => actionButton(btn))}
   </ActionsGroup>
@@ -706,9 +721,9 @@ const callout = (
   >
     {header}
     {props.status?.text ? statuses : null}
-    <Title $type={props.type} $col={themes[skin].colorMain}>
+    {title ? (<Title $type={props.type} $col={themes[skin].colorMain}>
       {title}
-    </Title>
+    </Title>) : null}
     <MarkdownWrapper $colH={themes[skin].colorMain} $colP={themes[skin].colorP}>
       <Markdown text={content}/>
     </MarkdownWrapper>
@@ -737,9 +752,9 @@ const infobox = (
     $bg={themes[skin].bgMain}
   >
     {header}
-    <Title $type={props.type} $col={themes[skin].colorMain}>
+    {title ? (<Title $type={props.type} $col={themes[skin].colorMain}>
       {title}
-    </Title>
+    </Title>) : null}
     <Card $bg={themes[skin].cardBg}>
       {props.status?.text ? statuses : null}
       <MarkdownWrapper $colH={themes[skin].colorMain} $colP={themes[skin].colorP}>

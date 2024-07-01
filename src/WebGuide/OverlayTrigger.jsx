@@ -1,5 +1,5 @@
 const CustomTooltipDefault = styled("DappletTooltip")`
-  z-index: 9999999; // over the notch
+  z-index: 99999999; // over the notch
 
   &[data-popper-reference-hidden="true"] {
     visibility: hidden;
@@ -46,7 +46,7 @@ const CustomTooltipDefault = styled("DappletTooltip")`
 `
 
 const CustomTooltipMeta = styled("DappletTooltip")`
-  z-index: 9999999; // over the notch
+  z-index: 99999999; // over the notch
 
   &[data-popper-reference-hidden="true"] {
     visibility: hidden;
@@ -129,11 +129,11 @@ const InfoBox = styled.div`
 const Callout = styled.div`
   display: flex;
   width: 320px;
-  padding: 20px;
+  padding: 12px 14px 14px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
   border-radius: 10px;
   border: 1px solid ${(props) => props.$border};
   background: ${(props) => props.$bg};
@@ -165,7 +165,6 @@ const TopLine = styled.div`
 
 const CalloutHeaderCaption = styled.div`
   display: inline-block;
-  max-width: 30%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -174,6 +173,7 @@ const CalloutHeaderCaption = styled.div`
   font-style: normal;
   font-weight: 600;
   line-height: 149%;
+  flex: 1;
 `
 
 const PagesIndicators = styled.div`
@@ -186,10 +186,12 @@ const PagesIndicators = styled.div`
   align-items: center;
   box-sizing: border-box;
   justify-content: center;
+  flex: 1;
 `
 
 // const Navi = styled.button` // ToDo: for navigation
 const Navi = styled.div`
+  box-sizing: border-box;
   padding: 0;
   width: 10px;
   height: 10px;
@@ -199,10 +201,14 @@ const Navi = styled.div`
 `
 
 const Close = styled.button`
+  display: flex;
+  flex-direction: row-reverse;
   background: inherit;
   outline: none;
   border: none;
+  padding: 0;
   cursor: pointer;
+  flex: 1;
 `
 
 const Title = styled.div`
@@ -218,6 +224,7 @@ const Title = styled.div`
 
 const WrapperAlert = styled.div`
   display: flex;
+  box-sizing: border-box;
   padding: 4px 6px;
   gap: 6px;
   border-radius: 5px;
@@ -277,6 +284,7 @@ const Card = styled.div`
 
 const MarkdownWrapper = styled.div`
   width: 100%;
+  word-break: break-word;
 
   h3 {
     padding: 8px 0 0;
@@ -609,8 +617,6 @@ const {
   onDoNotShowChange,
   skin,
 } = props
-
-console.log('props in Overlay Trigger', props)
 
 const header = (
   <Header $col={themes[skin].colorMain}>
