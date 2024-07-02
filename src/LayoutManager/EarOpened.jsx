@@ -89,7 +89,7 @@ return (
       top: suitableWidgets.length ? "" : "-20px",
     }}
   >
-    <Widget  loading={<></>} src="bos.dapplets.near/widget/LayoutManager.SupportingSpan" />
+    <Widget  loading={<></>} src="${REPL_ACCOUNT}/widget/LayoutManager.SupportingSpan" />
     <ActionsWrapper
       style={{
         backgroundColor: suitableWidgets.length ? "" : "#DB504A!important",
@@ -100,7 +100,7 @@ return (
           {isEditMode ? (
             <Widget
              loading={<></>}
-              src="bos.dapplets.near/widget/LayoutManager.WidgetBadgeWrapper"
+              src="${REPL_ACCOUNT}/widget/LayoutManager.WidgetBadgeWrapper"
               props={{
                 widget,
                 deleteUserLink,
@@ -113,24 +113,24 @@ return (
       {isEditMode ? (
         <Widget
          loading={<></>}
-          src="bos.dapplets.near/widget/LayoutManager.Buttons.Apply"
+          src="${REPL_ACCOUNT}/widget/LayoutManager.Buttons.Apply"
           props={{ onClick: disableEditMode }}
         />
       ) : isMyLinksInjected ? (
         <Widget
          loading={<></>}
-          src="bos.dapplets.near/widget/LayoutManager.Buttons.Edit"
+          src="${REPL_ACCOUNT}/widget/LayoutManager.Buttons.Edit"
           props={{ onClick: enableEditMode }}
         />
       ) : null}
       <Widget
        loading={<></>}
-        src="bos.dapplets.near/widget/LayoutManager.Buttons.Plus"
+        src="${REPL_ACCOUNT}/widget/LayoutManager.Buttons.Plus"
         props={{ widgets: suitableWidgets, onClick: handleOpenMenu }}
       />
     </ActionsWrapper>
     {suitableWidgets.length ? (
-      <Widget  loading={<></>} src="bos.dapplets.near/widget/LayoutManager.SupportingSpan" />
+      <Widget  loading={<></>} src="${REPL_ACCOUNT}/widget/LayoutManager.SupportingSpan" />
     ) : null}
   </TriggerShowPanel>
 );

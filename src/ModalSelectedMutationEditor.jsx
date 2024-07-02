@@ -434,7 +434,7 @@ return (
             <Widget
              loading={<></>}
               key={i}
-              src="bos.dapplets.near/widget/ApplicationCard"
+              src="${REPL_ACCOUNT}/widget/ApplicationCard"
               props={{
                 src: app.id,
                 metadata: app.metadata,

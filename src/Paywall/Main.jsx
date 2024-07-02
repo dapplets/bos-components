@@ -36,7 +36,7 @@ return (
     {state.content
       ? <Widget
        loading={<></>}
-          src="bos.dapplets.near/widget/Paywall.Content"
+          src="${REPL_ACCOUNT}/widget/Paywall.Content"
           props={{
             content: state.content,
             CONTRACT_ADDRESS,
@@ -46,7 +46,7 @@ return (
       : authorId === userAccountId
       ? <Widget
        loading={<></>}
-          src="bos.dapplets.near/widget/Paywall.Form"
+          src="${REPL_ACCOUNT}/widget/Paywall.Form"
           props={{ linkId: id, CONTRACT_ADDRESS }}
         />
       : <></>}

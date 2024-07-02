@@ -3,14 +3,14 @@ return (
     placement="right"
     overlay={
       <DappletCallout
-        arrow={<Widget  loading={<></>} src="bos.dapplets.near/widget/Onboarding.Arrow" />}
+        arrow={<Widget  loading={<></>} src="${REPL_ACCOUNT}/widget/Onboarding.Arrow" />}
       >
-        <Widget  loading={<></>} src="bos.dapplets.near/widget/Onboarding.Callout" />
+        <Widget  loading={<></>} src="${REPL_ACCOUNT}/widget/Onboarding.Callout" />
       </DappletCallout>
     }
   >
     <div>
-      <Widget  loading={<></>} src="bos.dapplets.near/widget/Onboarding.QuestionIcon" />
+      <Widget  loading={<></>} src="${REPL_ACCOUNT}/widget/Onboarding.QuestionIcon" />
     </div>
   </OverlayTrigger>
 );

@@ -72,7 +72,7 @@ return (
       <input
         className="form-control"
         id="query"
-        placeholder="bos.dapplets.near/settings/dapplets.near/mutation/Zoo/**"
+        placeholder="${REPL_ACCOUNT}/settings/dapplets.near/mutation/Zoo/**"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />

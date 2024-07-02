@@ -209,7 +209,7 @@ return (
     {is_purchased ? (
         <>
           <img className="content-image" src={content.link} />
-          <Widget  loading={<></>} src="bos.dapplets.near/widget/Paywall.Badge"  props={{ accountId: content.author }}/>
+          <Widget  loading={<></>} src="${REPL_ACCOUNT}/widget/Paywall.Badge"  props={{ accountId: content.author }}/>
         </>
       ) : (
         <>
@@ -239,7 +239,7 @@ return (
               </button>
             </div>
           )}
-          <Widget  loading={<></>} src="bos.dapplets.near/widget/Paywall.Badge"  props={{ accountId: content.author }}/>
+          <Widget  loading={<></>} src="${REPL_ACCOUNT}/widget/Paywall.Badge"  props={{ accountId: content.author }}/>
         </>
       )}
     </div>

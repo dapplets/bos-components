@@ -66,7 +66,7 @@ const FloatingModal = styled.div`
 return (
   <OverlayTriggerWrapper onMouseOver={handleOnMouseEnter}>
     <Widget
-      src="bos.dapplets.near/widget/LayoutManager.TriggerEar"
+      src="${REPL_ACCOUNT}/widget/LayoutManager.TriggerEar"
       props={{ show: state.show, context }}
       loading={<></>}
     />
@@ -82,7 +82,7 @@ return (
           handleOnMouseLeave,
           deleteUserLink,
         }}
-        src="bos.dapplets.near/widget/LayoutManager.EarOpened"
+        src="${REPL_ACCOUNT}/widget/LayoutManager.EarOpened"
          loading={<></>}
       />
     ) : null}
@@ -98,7 +98,7 @@ return (
               apps,
               waitingAppIdsSet: state.waitingAppIdsSet,
             }}
-            src="bos.dapplets.near/widget/ComponentsSearch"
+            src="${REPL_ACCOUNT}/widget/ComponentsSearch"
              loading={<></>}
           />
         </FloatingModal>

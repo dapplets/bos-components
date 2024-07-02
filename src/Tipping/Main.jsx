@@ -373,11 +373,11 @@ return (
     >
       <div className="progress-bar"/>
       <div className="icon">
-        <Widget  loading={<></>} src="bos.dapplets.near/widget/Tipping.TipIcon" />
+        <Widget  loading={<></>} src="${REPL_ACCOUNT}/widget/Tipping.TipIcon" />
       </div>
       <div className="cost">
         {createLabel()}
-        <Widget  loading={<></>} src="bos.dapplets.near/widget/Tipping.NearIcon" />
+        <Widget  loading={<></>} src="${REPL_ACCOUNT}/widget/Tipping.NearIcon" />
       </div>
     </TippingButton>
 );

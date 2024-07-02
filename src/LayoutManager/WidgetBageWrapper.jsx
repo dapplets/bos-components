@@ -35,12 +35,12 @@ return (
     {widget.linkAuthorId === context.accountId ? (
       <Widget
        loading={<></>}
-        src="bos.dapplets.near/widget/LayoutManager.DeleteWidgetButton"
+        src="${REPL_ACCOUNT}/widget/LayoutManager.DeleteWidgetButton"
         props={{
           onClick: () => deleteUserLink(widget.linkId),
         }}
       />
-    ) : // <Widget src="bos.dapplets.near/widget/LayoutManager.LockedWidgetBadge" />
+    ) : // <Widget src="${REPL_ACCOUNT}/widget/LayoutManager.LockedWidgetBadge" />
     null}
   </WidgetBadgeWrapper>
 )

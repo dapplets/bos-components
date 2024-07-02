@@ -188,7 +188,7 @@ return (
               showFrom,
               oldRawData: response
             }}
-            src="bos.dapplets.near/widget/Onboarding.SandboxOnboarding"
+            src="${REPL_ACCOUNT}/widget/Onboarding.SandboxOnboarding"
           />
         </Onboarding>
       </DappletOverlay>

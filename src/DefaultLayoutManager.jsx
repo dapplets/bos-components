@@ -78,7 +78,7 @@ return (
                   />
                 ) : (
                   <Widget
-                    src="bos.dapplets.near/widget/LayoutManager.DeleteWidgetButton"
+                    src="${REPL_ACCOUNT}/widget/LayoutManager.DeleteWidgetButton"
                     props={{
                       onClick: () => handleRemoveWidget(widget.linkId),
                     }}

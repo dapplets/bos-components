@@ -234,7 +234,7 @@ return (
           return (
             <Item key={app.id}>
               <Widget
-                src="bos.dapplets.near/widget/SearchCard"
+                src="${REPL_ACCOUNT}/widget/SearchCard"
                 props={{
                   src: app.id,
                   metadata: app.metadata,

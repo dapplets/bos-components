@@ -1,4 +1,4 @@
-const NAMESPACE = 'bos.dapplets.near/parser/twitter'
+const NAMESPACE = '${REPL_ACCOUNT}/parser/twitter'
 const CONTEXT_TYPE = 'post'
 
 const SKIN = 'META_GUIDE'
@@ -37,7 +37,7 @@ ${JSON.stringify(selectedContext.parsed, null, 2)}
   }
   return (
     <Widget
-      src='bos.dapplets.near/widget/WebGuide.OverlayTrigger'
+      src='${REPL_ACCOUNT}/widget/WebGuide.OverlayTrigger'
       loading={props?.children}
       props={widgetProps}
     />
@@ -224,7 +224,7 @@ return (
         arrowTo: "context",
       }}
       component={() => <Widget
-        src='bos.dapplets.near/widget/WebGuide.Action'
+        src='${REPL_ACCOUNT}/widget/WebGuide.Action'
         props={{
           appId: 'picker-example',
           tooltip: isRunnigApp ? 'Stop Picker' : 'Run Picker',

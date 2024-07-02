@@ -2,13 +2,13 @@ const twitterConfig = {
   action: true,
   chapters: [
     {
-      id: "bos.dapplets.near/gateway/MutableWebExtension",
+      id: "${REPL_ACCOUNT}/gateway/MutableWebExtension",
       type: 'infobox',
       if: { id: "1694995344461894022" }, // ToDo: should be another trigger
       // showChecked: true,
       pages: [
         {
-          id: "bos.dapplets.near/gateway/MutableWebExtension/Welcome",
+          id: "${REPL_ACCOUNT}/gateway/MutableWebExtension/Welcome",
           title: "You’re entering Mutable Web",
           status: [],
           content: "\nMutable Web is a new web3 paradigm that allows anyone to add custom functionality to existing websites and share it with your community— no matter who owns the website.\n\nBecome a co-owner of any website you are use!\n\n### Mutation switch\n\n![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-video-001.webp)\n\nYou can switch between website mutations created by different communities.",
@@ -17,7 +17,7 @@ const twitterConfig = {
       skin: 'META_GUIDE',
     },
     {
-      id: "bos.dapplets.near/gateway/MutableWebExtensionNotch",
+      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionNotch",
       type: 'callout',
       placement: 'right',
       strategy: 'fixed',
@@ -28,7 +28,7 @@ const twitterConfig = {
       arrowTo: "context",
       pages: [
         {
-          id: "bos.dapplets.near/gateway/MutableWebExtensionNotch/Notch",
+          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionNotch/Notch",
           title: "Mutation switch",
           status: [{ info: 'Click on the dropdown box' }],
           content: "Mutation switch allows user to choose between application sets.",
@@ -37,7 +37,7 @@ const twitterConfig = {
       skin: 'META_GUIDE',
     },
     {
-      id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/1",
+      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionDropdown/1",
       type: 'callout',
       placement: 'right',
       strategy: 'fixed',
@@ -48,13 +48,13 @@ const twitterConfig = {
       arrowTo: "context",
       pages: [
         {
-          id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/1/1",
+          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionDropdown/1/1",
           title: "The list of recently used mutations (1/2)",
           status: [],
           content: "The current mutation is highlighted with a star. To add a “favorite” status to a mutation on the current page, simply click on the star. his mutation will become active when you open the website in a new tab.",
         },
         {
-          id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/1/2",
+          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionDropdown/1/2",
           title: "The list of recently used mutations (2/2)",
           status: [{ info: 'Click on the dropdown box below' }],
           content: "The “Trash” removes the mutation from the “Recentt” list.",
@@ -63,7 +63,7 @@ const twitterConfig = {
       skin: 'META_GUIDE',
     },
     {
-      id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/2",
+      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionDropdown/2",
       type: 'callout',
       strategy: 'fixed',
       placement: 'right',
@@ -74,7 +74,7 @@ const twitterConfig = {
       arrowTo: "context",
       pages: [
         {
-          id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/2/1",
+          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionDropdown/2/1",
           title: "All mutations",
           status: [],
           content: "This is the list of all available, previously unused mutations.",
@@ -83,7 +83,7 @@ const twitterConfig = {
       skin: 'META_GUIDE',
     },
     {
-      id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/3",
+      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionDropdown/3",
       type: 'callout',
       strategy: 'fixed',
       namespace: "mweb",
@@ -93,7 +93,7 @@ const twitterConfig = {
       arrowTo: "context",
       pages: [
         {
-          id: "bos.dapplets.near/gateway/MutableWebExtensionDropdown/3/1",
+          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionDropdown/3/1",
           title: '"Mutate" button',
           status: [],
           content: 'The "Mutate" button allows users to create, fork, and edit mutations.',
@@ -102,7 +102,7 @@ const twitterConfig = {
       skin: 'META_GUIDE',
     },
     {
-      id: "bos.dapplets.near/gateway/MutableWebExtensionOverlay/1",
+      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/1",
       type: 'callout',
       placement: 'left',
       strategy: 'fixed',
@@ -113,7 +113,7 @@ const twitterConfig = {
       arrowTo: "context",
       pages: [
         {
-          id: "bos.dapplets.near/gateway/MutableWebExtensionOverlay/1/MutationButton",
+          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/1/MutationButton",
           title: "Application panel",
           status: [],
           content: "Here are the available application settings for the current mutation.",
@@ -122,7 +122,7 @@ const twitterConfig = {
       skin: 'META_GUIDE',
     },
     {
-      id: "bos.dapplets.near/gateway/MutableWebExtensionOverlay/2",
+      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/2",
       type: 'callout',
       placement: 'bottom',
       strategy: 'fixed',
@@ -133,13 +133,13 @@ const twitterConfig = {
       arrowTo: "context",
       pages: [
         {
-          id: "bos.dapplets.near/gateway/MutableWebExtensionOverlay/2/MutationButton",
+          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/2/MutationButton",
           title: "Mutation button",
           status: [],
           content: "![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/webguide-006.png)\n\nThis is the current mutation icon. Click on it to open the Wallet panel. There you can connect your NEAR wallet.",
         },
         {
-          id: "bos.dapplets.near/gateway/MutableWebExtensionOverlay/2/MutationButton",
+          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/2/MutationButton",
           title: "Mutation button",
           status: [],
           content: "![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/webguide-007.png)\n\n Once your wallet is connected, you can see information about it and disconnect whenever you want.",
@@ -148,7 +148,7 @@ const twitterConfig = {
       skin: 'META_GUIDE',
     },
     {
-      id: "bos.dapplets.near/gateway/MutableWebExtensionOverlay/3",
+      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/3",
       type: 'callout',
       placement: 'bottom',
       strategy: 'fixed',
@@ -159,7 +159,7 @@ const twitterConfig = {
       arrowTo: "context",
       pages: [
         {
-          id: "bos.dapplets.near/gateway/MutableWebExtensionOverlay/3/Action",
+          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/3/Action",
           title: "Action button",
           status: [],
           content: "![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/webguide-005.png)\n\nYou can always call up this guide again on this page by clicking on this button. It is inserted by the Web Guide application. Other applications can also insert their own quick action buttons nearby.",
@@ -168,7 +168,7 @@ const twitterConfig = {
       skin: 'META_GUIDE',
     },
     {
-      id: "bos.dapplets.near/gateway/MutableWebExtensionOverlay/4",
+      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/4",
       type: 'callout',
       placement: 'left',
       strategy: 'fixed',
@@ -179,7 +179,7 @@ const twitterConfig = {
       arrowTo: "context",
       pages: [
         {
-          id: "bos.dapplets.near/gateway/MutableWebExtensionOverlay/4/Applications",
+          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/4/Applications",
           title: "Applications",
           status: [],
           content: "![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/webguide-008.png)\n\nClick on the button to view the applications of the current mutation. Here you can turn them off and on.",
@@ -188,16 +188,16 @@ const twitterConfig = {
       skin: 'META_GUIDE',
     },
     {
-      id: "bos.dapplets.near/app/Tipping/1",
+      id: "${REPL_ACCOUNT}/app/Tipping/1",
       type: 'callout',
-      namespace: "bos.dapplets.near/parser/twitter",
+      namespace: "${REPL_ACCOUNT}/parser/twitter",
       contextType: "post",
       injectTo: "avatar",
       if: { id: { eq: "1694995344461894022" } },
       arrowTo: "insPoint",
       pages: [
         {
-          id: "bos.dapplets.near/app/Tipping/1/1",
+          id: "${REPL_ACCOUNT}/app/Tipping/1/1",
           status: [],
           title: "Tipping app",
           content: "If you want to thank the author of the tweet you like...",
@@ -206,19 +206,19 @@ const twitterConfig = {
       skin: 'META_GUIDE',
     },
     {
-      id: "bos.dapplets.near/app/Tipping/2",
+      id: "${REPL_ACCOUNT}/app/Tipping/2",
       type: "callout",
       namespace: "mweb",
       contextType: "injected-widget",
       injectTo: "hidden",
       if: {
         parentContextId: { eq: "1694995344461894022" },
-        widgetSrc: { eq: "bos.dapplets.near/widget/Tipping.Main" },
+        widgetSrc: { eq: "${REPL_ACCOUNT}/widget/Tipping.Main" },
       },
       arrowTo: "context",
       pages: [
         {
-          id: "bos.dapplets.near/app/Tipping/2/1",
+          id: "${REPL_ACCOUNT}/app/Tipping/2/1",
           status: [],
           title: "Tipping app",
           content: "... you can send them a tip through our application.",
@@ -227,7 +227,7 @@ const twitterConfig = {
       skin: 'META_GUIDE',
     },
     {
-      id: "bos.dapplets.near/mutation/EarTrigger",
+      id: "${REPL_ACCOUNT}/mutation/EarTrigger",
       type: 'callout',
       namespace: "mweb",
       contextType: "ear-trigger",
@@ -236,7 +236,7 @@ const twitterConfig = {
       arrowTo: "context",
       pages: [
         {
-          id: "bos.dapplets.near/mutation/EarTrigger/1",
+          id: "${REPL_ACCOUNT}/mutation/EarTrigger/1",
           status: [],
           title: "Apps control panel",
           content: 'We add the app control panel to each post. You can add widgets to the post or panel to extend the functionality of the site.',
@@ -245,7 +245,7 @@ const twitterConfig = {
       skin: 'META_GUIDE',
     },
     {
-      id: "bos.dapplets.near/mutation/EarTrigger/copy",
+      id: "${REPL_ACCOUNT}/mutation/EarTrigger/copy",
       type: 'callout',
       namespace: "mweb",
       contextType: "ear-trigger",
@@ -254,7 +254,7 @@ const twitterConfig = {
       arrowTo: "context",
       pages: [
         {
-          id: "bos.dapplets.near/mutation/EarTrigger/copy/1",
+          id: "${REPL_ACCOUNT}/mutation/EarTrigger/copy/1",
           status: [],
           title: "Apps control panel",
           content: '[See other Mutable Web facilities on NEAR Social](https://social.dapplets.org/mob.near/widget/ProfilePage?accountId=dappletsproject.near)',
@@ -269,22 +269,22 @@ const nearSocialConfig = {
   action: true,
   chapters: [
     {
-      id: "bos.dapplets.near/gateway/MutableWeb",
+      id: "${REPL_ACCOUNT}/gateway/MutableWeb",
       type: 'infobox',
       if: { id: "1694995344461894022" }, // ToDo: should be another trigger
       // showChecked: true,
       pages: [
         {
-          id: "bos.dapplets.near/gateway/MutableWeb/Welcome",
+          id: "${REPL_ACCOUNT}/gateway/MutableWeb/Welcome",
           title: "You’re entering Mutable Web",
           status: [],
-          content: "[Mutable Web also runs on Legacy Web2.](https://augm.link/mutate/?t=https%3A%2F%2Ftwitter.com%2FMrConCreator&m=bos.dapplets.near%2Fmutation%2FSandbox) Check its’ Web Guide there!\n\nMutable Web is a new web3 paradigm that allows anyone to add custom functionality to existing websites and share them within your community — no matter who owns the website.\n\nBecome the co-owner of any website you are using!\n\n### Mutation switch\n\n![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-008.png)\n\nYou can switch between website mutations created by different communities.",
+          content: "[Mutable Web also runs on Legacy Web2.](https://augm.link/mutate/?t=https%3A%2F%2Ftwitter.com%2FMrConCreator&m=${REPL_ACCOUNT}%2Fmutation%2FSandbox) Check its’ Web Guide there!\n\nMutable Web is a new web3 paradigm that allows anyone to add custom functionality to existing websites and share them within your community — no matter who owns the website.\n\nBecome the co-owner of any website you are using!\n\n### Mutation switch\n\n![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-008.png)\n\nYou can switch between website mutations created by different communities.",
         },
       ],
       skin: 'META_GUIDE',
     },
     {
-      id: "bos.dapplets.near/gateway/MutableWebDropdown/1",
+      id: "${REPL_ACCOUNT}/gateway/MutableWebDropdown/1",
       type: 'callout',
       placement: 'right',
       strategy: 'fixed',
@@ -295,7 +295,7 @@ const nearSocialConfig = {
       arrowTo: "context",
       pages: [
         {
-          id: "bos.dapplets.near/gateway/MutableWebDropdown/1/1",
+          id: "${REPL_ACCOUNT}/gateway/MutableWebDropdown/1/1",
           title: "Mutation switch",
           status: [{ info: 'Click on the dropdown box' }],
           content: "This is a mutation switcher to select the desired set of applications.",
@@ -304,7 +304,7 @@ const nearSocialConfig = {
       skin: 'META_GUIDE',
     },
     // {
-    //   id: "bos.dapplets.near/gateway/MutableWebDropdown/2",
+    //   id: "${REPL_ACCOUNT}/gateway/MutableWebDropdown/2",
     //   type: 'callout',
     //   strategy: 'fixed',
     //   placement: 'right',
@@ -315,7 +315,7 @@ const nearSocialConfig = {
     //   arrowTo: "context",
     //   pages: [
     //     {
-    //       id: "bos.dapplets.near/gateway/MutableWebDropdown/2/1",
+    //       id: "${REPL_ACCOUNT}/gateway/MutableWebDropdown/2/1",
     //       title: "All mutations",
     //       status: [],
     //       content: "Each mutation defines the set of applications. Select it from the list.",
@@ -324,7 +324,7 @@ const nearSocialConfig = {
     //   skin: 'META_GUIDE',
     // },
     {
-      id: "bos.dapplets.near/gateway/MutableWebExtensionOverlay/1",
+      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/1",
       type: 'callout',
       placement: 'left',
       strategy: 'fixed',
@@ -335,7 +335,7 @@ const nearSocialConfig = {
       arrowTo: "context",
       pages: [
         {
-          id: "bos.dapplets.near/gateway/MutableWebExtensionOverlay/1/MutationButton",
+          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/1/MutationButton",
           title: "Application panel",
           status: [],
           content: "Here are the available application settings for the current mutation.",
@@ -344,7 +344,7 @@ const nearSocialConfig = {
       skin: 'META_GUIDE',
     },
     {
-      id: "bos.dapplets.near/gateway/MutableWebExtensionOverlay/3",
+      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/3",
       type: 'callout',
       placement: 'bottom',
       strategy: 'fixed',
@@ -355,7 +355,7 @@ const nearSocialConfig = {
       arrowTo: "context",
       pages: [
         {
-          id: "bos.dapplets.near/gateway/MutableWebExtensionOverlay/3/Action",
+          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/3/Action",
           title: "Action button",
           status: [],
           content: "![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/webguide-005.png)\n\nYou can always call up this guide again on this page by clicking on this button. It is inserted by the Web Guide application. Other applications can also insert their own quick action buttons nearby.",
@@ -364,7 +364,7 @@ const nearSocialConfig = {
       skin: 'META_GUIDE',
     },
     {
-      id: "bos.dapplets.near/gateway/MutableWebExtensionOverlay/4",
+      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/4",
       type: 'callout',
       placement: 'left',
       strategy: 'fixed',
@@ -375,7 +375,7 @@ const nearSocialConfig = {
       arrowTo: "context",
       pages: [
         {
-          id: "bos.dapplets.near/gateway/MutableWebExtensionOverlay/4/Applications",
+          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/4/Applications",
           title: "Applications",
           status: [],
           content: "![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/webguide-008.png)\n\nClick on the button to view the applications of the current mutation. Here you can turn them off and on.",
@@ -384,16 +384,16 @@ const nearSocialConfig = {
       skin: 'META_GUIDE',
     },
     // {
-    //   id: "bos.dapplets.near/app/Tipping/1",
+    //   id: "${REPL_ACCOUNT}/app/Tipping/1",
     //   type: 'callout',
-    //   namespace: "bos.dapplets.near/parser/near-social-json",
+    //   namespace: "${REPL_ACCOUNT}/parser/near-social-json",
     //   contextType: "post",
     //   injectTo: "avatar",
     //   if: { id: { eq: "dappletsproject.near/119034910" } },
     //   arrowTo: "insPoint",
     //   pages: [
     //     {
-    //       id: "bos.dapplets.near/app/Tipping/1/1",
+    //       id: "${REPL_ACCOUNT}/app/Tipping/1/1",
     //       status: [],
     //       title: "Tipping app",
     //       content: "If you want to thank the author of the post you like...",
@@ -402,19 +402,19 @@ const nearSocialConfig = {
     //   skin: 'META_GUIDE',
     // },
     {
-      id: "bos.dapplets.near/app/Tipping/2",
+      id: "${REPL_ACCOUNT}/app/Tipping/2",
       type: "callout",
       namespace: "mweb",
       contextType: "injected-widget",
       injectTo: "hidden",
       if: {
         parentContextId: { eq: "dappletsproject.near/119034910" },
-        widgetSrc: { eq: "bos.dapplets.near/widget/Tipping.Main" },
+        widgetSrc: { eq: "${REPL_ACCOUNT}/widget/Tipping.Main" },
       },
       arrowTo: "context",
       pages: [
         {
-          id: "bos.dapplets.near/app/Tipping/2/1",
+          id: "${REPL_ACCOUNT}/app/Tipping/2/1",
           status: [],
           title: "Tipping app",
           content: "If you want to thank the author of the post you like, you can send them a tip through our application.",
@@ -423,7 +423,7 @@ const nearSocialConfig = {
       skin: 'META_GUIDE',
     },
     {
-      id: "bos.dapplets.near/mutation/EarTrigger",
+      id: "${REPL_ACCOUNT}/mutation/EarTrigger",
       type: 'callout',
       namespace: "mweb",
       contextType: "ear-trigger",
@@ -432,7 +432,7 @@ const nearSocialConfig = {
       arrowTo: "context",
       pages: [
         {
-          id: "bos.dapplets.near/mutation/EarTrigger/1",
+          id: "${REPL_ACCOUNT}/mutation/EarTrigger/1",
           status: [],
           title: "Apps control panel",
           content: 'We’ve added a special container to all posts. This allows users to attach widgets that extend the possibilities of Near Social.',
@@ -441,7 +441,7 @@ const nearSocialConfig = {
       skin: 'META_GUIDE',
     },
     {
-      id: "bos.dapplets.near/mutation/EarTrigger/copy",
+      id: "${REPL_ACCOUNT}/mutation/EarTrigger/copy",
       type: 'callout',
       namespace: "mweb",
       contextType: "ear-trigger",
@@ -450,10 +450,10 @@ const nearSocialConfig = {
       arrowTo: "context",
       pages: [
         {
-          id: "bos.dapplets.near/mutation/EarTrigger/copy/1",
+          id: "${REPL_ACCOUNT}/mutation/EarTrigger/copy/1",
           status: [],
           title: "Apps control panel",
-          content: '[See other Mutable Web facilities on X](https://augm.link/mutate/?t=https%3A%2F%2Ftwitter.com%2FMrConCreator&m=bos.dapplets.near%2Fmutation%2FSandbox)',
+          content: '[See other Mutable Web facilities on X](https://augm.link/mutate/?t=https%3A%2F%2Ftwitter.com%2FMrConCreator&m=${REPL_ACCOUNT}%2Fmutation%2FSandbox)',
         },
       ],
       skin: 'META_GUIDE',
@@ -468,7 +468,7 @@ const nestedCalloutConfig = {
     namespace: "mweb",
     contextType: "wg-chapter",
     injectTo: "hidden",
-    if: { id: { eq: "bos.dapplets.near/mutation/EarTrigger/copy" } }, // ID of the last chapter
+    if: { id: { eq: "${REPL_ACCOUNT}/mutation/EarTrigger/copy" } }, // ID of the last chapter
     arrowTo: "context",
     pages: [
       {
@@ -495,13 +495,13 @@ const nestedCalloutConfig = {
 
 // ToDo: move to a smart contract
 const guideConfigByLinkId = {
-  // production (bos.dapplets.near/mutation/sandbox)
+  // production (${REPL_ACCOUNT}/mutation/sandbox)
   '9a6537b6efbb98ad4c12ef747c7e29e9': twitterConfig,
   '8a1ca0a9eb03ce2725db7a553a9bcab7': nearSocialConfig,
   "5c105a6a05975423d39a1e0d9447a22d": nestedCalloutConfig,
   '84998d899f0b75b6ca47197c66baf3ca': nestedCalloutConfig, // twitter
   
-  // testing (bos.dapplets.near/mutation/testing2)
+  // testing (${REPL_ACCOUNT}/mutation/testing2)
   'b3777e928bd7ce9ad30eb636857a1853': twitterConfig,
   '114a78557d9044ff8c6e0177bcbe690a': nearSocialConfig,
   '0b492fd62c72d7ad87c7658e2b3a4f1e': nestedCalloutConfig,
@@ -620,7 +620,7 @@ const ChapterWrapper = (props) => {
 
   return  (
     <Widget
-      src='bos.dapplets.near/widget/WebGuideTest.OverlayTrigger'
+      src='${REPL_ACCOUNT}/widget/WebGuideTest.OverlayTrigger'
       loading={props?.children}
       props={{
         id: currentChapter.id,
@@ -703,7 +703,7 @@ return (
           arrowTo: "context",
         }}
         component={() => <Widget
-          src='bos.dapplets.near/widget/WebGuideTest.Action'
+          src='${REPL_ACCOUNT}/widget/WebGuideTest.Action'
           props={{
             appId: 'web-guide-test',
             tooltip: showApp ? 'Stop Web Guide' : 'Run Web Guide',
