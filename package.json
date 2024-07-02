@@ -6,8 +6,13 @@
   "scripts": {
     "dev": "bos-loader bos.dapplets.near -p ./src",
     "pull:mainnet": "bos components download bos.dapplets.near network-config mainnet",
+    "pull:testnet": "bos components download bos.dapplets.testnet network-config testnet",
     "push:mainnet": "bos components deploy bos.dapplets.near sign-as bos.dapplets.near network-config mainnet sign-with-legacy-keychain send",
-    "diff:mainnet": "bos components diff bos.dapplets.near network-config mainnet"
+    "push:testnet": "bos components deploy bos.dapplets.testnet sign-as bos.dapplets.testnet network-config testnet sign-with-legacy-keychain send",
+    "diff:mainnet": "bos components diff bos.dapplets.near network-config mainnet",
+    "diff:testnet": "bos components diff bos.dapplets.testnet network-config testnet",
+    "build:mainnet": "rm -r build && cp -r src build && find build -type f | xargs -I '{}' sed -i '' 's/${REPL_ACCOUNT}/bos.dapplets.near/g' {}",
+    "build:testnet": "rm -r build && cp -r src build && find build -type f | xargs -I '{}' sed -i '' 's/${REPL_ACCOUNT}/bos.dapplets.testnet/g' {}"
   },
   "repository": {
     "type": "git",
