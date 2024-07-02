@@ -4,15 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "bos-loader bos.dapplets.near -p ./src",
-    "pull:mainnet": "bos components download bos.dapplets.near network-config mainnet",
-    "pull:testnet": "bos components download bos.dapplets.testnet network-config testnet",
-    "push:mainnet": "bos components deploy bos.dapplets.near sign-as bos.dapplets.near network-config mainnet sign-with-legacy-keychain send",
-    "push:testnet": "bos components deploy bos.dapplets.testnet sign-as bos.dapplets.testnet network-config testnet sign-with-legacy-keychain send",
-    "diff:mainnet": "bos components diff bos.dapplets.near network-config mainnet",
-    "diff:testnet": "bos components diff bos.dapplets.testnet network-config testnet",
-    "build:mainnet": "rm -r build && cp -r src build && find build -type f | xargs -I '{}' sed -i '' 's/${REPL_ACCOUNT}/bos.dapplets.near/g' {}",
-    "build:testnet": "rm -r build && cp -r src build && find build -type f | xargs -I '{}' sed -i '' 's/${REPL_ACCOUNT}/bos.dapplets.testnet/g' {}"
+    "dev": "node ./scripts/dev.js bos.dapplets.near",
+    "deploy:mainnet": "yarn clean && yarn build:bos:mainnet && yarn push:bos:mainnet && yarn deploy:mweb:mainnet",
+    "deploy:testnet": "yarn clean && yarn build:bos:testnet && yarn push:bos:testnet && yarn deploy:mweb:testnet",
+    "build:bos:mainnet": "mkdir -p build/src && cp -r src/widgets/ build/src && find build/src -type f | xargs -I '{}' sed -i '' 's/${REPL_ACCOUNT}/bos.dapplets.near/g' {}",
+    "build:bos:testnet": "mkdir -p build/src && cp -r src/widgets/ build/src && find build/src -type f | xargs -I '{}' sed -i '' 's/${REPL_ACCOUNT}/bos.dapplets.testnet/g' {}",
+    "push:bos:mainnet": "cd build && bos components deploy bos.dapplets.near sign-as bos.dapplets.near network-config mainnet sign-with-legacy-keychain send",
+    "push:bos:testnet": "cd build && bos components deploy bos.dapplets.testnet sign-as bos.dapplets.testnet network-config testnet sign-with-legacy-keychain send",
+    "deploy:mweb:mainnet": "node ./scripts/deploy-mweb.js bos.dapplets.near mainnet",
+    "deploy:mweb:testnet": "node ./scripts/deploy-mweb.js bos.dapplets.testnet testnet",
+    "dist:mainnet": "node ./scripts/dist.js bos.dapplets.near",
+    "diff:mainnet": "cd build && bos components diff bos.dapplets.near network-config mainnet",
+    "diff:testnet": "cd build && bos components diff bos.dapplets.testnet network-config testnet",
+    "clean": "rm -rf build"
   },
   "repository": {
     "type": "git",
@@ -33,5 +37,8 @@
   "homepage": "https://github.com/dapplets/bos-components#readme",
   "devDependencies": {
     "bos-cli": "^0.3.13"
+  },
+  "dependencies": {
+    "near-api-js": "^4.0.2"
   }
 }
