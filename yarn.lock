@@ -166,6 +166,11 @@ base-x@^2.0.1:
   dependencies:
     safe-buffer "^5.0.1"
 
+big.js@^6.2.1:
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/big.js/-/big.js-6.2.1.tgz#7205ce763efb17c2e41f26f121c420c6a7c2744f"
+  integrity sha512-bCtHMwL9LeDIozFn+oNhhFoq+yQ3BNdnsLSASUxLciOb1vgvpHsIO1dsENiGMgbb4SkP5TrzWzRiLddn8ahVOQ==
+
 binary-install@^1.0.6:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/binary-install/-/binary-install-1.1.0.tgz#61195349acabf5a043f3805b03f96e506cc96d6e"
@@ -468,6 +473,12 @@ setprototypeof@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.1.1.tgz#7e95acb24aa92f5885e0abef5ba131330d4ae683"
   integrity sha512-JvdAWfbXeIGaZ9cILp38HntZSFSo3mWg6xGcJJsd+d4aRMOqauag1C63dJfDw7OaMYwEbHMOxEZ1lqVRYP2OAw==
+
+"social-db-js@github:dapplets/social-db-js":
+  version "0.1.0"
+  resolved "https://codeload.github.com/dapplets/social-db-js/tar.gz/7ba0b7c3daacbb62a025ef5933cb24aa68383127"
+  dependencies:
+    big.js "^6.2.1"
 
 "statuses@>= 1.5.0 < 2":
   version "1.5.0"

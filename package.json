@@ -36,9 +36,9 @@
   },
   "homepage": "https://github.com/dapplets/bos-components#readme",
   "devDependencies": {
-    "bos-cli": "^0.3.13"
-  },
-  "dependencies": {
+    "bos-cli": "^0.3.13",
+    "social-db-js": "github:dapplets/social-db-js",
     "near-api-js": "^4.0.2"
-  }
+  },
+  "dependencies": {}
 }
