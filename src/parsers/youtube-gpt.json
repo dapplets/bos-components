@@ -1,0 +1,71 @@
+{
+  "$": {
+    "id": "${REPL_ACCOUNT}/parser/youtube",
+    "parserType": "json",
+    "contexts": {
+      "root": {
+        "props": {
+          "id": "string('global')",
+          "websiteName": "string('YouTube')",
+          "username": "substring-after(string(//div[@id='avatar-btn']/@aria-label), 'account menu for ')",
+          "fullname": "substring-before(substring-after(string(//div[@id='avatar-btn']/@aria-label), 'account menu for '), ' - YouTube')",
+          "img": "string(//yt-img-shadow[@id='avatar']/img/@src)",
+          "url": "string(//meta[@property='og:url']/@content)"
+        },
+        "children": ["video", "channel"]
+      },
+      "video": {
+        "selector": "ytd-video-renderer, ytd-grid-video-renderer, ytd-rich-item-renderer",
+        "props": {
+          "id": "substring-after(string(.//a[@id='thumbnail']/@href), 'v=')",
+          "title": "string(.//a[@id='video-title']/@title)",
+          "authorFullname": "string(.//a[@id='channel-name']/@title)",
+          "authorUsername": "substring-after(string(.//a[@id='channel-name']/@href), '/channel/')",
+          "authorImg": "string(.//yt-img-shadow[@id='avatar']/img/@src)",
+          "createdAt": "string(.//div[@id='metadata-line']//span[1])",
+          "url": "concat('https://www.youtube.com/watch?v=', substring-after(string(.//a[@id='thumbnail']/@href), 'v='))"
+        },
+        "insertionPoints": {
+          "root": {
+            "selector": ":scope > div",
+            "bosLayoutManager": "${REPL_ACCOUNT}/widget/ContextActionsGroup",
+            "insertionType": "before"
+          },
+          "southPanel": { "selector": "div#info", "insertionType": "after" },
+          "avatar": { "selector": "div#avatar", "insertionType": "after" },
+          "afterText": {
+            "selector": "div#description",
+            "bosLayoutManager": "${REPL_ACCOUNT}/widget/VerticalLayoutManager",
+            "insertionType": "end"
+          }
+        }
+      },
+      "channel": {
+        "selector": "ytd-channel-renderer, ytd-grid-channel-renderer, ytd-rich-item-renderer",
+        "props": {
+          "id": "substring-after(string(.//a[@id='thumbnail']/@href), '/channel/')",
+          "authorFullname": "string(.//yt-formatted-string[@id='text-container'])",
+          "authorUsername": "substring-after(string(.//a[@id='thumbnail']/@href), '/channel/')",
+          "authorImg": "string(.//yt-img-shadow[@id='avatar']/img/@src)",
+          "url": "concat('https://www.youtube.com/channel/', substring-after(string(.//a[@id='thumbnail']/@href), '/channel/'))"
+        },
+        "insertionPoints": {
+          "southPanel": { "selector": "div#info", "insertionType": "after" },
+          "avatar": { "selector": "div#avatar", "insertionType": "begin" }
+        }
+      }
+    },
+    "targets": [
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "youtube.com" } }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "www.youtube.com" } }
+      }
+    ]
+  }
+}

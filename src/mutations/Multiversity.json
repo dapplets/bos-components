@@ -1,0 +1,27 @@
+{
+  "metadata": {
+    "name": "Multiversity",
+    "description": "Discover Accessible Intelligence",
+    "image": {
+      "ipfs_cid": "bafkreicluble6uaofpunfz7kyetzenvsahu6aecqjjyv5odmwk3wz3lbcu"
+    }
+  },
+  "$apps": ["${REPL_ACCOUNT}/app/Multiversity"],
+  "$targets": [
+    {
+      "namespace": "engine",
+      "contextType": "website",
+      "if": {
+        "id": {
+          "in": [
+            "x.com",
+            "github.com",
+            "linkedin.com",
+            "www.linkedin.com",
+            "localhost"
+          ]
+        }
+      }
+    }
+  ]
+}

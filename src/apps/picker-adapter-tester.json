@@ -1,0 +1,24 @@
+{
+  "metadata": {
+    "name": "Picker Adapter Tester",
+    "description": "Test adapters with Picker"
+  },
+  "$": {
+    "targets": [
+      {
+        "namespace": "${REPL_ACCOUNT}/parser/common-body-x",
+        "contextType": "body",
+        "if": { "id": { "not": null, "index": true } },
+        "injectTo": "end",
+        "componentId": "${REPL_ACCOUNT}/widget/PickerAdapterTester.Main"
+      },
+      {
+        "namespace": "${REPL_ACCOUNT}/parser/common-body-test",
+        "contextType": "body",
+        "if": { "id": { "not": null, "index": true } },
+        "injectTo": "end",
+        "componentId": "${REPL_ACCOUNT}/widget/PickerAdapterTester.Main"
+      }
+    ]
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "$": {
+    "parserType": "json",
+    "targets": [
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": {
+          "id": {
+            "eq": "localhost"
+          }
+        }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": {
+          "id": {
+            "eq": "mutable-near-social.netlify.app"
+          }
+        }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": {
+          "id": {
+            "eq": "social.dapplets.org"
+          }
+        }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": {
+          "id": {
+            "eq": "mutable-near-social.netlify.app"
+          }
+        }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": {
+          "id": {
+            "endsWith": "--mutable-near-social.netlify.app"
+          }
+        }
+      }
+    ],
+    "contexts": {
+      "root": {
+        "props": {
+          "id": "string('global')",
+          "websiteName": "string('Near Social')",
+          "username": "string(//*[@id='dropdownMenu2222']/div[2]/div[2])",
+          "fullname": "normalize-space(string(//div[@data-component='patrick.near/widget/ProfileName']))",
+          "img": "string(//*[@id='dropdownMenu2222']/div[1]/img/@src)"
+        },
+        "children": ["post"]
+      },
+      "post": {
+        "selector": "[data-component='mob.near/widget/MainPage.N.Post']",
+        "props": {
+          "id": "concat(substring-before(substring-after(string(./@data-props), '\"accountId\":\"'), '\"'), string('/'), substring-before(substring-after(string(./@data-props), '\"blockHeight\":'), ','))",
+          "text": "normalize-space(substring-before(string(.//div[@data-component='mob.near/widget/MainPage.N.Post.Content']), 'Show more'))",
+          "authorUsername": "substring-before(substring-after(string(./@data-props), '\"accountId\":\"'), '\"')",
+          "authorImg": "string(.//*[@class=\"left\"]//img/@src)"
+        },
+        "insertionPoints": {
+          "avatar": {
+            "selector": "[data-component='mob.near/widget/MainPage.N.Post'] .left .profile-image",
+            "insertionType": "after"
+          },
+          "afterText": {
+            "bosLayoutManager": "${REPL_ACCOUNT}/widget/VerticalLayoutManager",
+            "insertionType": "after",
+            "selector": "[data-component='mob.near/widget/MainPage.N.Post.Content']"
+          },
+          "southPanel": {
+            "selector": "[data-component='mob.near/widget/MainPage.N.Post.ShareButton']",
+            "insertionType": "after"
+          }
+        }
+      }
+    }
+  }
+}

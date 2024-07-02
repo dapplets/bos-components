@@ -1,0 +1,38 @@
+{
+  "metadata": {
+    "name": "Zoo",
+    "description": "Mutation with animal icons and buttons",
+    "image": {
+      "ipfs_cid": "bafkreie4tum66dxhl4twu6ak3d2vgtxkwc3rkoay2rriqzdwm4m2hflgwy"
+    }
+  },
+  "$apps": [
+    "${REPL_ACCOUNT}/app/Cat",
+    "${REPL_ACCOUNT}/app/Dog",
+    "${REPL_ACCOUNT}/app/Capybara"
+  ],
+  "$targets": [
+    {
+      "namespace": "engine",
+      "contextType": "website",
+      "if": {
+        "id": {
+          "in": [
+            "x.com",
+            "twitter.com",
+            "github.com",
+            "linkedin.com",
+            "www.linkedin.com",
+            "social.dapplets.org",
+            "localhost"
+          ]
+        }
+      }
+    },
+    {
+      "namespace": "engine",
+      "contextType": "website",
+      "if": { "id": { "endsWith": "--mutable-near-social.netlify.app" } }
+    }
+  ]
+}

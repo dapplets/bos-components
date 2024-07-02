@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "name": "CrossPost"
+  },
+  "$": {
+    "targets": [
+      {
+        "namespace": "${REPL_ACCOUNT}/parser/twitter",
+        "contextType": "post",
+        "if": { "id": { "not": null } },
+        "injectTo": "southPanel",
+        "injectOnce": true,
+        "componentId": "${REPL_ACCOUNT}/widget/CrossPost.Main"
+      }
+    ]
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "$": {
+    "parserType": "json",
+    "targets": [
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "localhost" } }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "social.dapplets.org" } }
+      }
+    ],
+    "contexts": {
+      "root": {
+        "props": { "id": "string('global')", "websiteName": "string(//title)" },
+        "children": ["body"]
+      },
+      "body": {
+        "selector": "#root",
+        "props": { "id": "string(//title)" },
+        "insertionPoints": {
+          "root": {
+            "selector": ":scope > div",
+            "bosLayoutManager": "${REPL_ACCOUNT}/widget/ContextActionsGroup",
+            "insertionType": "before"
+          },
+          "end": { "selector": ".App", "insertionType": "end" }
+        }
+      }
+    }
+  }
+}

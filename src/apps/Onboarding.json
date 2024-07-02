@@ -1,0 +1,29 @@
+{
+  "metadata": {
+    "name": "Onboarding",
+    "description": "Onboarding for the mutation",
+    "image": {
+      "ipfs_cid": "bafkreih235nlz4vricl2h5s3ti7fmwsrkqerrqhspcan7z2vzhh5ebjk7y"
+    }
+  },
+  "$": {
+    "targets": [
+      {
+        "namespace": "${REPL_ACCOUNT}/parser/github-onboarding",
+        "contextType": "body",
+        "if": { "id": { "not": null, "index": true } },
+        "injectTo": "end",
+        "injectOnce": true,
+        "componentId": "${REPL_ACCOUNT}/widget/Onboarding.Main"
+      },
+      {
+        "namespace": "${REPL_ACCOUNT}/parser/linkedin-onboarding",
+        "contextType": "body",
+        "if": { "id": { "not": null, "index": true } },
+        "injectTo": "end",
+        "injectOnce": true,
+        "componentId": "${REPL_ACCOUNT}/widget/Onboarding.Main"
+      }
+    ]
+  }
+}

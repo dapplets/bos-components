@@ -1,0 +1,20 @@
+{
+  "metadata": {
+    "name": "CalloutCat",
+    "description": "Just a vector image for testing purposes",
+    "image": {
+      "ipfs_cid": "bafkreie4tum66dxhl4twu6ak3d2vgtxkwc3rkoay2rriqzdwm4m2hflgwy"
+    }
+  },
+  "$": {
+    "targets": [
+      {
+        "namespace": "${REPL_ACCOUNT}/parser/twitter",
+        "contextType": "post",
+        "if": { "id": { "not": null, "index": true } },
+        "injectTo": "root",
+        "componentId": "${REPL_ACCOUNT}/widget/CalloutCat"
+      }
+    ]
+  }
+}
