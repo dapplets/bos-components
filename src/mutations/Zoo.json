@@ -24,15 +24,11 @@
             "linkedin.com",
             "www.linkedin.com",
             "social.dapplets.org",
+            "social.testnet.dapplets.org",
             "localhost"
           ]
         }
       }
-    },
-    {
-      "namespace": "engine",
-      "contextType": "website",
-      "if": { "id": { "endsWith": "--mutable-near-social.netlify.app" } }
     }
   ]
 }
