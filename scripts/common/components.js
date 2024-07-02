@@ -5,10 +5,10 @@ const [accountId] = process.argv.slice(2);
 
 const controller = new AbortController();
 const { signal } = controller;
-exec(`bos-loader ${accountId} -p ./src/widgets`, { signal });
+exec(`bos-loader ${accountId} -p ./src/widgets --port 3031`, { signal });
 
 const getBosComponents = () => {
-  return fetch("http://localhost:3030").then((res) => res.json());
+  return fetch("http://localhost:3031").then((res) => res.json());
 };
 
 /**
