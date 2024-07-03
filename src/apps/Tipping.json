@@ -1,0 +1,61 @@
+{
+  "metadata": {
+    "name": "Tipping",
+    "description": "Tipping dapplet allows you to donate NEAR tokens to X and GitHub users. It charges an extra fee of 3% on each donation.",
+    "image": {
+      "ipfs_cid": "bafkreif7fkfyupdrms3zn6xiptlxmekdl5g7cfgihsq6piqrwxu7pfywfy"
+    }
+  },
+  "$": {
+    "targets": [
+      {
+        "namespace": "${REPL_ACCOUNT}/parser/twitter",
+        "contextType": "post",
+        "if": { "id": { "not": null } },
+        "injectTo": "southPanel",
+        "injectOnce": true,
+        "componentId": "${REPL_ACCOUNT}/widget/Tipping.Main"
+      },
+      {
+        "namespace": "${REPL_ACCOUNT}/parser/near-social",
+        "contextType": "post",
+        "if": { "id": { "not": null } },
+        "injectTo": "southPanel",
+        "injectOnce": true,
+        "componentId": "${REPL_ACCOUNT}/widget/Tipping.Main"
+      },
+      {
+        "namespace": "${REPL_ACCOUNT}/parser/linkedin",
+        "contextType": "post",
+        "if": { "id": { "not": null } },
+        "injectTo": "southPanel",
+        "injectOnce": true,
+        "componentId": "${REPL_ACCOUNT}/widget/Tipping.Main"
+      },
+      {
+        "namespace": "${REPL_ACCOUNT}/parser/youtube",
+        "contextType": "post",
+        "if": { "id": { "not": null } },
+        "injectTo": "southPanel",
+        "injectOnce": true,
+        "componentId": "${REPL_ACCOUNT}/widget/Tipping.Main"
+      },
+      {
+        "namespace": "${REPL_ACCOUNT}/parser/reddit",
+        "contextType": "post",
+        "if": { "id": { "not": null } },
+        "injectTo": "southPanel",
+        "injectOnce": true,
+        "componentId": "${REPL_ACCOUNT}/widget/Tipping.Main"
+      },
+      {
+        "namespace": "${REPL_ACCOUNT}/parser/github",
+        "contextType": "post",
+        "if": { "id": { "not": null } },
+        "injectTo": "southPanel",
+        "injectOnce": true,
+        "componentId": "${REPL_ACCOUNT}/widget/Tipping.Main"
+      }
+    ]
+  }
+}

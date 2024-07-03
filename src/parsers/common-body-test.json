@@ -1,0 +1,40 @@
+{
+  "$": {
+    "parserType": "json",
+    "targets": [
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": {
+          "url": {
+            "contains": "https://social.dapplets.org/mob.near/widget/ProfilePage?accountId=dappletsproject.near"
+          }
+        }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": {
+          "url": {
+            "contains": "http://localhost:3000/mob.near/widget/ProfilePage?accountId=dappletsproject.near"
+          }
+        }
+      }
+    ],
+    "contexts": {
+      "root": {
+        "props": { "id": "string('global')", "websiteName": "string(//title)" },
+        "children": ["body"]
+      },
+      "body": {
+        "selector": "body",
+        "props": { "id": "string('body')" },
+        "insertionPoints": {
+          "before": { "insertionType": "before" },
+          "end": { "insertionType": "end" },
+          "after": { "insertionType": "after" }
+        }
+      }
+    }
+  }
+}

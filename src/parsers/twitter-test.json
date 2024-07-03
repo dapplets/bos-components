@@ -1,0 +1,37 @@
+{
+  "$": {
+    "parserType": "json",
+    "targets": [
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "twitter.com" } }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "www.twitter.com" } }
+      }
+    ],
+    "contexts": {
+      "root": {
+        "props": {
+          "id": "string('global')",
+          "websiteName": "string('Twitter')",
+          "username": "substring-after(string(//header//a[@aria-label='Profile']/@href), '/')",
+          "fullname": "string(//*[@aria-label='Account menu']//img/@alt)",
+          "img": "string(//*[@aria-label='Account menu']//img/@src)",
+          "url": "string(//html/head/meta[@property='og:url']/@content)"
+        },
+        "children": ["body"]
+      },
+      "body": {
+        "selector": "#react-root",
+        "props": { "id": "string('Twitter')" },
+        "insertionPoints": {
+          "end": { "selector": ":scope > div", "insertionType": "end" }
+        }
+      }
+    }
+  }
+}

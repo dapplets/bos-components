@@ -1,0 +1,26 @@
+{
+  "metadata": {
+    "name": "WebGuide",
+    "image": {
+      "ipfs_cid": "bafkreihwu5plfrt7ndwsodrnjsjlkqbx3lqfua7sbfpcdfagz5kjpwj55y"
+    }
+  },
+  "$": {
+    "targets": [
+      {
+        "namespace": "${REPL_ACCOUNT}/parser/common-body-test",
+        "contextType": "body",
+        "injectTo": "end",
+        "if": { "id": { "not": null, "index": true } },
+        "componentId": "${REPL_ACCOUNT}/widget/WebGuide.Main"
+      },
+      {
+        "namespace": "${REPL_ACCOUNT}/parser/common-body",
+        "contextType": "body",
+        "injectTo": "end",
+        "if": { "id": { "not": null, "index": true } },
+        "componentId": "${REPL_ACCOUNT}/widget/WebGuide.Main"
+      }
+    ]
+  }
+}

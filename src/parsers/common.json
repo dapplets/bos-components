@@ -1,0 +1,40 @@
+{
+  "$": {
+    "parserType": "json",
+    "targets": [
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "localhost" } }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "mutable-near-social.netlify.app" } }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "--mutable-near-social.netlify.app" } }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "social.dapplets.org" } }
+      }
+    ],
+    "contexts": {
+      "root": {
+        "props": { "id": "string('global')", "websiteName": "string(//title)" },
+        "children": ["body"]
+      },
+      "body": {
+        "selector": "#root",
+        "props": { "id": "string(//title)" },
+        "insertionPoints": {
+          "end": { "selector": ".App", "insertionType": "end" }
+        }
+      }
+    }
+  }
+}
