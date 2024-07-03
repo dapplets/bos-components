@@ -9,7 +9,11 @@ const server = createServer(async (req, res) => {
   const mweb = await getMWebComponents();
 
   res.statusCode = 200;
+  
   res.setHeader("Content-Type", "application/json");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET");
+
   res.end(JSON.stringify({ ...bos, mweb }));
 });
 
