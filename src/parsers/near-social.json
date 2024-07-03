@@ -10,22 +10,12 @@
       {
         "namespace": "engine",
         "contextType": "website",
-        "if": { "id": { "eq": "mutable-near-social.netlify.app" } }
-      },
-      {
-        "namespace": "engine",
-        "contextType": "website",
         "if": { "id": { "eq": "social.dapplets.org" } }
       },
       {
         "namespace": "engine",
         "contextType": "website",
-        "if": { "id": { "eq": "mutable-near-social.netlify.app" } }
-      },
-      {
-        "namespace": "engine",
-        "contextType": "website",
-        "if": { "id": { "endsWith": "--mutable-near-social.netlify.app" } }
+        "if": { "id": { "eq": "social.testnet.dapplets.org" } }
       }
     ],
     "contexts": {
