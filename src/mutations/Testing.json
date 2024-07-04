@@ -29,10 +29,18 @@
             "reddit.com",
             "www.reddit.com",
             "social.dapplets.org",
-            "social.testnet.dapplets.org",
             "localhost",
             "127.0.0.1"
           ]
+        }
+      }
+    },
+    {
+      "namespace": "engine",
+      "contextType": "website",
+      "if": {
+        "id": {
+          "contains": ["social.testnet.dapplets.org"]
         }
       }
     }

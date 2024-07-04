@@ -25,7 +25,7 @@
         "contextType": "website",
         "if": {
           "url": {
-            "contains": "https://social.testnet.dapplets.org/mob.dapplets.testnet/widget/ProfilePage?accountId=bos.dapplets.testnet"
+            "contains": "social.testnet.dapplets.org/mob.dapplets.testnet/widget/ProfilePage?accountId=bos.dapplets.testnet"
           }
         }
       },

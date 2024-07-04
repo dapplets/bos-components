@@ -34,7 +34,7 @@
         "contextType": "website",
         "if": {
           "id": {
-            "eq": "social.testnet.dapplets.org"
+            "contains": ["social.testnet.dapplets.org"]
           }
         }
       }

@@ -25,9 +25,17 @@
             "www.linkedin.com",
             "social.dapplets.org",
             "localhost",
-            "127.0.0.1",
-            "social.testnet.dapplets.org"
+            "127.0.0.1"
           ]
+        }
+      }
+    },
+    {
+      "namespace": "engine",
+      "contextType": "website",
+      "if": {
+        "id": {
+          "contains": ["social.testnet.dapplets.org"]
         }
       }
     }
