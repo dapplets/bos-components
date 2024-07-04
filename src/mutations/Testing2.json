@@ -24,7 +24,8 @@
             "www.reddit.com",
             "social.dapplets.org",
             "social.testnet.dapplets.org",
-            "localhost"
+            "localhost",
+            "127.0.0.1"
           ]
         }
       }

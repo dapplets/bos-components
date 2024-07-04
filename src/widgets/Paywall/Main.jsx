@@ -4,7 +4,7 @@ const { authorId, id } = props.link
 if (!id) return <></>
 
 const userAccountId = context.accountId || nearAccountId
-const CONTRACT_ADDRESS = "v2.paywall.near"
+const CONTRACT_ADDRESS = context.networkId === 'mainnet' ? "v2.paywall.near" : "v2.paywall.testnet"
 
 State.update({
   hasContent: Near.view(

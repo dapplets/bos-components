@@ -1,12 +1,17 @@
 const fs = require("fs");
-const { getBosComponents, getMWebComponents } = require("./common/components");
+const { getMWebComponents } = require("./common/mweb-components");
+const { getBosComponents } = require("./common/bos-components");
+
+const BuildOutputPath = "./build/index.json";
 
 const main = async () => {
-  const bos = await getBosComponents();
-  const mweb = await getMWebComponents();
+  const [bos, mweb] = await Promise.all([
+    getBosComponents(),
+    getMWebComponents(),
+  ]);
 
-  const json = JSON.stringify({ ...bos, mweb }, null, 2)
-  fs.writeFileSync("./build/index.json", json);
+  const json = JSON.stringify({ ...bos, mweb }, null, 2);
+  fs.writeFileSync(BuildOutputPath, json);
 };
 
 main()
@@ -15,4 +20,3 @@ main()
     console.error(err);
     process.exit(1);
   });
-

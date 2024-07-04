@@ -1,6 +1,6 @@
 const TGas = Big(10).pow(12);
 const OneNear = Big(10).pow(24);
-const ContractId = "social.near";
+const ContractId = context.networkId === "mainnet" ? "social.near" : "v1.social08.testnet";
 
 const [isLoading, setIsLoading] = useState(false);
 

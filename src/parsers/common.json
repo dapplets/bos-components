@@ -15,6 +15,11 @@
       {
         "namespace": "engine",
         "contextType": "website",
+        "if": { "id": { "eq": "127.0.0.1" } }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
         "if": { "id": { "eq": "social.testnet.dapplets.org" } }
       }
     ],

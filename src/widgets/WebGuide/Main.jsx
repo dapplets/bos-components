@@ -1,3 +1,5 @@
+const nearSocialTargetPostId = context.networkId === 'mainnet' ? 'dappletsproject.near/119034910' : 'bos.dapplets.testnet/168034335';
+
 const twitterConfig = {
   action: true,
   chapters: [
@@ -410,7 +412,7 @@ const nearSocialConfig = {
     //   namespace: "${REPL_ACCOUNT}/parser/near-social-json",
     //   contextType: "post",
     //   injectTo: "avatar",
-    //   if: { id: { eq: "dappletsproject.near/119034910" } },
+    //   if: { id: { eq: nearSocialTargetPostId } },
     //   arrowTo: "insPoint",
     //   pages: [
     //     {
@@ -429,7 +431,7 @@ const nearSocialConfig = {
       contextType: "injected-widget",
       injectTo: "hidden",
       if: {
-        parentContextId: { eq: "dappletsproject.near/119034910" },
+        parentContextId: { eq: nearSocialTargetPostId },
         widgetSrc: { eq: "${REPL_ACCOUNT}/widget/Tipping.Main" },
       },
       arrowTo: "context",
@@ -449,7 +451,7 @@ const nearSocialConfig = {
       namespace: "mweb",
       contextType: "ear-trigger",
       injectTo: "hidden",
-      if: { id: { eq: "dappletsproject.near/119034910" } },
+      if: { id: { eq: nearSocialTargetPostId } },
       arrowTo: "context",
       pages: [
         {
@@ -467,7 +469,7 @@ const nearSocialConfig = {
       namespace: "mweb",
       contextType: "ear-trigger",
       injectTo: "hidden",
-      if: { id: { eq: "dappletsproject.near/119034910" } },
+      if: { id: { eq: nearSocialTargetPostId } },
       arrowTo: "context",
       pages: [
         {

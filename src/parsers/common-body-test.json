@@ -19,6 +19,24 @@
             "contains": "http://localhost:3000/mob.near/widget/ProfilePage?accountId=dappletsproject.near"
           }
         }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": {
+          "url": {
+            "contains": "https://social.testnet.dapplets.org/mob.dapplets.testnet/widget/ProfilePage?accountId=bos.dapplets.testnet"
+          }
+        }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": {
+          "url": {
+            "contains": "http://127.0.0.1:3000/mob.dapplets.testnet/widget/ProfilePage?accountId=bos.dapplets.testnet"
+          }
+        }
       }
     ],
     "contexts": {
