@@ -9,4 +9,13 @@ const getReplacements = (networkId) => {
   return JSON.parse(fs.readFileSync(absolutePath, "utf8"));
 };
 
-module.exports = { getReplacements, getReplacementsPath };
+const executeReplacements = (str, replacements) => {
+  for (const [key, value] of Object.entries(replacements)) {
+    // should replace ${key} with value everywhere in the string
+    str = str.replace(new RegExp(`\\$\\{${key}\\}`, "g"), value);
+  }
+
+  return str;
+};
+
+module.exports = { getReplacements, getReplacementsPath, executeReplacements };

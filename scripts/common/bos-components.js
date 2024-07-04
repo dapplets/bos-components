@@ -1,21 +1,56 @@
 const { exec } = require("child_process");
-const { getReplacementsPath } = require("./replacements");
 const fetch = require("node-fetch");
+const path = require("path");
+const fs = require("fs");
+const { getReplacements, executeReplacements } = require("./replacements");
+
+const InputWidgetsPath = path.join(__dirname, "../../src/widgets");
+
+const getComponentsInDirectory = (directory) => {
+  const subpaths = fs.readdirSync(directory);
+
+  let components = {};
+
+  for (const subpath of subpaths) {
+    const absoluteSubPath = path.join(directory, subpath);
+    if (fs.lstatSync(absoluteSubPath).isDirectory()) {
+      const childComponents = getComponentsInDirectory(absoluteSubPath);
+      for (const key in childComponents) {
+        components[`${subpath}.${key}`] = childComponents[key];
+      }
+      continue;
+    }
+
+    if (!subpath.endsWith(".jsx")) {
+      continue;
+    }
+
+    const widgetId = subpath.replace(".jsx", "");
+
+    components[widgetId] = {
+      code: fs.readFileSync(absoluteSubPath, "utf8"),
+    };
+  }
+
+  return components;
+};
 
 const getBosComponents = async (accountId, networkId) => {
-  const replacementsPath = getReplacementsPath(networkId);
+  const replacementsPath = {
+    ...getReplacements(networkId),
+    REPL_ACCOUNT: accountId,
+  };
 
-  const controller = new AbortController();
-  const { signal } = controller;
+  const componentsByWidgetId = getComponentsInDirectory(InputWidgetsPath);
 
-  exec(
-    `bos-loader ${accountId} -p ./src/widgets --port 3031 -r ${replacementsPath}`,
-    { signal }
+  const components = Object.fromEntries(
+    Object.entries(componentsByWidgetId).map(([widgetId, widget]) => [
+      `${accountId}/widget/${widgetId}`,
+      { code: executeReplacements(widget.code, replacementsPath) },
+    ])
   );
 
-  return fetch("http://localhost:3031")
-    .then((res) => res.json())
-    .finally(() => controller.abort());
+  return { components };
 };
 
 module.exports = { getBosComponents };
