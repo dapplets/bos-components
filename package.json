@@ -41,6 +41,7 @@
     "bos-cli": "^0.3.13",
     "json-stringify-deterministic": "^1.0.12",
     "near-api-js": "^4.0.2",
+    "node-fetch": "^2.7.0",
     "social-db-js": "github:dapplets/social-db-js"
   },
   "dependencies": {}
