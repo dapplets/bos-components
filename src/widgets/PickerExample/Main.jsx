@@ -209,6 +209,11 @@ return (
               if: {}
             },
             {
+              namespace: '${REPL_ACCOUNT}/parser/near-social',
+              contextType: 'post',
+              if: {}
+            },
+            {
               namespace: 'mweb',
               contextType: 'mweb-overlay',
               if: { id: { eq: 'mutation-button' } }
