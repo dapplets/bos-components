@@ -43,7 +43,7 @@ const CustomTooltipDefault = styled("DappletTooltip")`
       transform: rotate(0deg);
     }
   }
-`
+`;
 
 const CustomTooltipMeta = styled("DappletTooltip")`
   z-index: 99999999; // over the notch
@@ -90,7 +90,7 @@ const CustomTooltipMeta = styled("DappletTooltip")`
       transform: rotate(0deg);
     }
   }
-`
+`;
 
 const InfoBox = styled.div`
   position: absolute;
@@ -109,7 +109,9 @@ const InfoBox = styled.div`
   gap: 20px;
   z-index: 1000;
   box-shadow: none;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
   align-items: center;
   justify-content: center;
 
@@ -124,7 +126,7 @@ const InfoBox = styled.div`
       transform: translate(-50%, -50%);
     }
   }
-`
+`;
 
 const Callout = styled.div`
   display: flex;
@@ -137,11 +139,15 @@ const Callout = styled.div`
   border-radius: 10px;
   border: 1px solid ${(props) => props.$border};
   background: ${(props) => props.$bg};
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-`
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+`;
 
 const Header = styled.div`
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
   color: ${(props) => props.$col};
   position: relative;
   display: flex;
@@ -149,7 +155,7 @@ const Header = styled.div`
   width: 100%;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const TopLine = styled.div`
   position: relative;
@@ -161,7 +167,7 @@ const TopLine = styled.div`
   height: 24px;
   margin: 0;
   padding: 0;
-`
+`;
 
 const CalloutHeaderCaption = styled.div`
   display: inline-block;
@@ -174,7 +180,7 @@ const CalloutHeaderCaption = styled.div`
   font-weight: 600;
   line-height: 149%;
   flex: 1;
-`
+`;
 
 const PagesIndicators = styled.div`
   width: auto;
@@ -187,7 +193,7 @@ const PagesIndicators = styled.div`
   box-sizing: border-box;
   justify-content: center;
   flex: 1;
-`
+`;
 
 // const Navi = styled.button` // ToDo: for navigation
 const Navi = styled.div`
@@ -196,9 +202,11 @@ const Navi = styled.div`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: ${(props) => (props.$active ? props.$navActive : props.$navInactiveBg)};
-  border: ${(props) => (props.$active ? 'none' : `1px solid ${props.$navInactiveBorder}`)};
-`
+  background: ${(props) =>
+    props.$active ? props.$navActive : props.$navInactiveBg};
+  border: ${(props) =>
+    props.$active ? "none" : `1px solid ${props.$navInactiveBorder}`};
+`;
 
 const Close = styled.button`
   display: flex;
@@ -209,18 +217,20 @@ const Close = styled.button`
   padding: 0;
   cursor: pointer;
   flex: 1;
-`
+`;
 
 const Title = styled.div`
   padding: 0;
   margin: 0 0 -10px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
   color: ${(props) => props.$col};
   font-size: ${(props) => (props.$type === "infobox" ? "32px" : "18px")};
   font-style: normal;
   font-weight: 600;
   line-height: 149%;
-`
+`;
 
 const WrapperAlert = styled.div`
   display: flex;
@@ -247,7 +257,7 @@ const WrapperAlert = styled.div`
       : props.$colInfo};
 
   outline: none;
-`
+`;
 
 const IconAlert = styled.div`
   margin: 0;
@@ -255,7 +265,7 @@ const IconAlert = styled.div`
   position: relative;
   display: flex;
   width: 16px;
-`
+`;
 
 const TextAlert = styled.div`
   font-size: 12px;
@@ -263,7 +273,7 @@ const TextAlert = styled.div`
   text-align: left;
   margin: 0;
   padding: 0;
-`
+`;
 
 const Card = styled.div`
   position: relative;
@@ -278,9 +288,11 @@ const Card = styled.div`
   border: none;
   border-radius: 20px;
   background: ${(props) => props.$bg};
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
   overflow-x: hidden;
-`
+`;
 
 const MarkdownWrapper = styled.div`
   width: 100%;
@@ -289,7 +301,9 @@ const MarkdownWrapper = styled.div`
   h3 {
     padding: 8px 0 0;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+      "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+      "Helvetica Neue", sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
@@ -315,8 +329,10 @@ const MarkdownWrapper = styled.div`
 
   p {
     margin-block-start: 0.5em;
-    margin-block-end: .5em;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    margin-block-end: 0.5em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+      "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+      "Helvetica Neue", sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -330,16 +346,18 @@ const MarkdownWrapper = styled.div`
   a {
     padding: 0;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+      "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+      "Helvetica Neue", sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 149%;
     text-decoration-line: underline !important;
     color: ${(props) => props.$colH};
-    cursor: 'poiner';
+    cursor: "poiner";
   }
-`
+`;
 
 const Footer = styled.div`
   display: flex;
@@ -349,12 +367,13 @@ const Footer = styled.div`
   width: 100%;
   align-items: center;
   gap: 20px;
-`
+`;
 
 const ContainerCheckbox = styled.div`
   display: flex;
-  align-items: ${(props) => (props.$type === "infobox" ? "flex-end" : "flex-start")};
-`
+  align-items: ${(props) =>
+    props.$type === "infobox" ? "flex-end" : "flex-start"};
+`;
 
 const CheckboxInput = styled.input`
   width: 16px;
@@ -362,7 +381,7 @@ const CheckboxInput = styled.input`
   border-radius: 5px;
   border: 1px solid #384bff;
   margin-right: 8px;
-`
+`;
 
 const Label = styled.label`
   font-weight: 400;
@@ -371,17 +390,19 @@ const Label = styled.label`
   color: #7a818b;
   cursor: pointer;
   width: max-content;
-`
+`;
 
 const ActionsGroup = styled.div`
   display: flex;
-  flex-direction: ${(props) => (props.$type === "infobox" ? "row-reverse" : "row")};
-  justify-content: ${(props) => (props.$type === "infobox" ? "space-between" : "center")};;
+  flex-direction: ${(props) =>
+    props.$type === "infobox" ? "row-reverse" : "row"};
+  justify-content: ${(props) =>
+    props.$type === "infobox" ? "space-between" : "center"};
   align-items: center;
   gap: 10px;
   align-self: stretch;
   flex-grow: 1;
-`
+`;
 
 const ActionButton = styled.div`
   display: flex;
@@ -395,7 +416,8 @@ const ActionButton = styled.div`
   text-align: center;
   font-size: 14px;
   cursor: pointer;
-  border: ${(props) => (props.$primary ? "initial" : `1px solid ${props.$secBorderCol}`)};
+  border: ${(props) =>
+    props.$primary ? "initial" : `1px solid ${props.$secBorderCol}`};
   background: ${(props) => (props.$primary ? props.$primBg : "initial")};
   color: ${(props) => (props.$primary ? props.$primCol : props.$secCol)};
   -webkit-user-select: none; /* Chrome/Safari */
@@ -410,7 +432,7 @@ const ActionButton = styled.div`
   &:active {
     background: ${(props) => (props.$primary ? props.$primBgA : props.$secBgA)};
   }
-`
+`;
 
 const iconClose = (color) => (
   <svg
@@ -435,7 +457,7 @@ const iconClose = (color) => (
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 
 const errorIcon = (color) => (
   <svg
@@ -474,7 +496,7 @@ const errorIcon = (color) => (
       </clipPath>
     </defs>
   </svg>
-)
+);
 
 const infoIcon = (color) => (
   <svg
@@ -513,7 +535,7 @@ const infoIcon = (color) => (
       </clipPath>
     </defs>
   </svg>
-)
+);
 
 const warningIcon = (color) => (
   <svg
@@ -545,19 +567,19 @@ const warningIcon = (color) => (
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 
 const themes = {
   DEFAULT: {
-    bgMain: '#fffffe',
-    colorMain: '#02193a',
-    colorP: '#777777',
-    border: '#02193a',
-    cardBg: 'rgba(248, 249, 255, 1)',
+    bgMain: "#fffffe",
+    colorMain: "#02193a",
+    colorP: "#777777",
+    border: "#02193a",
+    cardBg: "rgba(248, 249, 255, 1)",
 
     navActive: "#384BFF",
     navInactiveBg: "#E3E3E3",
-    navInactiveBorder: 'none',
+    navInactiveBorder: "none",
 
     statusInfoCol: "#246EFD",
     statusWarningCol: "#D0911A",
@@ -566,25 +588,25 @@ const themes = {
     statusWarningBg: "rgba(255, 248, 235, 1)",
     statusErrorBg: "rgba(246, 240, 246, 1)",
 
-    primBtnCol: 'white',
-    primBtnBg: '#02193a',
+    primBtnCol: "white",
+    primBtnBg: "#02193a",
     primBtnBgH: "#1c3559",
     primBtnBgA: "#020c19",
-    secBtnCol: '#02193a',
-    secBtnBorderCol: '#E2E2E5',
+    secBtnCol: "#02193a",
+    secBtnBorderCol: "#E2E2E5",
     secBtnBgH: "#eee",
     secBtnBgA: "#ddd",
   },
-  'META_GUIDE': {
-    bgMain: '#4E77E1',
-    colorMain: 'white',
-    colorP: 'rgba(248, 249, 255, 1)',
-    border: '#4E77E1',
-    cardBg: 'rgba(255, 255, 255, 0.1)',
+  META_GUIDE: {
+    bgMain: "#4E77E1",
+    colorMain: "white",
+    colorP: "rgba(248, 249, 255, 1)",
+    border: "#4E77E1",
+    cardBg: "rgba(255, 255, 255, 0.1)",
 
     navActive: "white",
     navInactiveBg: "#4E77E1",
-    navInactiveBorder: 'white',
+    navInactiveBorder: "white",
 
     statusInfoCol: "white",
     statusWarningCol: "white",
@@ -593,16 +615,125 @@ const themes = {
     statusWarningBg: "rgba(255, 255, 255, 0.2)",
     statusErrorBg: "rgba(255, 255, 255, 0.2)",
 
-    primBtnCol: '#4E77E1',
-    primBtnBgH: 'rgb(242 243 255)',
-    primBtnBgA: 'rgb(222 225 255)',
-    primBtnBg: 'white',
-    secBtnCol: 'white',
-    secBtnBorderCol: 'white',
-    secBtnBgH: '#5f84e4',
-    secBtnBgA: '#6c8ee5',
+    primBtnCol: "#4E77E1",
+    primBtnBgH: "rgb(242 243 255)",
+    primBtnBgA: "rgb(222 225 255)",
+    primBtnBg: "white",
+    secBtnCol: "white",
+    secBtnBorderCol: "white",
+    secBtnBgH: "#5f84e4",
+    secBtnBgA: "#6c8ee5",
   },
-}
+};
+
+const EditButton = styled.button`
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 0;
+  padding: 0 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 24px;
+  background: none;
+  cursor: pointer;
+  height: 24px;
+  background: white;
+  color: rgb(78, 119, 225);
+  transition-duration: 0.15s;
+
+  :hover {
+    color: #111;
+    background: #eee;
+  }
+
+  :active {
+    color: #000;
+    background: #ddd;
+  }
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+
+  svg {
+    path {
+      stroke: #838891;
+      transition-duration: 0.2s;
+    }
+  }
+
+  :hover {
+    svg {
+      path {
+        stroke: #555555;
+      }
+    }
+  }
+`;
+
+const closeIcon = (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M18 6L6 18"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M6 6.5L18 18.5"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const SuccessButton = styled.button`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 20px;
+  width: 180px;
+  height: 42px;
+  background: #02193a;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 149%;
+  text-align: center;
+  color: #ffffff;
+  transition-duration: 0.2s;
+
+  :hover {
+    background-color: rgb(32 45 63);
+  }
+`;
 
 const {
   children,
@@ -616,11 +747,33 @@ const {
   checked,
   onDoNotShowChange,
   skin,
-} = props
+  // todo: new props
+
+  saveData,
+
+} = props;
+
+// todo: new
+const [newData, setNewData] = useState(content ?? "");
+const [isEditMode, setEditMode] = useState(false);
+// todo: new
+const handleSave = () => {
+  saveData(newData);
+  setNewData("");
+  // setShow(false);
+};
 
 const header = (
   <Header $col={themes[skin].colorMain}>
+    {/* todo: new */}
+    {/* {context.accountId === props.link?.authorId ? 
+       ( */}
     <TopLine>
+      <EditButton onClick={() => setEditMode(true)}>Edit data</EditButton>
+    </TopLine>
+    {/* ) 
+          : (
+           <TopLine>
       <Close onClick={onClose}>{iconClose(themes[skin].colorMain)}</Close>
       {navi ? (
         <>
@@ -643,8 +796,9 @@ const header = (
         </>
       ) : null}
     </TopLine>
+          )} */}
   </Header>
-)
+);
 
 const statuses = (
   <WrapperAlert
@@ -665,7 +819,7 @@ const statuses = (
     </IconAlert>
     <TextAlert>{props.status.text}</TextAlert>
   </WrapperAlert>
-)
+);
 
 const checkbox = (
   <ContainerCheckbox $type={props.type}>
@@ -676,7 +830,7 @@ const checkbox = (
     />
     <Label htmlFor="checkbox">Don't show this guide again</Label>
   </ContainerCheckbox>
-)
+);
 
 const actionButton = (btn) => (
   <ActionButton
@@ -695,9 +849,9 @@ const actionButton = (btn) => (
   >
     {btn.label}
   </ActionButton>
-)
+);
 
-const navButtons = !buttons ? null : props.type === 'callout' ? (
+const navButtons = !buttons ? null : props.type === "callout" ? (
   <ActionsGroup $type={props.type}>
     {buttons.map((btn) => actionButton(btn))}
   </ActionsGroup>
@@ -707,66 +861,139 @@ const navButtons = !buttons ? null : props.type === 'callout' ? (
     {actionButton(buttons[0])}
   </ActionsGroup>
 ) : buttons?.length === 1 ? (
-  <ActionsGroup $type={props.type}>
-    {actionButton(buttons[0])}
-  </ActionsGroup>
-) : <></>
+  <ActionsGroup $type={props.type}>{actionButton(buttons[0])}</ActionsGroup>
+) : (
+  <></>
+);
 
 const callout = (
-  <Callout 
-    data-mweb-context-type="wg-chapter" 
+  <Callout
+    data-mweb-context-type="wg-chapter"
     data-mweb-context-parsed={JSON.stringify({ id: props.id })}
     $border={themes[skin].border}
     $bg={themes[skin].bgMain}
   >
     {header}
-    {props.status?.text ? statuses : null}
-    {title ? (<Title $type={props.type} $col={themes[skin].colorMain}>
-      {title}
-    </Title>) : null}
-    <MarkdownWrapper $colH={themes[skin].colorMain} $colP={themes[skin].colorP}>
-      <Markdown text={content}/>
-    </MarkdownWrapper>
-    {showChecked ? checkbox : null}
-    {navButtons}
-    <div data-mweb-insertion-point="hidden" style={{ display: 'none' }}/>
+
+    {!content || isEditMode ? (
+      <>
+        {" "}
+        <Header>
+           <Title $type={props.type} $col={themes[skin].colorMain}>Add data</Title>
+          <CloseButton onClick={() => handleClose(false, viewedPages)}>
+            {closeIcon}
+          </CloseButton>
+        </Header>
+        <textarea
+          autoFocus
+          style={{ width: "100%", height: "100%" }}
+          onChange={(e) => setNewData(e.target.value)}
+          value={newData}
+        />
+        <div
+          style={{
+            display: "flex",
+            width: "80%",
+            justifyContent: "space-evenly",
+          }}
+        >
+          {isEditMode ? (
+            <SuccessButton onClick={() => setEditMode(false)}>
+              Cancel
+            </SuccessButton>
+          ) : null}
+          <SuccessButton onClick={handleSave}>Save</SuccessButton>
+        </div>
+      </>
+    ) : (
+      <>
+        {props.status?.text ? statuses : null}
+        {title ? (
+          <Title $type={props.type} $col={themes[skin].colorMain}>
+            {title}
+          </Title>
+        ) : null}
+        <MarkdownWrapper
+          $colH={themes[skin].colorMain}
+          $colP={themes[skin].colorP}
+        >
+          <Markdown text={content} />
+        </MarkdownWrapper>
+        {showChecked ? checkbox : null}
+        {navButtons}
+      </>
+    )}
+    <div data-mweb-insertion-point="hidden" style={{ display: "none" }} />
   </Callout>
-)
+);
 
 const calloutTooltip = {
   DEFAULT: (
-    <CustomTooltipDefault bsPrefix="wg-tooltip">
-      {callout}
-    </CustomTooltipDefault>
+    <CustomTooltipDefault bsPrefix="wg-tooltip">{callout}</CustomTooltipDefault>
   ),
-  'META_GUIDE': (
-    <CustomTooltipMeta bsPrefix="wg-tooltip">
-      {callout}
-    </CustomTooltipMeta>
+  META_GUIDE: (
+    <CustomTooltipMeta bsPrefix="wg-tooltip">{callout}</CustomTooltipMeta>
   ),
-}
+};
 
 const infobox = (
-  <InfoBox
-    $border={themes[skin].border}
-    $bg={themes[skin].bgMain}
-  >
+  <InfoBox $border={themes[skin].border} $bg={themes[skin].bgMain}>
     {header}
-    {title ? (<Title $type={props.type} $col={themes[skin].colorMain}>
-      {title}
-    </Title>) : null}
-    <Card $bg={themes[skin].cardBg}>
-      {props.status?.text ? statuses : null}
-      <MarkdownWrapper $colH={themes[skin].colorMain} $colP={themes[skin].colorP}>
-        <Markdown text={content}/>
-      </MarkdownWrapper>
-    </Card>
-    <Footer>
-      {showChecked ? checkbox : null}
-      {navButtons}
-    </Footer>
+
+    {!content || isEditMode ? (
+      <>
+        {" "}
+        <Header>
+          <h1>Add data</h1>
+          <CloseButton onClick={() => handleClose(false, viewedPages)}>
+            {closeIcon}
+          </CloseButton>
+        </Header>
+        <textarea
+          autoFocus
+          style={{ width: "100%", height: "100%" }}
+          onChange={(e) => setNewData(e.target.value)}
+          value={newData}
+        />
+        <div
+          style={{
+            display: "flex",
+            width: "80%",
+            justifyContent: "space-evenly",
+          }}
+        >
+          {isEditMode ? (
+            <SuccessButton onClick={() => setEditMode(false)}>
+              Cancel
+            </SuccessButton>
+          ) : null}
+          <SuccessButton onClick={handleSave}>Save</SuccessButton>
+        </div>
+      </>
+    ) : (
+      <>
+        {title ? (
+          <Title $type={props.type} $col={themes[skin].colorMain}>
+            {title}
+          </Title>
+        ) : null}
+        <Card $bg={themes[skin].cardBg}>
+          {props.status?.text ? statuses : null}
+          <MarkdownWrapper
+            $colH={themes[skin].colorMain}
+            $colP={themes[skin].colorP}
+          >
+            <Markdown text={content} />
+          </MarkdownWrapper>
+        </Card>
+        <Footer>
+          {showChecked ? checkbox : null}
+          {navButtons}
+        </Footer>
+      </>
+    )}
   </InfoBox>
-)
+);
 
 const overlayByType = {
   callout: (
@@ -775,7 +1002,7 @@ const overlayByType = {
       overlay={calloutTooltip[skin]}
       placement={props.placement ?? "auto"}
       offset={[0, 20]}
-      popperConfig={{ strategy: props.strategy ?? 'absolute' }}
+      popperConfig={{ strategy: props.strategy ?? "absolute" }}
     >
       {typeof props.children === "function" ? (
         props.children
@@ -785,6 +1012,6 @@ const overlayByType = {
     </DappletOverlayTrigger>
   ),
   infobox,
-}
+};
 
-return overlayByType[props.type]
+return overlayByType[props.type];

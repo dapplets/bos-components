@@ -1,3 +1,25 @@
+const OverlayTriggerWrapper = styled.div`
+  display: flex;
+  z-index: 500;
+
+  .OverlayTrigger {
+    position: absolute;
+    background: #db504a;
+    border: 1px solid #db504a;
+    width: 6px;
+    height: 49px;
+    right: -6px;
+    top: 10px;
+    border-radius: 0px 4px 4px 0px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    z-index: 79;
+  }
+`
+
 const twitterConfig = {
   action: true,
   chapters: [
@@ -507,27 +529,7 @@ const guideConfigByLinkId = {
   '0b492fd62c72d7ad87c7658e2b3a4f1e': nestedCalloutConfig,
 }
 
-const OverlayTriggerWrapper = styled.div`
-  display: flex;
-  z-index: 500;
 
-  .OverlayTrigger {
-    position: absolute;
-    background: #db504a;
-    border: 1px solid #db504a;
-    width: 6px;
-    height: 49px;
-    right: -6px;
-    top: 10px;
-    border-radius: 0px 4px 4px 0px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    z-index: 79;
-  }
-`
 
 const guideConfig = guideConfigByLinkId[props.link.id]
 
@@ -580,6 +582,19 @@ const handleClickNext = () => {
     handleChapterIncrement()
   } else {
     setPageCounter((val) => val + 1)
+  }
+}
+
+const saveData = (inputData) => {
+  if (context?.accountId) {
+    Near.call(
+      'app.webguide.near',
+      'set_guide',
+      {
+        guide_id: props.link.id,
+        data: inputData,
+      }
+    )
   }
 }
 
@@ -642,6 +657,8 @@ const ChapterWrapper = (props) => {
         title: currentPage.title,
         content: currentPage.content,
         showChecked: currentChapter.showChecked,
+        saveData: saveData,
+     
         children: currentChapter.type === 'callout'
           && currentChapter.arrowTo === "context"
             ? ({ ref }) => {
@@ -690,6 +707,8 @@ const iconTimelineLatch = (color) => (
     />
   </svg>
 )
+
+
 
 return (
   <>
