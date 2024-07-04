@@ -535,7 +535,7 @@ const guideConfigByLinkId = {
   '9f40468f4e7a03a0d2261a1cc9312a30': nestedCalloutConfig, // twitter
   'e5bca4cd881f48fbb51cd40f8e5a5a2a': nearSocialConfig, // near-social
   '4d835a2e3aa768a895851bf69190c479': nestedCalloutConfig, // near-social
-  '2816a30cfe941ac253d32fc8cf95f5a2': twitterConfig, // Multiversity at twitter
+  'ff9e54a496ad0ddefa8b258086daf40e': twitterConfig, // Multiversity at twitter
 }
 
 const OverlayTriggerWrapper = styled.div`
