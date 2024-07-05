@@ -1,4 +1,7 @@
-const contractId = "social.dapplets.near";
+const contractId =
+  context.networkId === "mainnet"
+    ? "social.dapplets.near"
+    : "social.dapplets.testnet";
 
 const [query, setQuery] = useState(
   `${context.accountId}/settings/dapplets.near/mutation/Sandbox/**`
