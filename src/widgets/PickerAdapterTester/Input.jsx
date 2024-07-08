@@ -1,4 +1,4 @@
-const [newData, setNewData] = useState('')
+const [newData, setNewData] = useState(props.previousData ?? '')
 
 const Container = styled.div`
   position: relative;
@@ -119,9 +119,8 @@ return (
       <SuccessButton onClick={() => {
         props.setSelectedAdapter('')
         setNewData('')
-        props.toggleIsRunningApp(false)
       }}>
-        Cancel
+        Reset
       </SuccessButton>
       <SuccessButton onClick={() => {
         props.setSelectedAdapter(newData)

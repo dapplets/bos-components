@@ -1,7 +1,8 @@
 const {
   handleClose,
   setSelectedAdapter,
-  toggleIsRunningApp
+  toggleIsRunningApp,
+  previousData
 } = props
 
 return (
@@ -18,7 +19,8 @@ return (
           props={{
             handleClose,
             setSelectedAdapter,
-            toggleIsRunningApp
+            toggleIsRunningApp,
+            previousData,
           }}
         />
       </div>

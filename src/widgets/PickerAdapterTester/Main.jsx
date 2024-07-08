@@ -1,17 +1,17 @@
 const [isRunnigApp, toggleIsRunningApp] = useState(false)
-const [selectedAdapter, setSelectedAdapter] = useState(false)
+const [selectedAdapter, setSelectedAdapter] = useState('')
+const [previousAdapter, setPreviousAdapter] = useState('')
 const [selectedContext, setSelectedContext] = useState(null)
-
-const handleClose = () => {
-  setSelectedContext(null)
-  toggleIsRunningApp(false)
-}
 
 const ChapterWrapper = (props) => {
   const widgetProps = {
     id: selectedContext.id,
     type: 'callout',
-    onClose: handleClose,
+    onClose: () => {
+      setSelectedContext(null)
+      setPreviousAdapter(selectedAdapter)
+      setSelectedAdapter('')
+    },
     content:`
 **ID:** ${selectedContext.id}
 
@@ -60,7 +60,8 @@ return (
           children: (<p>PAT</p>),
           handleAction: () => {
             if (isRunnigApp) {
-              handleClose()
+              setPreviousAdapter(selectedAdapter)
+              setSelectedAdapter('')
             } else {
               setSelectedAdapter('')
               toggleIsRunningApp(true)
@@ -83,9 +84,13 @@ return (
             src='bos.dapplets.near/widget/PickerAdapterTester.OverlayTrigger'
             loading={props?.children}
             props={{
-              handleClose,
+              handleClose: () => {
+                setSelectedContext(null)
+                toggleIsRunningApp(false)
+              },
               setSelectedAdapter,
               toggleIsRunningApp,
+              previousData: previousAdapter,
               children: ({ ref }) => {
                 props.attachContextRef(ref);
                 return props.children;
