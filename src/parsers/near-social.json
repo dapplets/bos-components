@@ -1,0 +1,59 @@
+{
+  "$": {
+    "parserType": "bos",
+    "targets": [
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "localhost" } }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "social.dapplets.org" } }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "127.0.0.1" } }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": {
+          "id": {
+            "contains": ["social.testnet.dapplets.org"]
+          }
+        }
+      }
+    ],
+    "contexts": {
+      "post": {
+        "component": "${REPL_NEAR_SOCIAL_OWNER}/widget/MainPage.N.Post",
+        "props": {
+          "id": "{{props.accountId}}/{{props.blockHeight}}",
+          "authorUsername": "{{props.accountId}}"
+        },
+        "insertionPoints": {
+          "root": {
+            "bosLayoutManager": "${REPL_ACCOUNT}/widget/ContextActionsGroup",
+            "insertionType": "begin"
+          },
+          "southPanel": {
+            "component": "${REPL_NEAR_SOCIAL_OWNER}/widget/MainPage.N.Post.ShareButton",
+            "insertionType": "after"
+          },
+          "avatar": {
+            "component": "${REPL_NEAR_SOCIAL_OWNER}/widget/MainPage.N.Post",
+            "insertionType": "begin"
+          },
+          "afterText": {
+            "bosLayoutManager": "${REPL_ACCOUNT}/widget/VerticalLayoutManager",
+            "component": "${REPL_NEAR_SOCIAL_OWNER}/widget/MainPage.N.Post.Content",
+            "insertionType": "after"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "$": {
+    "parserType": "json",
+    "targets": [
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "reddit.com" } }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "www.reddit.com" } }
+      }
+    ],
+    "contexts": {
+      "root": {
+        "props": {
+          "id": "string('global')",
+          "websiteName": "string('Reddit')",
+          "username": "string(//*[@id='email-collection-tooltip-id']/span/span[1])",
+          "img": "string(//*[@id='email-collection-tooltip-id']/div/img/@src)",
+          "url": "string(//html/head/meta[@property='og:url']/@content)"
+        },
+        "children": ["post", "profile"]
+      },
+      "post": {
+        "selector": "shreddit-post",
+        "props": {
+          "id": "substring-after(string(./@id), '_')",
+          "text": "normalize-space(string(.//*[@slot='title']))",
+          "innerText": "normalize-space(string(.//*[@slot='text-body']))",
+          "innerImage": "string(.//*[contains(@class, 'media-lightbox-img')]//img/@src | .//gallery-carousel//img/@src)",
+          "innerLink": "string(./@content-href)",
+          "authorUsername": "string(./@author)",
+          "publisher": "string(./@subreddit-prefixed-name)",
+          "authorImg": "string(.//faceplate-img/@src)",
+          "url": "concat('https://www.reddit.com', string(.//a[contains(@class, 'absolute')]/@href))"
+        },
+        "insertionPoints": {
+          "root": {
+            "selector": "",
+            "bosLayoutManager": "${REPL_ACCOUNT}/widget/ContextActionsGroup",
+            "insertionType": "before"
+          },
+          "default": {
+            "selector": ".STit0dLageRsa2yR4te_b, [data-click-id='text'], ._1NSbknF8ucHV2abfCZw2Z1, ._10wC0aXnrUKfdJ4Ssz-o14",
+            "insertionType": "before"
+          },
+          "fullname": {
+            "selector": "._2mHuuvyV9doV3zwbZPtIPG",
+            "insertionType": "before"
+          },
+          "northPanel": {
+            "selector": ".cZPZhMe-UCZ8htPodMyJ5",
+            "insertionType": "before"
+          },
+          "afterText": {
+            "selector": ".STit0dLageRsa2yR4te_b, [data-click-id='text'], ._1NSbknF8ucHV2abfCZw2Z1, ._10wC0aXnrUKfdJ4Ssz-o14",
+            "bosLayoutManager": "${REPL_ACCOUNT}/widget/VerticalLayoutManager",
+            "insertionType": "after"
+          },
+          "beforeText": {
+            "selector": ".STit0dLageRsa2yR4te_b, [data-click-id='text'], ._1NSbknF8ucHV2abfCZw2Z1, ._10wC0aXnrUKfdJ4Ssz-o14",
+            "insertionType": "before"
+          },
+          "southPanel": {
+            "selector": "._3MmwvEEt6fv5kQPFCVJizH",
+            "insertionType": "before"
+          }
+        }
+      },
+      "profile": {
+        "selector": ".QscnL9OySMkHhGudEvEya",
+        "props": {
+          "id": "string(.//h2 | .//*[contains(@class, 'flex items-end justify-start')]//*[contains(@class, 'font-bold text-18')])",
+          "authorFullname": "string(.//h1 | .//*[contains(@class, 'flex items-end justify-start')]//*[contains(@class, 'font-bold text-18')])",
+          "authorUsername": "string(.//h2 | .//*[contains(@class, 'flex items-end justify-start')]//*[contains(@class, 'font-bold text-18')])",
+          "authorImg": "string(.//img/@src | .//*[contains(@class, 'flex items-end justify-start')]//*[contains(@class, 'font-bold text-18')])"
+        },
+        "insertionPoints": {
+          "default": {
+            "selector": "._3TG57N4WQtubLLo8SbAXVF, .flex.w-100.mt-xs>span, faceplate-tracker[source='profile'][noun='chat']",
+            "insertionType": "before"
+          },
+          "avatar": {
+            "selector": "img:last-child, .shreddit-subreddit-icon__icon",
+            "insertionType": "before"
+          },
+          "fullname": {
+            "selector": "._3TG57N4WQtubLLo8SbAXVF, .flex.w-100.mt-xs>span, faceplate-tracker[source='profile'][noun='chat']",
+            "insertionType": "before"
+          }
+        }
+      }
+    }
+  }
+}

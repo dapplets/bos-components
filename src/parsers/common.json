@@ -1,0 +1,44 @@
+{
+  "$": {
+    "parserType": "json",
+    "targets": [
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "localhost" } }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "social.dapplets.org" } }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "127.0.0.1" } }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": {
+          "id": {
+            "contains": ["social.testnet.dapplets.org"]
+          }
+        }
+      }
+    ],
+    "contexts": {
+      "root": {
+        "props": { "id": "string('global')", "websiteName": "string(//title)" },
+        "children": ["body"]
+      },
+      "body": {
+        "selector": "#root",
+        "props": { "id": "string(//title)" },
+        "insertionPoints": {
+          "end": { "selector": ".App", "insertionType": "end" }
+        }
+      }
+    }
+  }
+}

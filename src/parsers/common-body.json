@@ -1,0 +1,32 @@
+{
+  "$": {
+    "parserType": "json",
+    "targets": [
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "url": { "contains": "https://twitter.com/MrConCreator" } }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "url": { "contains": "https://x.com/MrConCreator" } }
+      }
+    ],
+    "contexts": {
+      "root": {
+        "props": { "id": "string('global')", "websiteName": "string(//title)" },
+        "children": ["body"]
+      },
+      "body": {
+        "selector": "body",
+        "props": { "id": "string('body')" },
+        "insertionPoints": {
+          "before": { "insertionType": "before" },
+          "end": { "insertionType": "end" },
+          "after": { "insertionType": "after" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "metadata": {
+    "name": "Welcome",
+    "description": "Playground where anyone can inject BOS components",
+    "image": {
+      "ipfs_cid": "bafkreiabiz6v57rwmj2h2mjmzreumbkfq2an3bxo3f7dtu6io6tqnc5l7i"
+    }
+  },
+  "$apps": [
+    "${REPL_ACCOUNT}/app/Paywall",
+    "${REPL_ACCOUNT}/app/Tipping",
+    "${REPL_ACCOUNT}/app/WebGuide"
+  ],
+  "$targets": [
+    {
+      "namespace": "engine",
+      "contextType": "website",
+      "if": {
+        "id": {
+          "in": [
+            "x.com",
+            "twitter.com",
+            "github.com",
+            "linkedin.com",
+            "www.linkedin.com",
+            "social.dapplets.org",
+            "localhost",
+            "127.0.0.1"
+          ]
+        }
+      }
+    },
+    {
+      "namespace": "engine",
+      "contextType": "website",
+      "if": {
+        "id": {
+          "contains": ["social.testnet.dapplets.org"]
+        }
+      }
+    }
+  ]
+}
