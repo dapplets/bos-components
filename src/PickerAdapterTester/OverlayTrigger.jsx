@@ -11,15 +11,17 @@ return (
     placement='left'
     offset={[0, 45]}
     overlay={(
-      <Widget
-        src='bos.dapplets.near/widget/PickerAdapterTester.Input'
-        loading={props?.children}
-        props={{
-          handleClose,
-          setSelectedAdapter,
-          toggleIsRunningApp
-        }}
-      />
+      <div>
+        <Widget
+          src='bos.dapplets.near/widget/PickerAdapterTester.Input'
+          loading={props?.children}
+          props={{
+            handleClose,
+            setSelectedAdapter,
+            toggleIsRunningApp
+          }}
+        />
+      </div>
     )}
   >
     {typeof props.children === "function" ? (

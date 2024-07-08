@@ -101,7 +101,7 @@ const SuccessButton = styled.button`
   }
 `
 
-const O = () => (
+return (
   <Container>
     <Header>
       <h1>Specify the adapter ID</h1>
@@ -130,20 +130,4 @@ const O = () => (
       </SuccessButton>
     </div>
   </Container>
-)
-
-return (
-  <DappletOverlayTrigger
-    show={true}
-    popperConfig='fixed'
-    placement='left'
-    offset={[0, 25]}
-    overlay={<O/>}
-  >
-    {typeof props.children === "function" ? (
-        props.children
-      ) : (
-        <span>{props.children}</span>
-      )}
-  </DappletOverlayTrigger>
 )

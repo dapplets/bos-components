@@ -80,7 +80,7 @@ return (
         }}
         component={(props) => (
           <Widget
-            src='bos.dapplets.near/widget/PickerAdapterTester.Input'
+            src='bos.dapplets.near/widget/PickerAdapterTester.OverlayTrigger'
             loading={props?.children}
             props={{
               handleClose,
