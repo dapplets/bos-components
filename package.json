@@ -16,8 +16,8 @@
     "deploy:mweb:testnet": "node ./scripts/deploy-mweb.js bos.dapplets.testnet testnet",
     "dist:mainnet": "node ./scripts/dist.js bos.dapplets.near mainnet",
     "dist:testnet": "node ./scripts/dist.js bos.dapplets.testnet testnet",
-    "diff:mainnet": "cd build && bos components diff bos.dapplets.near network-config mainnet",
-    "diff:testnet": "cd build && bos components diff bos.dapplets.testnet network-config testnet",
+    "diff:mainnet": "yarn clean && yarn build:bos:mainnet && cd build && bos components diff bos.dapplets.near network-config mainnet",
+    "diff:testnet": "yarn clean && yarn build:bos:testnet && cd build && bos components diff bos.dapplets.testnet network-config testnet",
     "clean": "rm -rf build"
   },
   "repository": {

@@ -586,6 +586,7 @@ const handleClickNext = () => {
 
 const ChapterWrapper = (props) => {
   const currentChapter = guideConfig.chapters[chapterCounter]
+  console.log('currentChapter', currentChapter)
   if (!currentChapter) return <></>
   const pages = currentChapter.pages
   if (!pages) return <></>
@@ -732,6 +733,7 @@ return (
             insteadOf: guideConfig.chapters[chapterCounter]?.insteadOf,
           }}
           component={ChapterWrapper}
+          ifNoTarget={() => console.log('There is no target')}
         />
         <Highlighter
           target={{ 
