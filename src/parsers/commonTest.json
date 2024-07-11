@@ -11,6 +11,20 @@
         "namespace": "engine",
         "contextType": "website",
         "if": { "id": { "eq": "social.dapplets.org" } }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "127.0.0.1" } }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": {
+          "id": {
+            "contains": ["social.testnet.dapplets.org"]
+          }
+        }
       }
     ],
     "contexts": {

@@ -1,7 +1,6 @@
 return (
   <button
     style={{
-      position: "absolute",
       border: "none",
       background: "none",
       margin: 0,

@@ -1,3 +1,5 @@
+const nearSocialTargetPostId = context.networkId === 'mainnet' ? 'dappletsproject.near/119034910' : 'bos.dapplets.testnet/168034335';
+
 const twitterConfig = {
   action: true,
   chapters: [
@@ -410,7 +412,7 @@ const nearSocialConfig = {
     //   namespace: "${REPL_ACCOUNT}/parser/near-social-json",
     //   contextType: "post",
     //   injectTo: "avatar",
-    //   if: { id: { eq: "dappletsproject.near/119034910" } },
+    //   if: { id: { eq: nearSocialTargetPostId } },
     //   arrowTo: "insPoint",
     //   pages: [
     //     {
@@ -429,7 +431,7 @@ const nearSocialConfig = {
       contextType: "injected-widget",
       injectTo: "hidden",
       if: {
-        parentContextId: { eq: "dappletsproject.near/119034910" },
+        parentContextId: { eq: nearSocialTargetPostId },
         widgetSrc: { eq: "${REPL_ACCOUNT}/widget/Tipping.Main" },
       },
       arrowTo: "context",
@@ -449,7 +451,7 @@ const nearSocialConfig = {
       namespace: "mweb",
       contextType: "ear-trigger",
       injectTo: "hidden",
-      if: { id: { eq: "dappletsproject.near/119034910" } },
+      if: { id: { eq: nearSocialTargetPostId } },
       arrowTo: "context",
       pages: [
         {
@@ -467,7 +469,7 @@ const nearSocialConfig = {
       namespace: "mweb",
       contextType: "ear-trigger",
       injectTo: "hidden",
-      if: { id: { eq: "dappletsproject.near/119034910" } },
+      if: { id: { eq: nearSocialTargetPostId } },
       arrowTo: "context",
       pages: [
         {
@@ -523,10 +525,17 @@ const guideConfigByLinkId = {
   '84998d899f0b75b6ca47197c66baf3ca': nestedCalloutConfig, // twitter
   '34c7858a683729949d5b4db9bcf1df2c': twitterConfig, // Multiversity
   
-  // testing (${REPL_ACCOUNT}/mutation/testing2)
+  // testing in mainnet (${REPL_ACCOUNT}/mutation/testing2)
   'b3777e928bd7ce9ad30eb636857a1853': twitterConfig,
   '114a78557d9044ff8c6e0177bcbe690a': nearSocialConfig,
   '0b492fd62c72d7ad87c7658e2b3a4f1e': nestedCalloutConfig,
+
+  // testing in testnet
+  '7484c1da43858151683f0369b03c93e3': twitterConfig, // twitter
+  '9f40468f4e7a03a0d2261a1cc9312a30': nestedCalloutConfig, // twitter
+  'e5bca4cd881f48fbb51cd40f8e5a5a2a': nearSocialConfig, // near-social
+  '4d835a2e3aa768a895851bf69190c479': nestedCalloutConfig, // near-social
+  'ff9e54a496ad0ddefa8b258086daf40e': twitterConfig, // Multiversity at twitter
 }
 
 const OverlayTriggerWrapper = styled.div`

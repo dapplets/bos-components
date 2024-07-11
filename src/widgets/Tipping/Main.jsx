@@ -22,7 +22,7 @@ if (props.accountGId && props.itemGId) {
 const { nearAccountId } = props
 const userAccountId = nearAccountId || context.accountId
 
-const TIPPING_CONTRACT_NAME = "v2.tipping.near";
+const TIPPING_CONTRACT_NAME = context.networkId === 'mainnet' ? "v2.tipping.near" : 'v2.tipping.testnet';
 const MAX_AMOUNT_PER_ITEM = '10000000000000000000000000'; // 10 NEAR
 const MAX_AMOUNT_PER_TIP = '1000000000000000000000000'; // 1 NEAR
 const STEP_YOCTO = '50000000000000000000000'; // 0.05 NEAR

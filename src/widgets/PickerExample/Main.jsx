@@ -125,6 +125,7 @@ const TimelineLatch = styled.button`
   position: relative;
   top: -20px;
   left: -6px;
+  cursor: pointer;
 `
 
 const NotchLatch = styled.button`
@@ -139,6 +140,7 @@ const NotchLatch = styled.button`
   background: none;
   border: none;
   opacity: ${(props) => props.$variant === 'current' ? '1' : '.5'};
+  cursor: pointer;
 `
 
 const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
@@ -206,6 +208,11 @@ return (
             {
               namespace: NAMESPACE,
               contextType: 'profile',
+              if: {}
+            },
+            {
+              namespace: '${REPL_ACCOUNT}/parser/near-social',
+              contextType: 'post',
               if: {}
             },
             {

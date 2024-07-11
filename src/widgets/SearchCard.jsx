@@ -138,7 +138,7 @@ return (
       <Thumbnail>
         <Widget
          loading={<></>}
-          src="mob.near/widget/Image"
+          src="${REPL_NEAR_SOCIAL_OWNER}/widget/Image"
           props={{
             image: metadata.image,
             fallbackUrl:
