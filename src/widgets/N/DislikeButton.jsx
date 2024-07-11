@@ -195,7 +195,7 @@ return (
         <Widget
          loading={<></>}
           loading={dislikeCount || ""}
-          src="mob.near/widget/N.Overlay.Faces"
+          src="${REPL_NEAR_SOCIAL_OWNER}/widget/N.Overlay.Faces"
           props={{ accounts: dislikesByUsers, limit: 10 }}
         />
       </span>

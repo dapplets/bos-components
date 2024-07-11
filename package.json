@@ -4,17 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node ./scripts/dev.js bos.dapplets.near",
+    "dev:mainnet": "node ./scripts/dev.js bos.dapplets.near mainnet",
+    "dev:testnet": "node ./scripts/dev.js bos.dapplets.testnet testnet",
     "deploy:mainnet": "yarn clean && yarn build:bos:mainnet && yarn push:bos:mainnet && yarn deploy:mweb:mainnet",
     "deploy:testnet": "yarn clean && yarn build:bos:testnet && yarn push:bos:testnet && yarn deploy:mweb:testnet",
-    "build:bos:mainnet": "mkdir -p build/src && cp -r src/widgets/ build/src && find build/src -type f | xargs -I '{}' sed -i '' 's/${REPL_ACCOUNT}/bos.dapplets.near/g' {}",
-    "build:bos:testnet": "mkdir -p build/src && cp -r src/widgets/ build/src && find build/src -type f | xargs -I '{}' sed -i '' 's/${REPL_ACCOUNT}/bos.dapplets.testnet/g' {}",
+    "build:bos:testnet": "node ./scripts/build-bos.js bos.dapplets.testnet testnet",
+    "build:bos:mainnet": "node ./scripts/build-bos.js bos.dapplets.near mainnet",
     "push:bos:mainnet": "cd build && bos components deploy bos.dapplets.near sign-as bos.dapplets.near network-config mainnet sign-with-legacy-keychain send",
     "push:bos:testnet": "cd build && bos components deploy bos.dapplets.testnet sign-as bos.dapplets.testnet network-config testnet sign-with-legacy-keychain send",
     "deploy:mweb:mainnet": "node ./scripts/deploy-mweb.js bos.dapplets.near mainnet",
     "deploy:mweb:testnet": "node ./scripts/deploy-mweb.js bos.dapplets.testnet testnet",
-    "dist:mainnet": "node ./scripts/dist.js bos.dapplets.near",
-    "dist:testnet": "node ./scripts/dist.js bos.dapplets.testnet",
+    "dist:mainnet": "node ./scripts/dist.js bos.dapplets.near mainnet",
+    "dist:testnet": "node ./scripts/dist.js bos.dapplets.testnet testnet",
     "diff:mainnet": "cd build && bos components diff bos.dapplets.near network-config mainnet",
     "diff:testnet": "cd build && bos components diff bos.dapplets.testnet network-config testnet",
     "clean": "rm -rf build"
@@ -38,8 +39,10 @@
   "homepage": "https://github.com/dapplets/bos-components#readme",
   "devDependencies": {
     "bos-cli": "^0.3.13",
-    "social-db-js": "github:dapplets/social-db-js",
-    "near-api-js": "^4.0.2"
+    "json-stringify-deterministic": "^1.0.12",
+    "near-api-js": "^4.0.2",
+    "node-fetch": "^2.7.0",
+    "social-db-js": "github:dapplets/social-db-js"
   },
   "dependencies": {}
 }

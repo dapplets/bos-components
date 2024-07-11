@@ -1,12 +1,12 @@
 const { connect } = require("./common/social-db");
-const { getMWebComponents } = require("./common/components");
+const { getMWebComponents } = require("./common/mweb-components");
 
 const [accountId, networkId] = process.argv.slice(2);
 
 const ProjectId = "dapplets.near";
 
 const main = async () => {
-  const data = await getMWebComponents();
+  const data = await getMWebComponents(accountId, networkId);
   const socialDb = connect(networkId, accountId);
 
   for (const accountId in data) {
@@ -25,7 +25,9 @@ const main = async () => {
       console.log(`Deploying ${accountId}/mutation/${mutationId}`);
       await socialDb.set({
         [accountId]: {
-          settings: { [ProjectId]: { mutation: { [mutationId]: mutation[mutationId] } } },
+          settings: {
+            [ProjectId]: { mutation: { [mutationId]: mutation[mutationId] } },
+          },
         },
       });
     }
@@ -34,7 +36,9 @@ const main = async () => {
       console.log(`Deploying ${accountId}/parser/${parserId}`);
       await socialDb.set({
         [accountId]: {
-          settings: { [ProjectId]: { parser: { [parserId]: parser[parserId] } } },
+          settings: {
+            [ProjectId]: { parser: { [parserId]: parser[parserId] } },
+          },
         },
       });
     }
