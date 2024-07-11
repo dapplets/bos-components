@@ -569,6 +569,27 @@ const warningIcon = (color) => (
   </svg>
 );
 
+const iconEditTarget = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+  >
+    <path
+      d="M13.5901 1.9194C13.4044 1.73365 13.1839 1.5863 12.9412 1.48577C12.6985 1.38524 12.4384 1.3335 12.1758 1.3335C11.9131 1.3335 11.653 1.38524 11.4103 1.48577C11.1677 1.5863 10.9472 1.73365 10.7614 1.9194L9.34677 3.3334L8.87544 2.8614C8.8135 2.79951 8.73997 2.75042 8.65906 2.71693C8.57815 2.68345 8.49144 2.66624 8.40387 2.66627C8.3163 2.6663 8.2296 2.68358 8.14871 2.71711C8.06783 2.75065 7.99434 2.7998 7.93244 2.86174C7.87054 2.92368 7.82145 2.9972 7.78797 3.07811C7.75449 3.15902 7.73727 3.24574 7.7373 3.3333C7.73734 3.42087 7.75461 3.50757 7.78815 3.58846C7.82169 3.66935 7.87083 3.74284 7.93277 3.80474L11.7041 7.5754C11.8303 7.69393 11.9977 7.7587 12.1708 7.75601C12.3439 7.75332 12.5092 7.68338 12.6317 7.561C12.7542 7.43861 12.8242 7.27337 12.8271 7.10025C12.8299 6.92713 12.7652 6.7597 12.6468 6.6334L12.1754 6.16207L13.5901 4.7474C13.965 4.37235 14.1757 3.86373 14.1757 3.3334C14.1757 2.80307 13.965 2.29446 13.5901 1.9194Z"
+      fill="white"
+    />
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M7.95301 4.72754L2.76767 9.91354C2.47506 10.206 2.28031 10.582 2.21023 10.9897C2.14014 11.3974 2.19818 11.8168 2.37634 12.1902L1.33301 13.2335L2.27567 14.1769L3.31901 13.1329C3.69232 13.3111 4.1117 13.3693 4.51942 13.2993C4.92714 13.2293 5.30315 13.0347 5.59567 12.7422L10.781 7.55687L7.95301 4.72754ZM8.89567 7.55621L7.95301 6.61354L3.71034 10.8562C3.5889 10.9819 3.52171 11.1503 3.52323 11.3251C3.52474 11.4999 3.59486 11.6671 3.71846 11.7908C3.84207 11.9144 4.00928 11.9845 4.18407 11.986C4.35887 11.9875 4.52727 11.9203 4.65301 11.7989L8.89567 7.55621Z"
+      fill="white"
+    />
+  </svg>
+);
+
 const themes = {
   DEFAULT: {
     bgMain: "#fffffe",
@@ -836,6 +857,7 @@ const StyledTextarea = styled.textarea`
   border: 1px solid rgb(226, 226, 229);
   width: 100%;
   outline: none;
+  min-height: 150px;
 
   &:focus + label,
   &:not(:placeholder-shown) + label {
@@ -854,6 +876,22 @@ const StyledLabel = styled.label`
   color: #bbccd0;
   pointer-events: none;
   transition: all 0.2s ease 0s;
+`;
+
+const EditTargetSpan = styled.button`
+  outline: none;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: none;
+  position: absolute;
+  top: 17px;
+  right: 10px;
 `;
 
 const {
@@ -877,8 +915,9 @@ const {
 const [newData, setNewData] = useState(content ?? "");
 const [newTitle, setNewTitle] = useState(title ?? "");
 const [isEditMode, setEditMode] = useState(false);
+const [isEditTarget, setEditTarget] = useState(false);
 // todo: new
-
+console.log(props);
 useEffect(() => {
   try {
     const storedData = localStorage.setItem(`${props.id}newData`, newData);
@@ -918,8 +957,20 @@ const header = (
     <TopLine>
       {navi ? (
         <>
+          <PagesIndicators>
+            {navi.totalPages > 1 &&
+              [...Array(navi?.totalPages)].map((_, index) => (
+                <Navi
+                  key={index}
+                  $active={index == navi?.currentPageIndex ? true : false}
+                  $navActive={themes[skin].navActive}
+                  $navInactiveBg={themes[skin].navInactiveBg}
+                  $navInactiveBorder={themes[skin].navInactiveBorder}
+                />
+              ))}
+          </PagesIndicators>
           <CalloutHeaderCaption $col={themes[skin].colorMain}>
-            Step {navi?.currentChapterIndex + 1}
+            Step {navi?.currentChapterIndex + 1} of {navi?.totalChapters}
           </CalloutHeaderCaption>
         </>
       ) : null}
@@ -1030,13 +1081,74 @@ const callout = (
     $bg={themes[skin].bgMain}
   >
     {header}
+    {isEditTarget ? (
+      <DappletContextPicker
+        target={[
+          {
+            namespace: NAMESPACE,
+            contextType: "timeline",
+            if: {},
+          },
+          {
+            namespace: NAMESPACE,
+            contextType: "post",
+            if: {},
+          },
+          {
+            namespace: NAMESPACE,
+            contextType: "postSouthButton",
+            if: {},
+          },
+          {
+            namespace: NAMESPACE,
+            contextType: "profile",
+            if: {},
+          },
+          {
+            namespace: "mweb",
+            contextType: "mweb-overlay",
+            if: { id: { eq: "mutation-button" } },
+          },
+          {
+            namespace: "mweb",
+            contextType: "mweb-overlay",
+            if: { id: { eq: "open-apps-button" } },
+          },
+          {
+            namespace: "mweb",
+            contextType: "mweb-overlay-action",
+            if: {},
+          },
+          {
+            namespace: "mweb",
+            contextType: "injected-widget",
+            if: {},
+          },
+          {
+            namespace: "mweb",
+            contextType: "notch",
+            if: {},
+          },
+        ]}
+        onClick={setSelectedContext}
+        LatchComponent={ContextTypeLatch}
+      />
+    ) : null}
 
     {!content || isEditMode ? (
       <>
         <EditInputsBlock>
           <FloatingLabelContainer>
-            <StyledInput id={"target"} type={"text"} value={props.type} />
+            <StyledInput
+              id={"target"}
+              readonly
+              type={"text"}
+              value={props.type}
+            />
             <StyledLabel htmlFor={"target"}>Target</StyledLabel>
+            <EditTargetSpan onClick={() => setEditTarget(!isEditTarget)}>
+              {iconEditTarget}
+            </EditTargetSpan>
           </FloatingLabelContainer>
           {title ? (
             <FloatingLabelContainer>
@@ -1122,13 +1234,68 @@ const calloutTooltip = {
 const infobox = (
   <InfoBox $border={themes[skin].border} $bg={themes[skin].bgMain}>
     {header}
-
+    {isEditTarget ? (
+      <DappletContextPicker
+        target={[
+          {
+            namespace: NAMESPACE,
+            contextType: "timeline",
+            if: {},
+          },
+          {
+            namespace: NAMESPACE,
+            contextType: "post",
+            if: {},
+          },
+          {
+            namespace: NAMESPACE,
+            contextType: "postSouthButton",
+            if: {},
+          },
+          {
+            namespace: NAMESPACE,
+            contextType: "profile",
+            if: {},
+          },
+          {
+            namespace: "mweb",
+            contextType: "mweb-overlay",
+            if: { id: { eq: "mutation-button" } },
+          },
+          {
+            namespace: "mweb",
+            contextType: "mweb-overlay",
+            if: { id: { eq: "open-apps-button" } },
+          },
+          {
+            namespace: "mweb",
+            contextType: "mweb-overlay-action",
+            if: {},
+          },
+          {
+            namespace: "mweb",
+            contextType: "injected-widget",
+            if: {},
+          },
+          {
+            namespace: "mweb",
+            contextType: "notch",
+            if: {},
+          },
+        ]}
+        onClick={setSelectedContext}
+        LatchComponent={ContextTypeLatch}
+      />
+    ) : null}
     {!content || isEditMode ? (
       <>
         <EditInputsBlock>
           <FloatingLabelContainer>
             <StyledInput id={"target"} type={"text"} value={props.type} />
             <StyledLabel htmlFor={"target"}>Target</StyledLabel>
+            <EditTargetSpan onClick={() => setEditTarget(!isEditTarget)}>
+              {iconEditTarget}
+            </EditTargetSpan>
           </FloatingLabelContainer>
           {title ? (
             <FloatingLabelContainer>
