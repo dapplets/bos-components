@@ -403,6 +403,15 @@ const ActionsGroup = styled.div`
   align-self: stretch;
   flex-grow: 1;
 `;
+const ActionsGroupEdit = styled.div`
+  display: flex;
+  flex-direction: ${(props) =>
+    props.$type === "infobox" ? "row-reverse" : "row"};
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+`;
 
 const ActionButton = styled.div`
   display: flex;
@@ -431,6 +440,31 @@ const ActionButton = styled.div`
 
   &:active {
     background: ${(props) => (props.$primary ? props.$primBgA : props.$secBgA)};
+  }
+`;
+
+const ActionButtonEdit = styled.div`
+  display: flex;
+  box-sizing: border-box;
+  width: auto;
+  height: 30px;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+  user-select: none;
+  background: inherit;
+  border: none;
+  border-radius: none;
+  justify-content: flex-start;
+  padding: 0;
+  font-size: 12px;
+  color: #fff;
+
+  &:hover {
+    opacity: 0.5;
   }
 `;
 
@@ -766,6 +800,56 @@ const viewIcon = (
   </svg>
 );
 
+const iconPrevEdit = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="14"
+    height="14"
+    viewBox="0 0 14 14"
+    fill="none"
+  >
+    <path
+      d="M11.0837 7H2.91699"
+      stroke="white"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M7.00033 11.0832L2.91699 6.99984L7.00033 2.9165"
+      stroke="white"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+);
+
+const iconNextEdit = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="14"
+    height="14"
+    viewBox="0 0 14 14"
+    fill="none"
+  >
+    <path
+      d="M2.91699 7H11.0837"
+      stroke="white"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M7 2.9165L11.0833 6.99984L7 11.0832"
+      stroke="white"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+);
+
 const SuccessButton = styled.button`
   display: flex;
   flex-direction: row;
@@ -917,7 +1001,7 @@ const [newTitle, setNewTitle] = useState(title ?? "");
 const [isEditMode, setEditMode] = useState(false);
 const [isEditTarget, setEditTarget] = useState(false);
 // todo: new
-console.log(props);
+
 useEffect(() => {
   try {
     const storedData = localStorage.setItem(`${props.id}newData`, newData);
@@ -1058,6 +1142,28 @@ const actionButton = (btn) => (
   </ActionButton>
 );
 
+const actionButtonEdit = (btn) => (
+  <ActionButtonEdit
+    key={btn.label}
+    $primary={btn.variant == "primary" ? true : false}
+    $primCol={themes[skin].primBtnCol}
+    $primBg={themes[skin].primBtnBg}
+    $primBgH={themes[skin].primBtnBgH}
+    $primBgA={themes[skin].primBtnBgA}
+    $secCol={themes[skin].secBtnCol}
+    $secBorderCol={themes[skin].secBtnBorderCol}
+    $secBgH={themes[skin].secBtnBgH}
+    $secBgA={themes[skin].secBtnBgA}
+    onClick={() => {
+      btn.onClick();
+    }}
+    disabled={btn.disabled}
+  >
+    {btn.label.toLowerCase().includes("prev") ? iconPrevEdit : null} {btn.label}{" "}
+    {btn.label.toLowerCase().includes("next") ? iconNextEdit : null}
+  </ActionButtonEdit>
+);
+
 const navButtons = !buttons ? null : props.type === "callout" ? (
   <ActionsGroup $type={props.type}>
     {buttons.map((btn) => actionButton(btn))}
@@ -1069,6 +1175,23 @@ const navButtons = !buttons ? null : props.type === "callout" ? (
   </ActionsGroup>
 ) : buttons?.length === 1 ? (
   <ActionsGroup $type={props.type}>{actionButton(buttons[0])}</ActionsGroup>
+) : (
+  <></>
+);
+
+const navButtonsEdit = !buttons ? null : props.type === "callout" ? (
+  <ActionsGroupEdit $type={props.type}>
+    {buttons.map((btn) => actionButtonEdit(btn))}
+  </ActionsGroupEdit>
+) : buttons?.length > 1 ? (
+  <ActionsGroupEdit $type={props.type}>
+    {actionButtonEdit(buttons[1])}
+    {actionButtonEdit(buttons[0])}
+  </ActionsGroupEdit>
+) : buttons?.length === 1 ? (
+  <ActionsGroupEdit $type={props.type}>
+    {actionButtonEdit(buttons[0])}
+  </ActionsGroupEdit>
 ) : (
   <></>
 );
@@ -1137,6 +1260,8 @@ const callout = (
 
     {!content || isEditMode ? (
       <>
+     
+        {navButtonsEdit}
         <EditInputsBlock>
           <FloatingLabelContainer>
             <StyledInput
@@ -1289,6 +1414,7 @@ const infobox = (
     ) : null}
     {!content || isEditMode ? (
       <>
+        {navButtonsEdit}
         <EditInputsBlock>
           <FloatingLabelContainer>
             <StyledInput id={"target"} type={"text"} value={props.type} />
