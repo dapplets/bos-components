@@ -219,6 +219,17 @@ const Close = styled.button`
   flex: 1;
 `
 
+const EditButton = styled.button`
+  display: flex;
+  flex-direction: row-reverse;
+  background: inherit;
+  outline: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  flex: 1;
+`
+
 const Title = styled.div`
   padding: 0;
   margin: 0 0 -10px;
@@ -689,78 +700,6 @@ const EditButtonsBlock = styled.div`
   justify-content: space-evenly;
 `
 
-const EditButton = styled.button`
-  position: absolute;
-  right: 0;
-  top: 0;
-  margin: 0;
-  padding: 0 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  background: none;
-  cursor: pointer;
-  outline: none;
-
-  transition-duration: 0.15s;
-
-  :hover {
-    opacity: 0.5;
-  }
-`
-
-const CloseButton = styled.button`
-  position: absolute;
-  right: 0;
-  top: 0;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  background: none;
-  cursor: pointer;
-
-  svg {
-    path {
-      stroke: #838891;
-      transition-duration: 0.2s;
-    }
-  }
-
-  :hover {
-    svg {
-      path {
-        stroke: #555555;
-      }
-    }
-  }
-`
-
-const closeIcon = (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M18 6L6 18"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M6 6.5L18 18.5"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-)
-
 const editIcon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -1004,21 +943,21 @@ const [isEditMode, setEditMode] = useState(false);
 const [isEditTarget, setEditTarget] = useState(false)
 // todo: new
 
-useEffect(() => {
-  try {
-    const storedData = localStorage.setItem(`${props.id}newData`, newData)
-    const storedTitle = localStorage.setItem(`${props.id}newTitle`, newTitle)
+// useEffect(() => {
+//   try {
+//     const storedData = localStorage.setItem(`${props.id}newData`, newData)
+//     const storedTitle = localStorage.setItem(`${props.id}newTitle`, newTitle)
 
-    if (storedData) {
-      setNewData(storedData)
-    }
-    if (storedTitle) {
-      setNewTitle(storedTitle)
-    }
-  } catch (error) {
-    console.error("Error accessing localStorage", error)
-  }
-}, [])
+//     if (storedData) {
+//       setNewData(storedData)
+//     }
+//     if (storedTitle) {
+//       setNewTitle(storedTitle)
+//     }
+//   } catch (error) {
+//     console.error("Error accessing localStorage", error)
+//   }
+// }, [])
 
 // todo: new
 const handleSave = () => {
@@ -1026,13 +965,13 @@ const handleSave = () => {
   // saveData(newData);
   // saveTitle(newTitle);
 
-  try {
-    localStorage.setItem(`${props.id}newData`, newData)
-    localStorage.setItem(`${props.id}newTitle`, newTitle)
-    setEditMode(false)
-  } catch (error) {
-    console.error("Error accessing localStorage", error)
-  }
+  // try {
+  //   localStorage.setItem(`${props.id}newData`, newData)
+  //   localStorage.setItem(`${props.id}newTitle`, newTitle)
+  //   setEditMode(false)
+  // } catch (error) {
+  //   console.error("Error accessing localStorage", error)
+  // }
 }
 
 const header = (
