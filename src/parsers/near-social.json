@@ -5,29 +5,52 @@
       {
         "namespace": "engine",
         "contextType": "website",
-        "if": { "id": { "eq": "localhost" } }
-      },
-      {
-        "namespace": "engine",
-        "contextType": "website",
-        "if": { "id": { "eq": "social.dapplets.org" } }
-      },
-      {
-        "namespace": "engine",
-        "contextType": "website",
-        "if": { "id": { "eq": "127.0.0.1" } }
+        "if": {
+          "id": {
+            "eq": "localhost"
+          }
+        }
       },
       {
         "namespace": "engine",
         "contextType": "website",
         "if": {
           "id": {
-            "contains": ["social.testnet.dapplets.org"]
+            "eq": "social.dapplets.org"
+          }
+        }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": {
+          "id": {
+            "eq": "127.0.0.1"
+          }
+        }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": {
+          "id": {
+            "contains": [
+              "social.testnet.dapplets.org"
+            ]
           }
         }
       }
     ],
     "contexts": {
+      "timeline": {
+        "component": "${REPL_NEAR_SOCIAL_OWNER}/widget/MergedIndexFeed",
+        "props": {
+          "id": "string('timeline')"
+        },
+        "children": [
+          "post"
+        ]
+      },
       "post": {
         "component": "${REPL_NEAR_SOCIAL_OWNER}/widget/MainPage.N.Post",
         "props": {
@@ -51,6 +74,53 @@
             "bosLayoutManager": "${REPL_ACCOUNT}/widget/VerticalLayoutManager",
             "component": "${REPL_NEAR_SOCIAL_OWNER}/widget/MainPage.N.Post.Content",
             "insertionType": "after"
+          }
+        },
+        "children": [
+          "commentButton",
+          "repostButton",
+          "likeButton",
+          "shareButton"
+        ]
+      },
+      "commentButton": {
+        "component": "${REPL_NEAR_SOCIAL_OWNER}/widget/N.CommentButton",
+        "props": {
+          "id": "string('commentButton')"
+        }
+      },
+      "repostButton": {
+        "component": "${REPL_NEAR_SOCIAL_OWNER}/widget/N.RepostButton",
+        "props": {
+          "id": "string('repostButton')"
+        }
+      },
+      "likeButton": {
+        "component": "${REPL_NEAR_SOCIAL_OWNER}/widget/N.LikeButton",
+        "props": {
+          "id": "string('likeButton')"
+        }
+      },
+      "shareButton": {
+        "component": "${REPL_NEAR_SOCIAL_OWNER}/widget/MainPage.N.Post.ShareButton",
+        "props": {
+          "id": "string('shareButton')"
+        }
+      },
+      "profile": {
+        "component": "${REPL_NEAR_SOCIAL_OWNER}/widget/ProfileLarge",
+        "props": {
+          "id": "{{props.accountId}}",
+          "accountId": "{{props.accountId}}",
+          "name": "{{props.profile.name}}",
+          "tagline": "{{props.profile.tagline}}",
+          "description": "{{props.profile.description}}",
+          "website": "{{props.profile.website}}"
+        },
+        "insertionPoints": {
+          "avatar": {
+            "component": "${REPL_NEAR_SOCIAL_OWNER}/widget/ProfileImage",
+            "insertionType": "begin"
           }
         }
       }
