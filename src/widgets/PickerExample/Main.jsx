@@ -155,7 +155,10 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
       </TimelineLatch>
     )
   }
-  if (context.type === 'notch' && context.id !== 'mutate-button') {
+  if (
+    (context.type === 'notch' && context.id !== 'mutate-button')
+    || context.type === 'mweb-gateway'
+  ) {
     return (
       <NotchLatch
         $variant={variant}
@@ -238,6 +241,11 @@ return (
             {
               namespace: 'mweb',
               contextType: 'notch',
+              if: {}
+            },
+            {
+              namespace: 'mweb',
+              contextType: 'mweb-gateway',
               if: {}
             },
           ]
