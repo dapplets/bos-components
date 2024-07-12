@@ -993,6 +993,7 @@ const {
   // todo: new props
   saveTitle,
   saveData,
+  link,
 } = props;
 
 // todo: new
@@ -1039,6 +1040,13 @@ const header = (
     {/* {context.accountId === props.link?.authorId ? 
        ( */}
     <TopLine>
+      {context.accountId === link.authorId ? (
+        <EditButton onClick={() => setEditMode(!isEditMode)}>
+          {isEditMode ? viewIcon : editIcon}
+        </EditButton>
+      ) : (
+        <Close onClick={onClose}>{iconClose(themes[skin].colorMain)}</Close>
+      )}
       {navi ? (
         <>
           <PagesIndicators>
@@ -1058,9 +1066,6 @@ const header = (
           </CalloutHeaderCaption>
         </>
       ) : null}
-      <EditButton onClick={() => setEditMode(!isEditMode)}>
-        {isEditMode ? viewIcon : editIcon}
-      </EditButton>
     </TopLine>
     {/* ) 
           : (

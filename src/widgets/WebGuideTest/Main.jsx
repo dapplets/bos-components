@@ -20,11 +20,12 @@ const OverlayTriggerWrapper = styled.div`
   }
 `
 
+const { link } = props
 const [showApp, setShowApp] = useState(true)
 const [chapterCounter, setChapterCounter] = useState(0)
 const [pageCounter, setPageCounter] = useState(0)
 
-const response = Near.view('app.webguide.near', 'get_guide', { guide_id: props?.link?.id })
+const response = Near.view('app.webguide.near', 'get_guide', { guide_id: link?.id })
 const guideConfig = response && JSON.parse(response)
 
 if (
@@ -81,7 +82,7 @@ const saveData = (inputData) => {
       'app.webguide.near',
       'set_guide',
       {
-        guide_id: props.link.id,
+        guide_id: link.id,
         data: inputData,
       }
     )
@@ -147,8 +148,8 @@ const ChapterWrapper = (props) => {
         title: currentPage.title,
         content: currentPage.content,
         showChecked: currentChapter.showChecked,
-        saveData: saveData,
-     
+        saveData,
+        link,
         children: currentChapter.type === 'callout'
           && currentChapter.arrowTo === "context"
             ? ({ ref }) => {
