@@ -226,6 +226,13 @@ const Navi = styled.div`
     props.$active ? "none" : `1px solid ${props.$navInactiveBorder}`};
 `
 
+const HeaderButtonGroup = styled.div`
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  justify-content: flex-end;
+`
+
 const Close = styled.button`
   display: flex;
   flex-direction: row-reverse;
@@ -234,7 +241,6 @@ const Close = styled.button`
   border: none;
   padding: 0;
   cursor: pointer;
-  flex: 1;
 `
 
 const EditButton = styled.button`
@@ -245,7 +251,6 @@ const EditButton = styled.button`
   border: none;
   padding: 0;
   cursor: pointer;
-  flex: 1;
 `
 
 const Title = styled.div`
@@ -994,17 +999,15 @@ const handleSave = () => {
 
 const header = (
   <Header $col={themes[skin].colorMain}>
-    {/* todo: new */}
-    {/* {context.accountId === props.link?.authorId ? 
-       ( */}
     <TopLine>
-      {context.accountId === link.authorId ? (
-        <EditButton onClick={() => setEditMode(!isEditMode)}>
-          {isEditMode ? viewIcon : editIcon}
-        </EditButton>
-      ) : (
+      <HeaderButtonGroup>
+        {context.accountId === link.authorId ? (
+          <EditButton onClick={() => setEditMode(!isEditMode)}>
+            {isEditMode ? viewIcon : editIcon}
+          </EditButton>
+        ) : null}
         <Close onClick={onClose}>{iconClose(themes[skin].colorMain)}</Close>
-      )}
+      </HeaderButtonGroup>
       {navi ? (
         <>
           <PagesIndicators>
@@ -1025,32 +1028,6 @@ const header = (
         </>
       ) : null}
     </TopLine>
-    {/* ) 
-          : (
-           <TopLine>
-      <Close onClick={onClose}>{iconClose(themes[skin].colorMain)}</Close>
-      {navi ? (
-        <>
-          <PagesIndicators>
-            {navi.totalPages > 1 && [...Array(navi?.totalPages)].map(
-              (_, index) => (
-                <Navi
-                  key={index}
-                  $active={index == navi?.currentPageIndex ? true : false}
-                  $navActive={themes[skin].navActive}
-                  $navInactiveBg={themes[skin].navInactiveBg}
-                  $navInactiveBorder={themes[skin].navInactiveBorder}
-                />
-              )
-            )}
-          </PagesIndicators>
-          <CalloutHeaderCaption $col={themes[skin].colorMain}>
-            Step {navi?.currentChapterIndex + 1} of {navi?.totalChapters}
-          </CalloutHeaderCaption>
-        </>
-      ) : null}
-    </TopLine>
-          )} */}
   </Header>
 )
 
