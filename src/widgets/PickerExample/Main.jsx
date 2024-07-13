@@ -215,7 +215,10 @@ return (
             },
             {
               namespace: '${REPL_ACCOUNT}/parser/near-social',
-              contextType: 'post',
+              if: {}
+            },
+            {
+              namespace: '${REPL_ACCOUNT}/parser/near-social-json',
               if: {}
             },
             {

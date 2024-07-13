@@ -2,8 +2,17 @@ const CustomTooltipDefault = styled("DappletTooltip")`
   z-index: 99999999; // over the notch
 
   &[data-popper-reference-hidden="true"] {
-    visibility: hidden;
-    pointer-events: none;
+    position: fixed !important;
+    left: 50% !important;
+    transform: translate(-100%, 0px) !important;
+  }
+
+  &.bs-tooltip-bottom[data-popper-reference-hidden="true"] {
+    top: 22px !important;
+  }
+
+  &.bs-tooltip-top[data-popper-reference-hidden="true"] {
+    bottom: 22px !important;
   }
 
   .tooltip-arrow::before {
@@ -49,8 +58,17 @@ const CustomTooltipMeta = styled("DappletTooltip")`
   z-index: 99999999; // over the notch
 
   &[data-popper-reference-hidden="true"] {
-    visibility: hidden;
-    pointer-events: none;
+    position: fixed !important;
+    left: 50% !important;
+    transform: translate(-100%, 0px) !important;
+  }
+
+  &.bs-tooltip-bottom[data-popper-reference-hidden="true"] {
+    top: 22px !important;
+  }
+
+  &.bs-tooltip-top[data-popper-reference-hidden="true"] {
+    bottom: 22px !important;
   }
 
   .tooltip-arrow::before {
