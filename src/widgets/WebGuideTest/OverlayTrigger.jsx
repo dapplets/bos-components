@@ -957,13 +957,21 @@ const {
   saveTitle,
   saveData,
   link,
+  isEditMode,
+  setEditMode,
+  isEditTarget,
+  setEditTarget,
 } = props
 
 // todo: new
 const [newData, setNewData] = useState(content ?? "")
 const [newTitle, setNewTitle] = useState(title ?? "")
-const [isEditMode, setEditMode] = useState(false);
-const [isEditTarget, setEditTarget] = useState(false)
+
+useEffect(() => {
+  setNewData(content)
+  setNewTitle(title)
+}, [content, title])
+
 // todo: new
 
 // useEffect(() => {

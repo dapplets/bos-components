@@ -24,6 +24,8 @@ const { link } = props
 const [showApp, setShowApp] = useState(true)
 const [chapterCounter, setChapterCounter] = useState(0)
 const [pageCounter, setPageCounter] = useState(0)
+const [isEditMode, setEditMode] = useState(false);
+const [isEditTarget, setEditTarget] = useState(false)
 
 const response = Near.view('app.webguide.near', 'get_guide', { guide_id: link?.id })
 const guideConfig = response && JSON.parse(response)
@@ -163,6 +165,10 @@ const ChapterWrapper = (props) => {
               }
             : props.children,
         skin: currentChapter.skin ?? 'DEFAULT',
+        isEditMode,
+        setEditMode,
+        isEditTarget,
+        setEditTarget,
       }}
     />
   )
