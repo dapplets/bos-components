@@ -52,7 +52,7 @@ const CustomTooltipDefault = styled("DappletTooltip")`
       transform: rotate(0deg);
     }
   }
-`
+`;
 
 const CustomTooltipMeta = styled("DappletTooltip")`
   z-index: 99999999; // over the notch
@@ -108,7 +108,7 @@ const CustomTooltipMeta = styled("DappletTooltip")`
       transform: rotate(0deg);
     }
   }
-`
+`;
 
 const InfoBox = styled.div`
   position: absolute;
@@ -144,7 +144,7 @@ const InfoBox = styled.div`
       transform: translate(-50%, -50%);
     }
   }
-`
+`;
 
 const Callout = styled.div`
   display: flex;
@@ -160,7 +160,7 @@ const Callout = styled.div`
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-`
+`;
 
 const Header = styled.div`
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -173,7 +173,7 @@ const Header = styled.div`
   width: 100%;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const TopLine = styled.div`
   position: relative;
@@ -185,7 +185,7 @@ const TopLine = styled.div`
   height: 24px;
   margin: 0;
   padding: 0;
-`
+`;
 
 const CalloutHeaderCaption = styled.div`
   display: inline-block;
@@ -198,7 +198,7 @@ const CalloutHeaderCaption = styled.div`
   font-weight: 600;
   line-height: 149%;
   flex: 1;
-`
+`;
 
 const PagesIndicators = styled.div`
   width: auto;
@@ -211,7 +211,7 @@ const PagesIndicators = styled.div`
   box-sizing: border-box;
   justify-content: center;
   flex: 1;
-`
+`;
 
 // const Navi = styled.button` // ToDo: for navigation
 const Navi = styled.div`
@@ -224,14 +224,14 @@ const Navi = styled.div`
     props.$active ? props.$navActive : props.$navInactiveBg};
   border: ${(props) =>
     props.$active ? "none" : `1px solid ${props.$navInactiveBorder}`};
-`
+`;
 
 const HeaderButtonGroup = styled.div`
   display: flex;
   gap: 10px;
   flex: 1;
   justify-content: flex-end;
-`
+`;
 
 const Close = styled.button`
   display: flex;
@@ -241,7 +241,7 @@ const Close = styled.button`
   border: none;
   padding: 0;
   cursor: pointer;
-`
+`;
 
 const EditButton = styled.button`
   display: flex;
@@ -251,7 +251,7 @@ const EditButton = styled.button`
   border: none;
   padding: 0;
   cursor: pointer;
-`
+`;
 
 const Title = styled.div`
   padding: 0;
@@ -264,7 +264,7 @@ const Title = styled.div`
   font-style: normal;
   font-weight: 600;
   line-height: 149%;
-`
+`;
 
 const WrapperAlert = styled.div`
   display: flex;
@@ -291,7 +291,7 @@ const WrapperAlert = styled.div`
       : props.$colInfo};
 
   outline: none;
-`
+`;
 
 const IconAlert = styled.div`
   margin: 0;
@@ -299,7 +299,7 @@ const IconAlert = styled.div`
   position: relative;
   display: flex;
   width: 16px;
-`
+`;
 
 const TextAlert = styled.div`
   font-size: 12px;
@@ -307,7 +307,7 @@ const TextAlert = styled.div`
   text-align: left;
   margin: 0;
   padding: 0;
-`
+`;
 
 const Card = styled.div`
   position: relative;
@@ -326,7 +326,7 @@ const Card = styled.div`
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   overflow-x: hidden;
-`
+`;
 
 const MarkdownWrapper = styled.div`
   width: 100%;
@@ -391,7 +391,7 @@ const MarkdownWrapper = styled.div`
     color: ${(props) => props.$colH};
     cursor: "poiner";
   }
-`
+`;
 
 const Footer = styled.div`
   display: flex;
@@ -401,13 +401,13 @@ const Footer = styled.div`
   width: 100%;
   align-items: center;
   gap: 20px;
-`
+`;
 
 const ContainerCheckbox = styled.div`
   display: flex;
   align-items: ${(props) =>
     props.$type === "infobox" ? "flex-end" : "flex-start"};
-`
+`;
 
 const CheckboxInput = styled.input`
   width: 16px;
@@ -415,7 +415,7 @@ const CheckboxInput = styled.input`
   border-radius: 5px;
   border: 1px solid #384bff;
   margin-right: 8px;
-`
+`;
 
 const Label = styled.label`
   font-weight: 400;
@@ -424,7 +424,7 @@ const Label = styled.label`
   color: #7a818b;
   cursor: pointer;
   width: max-content;
-`
+`;
 
 const ActionsGroup = styled.div`
   display: flex;
@@ -436,7 +436,7 @@ const ActionsGroup = styled.div`
   gap: 10px;
   align-self: stretch;
   flex-grow: 1;
-`
+`;
 
 const ActionsGroupEdit = styled.div`
   display: flex;
@@ -446,7 +446,7 @@ const ActionsGroupEdit = styled.div`
   align-items: center;
   gap: 10px;
   align-self: stretch;
-`
+`;
 
 const ActionButton = styled.div`
   display: flex;
@@ -476,7 +476,7 @@ const ActionButton = styled.div`
   &:active {
     background: ${(props) => (props.$primary ? props.$primBgA : props.$secBgA)};
   }
-`
+`;
 
 const ActionButtonEdit = styled.div`
   display: flex;
@@ -501,7 +501,7 @@ const ActionButtonEdit = styled.div`
   &:hover {
     opacity: 0.5;
   }
-`
+`;
 
 const iconClose = (color) => (
   <svg
@@ -526,7 +526,7 @@ const iconClose = (color) => (
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 
 const errorIcon = (color) => (
   <svg
@@ -565,7 +565,7 @@ const errorIcon = (color) => (
       </clipPath>
     </defs>
   </svg>
-)
+);
 
 const infoIcon = (color) => (
   <svg
@@ -604,7 +604,7 @@ const infoIcon = (color) => (
       </clipPath>
     </defs>
   </svg>
-)
+);
 
 const warningIcon = (color) => (
   <svg
@@ -636,7 +636,7 @@ const warningIcon = (color) => (
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 
 const iconEditTarget = (
   <svg
@@ -657,7 +657,7 @@ const iconEditTarget = (
       fill="white"
     />
   </svg>
-)
+);
 
 const themes = {
   DEFAULT: {
@@ -714,14 +714,14 @@ const themes = {
     secBtnBgH: "#5f84e4",
     secBtnBgA: "#6c8ee5",
   },
-}
+};
 
 const EditButtonsBlock = styled.div`
   display: flex;
   width: 100%;
   gap: 10px;
   justify-content: space-evenly;
-`
+`;
 
 const editIcon = (
   <svg
@@ -746,7 +746,7 @@ const editIcon = (
       strokeLinejoin="round"
     />
   </svg>
-)
+);
 
 const viewIcon = (
   <svg
@@ -761,7 +761,7 @@ const viewIcon = (
       fill="white"
     />
   </svg>
-)
+);
 
 const iconPrevEdit = (
   <svg
@@ -786,7 +786,7 @@ const iconPrevEdit = (
       stroke-linejoin="round"
     />
   </svg>
-)
+);
 
 const iconNextEdit = (
   <svg
@@ -811,7 +811,94 @@ const iconNextEdit = (
       stroke-linejoin="round"
     />
   </svg>
-)
+);
+
+const iconPlus = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="17"
+    height="16"
+    viewBox="0 0 17 16"
+    fill="none"
+  >
+    <path
+      d="M8.49967 14.6668C12.1816 14.6668 15.1663 11.6821 15.1663 8.00016C15.1663 4.31826 12.1816 1.3335 8.49967 1.3335C4.81778 1.3335 1.83301 4.31826 1.83301 8.00016C1.83301 11.6821 4.81778 14.6668 8.49967 14.6668Z"
+      stroke="white"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M8.5 5.3335V10.6668"
+      stroke="white"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M5.83301 8H11.1663"
+      stroke="white"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+);
+
+const iconRemove = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="17"
+    height="16"
+    viewBox="0 0 17 16"
+    fill="none"
+  >
+    <path
+      d="M2.5 4H3.83333H14.5"
+      stroke="white"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M13.1663 4.00016V13.3335C13.1663 13.6871 13.0259 14.0263 12.7758 14.2763C12.5258 14.5264 12.1866 14.6668 11.833 14.6668H5.16634C4.81272 14.6668 4.47358 14.5264 4.22353 14.2763C3.97348 14.0263 3.83301 13.6871 3.83301 13.3335V4.00016M5.83301 4.00016V2.66683C5.83301 2.31321 5.97348 1.97407 6.22353 1.72402C6.47358 1.47397 6.81272 1.3335 7.16634 1.3335H9.83301C10.1866 1.3335 10.5258 1.47397 10.7758 1.72402C11.0259 1.97407 11.1663 2.31321 11.1663 2.66683V4.00016"
+      stroke="white"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M7.16699 7.3335V11.3335"
+      stroke="white"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M9.83301 7.3335V11.3335"
+      stroke="white"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+);
+
+const iconRevert = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+  >
+    <path
+      d="M5.33333 2L2 5.33333L5.33333 8.66667M8 13.3333H10C10.5253 13.3333 11.0454 13.2299 11.5307 13.0289C12.016 12.8278 12.457 12.5332 12.8284 12.1618C13.1999 11.7903 13.4945 11.3494 13.6955 10.8641C13.8965 10.3788 14 9.85862 14 9.33333C14 8.80805 13.8965 8.2879 13.6955 7.8026C13.4945 7.3173 13.1999 6.87634 12.8284 6.50491C12.457 6.13347 12.016 5.83883 11.5307 5.63782C11.0454 5.4368 10.5253 5.33333 10 5.33333H2.66667"
+      stroke="white"
+      stroke-width="1.5"
+    />
+  </svg>
+);
 
 const SuccessButton = styled.button`
   display: flex;
@@ -840,17 +927,18 @@ const SuccessButton = styled.button`
   :hover {
     opacity: 0.5;
   }
-`
+`;
 
 const EditInputsBlock = styled.div`
   width: 100%;
   padding: 10px;
+  padding-bottom: 0;
   border-radius: 10px;
   background: #628bf5;
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
-`
+`;
 
 const FloatingLabelContainer = styled.div`
   background: #4e77e1;
@@ -861,7 +949,7 @@ const FloatingLabelContainer = styled.div`
   position: relative;
   flex: 0 1 auto;
   display: flex;
-`
+`;
 
 const FloatingLabelContainerArea = styled.div`
   background: #4e77e1;
@@ -872,7 +960,7 @@ const FloatingLabelContainerArea = styled.div`
   position: relative;
   flex: 1 1 auto;
   display: flex;
-`
+`;
 
 const StyledInput = styled.input`
   padding: 25px 10px 10px 10px;
@@ -892,7 +980,7 @@ const StyledInput = styled.input`
     color: #bbccd0;
     left: 10px;
   }
-`
+`;
 
 const StyledTextarea = styled.textarea`
   padding: 25px 10px 10px;
@@ -913,7 +1001,7 @@ const StyledTextarea = styled.textarea`
     color: #bbccd0;
     left: 10px;
   }
-`
+`;
 
 const StyledLabel = styled.label`
   position: absolute;
@@ -923,7 +1011,7 @@ const StyledLabel = styled.label`
   color: #bbccd0;
   pointer-events: none;
   transition: all 0.2s ease 0s;
-`
+`;
 
 const EditTargetSpan = styled.button`
   outline: none;
@@ -939,7 +1027,93 @@ const EditTargetSpan = styled.button`
   position: absolute;
   top: 17px;
   right: 10px;
-`
+`;
+
+const OptionsBlock = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+`;
+
+const ButtonRemove = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #fff;
+  width: 50%;
+  font-size: 12px;
+
+  svg {
+    margin-right: 5px;
+  }
+
+  &:hover {
+    opacity: 0.5;
+  }
+`;
+
+const ButtonRevert = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #fff;
+  width: 50%;
+  font-size: 12px;
+  svg {
+    margin-right: 5px;
+  }
+
+  &:hover {
+    opacity: 0.5;
+  }
+`;
+
+const AddedBlock = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 10px 0;
+`;
+const AddedPageButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #fff;
+  width: 50%;
+  font-size: 12px;
+  svg {
+    margin-right: 5px;
+  }
+
+  &:hover {
+    opacity: 0.5;
+  }
+`;
+
+const AddedChapterButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #fff;
+  width: 50%;
+  font-size: 12px;
+  svg {
+    margin-right: 5px;
+  }
+
+  &:hover {
+    opacity: 0.5;
+  }
+`;
 
 const {
   children,
@@ -961,16 +1135,16 @@ const {
   setEditMode,
   isEditTarget,
   setEditTarget,
-} = props
+} = props;
 
 // todo: new
-const [newData, setNewData] = useState(content ?? "")
-const [newTitle, setNewTitle] = useState(title ?? "")
+const [newData, setNewData] = useState(content ?? "");
+const [newTitle, setNewTitle] = useState(title ?? "");
 
 useEffect(() => {
-  setNewData(content)
-  setNewTitle(title)
-}, [content, title])
+  setNewData(content);
+  setNewTitle(title);
+}, [content, title]);
 
 // todo: new
 
@@ -995,7 +1169,6 @@ const handleSave = () => {
   // todo: uncomment when will be contract function
   // saveData(newData);
   // saveTitle(newTitle);
-
   // try {
   //   localStorage.setItem(`${props.id}newData`, newData)
   //   localStorage.setItem(`${props.id}newTitle`, newTitle)
@@ -1003,7 +1176,7 @@ const handleSave = () => {
   // } catch (error) {
   //   console.error("Error accessing localStorage", error)
   // }
-}
+};
 
 const header = (
   <Header $col={themes[skin].colorMain}>
@@ -1037,7 +1210,7 @@ const header = (
       ) : null}
     </TopLine>
   </Header>
-)
+);
 
 const statuses = (
   <WrapperAlert
@@ -1058,7 +1231,7 @@ const statuses = (
     </IconAlert>
     <TextAlert>{props.status.text}</TextAlert>
   </WrapperAlert>
-)
+);
 
 const checkbox = (
   <ContainerCheckbox $type={props.type}>
@@ -1069,7 +1242,7 @@ const checkbox = (
     />
     <Label htmlFor="checkbox">Don't show this guide again</Label>
   </ContainerCheckbox>
-)
+);
 
 const actionButton = (btn) => (
   <ActionButton
@@ -1088,7 +1261,7 @@ const actionButton = (btn) => (
   >
     {btn.label}
   </ActionButton>
-)
+);
 
 const actionButtonEdit = (btn) => (
   <ActionButtonEdit
@@ -1110,7 +1283,7 @@ const actionButtonEdit = (btn) => (
     {btn.label.toLowerCase().includes("prev") ? iconPrevEdit : null} {btn.label}{" "}
     {btn.label.toLowerCase().includes("next") ? iconNextEdit : null}
   </ActionButtonEdit>
-)
+);
 
 const navButtons = !buttons ? null : props.type === "callout" ? (
   <ActionsGroup $type={props.type}>
@@ -1125,7 +1298,7 @@ const navButtons = !buttons ? null : props.type === "callout" ? (
   <ActionsGroup $type={props.type}>{actionButton(buttons[0])}</ActionsGroup>
 ) : (
   <></>
-)
+);
 
 const navButtonsEdit = !buttons ? null : props.type === "callout" ? (
   <ActionsGroupEdit $type={props.type}>
@@ -1142,7 +1315,7 @@ const navButtonsEdit = !buttons ? null : props.type === "callout" ? (
   </ActionsGroupEdit>
 ) : (
   <></>
-)
+);
 
 const callout = (
   <Callout
@@ -1208,9 +1381,24 @@ const callout = (
 
     {!content || isEditMode ? (
       <>
-     
         {navButtonsEdit}
         <EditInputsBlock>
+          <OptionsBlock>
+            <ButtonRemove
+              onClick={() => {
+                // todo: added removed function
+              }}
+            >
+              {iconRemove} Remove
+            </ButtonRemove>
+            <ButtonRevert
+              onClick={() => {
+                // todo: added revert function
+              }}
+            >
+              {iconRevert}Revert changes
+            </ButtonRevert>
+          </OptionsBlock>
           <FloatingLabelContainer>
             <StyledInput
               id={"target"}
@@ -1252,6 +1440,22 @@ const callout = (
             <StyledLabel htmlFor={"description"}>Description</StyledLabel>
           </FloatingLabelContainerArea>
         </EditInputsBlock>
+        <AddedBlock>
+          <AddedPageButton
+            onClick={() => {
+              // todo: added create page function
+            }}
+          >
+            {iconPlus}Add new page
+          </AddedPageButton>
+          <AddedChapterButton
+            onClick={() => {
+              // todo: added create charter function
+            }}
+          >
+            {iconPlus}Add new chapter
+          </AddedChapterButton>
+        </AddedBlock>
         <EditButtonsBlock>
           {isEditMode ? (
             <SuccessButton
@@ -1293,7 +1497,7 @@ const callout = (
     )}
     <div data-mweb-insertion-point="hidden" style={{ display: "none" }} />
   </Callout>
-)
+);
 
 const calloutTooltip = {
   DEFAULT: (
@@ -1302,7 +1506,7 @@ const calloutTooltip = {
   META_GUIDE: (
     <CustomTooltipMeta bsPrefix="wg-tooltip">{callout}</CustomTooltipMeta>
   ),
-}
+};
 
 const infobox = (
   <InfoBox $border={themes[skin].border} $bg={themes[skin].bgMain}>
@@ -1364,6 +1568,22 @@ const infobox = (
       <>
         {navButtonsEdit}
         <EditInputsBlock>
+          <OptionsBlock>
+            <ButtonRemove
+              onClick={() => {
+                // todo: added removed function
+              }}
+            >
+              {iconRemove} Remove
+            </ButtonRemove>
+            <ButtonRevert
+              onClick={() => {
+                // todo: added revert function
+              }}
+            >
+              {iconRevert}Revert changes
+            </ButtonRevert>
+          </OptionsBlock>
           <FloatingLabelContainer>
             <StyledInput id={"target"} type={"text"} value={props.type} />
             <StyledLabel htmlFor={"target"}>Target</StyledLabel>
@@ -1400,6 +1620,22 @@ const infobox = (
             <StyledLabel htmlFor={"description"}>Description</StyledLabel>
           </FloatingLabelContainerArea>
         </EditInputsBlock>
+        <AddedBlock>
+          <AddedPageButton
+            onClick={() => {
+              // todo: added create page function
+            }}
+          >
+            {iconPlus}Add new page
+          </AddedPageButton>
+          <AddedChapterButton
+            onClick={() => {
+              // todo: added create charter function
+            }}
+          >
+            {iconPlus}Add new chapter
+          </AddedChapterButton>
+        </AddedBlock>
         <EditButtonsBlock>
           {isEditMode ? (
             <SuccessButton
@@ -1444,7 +1680,7 @@ const infobox = (
       </>
     )}
   </InfoBox>
-)
+);
 
 const overlayByType = {
   callout: (
@@ -1463,6 +1699,6 @@ const overlayByType = {
     </DappletOverlayTrigger>
   ),
   infobox,
-}
+};
 
-return overlayByType[props.type]
+return overlayByType[props.type];
