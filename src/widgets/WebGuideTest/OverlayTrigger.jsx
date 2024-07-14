@@ -1045,6 +1045,7 @@ const ButtonRemove = styled.button`
   color: #fff;
   width: 50%;
   font-size: 12px;
+  cursor: pointer;
 
   svg {
     margin-right: 5px;
@@ -1064,6 +1065,8 @@ const ButtonRevert = styled.button`
   color: #fff;
   width: 50%;
   font-size: 12px;
+  cursor: pointer;
+
   svg {
     margin-right: 5px;
   }
@@ -1088,6 +1091,8 @@ const AddedPageButton = styled.button`
   color: #fff;
   width: 50%;
   font-size: 12px;
+  cursor: pointer;
+
   svg {
     margin-right: 5px;
   }
@@ -1106,6 +1111,8 @@ const AddedChapterButton = styled.button`
   color: #fff;
   width: 50%;
   font-size: 12px;
+  cursor: pointer;
+
   svg {
     margin-right: 5px;
   }
