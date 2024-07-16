@@ -1,4 +1,71 @@
-const CustomTooltipDefault = styled('DappletTooltip')`
+const DefaultTheme = styled.div`
+  --bgMain: #fffffe;
+  --colorMain: #02193a;
+  --colorP: #777777;
+  --border: #02193a;
+  --cardBg: rgba(248, 249, 255, 1);
+
+  --navActive: #384bff;
+  --navInactiveBg: #e3e3e3;
+  --navInactiveBorder: none;
+
+  --statusInfoCol: #246efd;
+  --statusWarningCol: #d0911a;
+  --statusErrorCol: #db504a;
+  --statusInfoBg: rgba(234, 241, 255, 1);
+  --statusWarningBg: rgba(255, 248, 235, 1);
+  --statusErrorBg: rgba(246, 240, 246, 1);
+
+  --primBtnCol: white;
+  --primBtnBg: #02193a;
+  --primBtnBgH: #1c3559;
+  --primBtnBgA: #020c19;
+  --secBtnCol: #02193a;
+  --secBtnBorderCol: #e2e2e5;
+  --secBtnBgH: #eee;
+  --secBtnBgA: #ddd;
+`;
+
+const MetaGuideTheme = styled.div`
+  --bgMain: #4e77e1;
+  --colorMain: white;
+  --colorP: rgba(248, 249, 255, 1);
+  --border: #4e77e1;
+  --cardBg: rgba(255, 255, 255, 0.1);
+
+  --navActive: white;
+  --navInactiveBg: #4e77e1;
+  --navInactiveBorder: white;
+
+  --statusInfoCol: white;
+  --statusWarningCol: white;
+  --statusErrorCol: white;
+  --statusInfoBg: rgba(255, 255, 255, 0.2);
+  --statusWarningBg: rgba(255, 255, 255, 0.2);
+  --statusErrorBg: rgba(255, 255, 255, 0.2);
+
+  --primBtnCol: #4e77e1;
+  --primBtnBg: white;
+  --primBtnBgH: rgb(242 243 255);
+  --primBtnBgA: rgb(222 225 255);
+  --secBtnCol: white;
+  --secBtnBorderCol: white;
+  --secBtnBgH: #5f84e4;
+  --secBtnBgA: #6c8ee5;
+`;
+
+const Theme = ({ skin, children }) => {
+  switch (skin) {
+    case 'DEFAULT':
+      return <DefaultTheme children={children} />;
+    case 'META_GUIDE':
+      return <MetaGuideTheme children={children} />;
+    default:
+      return <></>;
+  }
+};
+
+const CustomTooltip = styled('DappletTooltip')`
   z-index: 99999999; // over the notch
 
   &[data-popper-reference-hidden='true'] {
@@ -18,62 +85,13 @@ const CustomTooltipDefault = styled('DappletTooltip')`
   .tooltip-arrow::before {
     border: none;
     display: inline-block;
+  }
+
+  &.wg-tooltip-DEFAULT .tooltip-arrow::before {
     content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='19' height='38' viewBox='18 0 20 38' fill='none' ><path d='M34.3818 22.1845L19.5654 36.0575L19.5654 1.8284L34.3715 15.6052C36.2802 17.3812 36.285 20.4025 34.3818 22.1845Z' fill='%23FFFFFE' stroke='%2302193A' /><path d='M16.5693 2.96185L20.0642 2.96185L21.0642 3.96185L21.0642 33.9619L20.0642 34.9619H16.5693L16.5693 2.96185Z' fill='%23FFFFFE' /></svg>");
   }
 
-  &.bs-tooltip-top .tooltip-arrow {
-    bottom: -29px;
-
-    &::before {
-      transform: rotate(90deg);
-    }
-  }
-
-  &.bs-tooltip-end .tooltip-arrow {
-    left: -18px;
-
-    &::before {
-      transform: rotate(180deg);
-    }
-  }
-
-  &.bs-tooltip-bottom .tooltip-arrow {
-    top: -29px;
-
-    &::before {
-      transform: rotate(-90deg);
-    }
-  }
-
-  &.bs-tooltip-start .tooltip-arrow {
-    right: -18px;
-
-    &::before {
-      transform: rotate(0deg);
-    }
-  }
-`;
-
-const CustomTooltipMeta = styled('DappletTooltip')`
-  z-index: 99999999; // over the notch
-
-  &[data-popper-reference-hidden='true'] {
-    position: fixed !important;
-    left: 50% !important;
-    transform: translate(-100%, 0px) !important;
-  }
-
-  &.bs-tooltip-bottom[data-popper-reference-hidden='true'] {
-    top: 22px !important;
-  }
-
-  &.bs-tooltip-top[data-popper-reference-hidden='true'] {
-    bottom: 22px !important;
-  }
-
-  .tooltip-arrow::before {
-    border: none;
-    display: inline-block;
+  &.wg-tooltip-META_GUIDE .tooltip-arrow::before {
     content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='19' height='38' viewBox='18 0 20 38' fill='none' ><path d='M34.3818 22.1845L19.5654 36.0575L19.5654 1.8284L34.3715 15.6052C36.2802 17.3812 36.285 20.4025 34.3818 22.1845Z' fill='%234E77E1' stroke='%234E77E1' /><path d='M16.5693 2.96185L20.0642 2.96185L21.0642 3.96185L21.0642 33.9619L20.0642 34.9619H16.5693L16.5693 2.96185Z' fill='%234E77E1' /></svg>");
   }
 
@@ -120,8 +138,8 @@ const InfoBox = styled.div`
   box-sizing: border-box;
   width: 546px;
   height: 656px;
-  border: 1px solid ${(props) => props.$border};
-  background: ${(props) => props.$bg};
+  border: 1px solid var(--border);
+  background: var(--bgMain);
   border-radius: 20px;
   padding: 20px;
   gap: 20px;
@@ -155,8 +173,8 @@ const Callout = styled.div`
   align-items: center;
   gap: 10px;
   border-radius: 10px;
-  border: 1px solid ${(props) => props.$border};
-  background: ${(props) => props.$bg};
+  border: 1px solid var(--border);
+  background: var(--bgMain);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -166,7 +184,7 @@ const Header = styled.div`
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  color: ${(props) => props.$col};
+  color: var(--colorMain);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -192,7 +210,7 @@ const CalloutHeaderCaption = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: ${(props) => props.$col};
+  color: var(--colorMain);
   font-size: 12px;
   font-style: normal;
   font-weight: 600;
@@ -220,10 +238,16 @@ const Navi = styled.div`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: ${(props) =>
-    props.$active ? props.$navActive : props.$navInactiveBg};
-  border: ${(props) =>
-    props.$active ? 'none' : `1px solid ${props.$navInactiveBorder}`};
+
+  &.active {
+    background: var(--navActive);
+    border: none;
+  }
+
+  &.inactive {
+    background: var(--navInactiveBg);
+    border: 1px solid var(--navInactiveBorder);
+  }
 `;
 
 const HeaderButtonGroup = styled.div`
@@ -259,11 +283,18 @@ const Title = styled.div`
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  color: ${(props) => props.$col};
-  font-size: ${(props) => (props.$type === 'infobox' ? '32px' : '18px')};
+  color: var(--colorMain);
   font-style: normal;
   font-weight: 600;
   line-height: 149%;
+
+  &.infobox {
+    font-size: 32px;
+  }
+
+  &.callout {
+    font-size: 18px;
+  }
 `;
 
 const WrapperAlert = styled.div`
@@ -276,21 +307,22 @@ const WrapperAlert = styled.div`
   justify-content: flex-start;
   width: 100%;
   margin-right: auto;
-  background: ${(props) =>
-    props.$status === 'warning'
-      ? props.$bgWarning
-      : props.$status === 'error'
-      ? props.$bgError
-      : props.$bgInfo};
-
-  color: ${(props) =>
-    props.$status === 'warning'
-      ? props.$colWarning
-      : props.$status === 'error'
-      ? props.$colError
-      : props.$colInfo};
-
   outline: none;
+
+  &.warning {
+    background: var(--statusWarningBg);
+    color: var(--statusWarningCol);
+  }
+
+  &.error {
+    background: var(--statusErrorBg);
+    color: var(--statusErrorCol);
+  }
+
+  &.info {
+    background: var(--statusInfoBg);
+    color: var(--statusInfoCol);
+  }
 `;
 
 const IconAlert = styled.div`
@@ -321,7 +353,7 @@ const Card = styled.div`
   gap: 10px;
   border: none;
   border-radius: 20px;
-  background: ${(props) => props.$bg};
+  background: var(--cardBg);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -342,7 +374,7 @@ const MarkdownWrapper = styled.div`
     font-weight: 500;
     font-size: 16px;
     line-height: 19px;
-    color: ${(props) => props.$colH};
+    color: var(--colorMain);
     flex: none;
     align-self: stretch;
     flex-grow: 0;
@@ -371,7 +403,7 @@ const MarkdownWrapper = styled.div`
     font-weight: 400;
     font-size: 14px;
     line-height: 149%;
-    color: ${(props) => props.$colP};
+    color: var(--colorP);
     flex: none;
     align-self: stretch;
     flex-grow: 0;
@@ -388,7 +420,7 @@ const MarkdownWrapper = styled.div`
     font-size: 14px;
     line-height: 149%;
     text-decoration-line: underline !important;
-    color: ${(props) => props.$colH};
+    color: var(--colorMain);
     cursor: 'poiner';
   }
 `;
@@ -405,8 +437,14 @@ const Footer = styled.div`
 
 const ContainerCheckbox = styled.div`
   display: flex;
-  align-items: ${(props) =>
-    props.$type === 'infobox' ? 'flex-end' : 'flex-start'};
+
+  &.infobox {
+    align-items: flex-end;
+  }
+
+  &.callout {
+    align-items: flex-start;
+  }
 `;
 
 const CheckboxInput = styled.input`
@@ -428,24 +466,36 @@ const Label = styled.label`
 
 const ActionsGroup = styled.div`
   display: flex;
-  flex-direction: ${(props) =>
-    props.$type === 'infobox' ? 'row-reverse' : 'row'};
-  justify-content: ${(props) =>
-    props.$type === 'infobox' ? 'space-between' : 'center'};
   align-items: center;
   gap: 10px;
   align-self: stretch;
   flex-grow: 1;
+
+  &.infobox {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+
+  &.callout {
+    flex-direction: row;
+    justify-content: center;
+  }
 `;
 
 const ActionsGroupEdit = styled.div`
   display: flex;
-  flex-direction: ${(props) =>
-    props.$type === 'infobox' ? 'row-reverse' : 'row'};
   justify-content: space-between;
   align-items: center;
   gap: 10px;
   align-self: stretch;
+
+  &.infobox {
+    flex-direction: row-reverse;
+  }
+
+  &.callout {
+    flex-direction: row;
+  }
 `;
 
 const ActionButton = styled.div`
@@ -460,21 +510,37 @@ const ActionButton = styled.div`
   text-align: center;
   font-size: 14px;
   cursor: pointer;
-  border: ${(props) =>
-    props.$primary ? 'initial' : `1px solid ${props.$secBorderCol}`};
-  background: ${(props) => (props.$primary ? props.$primBg : 'initial')};
-  color: ${(props) => (props.$primary ? props.$primCol : props.$secCol)};
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE/Edge */
   user-select: none;
 
-  &:hover {
-    background: ${(props) => (props.$primary ? props.$primBgH : props.$secBgH)};
+  &.primary {
+    border: initial;
+    background: var(--primBtnBg);
+    color: var(--primBtnCol);
+
+    &:hover {
+      background: var(--primBtnBgH);
+    }
+
+    &:active {
+      background: var(--primBtnBgA);
+    }
   }
 
-  &:active {
-    background: ${(props) => (props.$primary ? props.$primBgA : props.$secBgA)};
+  &.secondary {
+    border: 1px solid var(--secBtnBorderCol);
+    background: initial;
+    color: var(--secBtnCol);
+
+    &:hover {
+      background: var(--secBtnBgH);
+    }
+
+    &:active {
+      background: var(--secBtnBgA);
+    }
   }
 `;
 
@@ -503,7 +569,7 @@ const ActionButtonEdit = styled.div`
   }
 `;
 
-const iconClose = (color) => (
+const CloseIcon = () => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     width='24'
@@ -513,14 +579,14 @@ const iconClose = (color) => (
   >
     <path
       d='M18 6L6 18'
-      stroke={color}
+      stroke='var(--colorMain)'
       strokeWidth='1.5'
       strokeLinecap='round'
       strokeLinejoin='round'
     />
     <path
       d='M6 6.5L18 18.5'
-      stroke={color}
+      stroke='var(--colorMain)'
       strokeWidth='1.5'
       strokeLinecap='round'
       strokeLinejoin='round'
@@ -528,7 +594,7 @@ const iconClose = (color) => (
   </svg>
 );
 
-const errorIcon = (color) => (
+const ErrorIcon = () => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     width='20'
@@ -539,21 +605,21 @@ const errorIcon = (color) => (
     <g clipPath='url(#clip0_358_97)'>
       <path
         d='M6.54996 1.66666H13.45L18.3333 6.54999V13.45L13.45 18.3333H6.54996L1.66663 13.45V6.54999L6.54996 1.66666Z'
-        stroke={color}
+        stroke='var(--statusErrorCol)'
         strokeWidth='1.5'
         strokeLinecap='round'
         strokeLinejoin='round'
       />
       <path
         d='M12.5 7.5L7.5 12.5'
-        stroke={color}
+        stroke='var(--statusErrorCol)'
         strokeWidth='1.5'
         strokeLinecap='round'
         strokeLinejoin='round'
       />
       <path
         d='M7.5 7.5L12.5 12.5'
-        stroke={color}
+        stroke='var(--statusErrorCol)'
         strokeWidth='1.5'
         strokeLinecap='round'
         strokeLinejoin='round'
@@ -567,7 +633,7 @@ const errorIcon = (color) => (
   </svg>
 );
 
-const infoIcon = (color) => (
+const InfoIcon = () => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     width='20'
@@ -578,21 +644,21 @@ const infoIcon = (color) => (
     <g clipPath='url(#clip0_358_90)'>
       <path
         d='M9.99996 18.3333C14.6023 18.3333 18.3333 14.6024 18.3333 10C18.3333 5.39763 14.6023 1.66667 9.99996 1.66667C5.39759 1.66667 1.66663 5.39763 1.66663 10C1.66663 14.6024 5.39759 18.3333 9.99996 18.3333Z'
-        stroke={color}
+        stroke='var(--statusInfoCol)'
         strokeWidth='1.5'
         strokeLinecap='round'
         strokeLinejoin='round'
       />
       <path
         d='M10 13.3333V10'
-        stroke={color}
+        stroke='var(--statusInfoCol)'
         strokeWidth='1.5'
         strokeLinecap='round'
         strokeLinejoin='round'
       />
       <path
         d='M10 6.66667H10.0088'
-        stroke={color}
+        stroke='var(--statusInfoCol)'
         strokeWidth='1.5'
         strokeLinecap='round'
         strokeLinejoin='round'
@@ -606,7 +672,7 @@ const infoIcon = (color) => (
   </svg>
 );
 
-const warningIcon = (color) => (
+const WarningIcon = () => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     width='20'
@@ -616,21 +682,21 @@ const warningIcon = (color) => (
   >
     <path
       d='M8.57502 3.21665L1.51668 15C1.37116 15.252 1.29416 15.5377 1.29334 15.8288C1.29253 16.1198 1.36793 16.4059 1.51204 16.6588C1.65615 16.9116 1.86396 17.1223 2.11477 17.2699C2.36559 17.4174 2.65068 17.4968 2.94168 17.5H17.0583C17.3494 17.4968 17.6344 17.4174 17.8853 17.2699C18.1361 17.1223 18.3439 16.9116 18.488 16.6588C18.6321 16.4059 18.7075 16.1198 18.7067 15.8288C18.7059 15.5377 18.6289 15.252 18.4834 15L11.425 3.21665C11.2765 2.97174 11.0673 2.76925 10.8177 2.62872C10.5681 2.48819 10.2865 2.41437 10 2.41437C9.71357 2.41437 9.43196 2.48819 9.18235 2.62872C8.93275 2.76925 8.72358 2.97174 8.57502 3.21665Z'
-      stroke={color}
+      stroke='var(--statusWarningCol)'
       strokeWidth='1.5'
       strokeLinecap='round'
       strokeLinejoin='round'
     />
     <path
       d='M10 7.5V10.8333'
-      stroke={color}
+      stroke='var(--statusWarningCol)'
       strokeWidth='1.5'
       strokeLinecap='round'
       strokeLinejoin='round'
     />
     <path
       d='M10 14.1667H10.0088'
-      stroke={color}
+      stroke='var(--statusWarningCol)'
       strokeWidth='1.5'
       strokeLinecap='round'
       strokeLinejoin='round'
@@ -658,63 +724,6 @@ const iconEditTarget = (
     />
   </svg>
 );
-
-const themes = {
-  DEFAULT: {
-    bgMain: '#fffffe',
-    colorMain: '#02193a',
-    colorP: '#777777',
-    border: '#02193a',
-    cardBg: 'rgba(248, 249, 255, 1)',
-
-    navActive: '#384BFF',
-    navInactiveBg: '#E3E3E3',
-    navInactiveBorder: 'none',
-
-    statusInfoCol: '#246EFD',
-    statusWarningCol: '#D0911A',
-    statusErrorCol: '#DB504A',
-    statusInfoBg: 'rgba(234, 241, 255, 1)',
-    statusWarningBg: 'rgba(255, 248, 235, 1)',
-    statusErrorBg: 'rgba(246, 240, 246, 1)',
-
-    primBtnCol: 'white',
-    primBtnBg: '#02193a',
-    primBtnBgH: '#1c3559',
-    primBtnBgA: '#020c19',
-    secBtnCol: '#02193a',
-    secBtnBorderCol: '#E2E2E5',
-    secBtnBgH: '#eee',
-    secBtnBgA: '#ddd',
-  },
-  META_GUIDE: {
-    bgMain: '#4E77E1',
-    colorMain: 'white',
-    colorP: 'rgba(248, 249, 255, 1)',
-    border: '#4E77E1',
-    cardBg: 'rgba(255, 255, 255, 0.1)',
-
-    navActive: 'white',
-    navInactiveBg: '#4E77E1',
-    navInactiveBorder: 'white',
-
-    statusInfoCol: 'white',
-    statusWarningCol: 'white',
-    statusErrorCol: 'white',
-    statusInfoBg: 'rgba(255, 255, 255, 0.2)',
-    statusWarningBg: 'rgba(255, 255, 255, 0.2)',
-    statusErrorBg: 'rgba(255, 255, 255, 0.2)',
-
-    primBtnCol: '#4E77E1',
-    primBtnBgH: 'rgb(242 243 255)',
-    primBtnBgA: 'rgb(222 225 255)',
-    primBtnBg: 'white',
-    secBtnCol: 'white',
-    secBtnBorderCol: 'white',
-    secBtnBgH: '#5f84e4',
-    secBtnBgA: '#6c8ee5',
-  },
-};
 
 const EditButtonsBlock = styled.div`
   display: flex;
@@ -908,9 +917,9 @@ const SuccessButton = styled.button`
   padding: 0px 20px;
   width: 155px;
   height: 42px;
-  background: ${(props) => props.$background};
+  background: var(--primBtnCol);
   border-radius: 10px;
-  border: 1px solid ${(props) => props.$border};
+  border: 1px solid var(--primBtnBg);
   cursor: pointer;
 
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -921,7 +930,7 @@ const SuccessButton = styled.button`
   font-size: 14px;
   line-height: 149%;
   text-align: center;
-  color: ${(props) => props.$color};
+  color: var(--primBtnBg);
   transition-duration: 0.2s;
 
   :hover {
@@ -1149,19 +1158,6 @@ const {
 
 // todo: new
 
-State.init({
-  newData:
-    editingConfig.chapters[navi?.currentChapterIndex].pages[0].content ?? '',
-  newTitle:
-    editingConfig.chapters[navi?.currentChapterIndex].pages[0].title ?? '',
-  onTitleChange: onTitleChange,
-  onDescriptionChange: onDescriptionChange,
-});
-
-
-
-// todo: new
-
 // useEffect(() => {
 //   try {
 //     const storedData = localStorage.setItem(`${props.id}newData`, newData)
@@ -1193,7 +1189,7 @@ const handleSave = () => {
 };
 
 const header = (
-  <Header $col={themes[skin].colorMain}>
+  <Header>
     <TopLine>
       <HeaderButtonGroup>
         {context.accountId === link.authorId ? (
@@ -1201,7 +1197,9 @@ const header = (
             {isEditMode ? viewIcon : editIcon}
           </EditButton>
         ) : null}
-        <Close onClick={onClose}>{iconClose(themes[skin].colorMain)}</Close>
+        <Close onClick={onClose}>
+          <CloseIcon />
+        </Close>
       </HeaderButtonGroup>
       {navi ? (
         <>
@@ -1210,14 +1208,13 @@ const header = (
               [...Array(navi?.totalPages)].map((_, index) => (
                 <Navi
                   key={index}
-                  $active={index == navi?.currentPageIndex ? true : false}
-                  $navActive={themes[skin].navActive}
-                  $navInactiveBg={themes[skin].navInactiveBg}
-                  $navInactiveBorder={themes[skin].navInactiveBorder}
+                  className={
+                    index == navi?.currentPageIndex ? 'active' : 'inactive'
+                  }
                 />
               ))}
           </PagesIndicators>
-          <CalloutHeaderCaption $col={themes[skin].colorMain}>
+          <CalloutHeaderCaption>
             Step {navi?.currentChapterIndex + 1} of {navi?.totalChapters}
           </CalloutHeaderCaption>
         </>
@@ -1227,28 +1224,22 @@ const header = (
 );
 
 const statuses = (
-  <WrapperAlert
-    $status={props.status.type}
-    $colInfo={themes[skin].statusInfoCol}
-    $colWarning={themes[skin].statusWarningCol}
-    $colError={themes[skin].statusErrorCol}
-    $bgInfo={themes[skin].statusInfoBg}
-    $bgWarning={themes[skin].statusWarningBg}
-    $bgError={themes[skin].statusErrorBg}
-  >
+  <WrapperAlert className={props.status.type}>
     <IconAlert>
-      {props.status.type === 'warning'
-        ? warningIcon(themes[skin].statusWarningCol)
-        : props.status.type === 'error'
-        ? errorIcon(themes[skin].statusErrorCol)
-        : infoIcon(themes[skin].statusInfoCol)}
+      {props.status.type === 'warning' ? (
+        <WarningIcon />
+      ) : props.status.type === 'error' ? (
+        <ErrorIcon />
+      ) : (
+        <InfoIcon />
+      )}
     </IconAlert>
     <TextAlert>{props.status.text}</TextAlert>
   </WrapperAlert>
 );
 
 const checkbox = (
-  <ContainerCheckbox $type={props.type}>
+  <ContainerCheckbox className={props.type}>
     <CheckboxInput
       type='checkbox'
       checked={checked}
@@ -1261,15 +1252,7 @@ const checkbox = (
 const actionButton = (btn) => (
   <ActionButton
     key={btn.label}
-    $primary={btn.variant == 'primary' ? true : false}
-    $primCol={themes[skin].primBtnCol}
-    $primBg={themes[skin].primBtnBg}
-    $primBgH={themes[skin].primBtnBgH}
-    $primBgA={themes[skin].primBtnBgA}
-    $secCol={themes[skin].secBtnCol}
-    $secBorderCol={themes[skin].secBtnBorderCol}
-    $secBgH={themes[skin].secBtnBgH}
-    $secBgA={themes[skin].secBtnBgA}
+    className={btn.variant}
     onClick={btn.onClick}
     disabled={btn.disabled}
   >
@@ -1280,15 +1263,6 @@ const actionButton = (btn) => (
 const actionButtonEdit = (btn) => (
   <ActionButtonEdit
     key={btn.label}
-    $primary={btn.variant == 'primary' ? true : false}
-    $primCol={themes[skin].primBtnCol}
-    $primBg={themes[skin].primBtnBg}
-    $primBgH={themes[skin].primBtnBgH}
-    $primBgA={themes[skin].primBtnBgA}
-    $secCol={themes[skin].secBtnCol}
-    $secBorderCol={themes[skin].secBtnBorderCol}
-    $secBgH={themes[skin].secBtnBgH}
-    $secBgA={themes[skin].secBtnBgA}
     onClick={() => {
       btn.onClick();
     }}
@@ -1300,422 +1274,201 @@ const actionButtonEdit = (btn) => (
 );
 
 const navButtons = !buttons ? null : props.type === 'callout' ? (
-  <ActionsGroup $type={props.type}>
+  <ActionsGroup className={props.type}>
     {buttons.map((btn) => actionButton(btn))}
   </ActionsGroup>
 ) : buttons?.length > 1 ? (
-  <ActionsGroup $type={props.type}>
+  <ActionsGroup className={props.type}>
     {actionButton(buttons[1])}
     {actionButton(buttons[0])}
   </ActionsGroup>
 ) : buttons?.length === 1 ? (
-  <ActionsGroup $type={props.type}>{actionButton(buttons[0])}</ActionsGroup>
+  <ActionsGroup className={props.type}>{actionButton(buttons[0])}</ActionsGroup>
 ) : (
   <></>
 );
 
 const navButtonsEdit = !buttons ? null : props.type === 'callout' ? (
-  <ActionsGroupEdit $type={props.type}>
+  <ActionsGroupEdit className={props.type}>
     {buttons.map((btn) => actionButtonEdit(btn))}
   </ActionsGroupEdit>
 ) : buttons?.length > 1 ? (
-  <ActionsGroupEdit $type={props.type}>
+  <ActionsGroupEdit className={props.type}>
     {actionButtonEdit(buttons[1])}
     {actionButtonEdit(buttons[0])}
   </ActionsGroupEdit>
 ) : buttons?.length === 1 ? (
-  <ActionsGroupEdit $type={props.type}>
+  <ActionsGroupEdit className={props.type}>
     {actionButtonEdit(buttons[0])}
   </ActionsGroupEdit>
 ) : (
   <></>
 );
 
-const debounce = (func, wait) => {
-  const pause = wait || 350;
-  let timeout;
+if (props.type === 'callout') {
+  const callout = (
+    <Callout
+      data-mweb-context-type='wg-chapter'
+      data-mweb-context-parsed={JSON.stringify({ id: props.id })}
+    >
+      {header}
+      {isEditTarget ? (
+        <DappletContextPicker
+          target={[
+            {
+              namespace: NAMESPACE,
+              contextType: 'timeline',
+              if: {},
+            },
+            {
+              namespace: NAMESPACE,
+              contextType: 'post',
+              if: {},
+            },
+            {
+              namespace: NAMESPACE,
+              contextType: 'postSouthButton',
+              if: {},
+            },
+            {
+              namespace: NAMESPACE,
+              contextType: 'profile',
+              if: {},
+            },
+            {
+              namespace: 'mweb',
+              contextType: 'mweb-overlay',
+              if: { id: { eq: 'mutation-button' } },
+            },
+            {
+              namespace: 'mweb',
+              contextType: 'mweb-overlay',
+              if: { id: { eq: 'open-apps-button' } },
+            },
+            {
+              namespace: 'mweb',
+              contextType: 'mweb-overlay-action',
+              if: {},
+            },
+            {
+              namespace: 'mweb',
+              contextType: 'injected-widget',
+              if: {},
+            },
+            {
+              namespace: 'mweb',
+              contextType: 'notch',
+              if: {},
+            },
+          ]}
+          onClick={setSelectedContext}
+          LatchComponent={ContextTypeLatch}
+        />
+      ) : null}
 
-  return (args) => {
-    const later = () => {
-      State.update({ newTitle: args, onTitleChange: func(args) });
-    };
-
-    clearTimeout(timeout);
-    timeout = setTimeout(later, pause);
-  };
-};
-
-const _searchDebounced = debounce(onTitleChange, 1000);
-
-const computeResults = (term) => {
-  _searchDebounced(term);
-};
-
-const callout = (
-  <Callout
-    data-mweb-context-type='wg-chapter'
-    data-mweb-context-parsed={JSON.stringify({ id: props.id })}
-    $border={themes[skin].border}
-    $bg={themes[skin].bgMain}
-  >
-    {header}
-    {isEditTarget ? (
-      <DappletContextPicker
-        target={[
-          {
-            namespace: NAMESPACE,
-            contextType: 'timeline',
-            if: {},
-          },
-          {
-            namespace: NAMESPACE,
-            contextType: 'post',
-            if: {},
-          },
-          {
-            namespace: NAMESPACE,
-            contextType: 'postSouthButton',
-            if: {},
-          },
-          {
-            namespace: NAMESPACE,
-            contextType: 'profile',
-            if: {},
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'mweb-overlay',
-            if: { id: { eq: 'mutation-button' } },
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'mweb-overlay',
-            if: { id: { eq: 'open-apps-button' } },
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'mweb-overlay-action',
-            if: {},
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'injected-widget',
-            if: {},
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'notch',
-            if: {},
-          },
-        ]}
-        onClick={setSelectedContext}
-        LatchComponent={ContextTypeLatch}
-      />
-    ) : null}
-
-    {!content || isEditMode ? (
-      <>
-        {navButtonsEdit}
-        <EditInputsBlock>
-          <OptionsBlock>
-            <ButtonRemove
-              onClick={() => {
-                // todo: added removed function
-              }}
-            >
-              {iconRemove} Remove
-            </ButtonRemove>
-            <ButtonRevert
-              onClick={() => {
-                // todo: added revert function
-              }}
-            >
-              {iconRevert}Revert changes
-            </ButtonRevert>
-          </OptionsBlock>
-          <FloatingLabelContainer>
-            <StyledInput
-              id={'target'}
-              readonly
-              type={'text'}
-              value={props.type}
-            />
-            <StyledLabel htmlFor={'target'}>Target</StyledLabel>
-            <EditTargetSpan onClick={() => setEditTarget(!isEditTarget)}>
-              {iconEditTarget}
-            </EditTargetSpan>
-          </FloatingLabelContainer>
-          {title ? (
+      {!content || isEditMode ? (
+        <>
+          {navButtonsEdit}
+          <EditInputsBlock>
+            <OptionsBlock>
+              <ButtonRemove
+                onClick={() => {
+                  // todo: added removed function
+                }}
+              >
+                {iconRemove} Remove
+              </ButtonRemove>
+              <ButtonRevert
+                onClick={() => {
+                  // todo: added revert function
+                }}
+              >
+                {iconRevert}Revert changes
+              </ButtonRevert>
+            </OptionsBlock>
             <FloatingLabelContainer>
               <StyledInput
-                id={'title'}
+                id={'target'}
+                readonly
                 type={'text'}
-                defaultValue={state.newTitle}
-                onChange={(e) => {
-                  computeResults(e.target.value);
-                }}
+                value={props.type}
               />
-              <StyledLabel htmlFor={'title'}>Page name</StyledLabel>
+              <StyledLabel htmlFor={'target'}>Target</StyledLabel>
+              <EditTargetSpan onClick={() => setEditTarget(!isEditTarget)}>
+                {iconEditTarget}
+              </EditTargetSpan>
             </FloatingLabelContainer>
-          ) : null}
+            {title ? (
+              <FloatingLabelContainer>
+                <StyledInput
+                  id={'title'}
+                  type={'text'}
+                  onChange={(e) => {
+                    onTitleChange(e.target.value);
+                  }}
+                />
+                <StyledLabel htmlFor={'title'}>Page name</StyledLabel>
+              </FloatingLabelContainer>
+            ) : null}
 
-          <FloatingLabelContainerArea>
-            <StyledTextarea
-              id={'description'}
-              defaultValue={state.newData}
-              onChange={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                onDescriptionChange(e.target.value);
-                setNewData(e.target.value);
-              }}
-            ></StyledTextarea>
-            <StyledLabel htmlFor={'description'}>Description</StyledLabel>
-          </FloatingLabelContainerArea>
-        </EditInputsBlock>
-        <AddedBlock>
-          <AddedPageButton
-            onClick={() => {
-              // todo: added create page function
-            }}
-          >
-            {iconPlus}Add new page
-          </AddedPageButton>
-          <AddedChapterButton
-            onClick={() => {
-              // todo: added create charter function
-            }}
-          >
-            {iconPlus}Add new chapter
-          </AddedChapterButton>
-        </AddedBlock>
-        <EditButtonsBlock>
-          {isEditMode ? (
-            <SuccessButton
-              $background={'#4E77E1'}
-              $border={'#fff'}
-              $color={'#fff'}
-              onClick={() => setEditMode(false)}
-            >
-              Cancel
-            </SuccessButton>
-          ) : null}
-          <SuccessButton
-            $background={'#fff'}
-            $border={'#fff'}
-            $color={'#4E77E1'}
-            onClick={handleSave}
-          >
-            Save guide
-          </SuccessButton>
-        </EditButtonsBlock>
-      </>
-    ) : (
-      <>
-        {props.status?.text ? statuses : null}
-        {title ? (
-          <Title $type={props.type} $col={themes[skin].colorMain}>
-            {title}
-          </Title>
-        ) : null}
-        <MarkdownWrapper
-          $colH={themes[skin].colorMain}
-          $colP={themes[skin].colorP}
-        >
-          <Markdown text={content} />
-        </MarkdownWrapper>
-        {showChecked ? checkbox : null}
-        {navButtons}
-      </>
-    )}
-    <div data-mweb-insertion-point='hidden' style={{ display: 'none' }} />
-  </Callout>
-);
-
-const calloutTooltip = {
-  DEFAULT: (
-    <CustomTooltipDefault bsPrefix='wg-tooltip'>{callout}</CustomTooltipDefault>
-  ),
-  META_GUIDE: (
-    <CustomTooltipMeta bsPrefix='wg-tooltip'>{callout}</CustomTooltipMeta>
-  ),
-};
-
-const infobox = (
-  <InfoBox $border={themes[skin].border} $bg={themes[skin].bgMain}>
-    {header}
-    {isEditTarget ? (
-      <DappletContextPicker
-        target={[
-          {
-            namespace: NAMESPACE,
-            contextType: 'timeline',
-            if: {},
-          },
-          {
-            namespace: NAMESPACE,
-            contextType: 'post',
-            if: {},
-          },
-          {
-            namespace: NAMESPACE,
-            contextType: 'postSouthButton',
-            if: {},
-          },
-          {
-            namespace: NAMESPACE,
-            contextType: 'profile',
-            if: {},
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'mweb-overlay',
-            if: { id: { eq: 'mutation-button' } },
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'mweb-overlay',
-            if: { id: { eq: 'open-apps-button' } },
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'mweb-overlay-action',
-            if: {},
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'injected-widget',
-            if: {},
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'notch',
-            if: {},
-          },
-        ]}
-        onClick={setSelectedContext}
-        LatchComponent={ContextTypeLatch}
-      />
-    ) : null}
-    {!content || isEditMode ? (
-      <>
-        {navButtonsEdit}
-        <EditInputsBlock>
-          <OptionsBlock>
-            <ButtonRemove
-              onClick={() => {
-                // todo: added removed function
-              }}
-            >
-              {iconRemove} Remove
-            </ButtonRemove>
-            <ButtonRevert
-              onClick={() => {
-                // todo: added revert function
-              }}
-            >
-              {iconRevert}Revert changes
-            </ButtonRevert>
-          </OptionsBlock>
-          <FloatingLabelContainer>
-            <StyledInput id={'target'} type={'text'} value={props.type} />
-            <StyledLabel htmlFor={'target'}>Target</StyledLabel>
-            <EditTargetSpan onClick={() => setEditTarget(!isEditTarget)}>
-              {iconEditTarget}
-            </EditTargetSpan>
-          </FloatingLabelContainer>
-          {title ? (
-            <FloatingLabelContainer>
-              <StyledInput
-                id={'title'}
-                type={'text'}
-                defaultValue={state.newTitle}
+            <FloatingLabelContainerArea>
+              <StyledTextarea
+                id={'description'}
                 onChange={(e) => {
-                  computeResults(e.target.value);
+                  onDescriptionChange(e.target.value);
                 }}
-              />
-              <StyledLabel htmlFor={'title'}>Page name</StyledLabel>
-            </FloatingLabelContainer>
-          ) : null}
-
-          <FloatingLabelContainerArea>
-            <StyledTextarea
-              id={'description'}
-              defaultValue={state.newData}
-              onChange={(e) => {
-                // onDescriptionChange(e.target.value);
+              ></StyledTextarea>
+              <StyledLabel htmlFor={'description'}>Description</StyledLabel>
+            </FloatingLabelContainerArea>
+          </EditInputsBlock>
+          <AddedBlock>
+            <AddedPageButton
+              onClick={() => {
+                // todo: added create page function
               }}
-            ></StyledTextarea>
-            <StyledLabel htmlFor={'description'}>Description</StyledLabel>
-          </FloatingLabelContainerArea>
-        </EditInputsBlock>
-        <AddedBlock>
-          <AddedPageButton
-            onClick={() => {
-              // todo: added create page function
-            }}
-          >
-            {iconPlus}Add new page
-          </AddedPageButton>
-          <AddedChapterButton
-            onClick={() => {
-              // todo: added create charter function
-            }}
-          >
-            {iconPlus}Add new chapter
-          </AddedChapterButton>
-        </AddedBlock>
-        <EditButtonsBlock>
-          {isEditMode ? (
-            <SuccessButton
-              $background={'#4E77E1'}
-              $border={'#fff'}
-              $color={'#fff'}
-              onClick={() => setEditMode(false)}
             >
-              Cancel
-            </SuccessButton>
-          ) : null}
-          <SuccessButton
-            $background={'#fff'}
-            $border={'#fff'}
-            $color={'#4E77E1'}
-            onClick={handleSave}
-          >
-            Save guide
-          </SuccessButton>
-        </EditButtonsBlock>
-      </>
-    ) : (
-      <>
-        {title ? (
-          <Title $type={props.type} $col={themes[skin].colorMain}>
-            {title}
-          </Title>
-        ) : null}
-        <Card $bg={themes[skin].cardBg}>
+              {iconPlus}Add new page
+            </AddedPageButton>
+            <AddedChapterButton
+              onClick={() => {
+                // todo: added create charter function
+              }}
+            >
+              {iconPlus}Add new chapter
+            </AddedChapterButton>
+          </AddedBlock>
+          <EditButtonsBlock>
+            {isEditMode ? (
+              <SuccessButton onClick={() => setEditMode(false)}>
+                Cancel
+              </SuccessButton>
+            ) : null}
+            <SuccessButton onClick={handleSave}>Save guide</SuccessButton>
+          </EditButtonsBlock>
+        </>
+      ) : (
+        <>
           {props.status?.text ? statuses : null}
-          <MarkdownWrapper
-            $colH={themes[skin].colorMain}
-            $colP={themes[skin].colorP}
-          >
+          {title ? <Title className={props.type}>{title}</Title> : null}
+          <MarkdownWrapper>
             <Markdown text={content} />
           </MarkdownWrapper>
-        </Card>
-        <Footer>
           {showChecked ? checkbox : null}
           {navButtons}
-        </Footer>
-      </>
-    )}
-  </InfoBox>
-);
+        </>
+      )}
+      <div data-mweb-insertion-point='hidden' style={{ display: 'none' }} />
+    </Callout>
+  );
 
-const overlayByType = {
-  callout: (
+  return (
     <DappletOverlayTrigger
       show={true}
-      overlay={calloutTooltip[skin]}
+      overlay={
+        <CustomTooltip bsPrefix={`wg-tooltip-${skin}`}>
+          <Theme skin={skin}>{callout}</Theme>
+        </CustomTooltip>
+      }
       placement={props.placement ?? 'auto'}
       offset={[0, 20]}
       popperConfig={{ strategy: props.strategy ?? 'absolute' }}
@@ -1726,8 +1479,159 @@ const overlayByType = {
         <span>{props.children}</span>
       )}
     </DappletOverlayTrigger>
-  ),
-  infobox,
-};
+  );
+} else if (props.type === 'infobox') {
+  return (
+    <Theme skin={skin}>
+      <InfoBox>
+        {header}
+        {isEditTarget ? (
+          <DappletContextPicker
+            target={[
+              {
+                namespace: NAMESPACE,
+                contextType: 'timeline',
+                if: {},
+              },
+              {
+                namespace: NAMESPACE,
+                contextType: 'post',
+                if: {},
+              },
+              {
+                namespace: NAMESPACE,
+                contextType: 'postSouthButton',
+                if: {},
+              },
+              {
+                namespace: NAMESPACE,
+                contextType: 'profile',
+                if: {},
+              },
+              {
+                namespace: 'mweb',
+                contextType: 'mweb-overlay',
+                if: { id: { eq: 'mutation-button' } },
+              },
+              {
+                namespace: 'mweb',
+                contextType: 'mweb-overlay',
+                if: { id: { eq: 'open-apps-button' } },
+              },
+              {
+                namespace: 'mweb',
+                contextType: 'mweb-overlay-action',
+                if: {},
+              },
+              {
+                namespace: 'mweb',
+                contextType: 'injected-widget',
+                if: {},
+              },
+              {
+                namespace: 'mweb',
+                contextType: 'notch',
+                if: {},
+              },
+            ]}
+            onClick={setSelectedContext}
+            LatchComponent={ContextTypeLatch}
+          />
+        ) : null}
+        {!content || isEditMode ? (
+          <>
+            {navButtonsEdit}
+            <EditInputsBlock>
+              <OptionsBlock>
+                <ButtonRemove
+                  onClick={() => {
+                    // todo: added removed function
+                  }}
+                >
+                  {iconRemove} Remove
+                </ButtonRemove>
+                <ButtonRevert
+                  onClick={() => {
+                    // todo: added revert function
+                  }}
+                >
+                  {iconRevert}Revert changes
+                </ButtonRevert>
+              </OptionsBlock>
+              <FloatingLabelContainer>
+                <StyledInput id={'target'} type={'text'} value={props.type} />
+                <StyledLabel htmlFor={'target'}>Target</StyledLabel>
+                <EditTargetSpan onClick={() => setEditTarget(!isEditTarget)}>
+                  {iconEditTarget}
+                </EditTargetSpan>
+              </FloatingLabelContainer>
+              {title ? (
+                <FloatingLabelContainer>
+                  <StyledInput
+                    id={'title'}
+                    type={'text'}
+                    onChange={(e) => {
+                      onTitleChange(e.target.value);
+                    }}
+                  />
+                  <StyledLabel htmlFor={'title'}>Page name</StyledLabel>
+                </FloatingLabelContainer>
+              ) : null}
 
-return overlayByType[props.type];
+              <FloatingLabelContainerArea>
+                <StyledTextarea
+                  id={'description'}
+                  defaultValue={newData}
+                  onChange={(e) => {
+                    onDescriptionChange(e.target.value);
+                  }}
+                ></StyledTextarea>
+                <StyledLabel htmlFor={'description'}>Description</StyledLabel>
+              </FloatingLabelContainerArea>
+            </EditInputsBlock>
+            <AddedBlock>
+              <AddedPageButton
+                onClick={() => {
+                  // todo: added create page function
+                }}
+              >
+                {iconPlus}Add new page
+              </AddedPageButton>
+              <AddedChapterButton
+                onClick={() => {
+                  // todo: added create charter function
+                }}
+              >
+                {iconPlus}Add new chapter
+              </AddedChapterButton>
+            </AddedBlock>
+            <EditButtonsBlock>
+              {isEditMode ? (
+                <SuccessButton onClick={() => setEditMode(false)}>
+                  Cancel
+                </SuccessButton>
+              ) : null}
+              <SuccessButton onClick={handleSave}>Save guide</SuccessButton>
+            </EditButtonsBlock>
+          </>
+        ) : (
+          <>
+            {title ? <Title className={props.type}>{title}</Title> : null}
+            <Card>
+              {props.status?.text ? statuses : null}
+              <MarkdownWrapper>
+                <Markdown text={content} />
+              </MarkdownWrapper>
+            </Card>
+            <Footer>
+              {showChecked ? checkbox : null}
+              {navButtons}
+            </Footer>
+          </>
+        )}
+      </InfoBox>
+    </Theme>
+  );
+} else {
+  return <></>;
+}
