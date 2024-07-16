@@ -1311,170 +1311,12 @@ const navButtonsEdit = !buttons ? null : props.type === 'callout' ? (
   <></>
 );
 
-const callout = (
-  <Callout
-    data-mweb-context-type='wg-chapter'
-    data-mweb-context-parsed={JSON.stringify({ id: props.id })}
-  >
-    {header}
-    {isEditTarget ? (
-      <DappletContextPicker
-        target={[
-          {
-            namespace: NAMESPACE,
-            contextType: 'timeline',
-            if: {},
-          },
-          {
-            namespace: NAMESPACE,
-            contextType: 'post',
-            if: {},
-          },
-          {
-            namespace: NAMESPACE,
-            contextType: 'postSouthButton',
-            if: {},
-          },
-          {
-            namespace: NAMESPACE,
-            contextType: 'profile',
-            if: {},
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'mweb-overlay',
-            if: { id: { eq: 'mutation-button' } },
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'mweb-overlay',
-            if: { id: { eq: 'open-apps-button' } },
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'mweb-overlay-action',
-            if: {},
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'injected-widget',
-            if: {},
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'notch',
-            if: {},
-          },
-        ]}
-        onClick={setSelectedContext}
-        LatchComponent={ContextTypeLatch}
-      />
-    ) : null}
-
-    {!content || isEditMode ? (
-      <>
-        {navButtonsEdit}
-        <EditInputsBlock>
-          <OptionsBlock>
-            <ButtonRemove
-              onClick={() => {
-                // todo: added removed function
-              }}
-            >
-              {iconRemove} Remove
-            </ButtonRemove>
-            <ButtonRevert
-              onClick={() => {
-                // todo: added revert function
-              }}
-            >
-              {iconRevert}Revert changes
-            </ButtonRevert>
-          </OptionsBlock>
-          <FloatingLabelContainer>
-            <StyledInput
-              id={'target'}
-              readonly
-              type={'text'}
-              value={props.type}
-            />
-            <StyledLabel htmlFor={'target'}>Target</StyledLabel>
-            <EditTargetSpan onClick={() => setEditTarget(!isEditTarget)}>
-              {iconEditTarget}
-            </EditTargetSpan>
-          </FloatingLabelContainer>
-          {title ? (
-            <FloatingLabelContainer>
-              <StyledInput
-                id={'title'}
-                type={'text'}
-                defaultValue={newTitle}
-                onChange={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setNewTitle(e.target.value);
-                }}
-              />
-              <StyledLabel htmlFor={'title'}>Page name</StyledLabel>
-            </FloatingLabelContainer>
-          ) : null}
-
-          <FloatingLabelContainerArea>
-            <StyledTextarea
-              id={'description'}
-              defaultValue={newData}
-              onChange={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setNewData(e.target.value);
-              }}
-            ></StyledTextarea>
-            <StyledLabel htmlFor={'description'}>Description</StyledLabel>
-          </FloatingLabelContainerArea>
-        </EditInputsBlock>
-        <AddedBlock>
-          <AddedPageButton
-            onClick={() => {
-              // todo: added create page function
-            }}
-          >
-            {iconPlus}Add new page
-          </AddedPageButton>
-          <AddedChapterButton
-            onClick={() => {
-              // todo: added create charter function
-            }}
-          >
-            {iconPlus}Add new chapter
-          </AddedChapterButton>
-        </AddedBlock>
-        <EditButtonsBlock>
-          {isEditMode ? (
-            <SuccessButton onClick={() => setEditMode(false)}>
-              Cancel
-            </SuccessButton>
-          ) : null}
-          <SuccessButton onClick={handleSave}>Save guide</SuccessButton>
-        </EditButtonsBlock>
-      </>
-    ) : (
-      <>
-        {props.status?.text ? statuses : null}
-        {title ? <Title className={props.type}>{title}</Title> : null}
-        <MarkdownWrapper>
-          <Markdown text={content} />
-        </MarkdownWrapper>
-        {showChecked ? checkbox : null}
-        {navButtons}
-      </>
-    )}
-    <div data-mweb-insertion-point='hidden' style={{ display: 'none' }} />
-  </Callout>
-);
-
-const infobox = (
-  <Theme skin={skin}>
-    <InfoBox>
+if (props.type === 'callout') {
+  const callout = (
+    <Callout
+      data-mweb-context-type='wg-chapter'
+      data-mweb-context-parsed={JSON.stringify({ id: props.id })}
+    >
       {header}
       {isEditTarget ? (
         <DappletContextPicker
@@ -1529,6 +1371,7 @@ const infobox = (
           LatchComponent={ContextTypeLatch}
         />
       ) : null}
+
       {!content || isEditMode ? (
         <>
           {navButtonsEdit}
@@ -1550,7 +1393,12 @@ const infobox = (
               </ButtonRevert>
             </OptionsBlock>
             <FloatingLabelContainer>
-              <StyledInput id={'target'} type={'text'} value={props.type} />
+              <StyledInput
+                id={'target'}
+                readonly
+                type={'text'}
+                value={props.type}
+              />
               <StyledLabel htmlFor={'target'}>Target</StyledLabel>
               <EditTargetSpan onClick={() => setEditTarget(!isEditTarget)}>
                 {iconEditTarget}
@@ -1612,25 +1460,20 @@ const infobox = (
         </>
       ) : (
         <>
+          {props.status?.text ? statuses : null}
           {title ? <Title className={props.type}>{title}</Title> : null}
-          <Card>
-            {props.status?.text ? statuses : null}
-            <MarkdownWrapper>
-              <Markdown text={content} />
-            </MarkdownWrapper>
-          </Card>
-          <Footer>
-            {showChecked ? checkbox : null}
-            {navButtons}
-          </Footer>
+          <MarkdownWrapper>
+            <Markdown text={content} />
+          </MarkdownWrapper>
+          {showChecked ? checkbox : null}
+          {navButtons}
         </>
       )}
-    </InfoBox>
-  </Theme>
-);
+      <div data-mweb-insertion-point='hidden' style={{ display: 'none' }} />
+    </Callout>
+  );
 
-const overlayByType = {
-  callout: (
+  return (
     <DappletOverlayTrigger
       show={true}
       overlay={
@@ -1648,8 +1491,164 @@ const overlayByType = {
         <span>{props.children}</span>
       )}
     </DappletOverlayTrigger>
-  ),
-  infobox,
-};
+  );
+} else if (props.type === 'infobox') {
+  return (
+    <Theme skin={skin}>
+      <InfoBox>
+        {header}
+        {isEditTarget ? (
+          <DappletContextPicker
+            target={[
+              {
+                namespace: NAMESPACE,
+                contextType: 'timeline',
+                if: {},
+              },
+              {
+                namespace: NAMESPACE,
+                contextType: 'post',
+                if: {},
+              },
+              {
+                namespace: NAMESPACE,
+                contextType: 'postSouthButton',
+                if: {},
+              },
+              {
+                namespace: NAMESPACE,
+                contextType: 'profile',
+                if: {},
+              },
+              {
+                namespace: 'mweb',
+                contextType: 'mweb-overlay',
+                if: { id: { eq: 'mutation-button' } },
+              },
+              {
+                namespace: 'mweb',
+                contextType: 'mweb-overlay',
+                if: { id: { eq: 'open-apps-button' } },
+              },
+              {
+                namespace: 'mweb',
+                contextType: 'mweb-overlay-action',
+                if: {},
+              },
+              {
+                namespace: 'mweb',
+                contextType: 'injected-widget',
+                if: {},
+              },
+              {
+                namespace: 'mweb',
+                contextType: 'notch',
+                if: {},
+              },
+            ]}
+            onClick={setSelectedContext}
+            LatchComponent={ContextTypeLatch}
+          />
+        ) : null}
+        {!content || isEditMode ? (
+          <>
+            {navButtonsEdit}
+            <EditInputsBlock>
+              <OptionsBlock>
+                <ButtonRemove
+                  onClick={() => {
+                    // todo: added removed function
+                  }}
+                >
+                  {iconRemove} Remove
+                </ButtonRemove>
+                <ButtonRevert
+                  onClick={() => {
+                    // todo: added revert function
+                  }}
+                >
+                  {iconRevert}Revert changes
+                </ButtonRevert>
+              </OptionsBlock>
+              <FloatingLabelContainer>
+                <StyledInput id={'target'} type={'text'} value={props.type} />
+                <StyledLabel htmlFor={'target'}>Target</StyledLabel>
+                <EditTargetSpan onClick={() => setEditTarget(!isEditTarget)}>
+                  {iconEditTarget}
+                </EditTargetSpan>
+              </FloatingLabelContainer>
+              {title ? (
+                <FloatingLabelContainer>
+                  <StyledInput
+                    id={'title'}
+                    type={'text'}
+                    defaultValue={newTitle}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setNewTitle(e.target.value);
+                    }}
+                  />
+                  <StyledLabel htmlFor={'title'}>Page name</StyledLabel>
+                </FloatingLabelContainer>
+              ) : null}
 
-return overlayByType[props.type];
+              <FloatingLabelContainerArea>
+                <StyledTextarea
+                  id={'description'}
+                  defaultValue={newData}
+                  onChange={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setNewData(e.target.value);
+                  }}
+                ></StyledTextarea>
+                <StyledLabel htmlFor={'description'}>Description</StyledLabel>
+              </FloatingLabelContainerArea>
+            </EditInputsBlock>
+            <AddedBlock>
+              <AddedPageButton
+                onClick={() => {
+                  // todo: added create page function
+                }}
+              >
+                {iconPlus}Add new page
+              </AddedPageButton>
+              <AddedChapterButton
+                onClick={() => {
+                  // todo: added create charter function
+                }}
+              >
+                {iconPlus}Add new chapter
+              </AddedChapterButton>
+            </AddedBlock>
+            <EditButtonsBlock>
+              {isEditMode ? (
+                <SuccessButton onClick={() => setEditMode(false)}>
+                  Cancel
+                </SuccessButton>
+              ) : null}
+              <SuccessButton onClick={handleSave}>Save guide</SuccessButton>
+            </EditButtonsBlock>
+          </>
+        ) : (
+          <>
+            {title ? <Title className={props.type}>{title}</Title> : null}
+            <Card>
+              {props.status?.text ? statuses : null}
+              <MarkdownWrapper>
+                <Markdown text={content} />
+              </MarkdownWrapper>
+            </Card>
+            <Footer>
+              {showChecked ? checkbox : null}
+              {navButtons}
+            </Footer>
+          </>
+        )}
+      </InfoBox>
+    </Theme>
+  );
+} else {
+  return <></>;
+}
