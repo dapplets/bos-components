@@ -1153,7 +1153,6 @@ const {
   setEditTarget,
   onTitleChange,
   onDescriptionChange,
-  editingConfig,
 } = props;
 
 // todo: new
