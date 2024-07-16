@@ -238,10 +238,16 @@ const Navi = styled.div`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: ${(props) =>
-    props.$active ? 'var(--navActive)' : 'var(--navInactiveBg)'};
-  border: ${(props) =>
-    props.$active ? 'none' : `1px solid var(--navInactiveBorder)`};
+
+  &.active {
+    background: var(--navActive);
+    border: none;
+  }
+
+  &.inactive {
+    background: var(--navInactiveBg);
+    border: 1px solid var(--navInactiveBorder);
+  }
 `;
 
 const HeaderButtonGroup = styled.div`
@@ -278,10 +284,17 @@ const Title = styled.div`
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   color: var(--colorMain);
-  font-size: ${(props) => (props.$type === 'infobox' ? '32px' : '18px')};
   font-style: normal;
   font-weight: 600;
   line-height: 149%;
+
+  &.infobox {
+    font-size: 32px;
+  }
+
+  &.callout {
+    font-size: 18px;
+  }
 `;
 
 const WrapperAlert = styled.div`
@@ -294,21 +307,22 @@ const WrapperAlert = styled.div`
   justify-content: flex-start;
   width: 100%;
   margin-right: auto;
-  background: ${(props) =>
-    props.$status === 'warning'
-      ? 'var(--statusWarningBg)'
-      : props.$status === 'error'
-      ? 'var(--statusErrorBg)'
-      : 'var(--statusInfoBg)'};
-
-  color: ${(props) =>
-    props.$status === 'warning'
-      ? 'var(--statusWarningCol)'
-      : props.$status === 'error'
-      ? 'var(--statusErrorCol)'
-      : 'var(--statusInfoCol)'};
-
   outline: none;
+
+  &.warning {
+    background: var(--statusWarningBg);
+    color: var(--statusWarningCol);
+  }
+
+  &.error {
+    background: var(--statusErrorBg);
+    color: var(--statusErrorCol);
+  }
+
+  &.info {
+    background: var(--statusInfoBg);
+    color: var(--statusInfoCol);
+  }
 `;
 
 const IconAlert = styled.div`
@@ -423,8 +437,14 @@ const Footer = styled.div`
 
 const ContainerCheckbox = styled.div`
   display: flex;
-  align-items: ${(props) =>
-    props.$type === 'infobox' ? 'flex-end' : 'flex-start'};
+
+  &.infobox {
+    align-items: flex-end;
+  }
+
+  &.callout {
+    align-items: flex-start;
+  }
 `;
 
 const CheckboxInput = styled.input`
@@ -446,24 +466,36 @@ const Label = styled.label`
 
 const ActionsGroup = styled.div`
   display: flex;
-  flex-direction: ${(props) =>
-    props.$type === 'infobox' ? 'row-reverse' : 'row'};
-  justify-content: ${(props) =>
-    props.$type === 'infobox' ? 'space-between' : 'center'};
   align-items: center;
   gap: 10px;
   align-self: stretch;
   flex-grow: 1;
+
+  &.infobox {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+
+  &.callout {
+    flex-direction: row;
+    justify-content: center;
+  }
 `;
 
 const ActionsGroupEdit = styled.div`
   display: flex;
-  flex-direction: ${(props) =>
-    props.$type === 'infobox' ? 'row-reverse' : 'row'};
   justify-content: space-between;
   align-items: center;
   gap: 10px;
   align-self: stretch;
+
+  &.infobox {
+    flex-direction: row-reverse;
+  }
+
+  &.callout {
+    flex-direction: row;
+  }
 `;
 
 const ActionButton = styled.div`
@@ -478,24 +510,37 @@ const ActionButton = styled.div`
   text-align: center;
   font-size: 14px;
   cursor: pointer;
-  border: ${(props) =>
-    props.$primary ? 'initial' : `1px solid var(--secBtnBorderCol)`};
-  background: ${(props) => (props.$primary ? 'var(--primBtnBg)' : 'initial')};
-  color: ${(props) =>
-    props.$primary ? 'var(--primBtnCol)' : 'var(--secBtnCol)'};
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE/Edge */
   user-select: none;
 
-  &:hover {
-    background: ${(props) =>
-      props.$primary ? 'var(--primBtnBgH)' : 'var(--secBtnBgH)'};
+  &.primary {
+    border: initial;
+    background: var(--primBtnBg);
+    color: var(--primBtnCol);
+
+    &:hover {
+      background: var(--primBtnBgH);
+    }
+
+    &:active {
+      background: var(--primBtnBgA);
+    }
   }
 
-  &:active {
-    background: ${(props) =>
-      props.$primary ? 'var(--primBtnBgA)' : 'var(--secBtnBgA)'};
+  &.secondary {
+    border: 1px solid var(--secBtnBorderCol);
+    background: initial;
+    color: var(--secBtnCol);
+
+    &:hover {
+      background: var(--secBtnBgH);
+    }
+
+    &:active {
+      background: var(--secBtnBgA);
+    }
   }
 `;
 
@@ -1169,7 +1214,9 @@ const header = (
               [...Array(navi?.totalPages)].map((_, index) => (
                 <Navi
                   key={index}
-                  $active={index == navi?.currentPageIndex ? true : false}
+                  className={
+                    index == navi?.currentPageIndex ? 'active' : 'inactive'
+                  }
                 />
               ))}
           </PagesIndicators>
@@ -1183,7 +1230,7 @@ const header = (
 );
 
 const statuses = (
-  <WrapperAlert $status={props.status.type}>
+  <WrapperAlert className={props.status.type}>
     <IconAlert>
       {props.status.type === 'warning' ? (
         <WarningIcon />
@@ -1198,7 +1245,7 @@ const statuses = (
 );
 
 const checkbox = (
-  <ContainerCheckbox $type={props.type}>
+  <ContainerCheckbox className={props.type}>
     <CheckboxInput
       type='checkbox'
       checked={checked}
@@ -1211,7 +1258,7 @@ const checkbox = (
 const actionButton = (btn) => (
   <ActionButton
     key={btn.label}
-    $primary={btn.variant == 'primary' ? true : false}
+    className={btn.variant}
     onClick={btn.onClick}
     disabled={btn.disabled}
   >
@@ -1233,31 +1280,31 @@ const actionButtonEdit = (btn) => (
 );
 
 const navButtons = !buttons ? null : props.type === 'callout' ? (
-  <ActionsGroup $type={props.type}>
+  <ActionsGroup className={props.type}>
     {buttons.map((btn) => actionButton(btn))}
   </ActionsGroup>
 ) : buttons?.length > 1 ? (
-  <ActionsGroup $type={props.type}>
+  <ActionsGroup className={props.type}>
     {actionButton(buttons[1])}
     {actionButton(buttons[0])}
   </ActionsGroup>
 ) : buttons?.length === 1 ? (
-  <ActionsGroup $type={props.type}>{actionButton(buttons[0])}</ActionsGroup>
+  <ActionsGroup className={props.type}>{actionButton(buttons[0])}</ActionsGroup>
 ) : (
   <></>
 );
 
 const navButtonsEdit = !buttons ? null : props.type === 'callout' ? (
-  <ActionsGroupEdit $type={props.type}>
+  <ActionsGroupEdit className={props.type}>
     {buttons.map((btn) => actionButtonEdit(btn))}
   </ActionsGroupEdit>
 ) : buttons?.length > 1 ? (
-  <ActionsGroupEdit $type={props.type}>
+  <ActionsGroupEdit className={props.type}>
     {actionButtonEdit(buttons[1])}
     {actionButtonEdit(buttons[0])}
   </ActionsGroupEdit>
 ) : buttons?.length === 1 ? (
-  <ActionsGroupEdit $type={props.type}>
+  <ActionsGroupEdit className={props.type}>
     {actionButtonEdit(buttons[0])}
   </ActionsGroupEdit>
 ) : (
@@ -1413,7 +1460,7 @@ const callout = (
     ) : (
       <>
         {props.status?.text ? statuses : null}
-        {title ? <Title $type={props.type}>{title}</Title> : null}
+        {title ? <Title className={props.type}>{title}</Title> : null}
         <MarkdownWrapper>
           <Markdown text={content} />
         </MarkdownWrapper>
@@ -1565,7 +1612,7 @@ const infobox = (
         </>
       ) : (
         <>
-          {title ? <Title $type={props.type}>{title}</Title> : null}
+          {title ? <Title className={props.type}>{title}</Title> : null}
           <Card>
             {props.status?.text ? statuses : null}
             <MarkdownWrapper>
