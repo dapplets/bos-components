@@ -1366,7 +1366,7 @@ if (props.type === 'callout') {
         />
       ) : null}
 
-      {!content || isEditMode ? (
+      {isEditMode ? (
         <>
           {navButtonsEdit}
           <EditInputsBlock>
@@ -1465,9 +1465,13 @@ if (props.type === 'callout') {
     <DappletOverlayTrigger
       show={true}
       overlay={
-        <CustomTooltip bsPrefix={`wg-tooltip-${skin}`}>
+        isEditMode ? (
           <Theme skin={skin}>{callout}</Theme>
-        </CustomTooltip>
+        ) : (
+          <CustomTooltip bsPrefix={`wg-tooltip-${skin}`}>
+            <Theme skin={skin}>{callout}</Theme>
+          </CustomTooltip>
+        )
       }
       placement={props.placement ?? 'auto'}
       offset={[0, 20]}
