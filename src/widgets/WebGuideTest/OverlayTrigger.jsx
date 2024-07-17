@@ -1161,7 +1161,7 @@ const {
   setEditTarget,
   onTitleChange,
   onDescriptionChange,
-  editingConfig,
+
 } = props;
 
 // todo: new
@@ -1412,7 +1412,7 @@ if (props.type === 'callout') {
                 id={'title'}
                 type={'text'}
                 value={
-                  editingConfig.title
+                  title
                 }
                 onChange={(e) => {
                   onTitleChange(e.target.value);
@@ -1425,7 +1425,7 @@ if (props.type === 'callout') {
               <StyledTextarea
                 id={'description'}
                 value={
-                     editingConfig.content
+                    content
                 
                 }
                 onChange={(e) => {
@@ -1589,7 +1589,7 @@ if (props.type === 'callout') {
                   id={'title'}
                   type={'text'}
                   value={
-                    editingConfig.title
+                    title
                   }
                   onChange={(e) => {
                     onTitleChange(e.target.value);
@@ -1602,7 +1602,7 @@ if (props.type === 'callout') {
                 <StyledTextarea
                   id={'description'}
                   value={
-                    editingConfig.content
+                    content
                   }
                   onChange={(e) => {
                     onDescriptionChange(e.target.value);
