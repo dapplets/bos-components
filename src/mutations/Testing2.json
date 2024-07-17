@@ -49,6 +49,7 @@
     "${REPL_ACCOUNT}/app/CapybaraTestMWeb",
     "${REPL_ACCOUNT}/app/picker-example",
     "${REPL_ACCOUNT}/app/picker-adapter-tester",
-    "${REPL_ACCOUNT}/app/TestNotify"
+    "${REPL_ACCOUNT}/app/TestNotify",
+    "${REPL_ACCOUNT}/app/StaticLinkExample"
   ]
 }
