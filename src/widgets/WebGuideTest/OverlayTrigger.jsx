@@ -1411,9 +1411,8 @@ if (props.type === 'callout') {
               <StyledInput
                 id={'title'}
                 type={'text'}
-                defaultValue={
-                  editingConfig.chapters[navi?.currentChapterIndex].pages[0]
-                    .title
+                value={
+                  editingConfig.title
                 }
                 onChange={(e) => {
                   onTitleChange(e.target.value);
@@ -1425,9 +1424,9 @@ if (props.type === 'callout') {
             <FloatingLabelContainerArea>
               <StyledTextarea
                 id={'description'}
-                defaultValue={
-                  editingConfig.chapters[navi?.currentChapterIndex].pages[0]
-                    .content
+                value={
+                     editingConfig.content
+                
                 }
                 onChange={(e) => {
                   onDescriptionChange(e.target.value);
@@ -1589,9 +1588,8 @@ if (props.type === 'callout') {
                 <StyledInput
                   id={'title'}
                   type={'text'}
-                  defaultValue={
-                    editingConfig.chapters[navi?.currentChapterIndex].pages[0]
-                      .title
+                  value={
+                    editingConfig.title
                   }
                   onChange={(e) => {
                     onTitleChange(e.target.value);
@@ -1603,9 +1601,8 @@ if (props.type === 'callout') {
               <FloatingLabelContainerArea>
                 <StyledTextarea
                   id={'description'}
-                  defaultValue={
-                    editingConfig.chapters[navi?.currentChapterIndex].pages[0]
-                      .content
+                  value={
+                    editingConfig.content
                   }
                   onChange={(e) => {
                     onDescriptionChange(e.target.value);
