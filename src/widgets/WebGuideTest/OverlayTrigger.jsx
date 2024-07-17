@@ -353,6 +353,7 @@ const Card = styled.div`
   gap: 10px;
   border: none;
   border-radius: 20px;
+  width: 100%;
   background: var(--cardBg);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -969,6 +970,8 @@ const FloatingLabelContainerArea = styled.div`
   position: relative;
   flex: 1 1 auto;
   display: flex;
+  border: 1px solid rgb(226, 226, 229);
+  border-radius: 10px;
 `;
 
 const StyledInput = styled.input`
@@ -991,27 +994,6 @@ const StyledInput = styled.input`
   }
 `;
 
-const StyledTextarea = styled.textarea`
-  padding: 25px 10px 10px;
-  background: inherit;
-  color: rgb(255, 255, 255);
-  line-height: 100%;
-  font-size: 14px;
-  border-radius: 10px;
-  border: 1px solid rgb(226, 226, 229);
-  width: 100%;
-  outline: none;
-  min-height: 150px;
-
-  &:focus + label,
-  &:not(:placeholder-shown) + label {
-    top: 0.5rem;
-    font-size: 12px;
-    color: #bbccd0;
-    left: 10px;
-  }
-`;
-
 const StyledLabel = styled.label`
   position: absolute;
   top: 25px;
@@ -1020,6 +1002,33 @@ const StyledLabel = styled.label`
   color: #bbccd0;
   pointer-events: none;
   transition: all 0.2s ease 0s;
+`;
+
+const StyledTextarea = styled.textarea`
+  padding: 25px 10px 10px;
+  background: inherit;
+  color: rgb(255, 255, 255);
+  line-height: 100%;
+  font-size: 13px;
+  border-radius: 10px;
+  width: 100%;
+  outline: none;
+  min-height: 150px;
+  position: relative;
+  border: none;
+
+  &:focus + label,
+  &:not(:placeholder-shown) + label {
+    height: 25px;
+    width: 99%;
+    background: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    top: 0;
+    left: 10px;
+    font-size: 12px;
+  }
 `;
 
 const EditTargetSpan = styled.button`
@@ -1151,16 +1160,10 @@ const {
   setEditMode,
   isEditTarget,
   setEditTarget,
+  onTitleChange,
+  onDescriptionChange,
+
 } = props;
-
-// todo: new
-const [newData, setNewData] = useState(content ?? '');
-const [newTitle, setNewTitle] = useState(title ?? '');
-
-useEffect(() => {
-  setNewData(content);
-  setNewTitle(title);
-}, [content, title]);
 
 // todo: new
 
@@ -1404,30 +1407,30 @@ if (props.type === 'callout') {
                 {iconEditTarget}
               </EditTargetSpan>
             </FloatingLabelContainer>
-            {title ? (
-              <FloatingLabelContainer>
-                <StyledInput
-                  id={'title'}
-                  type={'text'}
-                  defaultValue={newTitle}
-                  onChange={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setNewTitle(e.target.value);
-                  }}
-                />
-                <StyledLabel htmlFor={'title'}>Page name</StyledLabel>
-              </FloatingLabelContainer>
-            ) : null}
+
+            <FloatingLabelContainer>
+              <StyledInput
+                id={'title'}
+                type={'text'}
+                value={
+                  title
+                }
+                onChange={(e) => {
+                  onTitleChange(e.target.value);
+                }}
+              />
+              <StyledLabel htmlFor={'title'}>Page name</StyledLabel>
+            </FloatingLabelContainer>
 
             <FloatingLabelContainerArea>
               <StyledTextarea
                 id={'description'}
-                defaultValue={newData}
+                value={
+                    content
+                
+                }
                 onChange={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setNewData(e.target.value);
+                  onDescriptionChange(e.target.value);
                 }}
               ></StyledTextarea>
               <StyledLabel htmlFor={'description'}>Description</StyledLabel>
@@ -1581,30 +1584,29 @@ if (props.type === 'callout') {
                   {iconEditTarget}
                 </EditTargetSpan>
               </FloatingLabelContainer>
-              {title ? (
-                <FloatingLabelContainer>
-                  <StyledInput
-                    id={'title'}
-                    type={'text'}
-                    defaultValue={newTitle}
-                    onChange={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setNewTitle(e.target.value);
-                    }}
-                  />
-                  <StyledLabel htmlFor={'title'}>Page name</StyledLabel>
-                </FloatingLabelContainer>
-              ) : null}
+
+              <FloatingLabelContainer>
+                <StyledInput
+                  id={'title'}
+                  type={'text'}
+                  value={
+                    title
+                  }
+                  onChange={(e) => {
+                    onTitleChange(e.target.value);
+                  }}
+                />
+                <StyledLabel htmlFor={'title'}>Page name</StyledLabel>
+              </FloatingLabelContainer>
 
               <FloatingLabelContainerArea>
                 <StyledTextarea
                   id={'description'}
-                  defaultValue={newData}
+                  value={
+                    content
+                  }
                   onChange={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setNewData(e.target.value);
+                    onDescriptionChange(e.target.value);
                   }}
                 ></StyledTextarea>
                 <StyledLabel htmlFor={'description'}>Description</StyledLabel>

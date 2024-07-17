@@ -26,6 +26,7 @@ const [chapterCounter, setChapterCounter] = useState(0);
 const [pageCounter, setPageCounter] = useState(0);
 const [isEditMode, setEditMode] = useState(false);
 const [isEditTarget, setEditTarget] = useState(false);
+const [editingConfig, setEditingConfig] = useState(null);
 
 const response = Near.view('app.webguide.near', 'get_guide', {
   guide_id: link?.id,
@@ -38,6 +39,10 @@ if (
   !guideConfig.chapters[0].pages?.length
 )
   return <></>;
+
+useEffect(() => {
+  setEditingConfig(guideConfig);
+}, [guideConfig]);
 
 const handleClose = () => {
   setShowApp(false);
@@ -53,8 +58,8 @@ const handleChapterDecrement = () => {
   if (chapterCounter !== 0) {
     setChapterCounter((val) => val - 1);
     setPageCounter(
-      guideConfig.chapters[chapterCounter - 1]?.pages?.length
-        ? guideConfig.chapters[chapterCounter - 1]?.pages?.length - 1
+      editingConfig.chapters[chapterCounter - 1]?.pages?.length
+        ? editingConfig.chapters[chapterCounter - 1]?.pages?.length - 1
         : 0
     );
   }
@@ -62,7 +67,7 @@ const handleChapterDecrement = () => {
 
 const handleChapterIncrement = () => {
   setChapterCounter((val) =>
-    Math.min(val + 1, guideConfig.chapters.length - 1)
+    Math.min(val + 1, editingConfig.chapters.length - 1)
   );
   setPageCounter(0);
 };
@@ -76,7 +81,7 @@ const handleClickPrev = () => {
 };
 
 const handleClickNext = () => {
-  if (pageCounter === guideConfig.chapters[chapterCounter]?.pages?.length - 1) {
+  if (pageCounter === editingConfig.chapters[chapterCounter]?.pages?.length - 1) {
     handleChapterIncrement();
   } else {
     setPageCounter((val) => val + 1);
@@ -92,8 +97,35 @@ const saveData = (inputData) => {
   }
 };
 
+const handleTitleChange = (newTitle) => {
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig));
+
+  if (
+    updatedConfig.chapters[chapterCounter] &&
+    updatedConfig.chapters[chapterCounter].pages[pageCounter]
+  ) {
+    updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle;
+  }
+
+  setEditingConfig(updatedConfig);
+};
+
+const handleDescriptionChange = (newDescription) => {
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig));
+
+  if (
+    updatedConfig.chapters[chapterCounter] &&
+    updatedConfig.chapters[chapterCounter].pages[pageCounter]
+  ) {
+    updatedConfig.chapters[chapterCounter].pages[pageCounter].content =
+      newDescription;
+  }
+
+  setEditingConfig(updatedConfig);
+};
+
 const ChapterWrapper = (props) => {
-  const currentChapter = guideConfig.chapters[chapterCounter];
+  const currentChapter = editingConfig.chapters[chapterCounter];
   if (!currentChapter) return <></>;
   const pages = currentChapter.pages;
   if (!pages) return <></>;
@@ -113,7 +145,7 @@ const ChapterWrapper = (props) => {
     });
   }
   if (
-    chapterCounter === guideConfig.chapters.length - 1 &&
+    chapterCounter === editingConfig.chapters.length - 1 &&
     pageCounter === pages.length - 1
   ) {
     buttons.push({
@@ -141,7 +173,7 @@ const ChapterWrapper = (props) => {
         strategy: currentChapter.strategy,
         navi: {
           currentChapterIndex: chapterCounter,
-          totalChapters: guideConfig.chapters.length,
+          totalChapters: editingConfig.chapters.length,
           currentPageIndex: pageCounter,
           totalPages: pages.length,
         },
@@ -174,6 +206,8 @@ const ChapterWrapper = (props) => {
         setEditMode,
         isEditTarget,
         setEditTarget,
+        onTitleChange: handleTitleChange,
+        onDescriptionChange: handleDescriptionChange,
       }}
     />
   );
@@ -212,7 +246,7 @@ const iconTimelineLatch = (color) => (
 
 return (
   <>
-    {guideConfig.action ? (
+    {editingConfig.action ? (
       <DappletPortal
         target={{
           namespace: 'mweb',
@@ -236,7 +270,7 @@ return (
       />
     ) : null}
     {showApp ? (
-      guideConfig.chapters[chapterCounter]?.type === 'infobox' ? (
+      editingConfig.chapters[chapterCounter]?.type === 'infobox' ? (
         <OverlayTriggerWrapper>
           <DappletOverlay>
             <ChapterWrapper />
@@ -246,19 +280,19 @@ return (
         <>
           <DappletPortal
             target={{
-              namespace: guideConfig.chapters[chapterCounter]?.namespace,
-              contextType: guideConfig.chapters[chapterCounter]?.contextType,
-              injectTo: guideConfig.chapters[chapterCounter]?.injectTo,
-              if: guideConfig.chapters[chapterCounter]?.if,
-              insteadOf: guideConfig.chapters[chapterCounter]?.insteadOf,
+              namespace: editingConfig.chapters[chapterCounter]?.namespace,
+              contextType: editingConfig.chapters[chapterCounter]?.contextType,
+              injectTo: editingConfig.chapters[chapterCounter]?.injectTo,
+              if: editingConfig.chapters[chapterCounter]?.if,
+              insteadOf: editingConfig.chapters[chapterCounter]?.insteadOf,
             }}
             component={ChapterWrapper}
           />
           <Highlighter
             target={{
-              namespace: guideConfig.chapters[chapterCounter]?.namespace,
-              contextType: guideConfig.chapters[chapterCounter]?.contextType,
-              if: guideConfig.chapters[chapterCounter]?.if,
+              namespace: editingConfig.chapters[chapterCounter]?.namespace,
+              contextType: editingConfig.chapters[chapterCounter]?.contextType,
+              if: editingConfig.chapters[chapterCounter]?.if,
             }}
             styles={{
               borderColor: '#14AE5C',
