@@ -59,17 +59,20 @@ return (
           {props.isEditMode ? (
             <WidgetBadgeWrapper
               title={
-                widget.linkAuthorId === context.accountId
+                widget.linkAuthorId === context.accountId && !widget.static
                   ? `Remove ${widget.src.split("widget/").pop()} injected by ${
                       widget.linkAuthorId
                     } (link ID: ${widget.linkId})`
                   : "disable in edit mode "
               }
               style={{
-                opacity: widget.linkAuthorId === context.accountId ? "1" : "0",
+                opacity:
+                  widget.linkAuthorId === context.accountId && !widget.static
+                    ? "1"
+                    : "0",
               }}
             >
-              {widget.linkAuthorId === context.accountId ? (
+              {widget.linkAuthorId === context.accountId && !widget.static ? (
                 waitingAppIdsSet.has(widget.linkId) ? (
                   <span
                     role="status"
