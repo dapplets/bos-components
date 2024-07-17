@@ -1005,28 +1005,29 @@ const StyledLabel = styled.label`
 `;
 
 const StyledTextarea = styled.textarea`
-  padding: 35px 10px 10px;
+  padding: 25px 10px 10px;
   background: inherit;
   color: rgb(255, 255, 255);
   line-height: 100%;
-  font-size: 14px;
+  font-size: 13px;
   border-radius: 10px;
   width: 100%;
   outline: none;
   min-height: 150px;
   position: relative;
+  border: none;
 
   &:focus + label,
   &:not(:placeholder-shown) + label {
-    height: 30px;
+    height: 25px;
     width: 99%;
     background: inherit;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    top: 1px;
-    left: 4px;
-    padding-left: 5px;
+    top: 0;
+    left: 10px;
+    font-size: 12px;
   }
 `;
 

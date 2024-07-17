@@ -208,7 +208,6 @@ const ChapterWrapper = (props) => {
         setEditTarget,
         onTitleChange: handleTitleChange,
         onDescriptionChange: handleDescriptionChange,
-        editingConfig:editingConfig.chapters[chapterCounter].pages[pageCounter]
       }}
     />
   );
