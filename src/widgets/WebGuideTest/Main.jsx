@@ -124,6 +124,25 @@ const handleDescriptionChange = (newDescription) => {
   setEditingConfig(updatedConfig);
 };
 
+const addChapter = (newChapter) => {
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig));
+  updatedConfig.chapters.push(newChapter);
+  setEditingConfig(updatedConfig);
+};
+
+
+const addPage = (chapterIndex, newPage) => {
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig));
+
+  if (updatedConfig.chapters[chapterIndex]) {
+    updatedConfig.chapters[chapterIndex].pages.push(newPage);
+    setEditingConfig(updatedConfig);
+  } else {
+    console.error("Chapter not found at index:", chapterIndex);
+  }
+};
+
+
 const ChapterWrapper = (props) => {
   const currentChapter = editingConfig.chapters[chapterCounter];
   if (!currentChapter) return <></>;
@@ -208,6 +227,8 @@ const ChapterWrapper = (props) => {
         setEditTarget,
         onTitleChange: handleTitleChange,
         onDescriptionChange: handleDescriptionChange,
+        addChapter:addChapter,
+        addPage:addPage,
       }}
     />
   );

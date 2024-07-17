@@ -1162,7 +1162,8 @@ const {
   setEditTarget,
   onTitleChange,
   onDescriptionChange,
-
+  addPage,
+  addChapter,
 } = props;
 
 // todo: new
@@ -1195,6 +1196,32 @@ const handleSave = () => {
   // } catch (error) {
   //   console.error("Error accessing localStorage", error)
   // }
+};
+
+//todo: test page
+const newPage = {
+  id: 'bos.dapplets.near/gateway/MutableWebExtensionNew/ExtraPage',
+  title: 'Extra Page',
+  status: [],
+  content: 'This is an extra page added dynamically.',
+};
+
+// todo: test chapter
+const newChapter = {
+  id: 'bos.dapplets.near/gateway/MutableWebExtensionNew',
+  type: 'infobox',
+  if: {
+    id: 'newChapterID',
+  },
+  pages: [
+    {
+      id: 'bos.dapplets.near/gateway/MutableWebExtensionNew/Welcome',
+      title: 'Welcome to the new chapter',
+      status: [],
+      content: 'This is a new chapter added dynamically.',
+    },
+  ],
+  skin: 'META_GUIDE',
 };
 
 const header = (
@@ -1412,9 +1439,7 @@ if (props.type === 'callout') {
               <StyledInput
                 id={'title'}
                 type={'text'}
-                value={
-                  title
-                }
+                value={title}
                 onChange={(e) => {
                   onTitleChange(e.target.value);
                 }}
@@ -1425,10 +1450,7 @@ if (props.type === 'callout') {
             <FloatingLabelContainerArea>
               <StyledTextarea
                 id={'description'}
-                value={
-                    content
-                
-                }
+                value={content}
                 onChange={(e) => {
                   onDescriptionChange(e.target.value);
                 }}
@@ -1439,14 +1461,16 @@ if (props.type === 'callout') {
           <AddedBlock>
             <AddedPageButton
               onClick={() => {
-                // todo: added create page function
+         
+                addPage(1,newPage)
               }}
             >
               {iconPlus}Add new page
             </AddedPageButton>
             <AddedChapterButton
               onClick={() => {
-                // todo: added create charter function
+         
+                    addChapter(newChapter)
               }}
             >
               {iconPlus}Add new chapter
@@ -1589,9 +1613,7 @@ if (props.type === 'callout') {
                 <StyledInput
                   id={'title'}
                   type={'text'}
-                  value={
-                    title
-                  }
+                  value={title}
                   onChange={(e) => {
                     onTitleChange(e.target.value);
                   }}
@@ -1602,9 +1624,7 @@ if (props.type === 'callout') {
               <FloatingLabelContainerArea>
                 <StyledTextarea
                   id={'description'}
-                  value={
-                    content
-                  }
+                  value={content}
                   onChange={(e) => {
                     onDescriptionChange(e.target.value);
                   }}
@@ -1615,14 +1635,15 @@ if (props.type === 'callout') {
             <AddedBlock>
               <AddedPageButton
                 onClick={() => {
-                  // todo: added create page function
+              
+                          addPage(0,newPage)
                 }}
               >
                 {iconPlus}Add new page
               </AddedPageButton>
               <AddedChapterButton
                 onClick={() => {
-                  // todo: added create charter function
+                       addChapter(newChapter)
                 }}
               >
                 {iconPlus}Add new chapter
