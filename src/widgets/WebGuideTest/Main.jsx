@@ -28,6 +28,28 @@ const [isEditMode, setEditMode] = useState(false);
 const [isEditTarget, setEditTarget] = useState(false);
 const [editingConfig, setEditingConfig] = useState(null);
 
+const newChapter = {
+  id: 'bos.dapplets.near/gateway/MutableWebExtensionNew',
+  type: 'infobox',
+  if: {
+    id: 'newChapterID',
+  },
+  pages: [
+    {
+      title: 'Extra Page',
+      status: [],
+      content: 'This is a new chapter added dynamically.',
+    },
+  ],
+  skin: 'META_GUIDE',
+};
+
+const newPage = {
+  title: 'Extra Page',
+  status: [],
+  content: 'This is an extra page added dynamically.',
+};
+
 const response = Near.view('app.webguide.near', 'get_guide', {
   guide_id: link?.id,
 });
@@ -81,7 +103,10 @@ const handleClickPrev = () => {
 };
 
 const handleClickNext = () => {
-  if (pageCounter === editingConfig.chapters[chapterCounter]?.pages?.length - 1) {
+  if (
+    pageCounter ===
+    editingConfig.chapters[chapterCounter]?.pages?.length - 1
+  ) {
     handleChapterIncrement();
   } else {
     setPageCounter((val) => val + 1);
@@ -124,32 +149,55 @@ const handleDescriptionChange = (newDescription) => {
   setEditingConfig(updatedConfig);
 };
 
-const addChapter = (newChapter) => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig));
-  updatedConfig.chapters.push(newChapter);
-  setEditingConfig(updatedConfig);
-};
-
-
-const addPage = (chapterIndex, newPage) => {
+const handleChapterAdd = () => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig));
 
-  if (updatedConfig.chapters[chapterIndex]) {
-    updatedConfig.chapters[chapterIndex].pages.push(newPage);
+  if (updatedConfig.chapters[chapterCounter] !== undefined) {
+    updatedConfig.chapters.splice(chapterCounter + 1, 0, newChapter);
     setEditingConfig(updatedConfig);
   } else {
-    console.error("Chapter not found at index:", chapterIndex);
+    console.error('Current chapter not found at index:', chapterCounter);
   }
 };
 
-const removePage = (chapterIndex, pageIndex) => {
+const handlePageAdd = () => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig));
-  
-  if (updatedConfig.chapters[chapterIndex] && updatedConfig.chapters[chapterIndex].pages[pageIndex]) {
-    updatedConfig.chapters[chapterIndex].pages.splice(pageIndex, 1);
+
+  if (
+    updatedConfig.chapters[chapterCounter] &&
+    updatedConfig.chapters[chapterCounter].pages[pageCounter] !== undefined
+  ) {
+    updatedConfig.chapters[chapterCounter].pages.splice(
+      pageCounter + 1,
+      0,
+      newPage
+    );
     setEditingConfig(updatedConfig);
   } else {
-    console.error("Chapter or page not found at the specified index:", chapterIndex, pageIndex);
+    console.error(
+      'Chapter or page not found at index:',
+      chapterIndex,
+      currentPageIndex
+    );
+  }
+};
+
+const handlePageRemove = () => {
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig));
+
+  if (
+    updatedConfig.chapters[chapterCounter] &&
+    updatedConfig.chapters[chapterCounter].pages[pageCounter]
+  ) {
+    updatedConfig.chapters[chapterCounter].pages.splice(pageCounter, 1);
+    setEditingConfig(updatedConfig);
+    handleClickNext()
+  } else {
+    console.error(
+      'Chapter or page not found at the specified index:',
+      chapterIndex,
+      pageIndex
+    );
   }
 };
 
@@ -237,9 +285,9 @@ const ChapterWrapper = (props) => {
         setEditTarget,
         onTitleChange: handleTitleChange,
         onDescriptionChange: handleDescriptionChange,
-        addChapter:addChapter,
-        addPage:addPage,
-        removePage:removePage,
+        onChapterAdd: handleChapterAdd,
+        onPageAdd: handlePageAdd,
+        onPageRemove: handlePageRemove,
       }}
     />
   );

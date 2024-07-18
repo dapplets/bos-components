@@ -1072,6 +1072,9 @@ const ButtonRemove = styled.button`
   &:hover {
     opacity: 0.5;
   }
+  &:disabled {
+    opacity: 0.3;
+  }
 `;
 
 const ButtonRevert = styled.button`
@@ -1162,9 +1165,9 @@ const {
   setEditTarget,
   onTitleChange,
   onDescriptionChange,
-  addPage,
-  addChapter,
-  removePage,
+  onPageAdd,
+  onChapterAdd,
+  onPageRemove,
 } = props;
 
 // todo: new
@@ -1200,30 +1203,8 @@ const handleSave = () => {
 };
 
 //todo: test page
-const newPage = {
-  id: 'bos.dapplets.near/gateway/MutableWebExtensionNew/ExtraPage',
-  title: 'Extra Page',
-  status: [],
-  content: 'This is an extra page added dynamically.',
-};
 
 // todo: test chapter
-const newChapter = {
-  id: 'bos.dapplets.near/gateway/MutableWebExtensionNew',
-  type: 'infobox',
-  if: {
-    id: 'newChapterID',
-  },
-  pages: [
-    {
-      id: 'bos.dapplets.near/gateway/MutableWebExtensionNew/Welcome',
-      title: 'Welcome to the new chapter',
-      status: [],
-      content: 'This is a new chapter added dynamically.',
-    },
-  ],
-  skin: 'META_GUIDE',
-};
 
 const header = (
   <Header>
@@ -1409,9 +1390,9 @@ if (props.type === 'callout') {
           <EditInputsBlock>
             <OptionsBlock>
               <ButtonRemove
+                disabled={navi?.currentChapterIndex + 1 === navi?.totalChapters}
                 onClick={() => {
-                  // todo:mocked index
-                  removePage(0, 1);
+                  onPageRemove();
                 }}
               >
                 {iconRemove} Remove
@@ -1463,15 +1444,14 @@ if (props.type === 'callout') {
           <AddedBlock>
             <AddedPageButton
               onClick={() => {
-                //  todo: mocked index
-                addPage(1, newPage);
+                onPageAdd();
               }}
             >
               {iconPlus}Add new page
             </AddedPageButton>
             <AddedChapterButton
               onClick={() => {
-                addChapter(newChapter);
+                onChapterAdd();
               }}
             >
               {iconPlus}Add new chapter
@@ -1588,9 +1568,11 @@ if (props.type === 'callout') {
             <EditInputsBlock>
               <OptionsBlock>
                 <ButtonRemove
+                  disabled={
+                    navi?.currentChapterIndex + 1 === navi?.totalChapters
+                  }
                   onClick={() => {
-                    // todo: mocked findex
-                    removePage(0, 1);
+                    onPageRemove();
                   }}
                 >
                   {iconRemove} Remove
@@ -1637,15 +1619,14 @@ if (props.type === 'callout') {
             <AddedBlock>
               <AddedPageButton
                 onClick={() => {
-                  // todo: mocked index
-                  addPage(0, newPage);
+                  onPageAdd();
                 }}
               >
                 {iconPlus}Add new page
               </AddedPageButton>
               <AddedChapterButton
                 onClick={() => {
-                  addChapter(newChapter);
+                  onChapterAdd();
                 }}
               >
                 {iconPlus}Add new chapter
