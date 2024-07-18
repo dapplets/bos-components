@@ -142,6 +142,16 @@ const addPage = (chapterIndex, newPage) => {
   }
 };
 
+const removePage = (chapterIndex, pageIndex) => {
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig));
+  
+  if (updatedConfig.chapters[chapterIndex] && updatedConfig.chapters[chapterIndex].pages[pageIndex]) {
+    updatedConfig.chapters[chapterIndex].pages.splice(pageIndex, 1);
+    setEditingConfig(updatedConfig);
+  } else {
+    console.error("Chapter or page not found at the specified index:", chapterIndex, pageIndex);
+  }
+};
 
 const ChapterWrapper = (props) => {
   const currentChapter = editingConfig.chapters[chapterCounter];
@@ -229,6 +239,7 @@ const ChapterWrapper = (props) => {
         onDescriptionChange: handleDescriptionChange,
         addChapter:addChapter,
         addPage:addPage,
+        removePage:removePage,
       }}
     />
   );

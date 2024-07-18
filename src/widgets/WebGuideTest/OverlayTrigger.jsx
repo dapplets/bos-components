@@ -1164,6 +1164,7 @@ const {
   onDescriptionChange,
   addPage,
   addChapter,
+  removePage,
 } = props;
 
 // todo: new
@@ -1409,7 +1410,8 @@ if (props.type === 'callout') {
             <OptionsBlock>
               <ButtonRemove
                 onClick={() => {
-                  // todo: added removed function
+                  // todo:mocked index
+                  removePage(0, 1);
                 }}
               >
                 {iconRemove} Remove
@@ -1461,16 +1463,15 @@ if (props.type === 'callout') {
           <AddedBlock>
             <AddedPageButton
               onClick={() => {
-         
-                addPage(1,newPage)
+                //  todo: mocked index
+                addPage(1, newPage);
               }}
             >
               {iconPlus}Add new page
             </AddedPageButton>
             <AddedChapterButton
               onClick={() => {
-         
-                    addChapter(newChapter)
+                addChapter(newChapter);
               }}
             >
               {iconPlus}Add new chapter
@@ -1588,7 +1589,8 @@ if (props.type === 'callout') {
               <OptionsBlock>
                 <ButtonRemove
                   onClick={() => {
-                    // todo: added removed function
+                    // todo: mocked findex
+                    removePage(0, 1);
                   }}
                 >
                   {iconRemove} Remove
@@ -1635,15 +1637,15 @@ if (props.type === 'callout') {
             <AddedBlock>
               <AddedPageButton
                 onClick={() => {
-              
-                          addPage(0,newPage)
+                  // todo: mocked index
+                  addPage(0, newPage);
                 }}
               >
                 {iconPlus}Add new page
               </AddedPageButton>
               <AddedChapterButton
                 onClick={() => {
-                       addChapter(newChapter)
+                  addChapter(newChapter);
                 }}
               >
                 {iconPlus}Add new chapter
