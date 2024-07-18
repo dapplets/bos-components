@@ -173,6 +173,7 @@ const handlePageAdd = () => {
       newPage
     );
     setEditingConfig(updatedConfig);
+    handleClickNext();
   } else {
     console.error(
       'Chapter or page not found at index:',
@@ -190,8 +191,10 @@ const handlePageRemove = () => {
     updatedConfig.chapters[chapterCounter].pages[pageCounter]
   ) {
     updatedConfig.chapters[chapterCounter].pages.splice(pageCounter, 1);
+    const newPageCounter = pageCounter > 0 ? pageCounter - 1 : 0;
+    setPageCounter(newPageCounter);
     setEditingConfig(updatedConfig);
-    handleClickNext()
+    handleClickNext();
   } else {
     console.error(
       'Chapter or page not found at the specified index:',
