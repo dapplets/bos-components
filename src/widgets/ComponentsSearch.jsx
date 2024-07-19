@@ -1,4 +1,4 @@
-const { apps, waitingAppIdsSet } = props;
+const { apps, waitingAppIdsSet } = props
 
 const CloseModal = styled.span`
   position: absolute;
@@ -9,7 +9,7 @@ const CloseModal = styled.span`
   &:hover {
     transform: scale(1.2);
   }
-`;
+`
 
 const Wrapper = styled.div`
   display: flex;
@@ -29,17 +29,19 @@ const Wrapper = styled.div`
   border: 1px solid #d9d9d9;
   background: #fff;
   border-radius: 8px;
-  box-shadow: rgba(0, 0, 0, 0.01) 0px 16px 16px 0px,
+  box-shadow:
+    rgba(0, 0, 0, 0.01) 0px 16px 16px 0px,
     rgba(0, 0, 0, 0.049) 0px 65px 65px 0px,
-    rgba(0, 0, 0, 0.005) 0px 15px 17px 0px, rgba(0, 0, 0, 0.01) 0px 8px 13px 0px,
+    rgba(0, 0, 0, 0.005) 0px 15px 17px 0px,
+    rgba(0, 0, 0, 0.01) 0px 8px 13px 0px,
     rgba(0, 0, 0, 0) 0px 14px 13px 0px;
-`;
+`
 
 const Header = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-`;
+`
 
 const H1 = styled.h1`
   font-weight: 600;
@@ -47,7 +49,7 @@ const H1 = styled.h1`
   line-height: 39px;
   color: #11181c;
   margin: 0;
-`;
+`
 
 const H2 = styled.h2`
   font-weight: 400;
@@ -55,17 +57,17 @@ const H2 = styled.h2`
   line-height: 24px;
   color: #687076;
   margin: 0;
-`;
+`
 
 const Text = styled.p`
   margin: 0;
   line-height: 1.5rem;
-  color: ${(p) => (p.bold ? "#11181C" : "#687076")} !important;
-  font-weight: ${(p) => (p.bold ? "600" : "400")};
-  font-size: ${(p) => (p.small ? "12px" : "14px")};
-  overflow: ${(p) => (p.ellipsis ? "hidden" : "")};
-  text-overflow: ${(p) => (p.ellipsis ? "ellipsis" : "")};
-  white-space: ${(p) => (p.ellipsis ? "nowrap" : "")};
+  color: ${(p) => (p.bold ? '#11181C' : '#687076')} !important;
+  font-weight: ${(p) => (p.bold ? '600' : '400')};
+  font-size: ${(p) => (p.small ? '12px' : '14px')};
+  overflow: ${(p) => (p.ellipsis ? 'hidden' : '')};
+  text-overflow: ${(p) => (p.ellipsis ? 'ellipsis' : '')};
+  white-space: ${(p) => (p.ellipsis ? 'nowrap' : '')};
   overflow-wrap: anywhere;
 
   b {
@@ -82,7 +84,7 @@ const Text = styled.p`
       text-decoration: underline;
     }
   }
-`;
+`
 
 const Items = styled.div`
   display: flex;
@@ -90,13 +92,13 @@ const Items = styled.div`
   overflow: hidden;
   overflow-y: auto;
   transition: all 0.15s;
-`;
+`
 
 const Item = styled.div`
   width: 100%;
   padding-top: 12px;
   transition: all 0.15s;
-`;
+`
 
 const Button = styled.button`
   display: block;
@@ -124,7 +126,7 @@ const Button = styled.button`
   span {
     color: #687076 !important;
   }
-`;
+`
 
 const WarningMessage = styled.div`
   display: flex;
@@ -142,9 +144,8 @@ const WarningMessage = styled.div`
   p {
     padding: 0;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-      "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-      "Helvetica Neue", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+      'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -158,16 +159,10 @@ const WarningMessage = styled.div`
     padding: 0;
     margin: 0;
   }
-`;
+`
 
 const AlertIcon = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
       stroke="#384BFF"
@@ -190,16 +185,10 @@ const AlertIcon = () => (
       strokeLinejoin="round"
     />
   </svg>
-);
+)
 
 const iconCloseModal = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="21"
-    viewBox="0 0 20 21"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
     <path
       d="M16.25 4.25L3.75 16.75"
       stroke="#C1C6CE"
@@ -215,7 +204,7 @@ const iconCloseModal = (
       strokeLinejoin="round"
     />
   </svg>
-);
+)
 
 return (
   <Wrapper>
@@ -229,7 +218,7 @@ return (
     ) : null}
 
     {apps.length > 0 ? (
-      <Items style={{ paddingRight: apps && apps.length >= 5 ? "20px" : "" }}>
+      <Items style={{ paddingRight: apps && apps.length >= 5 ? '20px' : '' }}>
         {apps.map((app) => {
           return (
             <Item key={app.id}>
@@ -242,14 +231,14 @@ return (
                   hideButtons: !context.accountId,
                   isWaiting: waitingAppIdsSet.has(app.id),
                 }}
-                 loading={<></>}
+                loading={<></>}
               />
             </Item>
-          );
+          )
         })}
       </Items>
     ) : (
       <Text>No apps available for this context</Text>
     )}
   </Wrapper>
-);
+)

@@ -21,8 +21,8 @@ const ButtonPlus = styled.button`
 
 const plusIcon = (
   <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M11 6V16" stroke="#384BFF" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M6 11H16" stroke="#384BFF" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M11 6V16" stroke="#384BFF" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M6 11H16" stroke="#384BFF" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
 
@@ -31,7 +31,7 @@ return (
     style={{
       bottom: widgets && widgets.length ? '0' : '6px',
       border: widgets && widgets.length ? '1px solid #384bff' : 'none',
-      backgroundColor: widgets && widgets.length ? '': 'white',
+      backgroundColor: widgets && widgets.length ? '' : 'white',
     }}
     onClick={onClick}
   >

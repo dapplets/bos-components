@@ -1,6 +1,6 @@
 const handleClick = () => {
-  console.log(props.context);
-};
+  console.log(props.context)
+}
 
 const Overlay = styled.div`
   background: #fff;
@@ -15,16 +15,12 @@ const overlay = (
   <Overlay>
     This button is injected using a static link, a target in the application manifest.
   </Overlay>
-);
+)
 
 return (
   <DappletOverlayTrigger overlay={overlay}>
-    <button
-      type="button"
-      className="btn btn-primary btn-sm"
-      onClick={handleClick}
-    >
+    <button type="button" className="btn btn-primary btn-sm" onClick={handleClick}>
       Static
     </button>
   </DappletOverlayTrigger>
-);
+)

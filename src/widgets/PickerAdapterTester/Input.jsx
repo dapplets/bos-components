@@ -6,13 +6,14 @@ const Container = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   width: 500px;
-  background: #FFFFFE;
-  border: 1px solid #02193A;
+  background: #fffffe;
+  border: 1px solid #02193a;
   border-radius: 10px;
   padding: 10px;
   gap: 10px;
   box-shadow: none;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   align-items: center;
   justify-content: center;
   z-index: 10000;
@@ -25,11 +26,13 @@ const Header = styled.div`
   width: 100%;
   justify-content: center;
   align-items: center;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  color: #02193A;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  color: #02193a;
 
   h1 {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+      'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     padding: 0;
     margin: 0;
     font-size: 20px;
@@ -54,10 +57,10 @@ const CloseButton = styled.button`
   svg {
     path {
       stroke: #838891;
-      transition-duration: .2s;
+      transition-duration: 0.2s;
     }
   }
-  
+
   :hover {
     svg {
       path {
@@ -67,10 +70,10 @@ const CloseButton = styled.button`
   }
 `
 
-const closeIcon =  (
+const closeIcon = (
   <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M18 6L6 18"  strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M6 6.5L18 18.5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M18 6L6 18" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M6 6.5L18 18.5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
 
@@ -82,18 +85,19 @@ const SuccessButton = styled.button`
   padding: 0px 20px;
   width: 180px;
   height: 42px;
-  background: #02193A;
+  background: #02193a;
   border-radius: 50px;
   border: none;
   cursor: pointer;
 
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 149%;
   text-align: center;
-  color: #FFFFFF;
+  color: #ffffff;
   transition-duration: 0.2s;
 
   :hover {
@@ -105,9 +109,7 @@ return (
   <Container>
     <Header>
       <h1>Specify the adapter ID</h1>
-      <CloseButton onClick={() => props.handleClose()}>
-        {closeIcon}
-      </CloseButton>
+      <CloseButton onClick={() => props.handleClose()}>{closeIcon}</CloseButton>
     </Header>
     <input
       autoFocus
@@ -116,15 +118,19 @@ return (
       value={newData}
     />
     <div style={{ display: 'flex', width: '80%', justifyContent: 'space-evenly' }}>
-      <SuccessButton onClick={() => {
-        props.setSelectedAdapter('')
-        setNewData('')
-      }}>
+      <SuccessButton
+        onClick={() => {
+          props.setSelectedAdapter('')
+          setNewData('')
+        }}
+      >
         Reset
       </SuccessButton>
-      <SuccessButton onClick={() => {
-        props.setSelectedAdapter(newData)
-      }}>
+      <SuccessButton
+        onClick={() => {
+          props.setSelectedAdapter(newData)
+        }}
+      >
         Save
       </SuccessButton>
     </div>

@@ -3,30 +3,32 @@ const { linkId, CONTRACT_ADDRESS } = props
 /**
  * From near-api-js/packages/near-api-js/src/utils/format.ts
  */
-const NEAR_NOMINATION_EXP = 24;
+const NEAR_NOMINATION_EXP = 24
 
 function cleanupAmount(amount) {
-  return amount.replace(/,/g, '').trim();
+  return amount.replace(/,/g, '').trim()
 }
 
 function trimLeadingZeroes(value) {
-  value = value.replace(/^0+/, '');
+  value = value.replace(/^0+/, '')
   if (value === '') {
-      return '0';
+    return '0'
   }
-  return value;
+  return value
 }
 
 function parseNearAmount(amt) {
-  if (!amt) { return null; }
-  amt = cleanupAmount(amt);
-  const split = amt.split('.');
-  const wholePart = split[0];
-  const fracPart = split[1] || '';
-  if (split.length > 2 || fracPart.length > NEAR_NOMINATION_EXP) {
-      throw new Error(`Cannot parse '${amt}' as NEAR amount`);
+  if (!amt) {
+    return null
   }
-  return trimLeadingZeroes(wholePart + fracPart.padEnd(NEAR_NOMINATION_EXP, '0'));
+  amt = cleanupAmount(amt)
+  const split = amt.split('.')
+  const wholePart = split[0]
+  const fracPart = split[1] || ''
+  if (split.length > 2 || fracPart.length > NEAR_NOMINATION_EXP) {
+    throw new Error(`Cannot parse '${amt}' as NEAR amount`)
+  }
+  return trimLeadingZeroes(wholePart + fracPart.padEnd(NEAR_NOMINATION_EXP, '0'))
 }
 /**
  * End
@@ -36,29 +38,29 @@ State.init({
   img: null,
   amount: null,
   loading: false,
-});
+})
 
 const uploadFileUpdateState = (body) => {
-  asyncFetch("https://ipfs.near.social/add", {
-    method: "POST",
-    headers: { Accept: "application/json" },
+  asyncFetch('https://ipfs.near.social/add', {
+    method: 'POST',
+    headers: { Accept: 'application/json' },
     body,
   }).then((res) => {
-    const cid = res.body.cid;
-    State.update({ img: { cid } });
-  });
-};
+    const cid = res.body.cid
+    State.update({ img: { cid } })
+  })
+}
 
 const filesOnChange = (files) => {
   if (files) {
-    State.update({ img: { uploading: true, cid: null } });
-    uploadFileUpdateState(files[0]);
+    State.update({ img: { uploading: true, cid: null } })
+    uploadFileUpdateState(files[0])
   }
-};
+}
 
 const amountOnChange = ({ target }) => {
-   State.update({ amount: target.value.trim(), wrongPrice: false });
-};
+  State.update({ amount: target.value.trim(), wrongPrice: false })
+}
 
 const sendOnChange = () => {
   if (!/^\d+([.]\d+)?$/g.test(state.amount)) {
@@ -66,37 +68,27 @@ const sendOnChange = () => {
   } else {
     try {
       State.update({ loading: true })
-      Near.call(
-        CONTRACT_ADDRESS,
-        "add_paid_content",
-        {
-          link: `https://ipfs.near.social/ipfs/${state.img.cid}`,
-          cost: parseNearAmount(state.amount),
-          context_id: linkId
-        }
-      );
+      Near.call(CONTRACT_ADDRESS, 'add_paid_content', {
+        link: `https://ipfs.near.social/ipfs/${state.img.cid}`,
+        cost: parseNearAmount(state.amount),
+        context_id: linkId,
+      })
     } catch (err) {
-      console.error(err);
+      console.error(err)
       State.update({ loading: false })
     }
   }
-};
+}
 
 const cancelOnChange = () => {
   State.update({
     img: null,
     amount: null,
-  });
-};
+  })
+}
 
 const iconBtnUpload = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
     <path
       d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15"
       stroke="white"
@@ -119,7 +111,7 @@ const iconBtnUpload = (
       strokeLinejoin="round"
     />
   </svg>
-);
+)
 
 const WrapperWidget = styled.div`
   display: flex;
@@ -146,7 +138,8 @@ const WrapperWidget = styled.div`
     justify-content: space-between;
     padding: 6px;
     color: #fff;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+      'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     font-size: 14px;
     font-weight: 400;
     line-height: normal;
@@ -154,16 +147,17 @@ const WrapperWidget = styled.div`
       opacity: 0.5;
     }
   }
-`;
+`
 
 const Title = styled.div`
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   color: #222;
   font-size: 18px;
   font-weight: 700;
   line-height: normal;
   padding-bottom: 10px;
-`;
+`
 
 const InputsBlock = styled.div`
   border-radius: 4px;
@@ -172,17 +166,17 @@ const InputsBlock = styled.div`
   margin-bottom: 14px;
   box-sizing: border-box;
   position: relative;
-`;
+`
 
 const UploadBlocker = styled.div`
   position: absolute;
   width: calc(100% - 16px);
   height: 50px;
   background: white;
-  opacity: .5;
+  opacity: 0.5;
   top: 8px;
   left: 8px;
-`;
+`
 
 const UploadBlock = styled.div`
   display: flex;
@@ -190,10 +184,11 @@ const UploadBlock = styled.div`
   justify-content: space-between;
   margin-bottom: 14px;
   box-sizing: border-box;
-`;
+`
 
 const FileInput = styled.input`
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   border-radius: 4px;
   background: #e7ecef;
   display: flex;
@@ -208,7 +203,7 @@ const FileInput = styled.input`
   box-sizing: border-box;
   flex-grow: 1;
   margin-right: 8px;
-`;
+`
 
 const BlockAmount = styled.div`
   .default {
@@ -226,18 +221,20 @@ const BlockAmount = styled.div`
   .error {
     border-color: red;
   }
-`;
+`
 
 const LabelAmount = styled.div`
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   color: #919191;
   font-size: 12px;
   font-weight: 400;
   line-height: normal;
-`;
+`
 
 const InputAmount = styled.input`
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   color: #222;
   font-size: 14px;
   background: #fff;
@@ -250,14 +247,15 @@ const InputAmount = styled.input`
   &:disabled {
     color: #919191;
   }
-`;
+`
 
 const WrongAmountMessage = styled.div`
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   color: red;
   padding: 8px 8px 0 12px;
   font-size: 14px;
-`;
+`
 
 const ButtonsBlock = styled.div`
   display: flex;
@@ -265,10 +263,11 @@ const ButtonsBlock = styled.div`
   justify-content: center;
   padding: 0 10px;
   box-sizing: border-box;
-`;
+`
 
 const ButtonCancel = styled.button`
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   border-radius: 4px;
   display: flex;
   background: #c1c6ce;
@@ -295,10 +294,11 @@ const ButtonCancel = styled.button`
   &:hover {
     background: #a9aeb5;
   }
-`;
+`
 
 const ButtonSend = styled.button`
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   border-radius: 4px;
   display: flex;
   background: #3d7fff;
@@ -325,7 +325,7 @@ const ButtonSend = styled.button`
   &:hover {
     background: #2564df;
   }
-`;
+`
 
 const Loader = () => (
   <svg
@@ -354,49 +354,49 @@ const Loader = () => (
       ></animateTransform>
     </circle>
   </svg>
-);
+)
 
 return (
   <WrapperWidget>
     <Title>Configure your content</Title>
     <InputsBlock>
-      <UploadBlocker style={{ display: state.loading ? 'block' : 'none'}} />
+      <UploadBlocker style={{ display: state.loading ? 'block' : 'none' }} />
       <UploadBlock>
-        <FileInput readOnly value={state.img.cid ? state.img.cid : ""} />
+        <FileInput readOnly value={state.img.cid ? state.img.cid : ''} />
 
         <Files
           multiple={false}
-          accepts={["image/*"]}
+          accepts={['image/*']}
           minFileSize={1}
           clickable
           className="ButtonUpload"
           onChange={filesOnChange}
         >
           {iconBtnUpload}
-          {state.img?.uploading ? <> Uploading </> : "Upload image"}
+          {state.img?.uploading ? <> Uploading </> : 'Upload image'}
         </Files>
       </UploadBlock>
 
       <BlockAmount>
-        <div className={state.wrongPrice? "default error" : "default"}>
+        <div className={state.wrongPrice ? 'default error' : 'default'}>
           <LabelAmount>Price (NEAR)</LabelAmount>
           <InputAmount
-            value={state.amount || ""}
+            value={state.amount || ''}
             onChange={amountOnChange}
             disabled={state.loading}
           />
         </div>
       </BlockAmount>
-      {state.wrongPrice
-        ? (<WrongAmountMessage>
+      {state.wrongPrice ? (
+        <WrongAmountMessage>
           The price must consist only of numbers separated by "."
-          </WrongAmountMessage>)
-        : null}
+        </WrongAmountMessage>
+      ) : null}
     </InputsBlock>
     <ButtonsBlock>
       <ButtonCancel
         onClick={cancelOnChange}
-        disabled={!state.img && !state.amount || state.loading}
+        disabled={(!state.img && !state.amount) || state.loading}
       >
         Clear
       </ButtonCancel>
@@ -404,8 +404,8 @@ return (
         onClick={sendOnChange}
         disabled={!state.img || !state.amount || state.wrongPrice || state.loading}
       >
-        {state.loading ? <Loader /> : "Add"}
+        {state.loading ? <Loader /> : 'Add'}
       </ButtonSend>
     </ButtonsBlock>
   </WrapperWidget>
-);
+)

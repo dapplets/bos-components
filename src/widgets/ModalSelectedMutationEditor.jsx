@@ -21,19 +21,19 @@ const {
   setSaveTooltype,
   setVisibleInput,
   isVisibleInput,
-} = props;
+} = props
 
 // ToDo: check null props
 
-const { accountId: loggedInAccountId } = context;
+const { accountId: loggedInAccountId } = context
 
-const [mutationOwnerId] = mutationId ? mutationId.split("/") : null;
+const [mutationOwnerId] = mutationId ? mutationId.split('/') : null
 
-const isUserOwner = mutationOwnerId === loggedInAccountId;
+const isUserOwner = mutationOwnerId === loggedInAccountId
 
 State.init({
   isSaveDropdownOpened: false,
-});
+})
 
 const SelectedMutationEditorWrapper = styled.div`
   display: flex;
@@ -50,7 +50,7 @@ const SelectedMutationEditorWrapper = styled.div`
   background: #f8f9ff;
   width: 400px;
   max-height: 446px;
-`;
+`
 
 const Close = styled.span`
   cursor: pointer;
@@ -60,7 +60,7 @@ const Close = styled.span`
   &:hover {
     opacity: 0.5;
   }
-`;
+`
 
 const HeaderEditor = styled.div`
   display: flex;
@@ -75,7 +75,7 @@ const HeaderEditor = styled.div`
     margin-right: auto;
     margin-bottom: 2px;
   }
-`;
+`
 
 const AppsList = styled.div`
   overflow: hidden;
@@ -84,13 +84,13 @@ const AppsList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
-`;
+`
 
 const ButtonsBlock = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
+`
 
 const ButtonsRevert = styled.button`
   display: flex;
@@ -113,7 +113,7 @@ const ButtonsRevert = styled.button`
     cursor: auto;
     opacity: 1;
   }
-`;
+`
 
 const ButtonsSave = styled.button`
   display: flex;
@@ -123,9 +123,7 @@ const ButtonsSave = styled.button`
   height: 42px;
   border-radius: 10px;
   border: none;
-  background: ${loggedInAccountId
-    ? "rgba(56, 75, 255, 1)"
-    : "rgba(56, 75, 255, 0.5)"};
+  background: ${loggedInAccountId ? 'rgba(56, 75, 255, 1)' : 'rgba(56, 75, 255, 0.5)'};
   color: #fff;
   font-size: 14px;
   font-weight: 400;
@@ -136,7 +134,7 @@ const ButtonsSave = styled.button`
   &:disabled {
     opacity: 0.5;
   }
-`;
+`
 
 const TextSave = styled.div`
   display: inline-block;
@@ -149,7 +147,7 @@ const TextSave = styled.div`
   &:hover {
     opacity: 0.5;
   }
-`;
+`
 
 const ArrowWrapper = styled.div`
   display: flex;
@@ -158,9 +156,8 @@ const ArrowWrapper = styled.div`
   width: 42px;
   height: 42px;
   margin-left: auto;
-  transform: ${(props) =>
-    props.$isOpened ? "rotate(180deg)" : "rotate(0deg)"};
-`;
+  transform: ${(props) => (props.$isOpened ? 'rotate(180deg)' : 'rotate(0deg)')};
+`
 
 const SaveChanges = styled.div`
   position: absolute;
@@ -181,7 +178,7 @@ const SaveChanges = styled.div`
   line-height: 20.86px;
   text-align: center;
   color: rgba(34, 34, 34, 1);
-`;
+`
 
 const SaveChangesItem = styled.div`
   display: flex;
@@ -195,7 +192,7 @@ const SaveChangesItem = styled.div`
     background: rgba(217, 222, 225, 1);
     color: rgba(56, 75, 255, 1);
   }
-`;
+`
 
 const Input = styled.input`
   display: flex;
@@ -212,9 +209,11 @@ const Input = styled.input`
   font: var(--text-base);
   outline: none !important;
   text-align: left;
-  transition: color 200ms, opacity 200ms;
+  transition:
+    color 200ms,
+    opacity 200ms;
 
-  [data-textarea="true"] & {
+  [data-textarea='true'] & {
     line-height: 1.5;
     padding: 8px 12px;
     height: unset;
@@ -227,7 +226,7 @@ const Input = styled.input`
     opacity: 1;
   }
 
-  [data-disabled="true"] & {
+  [data-disabled='true'] & {
     opacity: 1;
     color: var(--sand9);
 
@@ -235,16 +234,10 @@ const Input = styled.input`
       color: var(--sand9);
     }
   }
-`;
+`
 
 const CloseIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="30"
-    height="30"
-    viewBox="0 0 30 30"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
     <path
       d="M21 9L9 21"
       stroke="#02193A"
@@ -260,7 +253,7 @@ const CloseIcon = () => (
       stroke-linejoin="round"
     />
   </svg>
-);
+)
 
 const EditIcon = () => (
   <svg
@@ -286,16 +279,10 @@ const EditIcon = () => (
       stroke-linejoin="round"
     />
   </svg>
-);
+)
 
 const ArrowIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="14"
-    height="8"
-    viewBox="0 0 14 8"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="8" viewBox="0 0 14 8" fill="none">
     <path
       d="M1 1L7 7L13 1"
       stroke="white"
@@ -304,74 +291,74 @@ const ArrowIcon = () => (
       stroke-linejoin="round"
     />
   </svg>
-);
+)
 
 const handlePublishButtonClick = () => {
-  State.update({ isSaveDropdownOpened: false });
-  setVisibleInputId(false);
-};
+  State.update({ isSaveDropdownOpened: false })
+  setVisibleInputId(false)
+}
 
 const handleForkButtonClick = () => {
-  State.update({ isSaveDropdownOpened: false });
-  setVisibleInputId(true);
-};
+  State.update({ isSaveDropdownOpened: false })
+  setVisibleInputId(true)
+}
 
 const handleDropdownOpen = () => {
-  if (!isUserOwner) return;
+  if (!isUserOwner) return
 
   State.update({
     isSaveDropdownOpened: !state.isSaveDropdownOpened,
-  });
-};
+  })
+}
 
 const arraysAreEqual = (a, b) => {
-  if (a.length != b.length) return false;
+  if (a.length != b.length) return false
   for (var i = 0; i <= a.length; i++) {
-    if (a[i] != b[i]) return false;
+    if (a[i] != b[i]) return false
   }
-  return true;
-};
+  return true
+}
 
 if (!loggedInAccountId) {
-  setSaveDisabled(true);
-  setSaveTooltype("Connect the Wallet");
+  setSaveDisabled(true)
+  setSaveTooltype('Connect the Wallet')
 } else if (loggedInAccountId && selectedMutation) {
   if (editingMutation.id === selectedMutation.id) {
-    setSaveDisabled(true);
-    setSaveTooltype("Change the mutation to create a new one");
+    setSaveDisabled(true)
+    setSaveTooltype('Change the mutation to create a new one')
   } else if (editingMutation.metadata.name === selectedMutation.metadata.name) {
-    setSaveDisabled(true);
-    setSaveTooltype("Mutation name has already been used");
+    setSaveDisabled(true)
+    setSaveTooltype('Mutation name has already been used')
   } else if (
     editingMutation.metadata.name !== selectedMutation.metadata.name &&
     editingMutation.id === selectedMutation.id
   ) {
-    setSaveDisabled(true);
-    setSaveTooltype("Add mutation ID");
+    setSaveDisabled(true)
+    setSaveTooltype('Add mutation ID')
   } else if (!editingMutation.apps || !editingMutation.apps.length) {
-    setSaveDisabled(true);
-    setSaveTooltype("Select applications");
+    setSaveDisabled(true)
+    setSaveTooltype('Select applications')
   } else {
-    setSaveDisabled(false);
-    setSaveTooltype(null);
+    setSaveDisabled(false)
+    setSaveTooltype(null)
   }
 } else if (loggedInAccountId && !selectedMutation) {
   if (!editingMutation.metadata.name) {
-    setSaveDisabled(true);
-    setSaveTooltype("Mutation name has already been used");
+    setSaveDisabled(true)
+    setSaveTooltype('Mutation name has already been used')
   } else if (!editingMutation.id) {
-    setSaveDisabled(true);
-    setSaveTooltype("Add mutation ID");
+    setSaveDisabled(true)
+    setSaveTooltype('Add mutation ID')
   } else if (!editingMutation.apps || !editingMutation.apps.length) {
-    setSaveDisabled(true);
-    setSaveTooltype("Select applications");
+    setSaveDisabled(true)
+    setSaveTooltype('Select applications')
   } else {
-    setSaveDisabled(false);
-    setSaveTooltype(null);
+    setSaveDisabled(false)
+    setSaveTooltype(null)
   }
 } else {
-  setSaveDisabled(false);
-  setSaveTooltype(null);
+  setSaveDisabled(false)
+  setSaveTooltype(null)
 }
 return (
   <SelectedMutationEditorWrapper>
@@ -379,13 +366,7 @@ return (
       <HeaderEditor>
         <Input
           onChange={(e) => onMutationNameChange(e.target.value)}
-          value={
-            editingMutation
-              ? editingMutation.name
-              : mutationName
-              ? mutationName
-              : ""
-          }
+          value={editingMutation ? editingMutation.name : mutationName ? mutationName : ''}
         />
         <Close onClick={onClose}>
           <CloseIcon />
@@ -393,11 +374,7 @@ return (
       </HeaderEditor>
     ) : (
       <HeaderEditor>
-        {editingMutation
-          ? editingMutation.name
-          : mutationName
-          ? mutationName
-          : ""}
+        {editingMutation ? editingMutation.name : mutationName ? mutationName : ''}
         <span onClick={() => setVisibleInput(true)}>
           <EditIcon />
         </span>
@@ -413,9 +390,9 @@ return (
         <HeaderEditor>
           <Input
             onChange={(e) => {
-              onMutationIdChange(e.target.value, loggedInAccountId);
+              onMutationIdChange(e.target.value, loggedInAccountId)
             }}
-            placeholder={"Enter Mutation ID"}
+            placeholder={'Enter Mutation ID'}
           />
         </HeaderEditor>
       ) : (
@@ -432,15 +409,14 @@ return (
       {allApps && allApps.length
         ? allApps.map((app, i) => (
             <Widget
-             loading={<></>}
+              loading={<></>}
               key={i}
               src="${REPL_ACCOUNT}/widget/ApplicationCard"
               props={{
                 src: app.id,
                 metadata: app.metadata,
                 hideButtons: !loggedInAccountId,
-                selectedApps:
-                  selectedApps && selectedApps.filter((x) => x === app.id)[0],
+                selectedApps: selectedApps && selectedApps.filter((x) => x === app.id)[0],
                 handleEditMutationApps: onMutationAppsChange,
               }}
             />
@@ -458,26 +434,19 @@ return (
           <TextSave onClick={onMutationCreate}>Fork</TextSave>
         )}
 
-        <ArrowWrapper
-          $isOpened={state.isSaveDropdownOpened}
-          onClick={handleDropdownOpen}
-        >
+        <ArrowWrapper $isOpened={state.isSaveDropdownOpened} onClick={handleDropdownOpen}>
           <ArrowIcon />
         </ArrowWrapper>
         {state.isSaveDropdownOpened && isUserOwner ? (
           <SaveChanges>
             {/* {isUserOwner && !isVisibleInputId ? ( */}
-            <SaveChangesItem onClick={handlePublishButtonClick}>
-              Publish
-            </SaveChangesItem>
+            <SaveChangesItem onClick={handlePublishButtonClick}>Publish</SaveChangesItem>
             {/* ) : ( */}
-            <SaveChangesItem onClick={handleForkButtonClick}>
-              Fork
-            </SaveChangesItem>
+            <SaveChangesItem onClick={handleForkButtonClick}>Fork</SaveChangesItem>
             {/* )} */}
           </SaveChanges>
         ) : null}
       </ButtonsSave>
     </ButtonsBlock>
   </SelectedMutationEditorWrapper>
-);
+)

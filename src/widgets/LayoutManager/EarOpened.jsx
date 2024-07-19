@@ -1,4 +1,4 @@
-const widgets = props.widgets ?? [];
+const widgets = props.widgets ?? []
 const {
   isEditMode,
   enableEditMode,
@@ -6,22 +6,18 @@ const {
   handleOpenMenu,
   handleOnMouseLeave,
   deleteUserLink,
-} = props;
+} = props
 
-const suitableWidgets = widgets.filter(
-  (w) => w.isSuitable === undefined || w.isSuitable === true
-);
+const suitableWidgets = widgets.filter((w) => w.isSuitable === undefined || w.isSuitable === true)
 
-const isMyLinksInjected = !!widgets.some(
-  (w) => w.linkAuthorId === context.accountId && !w.static
-);
+const isMyLinksInjected = !!widgets.some((w) => w.linkAuthorId === context.accountId && !w.static)
 
 // Disable edit mode if last widget was removed
 useEffect(() => {
   if (isEditMode && !isMyLinksInjected) {
-    disableEditMode();
+    disableEditMode()
   }
-}, [isMyLinksInjected, isEditMode]);
+}, [isMyLinksInjected, isEditMode])
 
 const TriggerShowPanel = styled.div`
   width: 40px;
@@ -34,7 +30,7 @@ const TriggerShowPanel = styled.div`
   right: -33px;
   top: -20px;
   z-index: 79;
-`;
+`
 
 const ActionsWrapper = styled.div`
   display: flex;
@@ -55,7 +51,7 @@ const ActionsWrapper = styled.div`
       display: none;
       opacity: 0;
     }
-     80% {
+    80% {
       display: flex;
       opacity: 0;
     }
@@ -66,12 +62,11 @@ const ActionsWrapper = styled.div`
   }
   animation: translateAnimation 0.3s ease forwards;
   transition: all 0.2s;
-  span{
+  span {
     display: block;
     margin-bottom: 5px;
-
   }
-`;
+`
 
 const ActionBlock = styled.span`
   position: relative;
@@ -79,27 +74,27 @@ const ActionBlock = styled.span`
   div {
     z-index: 1000;
   }
-`;
+`
 
 return (
   <TriggerShowPanel
     onMouseOut={handleOnMouseLeave}
     style={{
-      margin: "0px -7px",
-      top: suitableWidgets.length ? "" : "-20px",
+      margin: '0px -7px',
+      top: suitableWidgets.length ? '' : '-20px',
     }}
   >
-    <Widget  loading={<></>} src="${REPL_ACCOUNT}/widget/LayoutManager.SupportingSpan" />
+    <Widget loading={<></>} src="${REPL_ACCOUNT}/widget/LayoutManager.SupportingSpan" />
     <ActionsWrapper
       style={{
-        backgroundColor: suitableWidgets.length ? "" : "#DB504A!important",
+        backgroundColor: suitableWidgets.length ? '' : '#DB504A!important',
       }}
     >
       {suitableWidgets.map((widget) => (
         <ActionBlock key={widget.linkId}>
           {isEditMode ? (
             <Widget
-             loading={<></>}
+              loading={<></>}
               src="${REPL_ACCOUNT}/widget/LayoutManager.WidgetBadgeWrapper"
               props={{
                 widget,
@@ -107,30 +102,30 @@ return (
               }}
             />
           ) : null}
-          <Widget  loading={<></>} src={widget.src} props={widget.props} />
+          <Widget loading={<></>} src={widget.src} props={widget.props} />
         </ActionBlock>
       ))}
       {isEditMode ? (
         <Widget
-         loading={<></>}
+          loading={<></>}
           src="${REPL_ACCOUNT}/widget/LayoutManager.Buttons.Apply"
           props={{ onClick: disableEditMode }}
         />
       ) : isMyLinksInjected ? (
         <Widget
-         loading={<></>}
+          loading={<></>}
           src="${REPL_ACCOUNT}/widget/LayoutManager.Buttons.Edit"
           props={{ onClick: enableEditMode }}
         />
       ) : null}
       <Widget
-       loading={<></>}
+        loading={<></>}
         src="${REPL_ACCOUNT}/widget/LayoutManager.Buttons.Plus"
         props={{ widgets: suitableWidgets, onClick: handleOpenMenu }}
       />
     </ActionsWrapper>
     {suitableWidgets.length ? (
-      <Widget  loading={<></>} src="${REPL_ACCOUNT}/widget/LayoutManager.SupportingSpan" />
+      <Widget loading={<></>} src="${REPL_ACCOUNT}/widget/LayoutManager.SupportingSpan" />
     ) : null}
   </TriggerShowPanel>
-);
+)

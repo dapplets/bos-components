@@ -1,69 +1,69 @@
 {
-    "widgets": [
-        {
-            "src": "bos.dapplets.near/widget/Cat",
-            "linkId": "f43ce7bdc6a26d1ab2582c1e6a4ebbd0",
-            "linkAuthorId": "bos.dapplets.near"
-        },
-        {
-            "src": "bos.dapplets.near/widget/Dog",
-            "linkId": "f43ce7bdc6a26d1ab2582c1e6a4ebbd0",
-            "linkAuthorId": "bos.dapplets.near"
-        }
-    ],
-    "isEditMode": true,
-    "contentId": "1694995203663290832",
-    "link": {
-        "authorId": "bos.dapplets.near",
-        "id": "f43ce7bdc6a26d1ab2582c1e6a4ebbd0"
+  "widgets": [
+    {
+      "src": "bos.dapplets.near/widget/Cat",
+      "linkId": "f43ce7bdc6a26d1ab2582c1e6a4ebbd0",
+      "linkAuthorId": "bos.dapplets.near"
     },
-    "context": {
-        "parsed": {
-            "id": "1694995203663290832",
-            "authorUsername": "MrConCreator"
-        },
-        "parent": {
-            "parsed": {
-                "websiteName": "YouTube"
-            }
-        }
+    {
+      "src": "bos.dapplets.near/widget/Dog",
+      "linkId": "f43ce7bdc6a26d1ab2582c1e6a4ebbd0",
+      "linkAuthorId": "bos.dapplets.near"
+    }
+  ],
+  "isEditMode": true,
+  "contentId": "1694995203663290832",
+  "link": {
+    "authorId": "bos.dapplets.near",
+    "id": "f43ce7bdc6a26d1ab2582c1e6a4ebbd0"
+  },
+  "context": {
+    "parsed": {
+      "id": "1694995203663290832",
+      "authorUsername": "MrConCreator"
     },
+    "parent": {
+      "parsed": {
+        "websiteName": "YouTube"
+      }
+    }
+  },
+  "content": {
     "content": {
-        "content": {
-            "id": "f43ce7bdc6a26d1ab2582c1e6a4ebbd1",
-            "link": "https://miscellaneous.s3-website.fr-par.scw.cloud/web3hackfest-2023/MrConCreator/0001.png",
-            "author": "mock.dapplets.mear",
-            "cost": "200000000000000000000000",
-            "context_id": "1694994895662977529"
-        },
-        "is_purchased": false
+      "id": "f43ce7bdc6a26d1ab2582c1e6a4ebbd1",
+      "link": "https://miscellaneous.s3-website.fr-par.scw.cloud/web3hackfest-2023/MrConCreator/0001.png",
+      "author": "mock.dapplets.mear",
+      "cost": "200000000000000000000000",
+      "context_id": "1694994895662977529"
     },
-    "CONTRACT_ADDRESS": "app.paywall.near",
-    "handleClose": null,
-    "createUserLink": null,
-    "deleteUserLink": null,
-    "enableEditMode": null,
-    "disableEditMode": null,
-    "notify":null,
-    "apps": [
-        {
-            "id": "bos.dapplets.near/app/Paywall",
-            "metadata": {
-                "name": "Paywall",
-                "description": "The Paywall Dapplet seamlessly integrates with Twitter, utilizing the NEAR Protocol and NEAR BOS to display paid content",
-                "image": {
-                    "ipfs_cid": "bafkreif7roycllkswl2sveqpt4zbzce3e4vjasr756bdh4a2334i55upnq"
-                }
-            }
+    "is_purchased": false
+  },
+  "CONTRACT_ADDRESS": "app.paywall.near",
+  "handleClose": null,
+  "createUserLink": null,
+  "deleteUserLink": null,
+  "enableEditMode": null,
+  "disableEditMode": null,
+  "notify": null,
+  "apps": [
+    {
+      "id": "bos.dapplets.near/app/Paywall",
+      "metadata": {
+        "name": "Paywall",
+        "description": "The Paywall Dapplet seamlessly integrates with Twitter, utilizing the NEAR Protocol and NEAR BOS to display paid content",
+        "image": {
+          "ipfs_cid": "bafkreif7roycllkswl2sveqpt4zbzce3e4vjasr756bdh4a2334i55upnq"
         }
-    ],
-    "show": true,
-    "handleOnMouseLeave": null,
-    "handleOpenMenu": null,
-    "onSelect": null,
-    "handleCloseMenu": null,
-    "src": "bos.dapplets.near/widget/Dog",
-    "top": true,
-    "onClick": null,
-    "data1": "[{\"id\":\"default\",\"title\":\"You’re entering Mutable Web\",\"content\":\"\\nMutable Web is a new web3 paradigm that allows anyone to add custom functionality to existing websites and share them within your community— no matter who owns the website.\\n\\nBecome the co-owner of any website you are using!\\n\\n### Mutation switch\\n\\n![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-008.png)\\n\\nHere, you can switch between website mutations created by different communities.\\n\\n[See more examples on our playground](https://social.dapplets.org/mob.near/widget/ProfilePage?accountId=dappletsproject.near)\\n\"},{\"id\":\"bos.dapplets.near/mutation/Sandbox\",\"title\":\"Sandbox mutation\",\"content\":\"\\nPlayground where anyone can inject BOS components.\\n\\n### Widgets control element\\n\\n![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-011.png)\\n\\nEXAMPLE: every post becomes a tray where you can add new application widgets. They become visible to anyone inside your community. This is how the Mutable Web works.\\n\\n[See more examples on our playground](https://social.dapplets.org/mob.near/widget/ProfilePage?accountId=dappletsproject.near)\\n\"},{\"id\":\"bos.dapplets.near/mutation/Zoo\",\"title\":\"Zoo mutation\",\"content\":\"\\nMutation with animal icons and buttons.\\n\\n### Widgets control element\\n\\n![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-011.png)\\n\\nEXAMPLE: every post becomes a tray where you can add new application widgets. They become visible to anyone inside your community. This is how the Mutable Web works.\\n\\n[See more examples on our playground](https://social.dapplets.org/mob.near/widget/ProfilePage?accountId=dappletsproject.near)\\n\"}]"
+      }
+    }
+  ],
+  "show": true,
+  "handleOnMouseLeave": null,
+  "handleOpenMenu": null,
+  "onSelect": null,
+  "handleCloseMenu": null,
+  "src": "bos.dapplets.near/widget/Dog",
+  "top": true,
+  "onClick": null,
+  "data1": "[{\"id\":\"default\",\"title\":\"You’re entering Mutable Web\",\"content\":\"\\nMutable Web is a new web3 paradigm that allows anyone to add custom functionality to existing websites and share them within your community— no matter who owns the website.\\n\\nBecome the co-owner of any website you are using!\\n\\n### Mutation switch\\n\\n![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-008.png)\\n\\nHere, you can switch between website mutations created by different communities.\\n\\n[See more examples on our playground](https://social.dapplets.org/mob.near/widget/ProfilePage?accountId=dappletsproject.near)\\n\"},{\"id\":\"bos.dapplets.near/mutation/Sandbox\",\"title\":\"Sandbox mutation\",\"content\":\"\\nPlayground where anyone can inject BOS components.\\n\\n### Widgets control element\\n\\n![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-011.png)\\n\\nEXAMPLE: every post becomes a tray where you can add new application widgets. They become visible to anyone inside your community. This is how the Mutable Web works.\\n\\n[See more examples on our playground](https://social.dapplets.org/mob.near/widget/ProfilePage?accountId=dappletsproject.near)\\n\"},{\"id\":\"bos.dapplets.near/mutation/Zoo\",\"title\":\"Zoo mutation\",\"content\":\"\\nMutation with animal icons and buttons.\\n\\n### Widgets control element\\n\\n![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-011.png)\\n\\nEXAMPLE: every post becomes a tray where you can add new application widgets. They become visible to anyone inside your community. This is how the Mutable Web works.\\n\\n[See more examples on our playground](https://social.dapplets.org/mob.near/widget/ProfilePage?accountId=dappletsproject.near)\\n\"}]"
 }

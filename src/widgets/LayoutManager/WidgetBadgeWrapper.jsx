@@ -4,8 +4,10 @@ const [isWaiting, setIsWaiting] = useState(false)
 
 const handleRemoveWidget = (linkId) => {
   setIsWaiting(true)
-  deleteUserLink(linkId).then(() => setIsWaiting(false)).catch(() => setIsWaiting(false));
-};
+  deleteUserLink(linkId)
+    .then(() => setIsWaiting(false))
+    .catch(() => setIsWaiting(false))
+}
 
 const WidgetBadgeWrapper = styled.div`
   position: absolute;
@@ -20,36 +22,32 @@ const WidgetBadgeWrapper = styled.div`
   border-radius: 50%;
   top: -2px;
   backdrop-filter: blur(1px);
-`;
+`
 
 return (
   <WidgetBadgeWrapper
-    className={
-      widget.linkAuthorId === context.accountId && !widget.static
-        ? "WidgetHover"
-        : ""
-    }
+    className={widget.linkAuthorId === context.accountId && !widget.static ? 'WidgetHover' : ''}
     title={
       widget.linkAuthorId === context.accountId && !widget.static
-        ? `Remove ${widget.src.split("widget/").pop()}`
-        : "disable in edit mode"
+        ? `Remove ${widget.src.split('widget/').pop()}`
+        : 'disable in edit mode'
     }
     style={{
-      opacity:
-        widget.linkAuthorId === context.accountId && !widget.static ? "1" : "0",
+      opacity: widget.linkAuthorId === context.accountId && !widget.static ? '1' : '0',
     }}
   >
-    {widget.linkAuthorId === context.accountId && !widget.static ? isWaiting ? (
-      <span role="status" aria-hidden="true" class="spinner-grow spinner-grow-sm" />
-    ) : (
-      <Widget
-       loading={<></>}
-        src="${REPL_ACCOUNT}/widget/LayoutManager.DeleteWidgetButton"
-        props={{
-          onClick: () => handleRemoveWidget(widget.linkId),
-        }}
-      />
-    ) : // <Widget src="${REPL_ACCOUNT}/widget/LayoutManager.LockedWidgetBadge" />
-    null}
+    {widget.linkAuthorId === context.accountId && !widget.static ? (
+      isWaiting ? (
+        <span role="status" aria-hidden="true" class="spinner-grow spinner-grow-sm" />
+      ) : (
+        <Widget
+          loading={<></>}
+          src="${REPL_ACCOUNT}/widget/LayoutManager.DeleteWidgetButton"
+          props={{
+            onClick: () => handleRemoveWidget(widget.linkId),
+          }}
+        />
+      ) // <Widget src="${REPL_ACCOUNT}/widget/LayoutManager.LockedWidgetBadge" />
+    ) : null}
   </WidgetBadgeWrapper>
 )

@@ -13,28 +13,23 @@ const WidgetBadgeWrapper = styled.div`
   border-radius: 50%;
   top: -2px;
   backdrop-filter: blur(1px);
-`;
+`
 
 return (
   <WidgetBadgeWrapper
-    className={
-      widget.linkAuthorId === context.accountId
-        ? "WidgetHover"
-        : ""
-    }
+    className={widget.linkAuthorId === context.accountId ? 'WidgetHover' : ''}
     title={
       widget.linkAuthorId === context.accountId
-        ? `Remove ${widget.src.split("widget/").pop()}`
-        : "disable in edit mode"
+        ? `Remove ${widget.src.split('widget/').pop()}`
+        : 'disable in edit mode'
     }
     style={{
-      opacity:
-        widget.linkAuthorId === context.accountId ? "1" : "0",
+      opacity: widget.linkAuthorId === context.accountId ? '1' : '0',
     }}
   >
     {widget.linkAuthorId === context.accountId ? (
       <Widget
-       loading={<></>}
+        loading={<></>}
         src="${REPL_ACCOUNT}/widget/LayoutManager.DeleteWidgetButton"
         props={{
           onClick: () => deleteUserLink(widget.linkId),

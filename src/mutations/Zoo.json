@@ -6,11 +6,7 @@
       "ipfs_cid": "bafkreie4tum66dxhl4twu6ak3d2vgtxkwc3rkoay2rriqzdwm4m2hflgwy"
     }
   },
-  "$apps": [
-    "${REPL_ACCOUNT}/app/Cat",
-    "${REPL_ACCOUNT}/app/Dog",
-    "${REPL_ACCOUNT}/app/Capybara"
-  ],
+  "$apps": ["${REPL_ACCOUNT}/app/Cat", "${REPL_ACCOUNT}/app/Dog", "${REPL_ACCOUNT}/app/Capybara"],
   "$targets": [
     {
       "namespace": "engine",

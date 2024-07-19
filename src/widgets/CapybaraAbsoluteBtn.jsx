@@ -1,20 +1,20 @@
 return (
   <button
     style={{
-      position: "absolute",
-      border: "none",
-      background: "none",
+      position: 'absolute',
+      border: 'none',
+      background: 'none',
       margin: 0,
       padding: 2,
-      cursor: "pointer",
+      cursor: 'pointer',
     }}
     title="Capybara 1.0"
     onClick={(e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      console.log(props);
+      e.preventDefault()
+      e.stopPropagation()
+      console.log(props)
     }}
   >
     <Widget src="${REPL_ACCOUNT}/widget/Capybara" />
   </button>
-);
+)

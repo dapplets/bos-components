@@ -26,18 +26,16 @@ const ButtonEdit = styled.button`
       stroke: #384bff;
     }
   }
-`;
+`
 
 const iconEdit = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="14"
-    height="14"
-    viewBox="0 0 14 14"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
     <path d="M12 7L2 7" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
-);
+)
 
-return <ButtonEdit style={{ top: top ? '5px' : '' }} onClick={onClick}>{iconEdit}</ButtonEdit>
+return (
+  <ButtonEdit style={{ top: top ? '5px' : '' }} onClick={onClick}>
+    {iconEdit}
+  </ButtonEdit>
+)

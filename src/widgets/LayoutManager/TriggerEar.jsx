@@ -1,4 +1,4 @@
-const { show, context } = props;
+const { show, context } = props
 
 const TriggerEar = styled.div`
   position: absolute;
@@ -16,7 +16,7 @@ const TriggerEar = styled.div`
   box-sizing: border-box;
   z-index: 79;
   transition: all 0.2s;
-`;
+`
 
 const Dots = styled.div`
   display: block;
@@ -27,7 +27,7 @@ const Dots = styled.div`
   position: relative;
 
   &:before {
-    content: "";
+    content: '';
     display: block;
     width: 2px;
     height: 2px;
@@ -38,7 +38,7 @@ const Dots = styled.div`
   }
 
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     display: block;
     width: 2px;
@@ -47,7 +47,7 @@ const Dots = styled.div`
     background: #fff;
     bottom: 4px;
   }
-`;
+`
 
 return (
   <TriggerEar
@@ -56,6 +56,6 @@ return (
     data-mweb-context-parsed={JSON.stringify({ id: context?.id })}
   >
     <Dots />
-    <div data-mweb-insertion-point="hidden" style={{ display: "none" }} />
+    <div data-mweb-insertion-point="hidden" style={{ display: 'none' }} />
   </TriggerEar>
-);
+)
