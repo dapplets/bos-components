@@ -1394,7 +1394,7 @@ if (props.type === 'callout') {
           <EditInputsBlock>
             <OptionsBlock>
               <ButtonRemove
-                disabled={navi?.currentChapterIndex + 1 === navi?.totalChapters}
+                disabled={ navi?.currentChapterIndex + 1 === navi?.totalChapters && navi?.totalChapters === 1}
                 onClick={() => {
                   onPageRemove();
                 }}
@@ -1575,7 +1575,7 @@ if (props.type === 'callout') {
               <OptionsBlock>
                 <ButtonRemove
                   disabled={
-                    navi?.currentChapterIndex + 1 === navi?.totalChapters
+                    navi?.currentChapterIndex + 1 === navi?.totalChapters && navi?.totalChapters === 1
                   }
                   onClick={() => {
                     onPageRemove();

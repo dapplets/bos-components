@@ -36,18 +36,18 @@ const newChapter = {
   },
   pages: [
     {
-      title: 'Extra Page',
+      title: '',
       status: [],
-      content: 'This is a new chapter added dynamically.',
+      content: '',
     },
   ],
   skin: 'META_GUIDE',
 };
 
 const newPage = {
-  title: 'Extra Page',
+  title: '',
   status: [],
-  content: 'This is an extra page added dynamically.',
+  content: '',
 };
 
 const response = Near.view('app.webguide.near', 'get_guide', {
