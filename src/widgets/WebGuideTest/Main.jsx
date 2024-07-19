@@ -192,14 +192,27 @@ const handlePageRemove = () => {
     updatedConfig.chapters[chapterCounter].pages[pageCounter]
   ) {
     updatedConfig.chapters[chapterCounter].pages.splice(pageCounter, 1);
-    const newPageCounter = pageCounter > 0 ? pageCounter - 1 : 0;
-    setPageCounter(newPageCounter);
+
+    if (updatedConfig.chapters[chapterCounter].pages.length === 0) {
+      updatedConfig.chapters.splice(chapterCounter, 1);
+
+      if (chapterCounter >= updatedConfig.chapters.length) {
+        setChapterCounter((prev) => (prev > 0 ? prev - 1 : 0));
+      }
+    } else {
+      const newPageCounter =
+        pageCounter >= updatedConfig.chapters[chapterCounter].pages.length
+          ? updatedConfig.chapters[chapterCounter].pages.length - 1
+          : pageCounter;
+      setPageCounter(newPageCounter);
+    }
+
     setEditingConfig(updatedConfig);
   } else {
     console.error(
       'Chapter or page not found at the specified index:',
-      chapterIndex,
-      pageIndex
+      chapterCounter,
+      pageCounter
     );
   }
 };
