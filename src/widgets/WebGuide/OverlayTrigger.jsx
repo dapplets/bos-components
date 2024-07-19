@@ -1,17 +1,17 @@
-const CustomTooltipDefault = styled("DappletTooltip")`
+const CustomTooltipDefault = styled('DappletTooltip')`
   z-index: 99999999; // over the notch
 
-  &[data-popper-reference-hidden="true"] {
+  &[data-popper-reference-hidden='true'] {
     position: fixed !important;
     left: 50% !important;
     transform: translate(-100%, 0px) !important;
   }
 
-  &.bs-tooltip-bottom[data-popper-reference-hidden="true"] {
+  &.bs-tooltip-bottom[data-popper-reference-hidden='true'] {
     top: 22px !important;
   }
 
-  &.bs-tooltip-top[data-popper-reference-hidden="true"] {
+  &.bs-tooltip-top[data-popper-reference-hidden='true'] {
     bottom: 22px !important;
   }
 
@@ -54,20 +54,20 @@ const CustomTooltipDefault = styled("DappletTooltip")`
   }
 `
 
-const CustomTooltipMeta = styled("DappletTooltip")`
+const CustomTooltipMeta = styled('DappletTooltip')`
   z-index: 99999999; // over the notch
 
-  &[data-popper-reference-hidden="true"] {
+  &[data-popper-reference-hidden='true'] {
     position: fixed !important;
     left: 50% !important;
     transform: translate(-100%, 0px) !important;
   }
 
-  &.bs-tooltip-bottom[data-popper-reference-hidden="true"] {
+  &.bs-tooltip-bottom[data-popper-reference-hidden='true'] {
     top: 22px !important;
   }
 
-  &.bs-tooltip-top[data-popper-reference-hidden="true"] {
+  &.bs-tooltip-top[data-popper-reference-hidden='true'] {
     bottom: 22px !important;
   }
 
@@ -127,7 +127,8 @@ const InfoBox = styled.div`
   gap: 20px;
   z-index: 1000;
   box-shadow: none;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   align-items: center;
   justify-content: center;
 
@@ -155,11 +156,13 @@ const Callout = styled.div`
   border-radius: 10px;
   border: 1px solid ${(props) => props.$border};
   background: ${(props) => props.$bg};
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 `
 
 const Header = styled.div`
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   color: ${(props) => props.$col};
   position: relative;
   display: flex;
@@ -232,9 +235,10 @@ const Close = styled.button`
 const Title = styled.div`
   padding: 0;
   margin: 0 0 -10px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   color: ${(props) => props.$col};
-  font-size: ${(props) => (props.$type === "infobox" ? "32px" : "18px")};
+  font-size: ${(props) => (props.$type === 'infobox' ? '32px' : '18px')};
   font-style: normal;
   font-weight: 600;
   line-height: 149%;
@@ -251,18 +255,18 @@ const WrapperAlert = styled.div`
   width: 100%;
   margin-right: auto;
   background: ${(props) =>
-    props.$status === "warning"
+    props.$status === 'warning'
       ? props.$bgWarning
-      : props.$status === "error"
-      ? props.$bgError
-      : props.$bgInfo};
+      : props.$status === 'error'
+        ? props.$bgError
+        : props.$bgInfo};
 
   color: ${(props) =>
-    props.$status === "warning"
+    props.$status === 'warning'
       ? props.$colWarning
-      : props.$status === "error"
-      ? props.$colError
-      : props.$colInfo};
+      : props.$status === 'error'
+        ? props.$colError
+        : props.$colInfo};
 
   outline: none;
 `
@@ -296,7 +300,8 @@ const Card = styled.div`
   border: none;
   border-radius: 20px;
   background: ${(props) => props.$bg};
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   overflow-x: hidden;
 `
 
@@ -307,7 +312,8 @@ const MarkdownWrapper = styled.div`
   h3 {
     padding: 8px 0 0;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+      'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
@@ -333,8 +339,9 @@ const MarkdownWrapper = styled.div`
 
   p {
     margin-block-start: 0.5em;
-    margin-block-end: .5em;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    margin-block-end: 0.5em;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+      'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -348,7 +355,8 @@ const MarkdownWrapper = styled.div`
   a {
     padding: 0;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+      'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -371,7 +379,7 @@ const Footer = styled.div`
 
 const ContainerCheckbox = styled.div`
   display: flex;
-  align-items: ${(props) => (props.$type === "infobox" ? "flex-end" : "flex-start")};
+  align-items: ${(props) => (props.$type === 'infobox' ? 'flex-end' : 'flex-start')};
 `
 
 const CheckboxInput = styled.input`
@@ -393,8 +401,8 @@ const Label = styled.label`
 
 const ActionsGroup = styled.div`
   display: flex;
-  flex-direction: ${(props) => (props.$type === "infobox" ? "row-reverse" : "row")};
-  justify-content: ${(props) => (props.$type === "infobox" ? "space-between" : "center")};;
+  flex-direction: ${(props) => (props.$type === 'infobox' ? 'row-reverse' : 'row')};
+  justify-content: ${(props) => (props.$type === 'infobox' ? 'space-between' : 'center')};
   align-items: center;
   gap: 10px;
   align-self: stretch;
@@ -413,8 +421,8 @@ const ActionButton = styled.div`
   text-align: center;
   font-size: 14px;
   cursor: pointer;
-  border: ${(props) => (props.$primary ? "initial" : `1px solid ${props.$secBorderCol}`)};
-  background: ${(props) => (props.$primary ? props.$primBg : "initial")};
+  border: ${(props) => (props.$primary ? 'initial' : `1px solid ${props.$secBorderCol}`)};
+  background: ${(props) => (props.$primary ? props.$primBg : 'initial')};
   color: ${(props) => (props.$primary ? props.$primCol : props.$secCol)};
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
@@ -431,13 +439,7 @@ const ActionButton = styled.div`
 `
 
 const iconClose = (color) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
     <path
       d="M18 6L6 18"
       stroke={color}
@@ -456,13 +458,7 @@ const iconClose = (color) => (
 )
 
 const errorIcon = (color) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="20"
-    viewBox="0 0 20 20"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
     <g clipPath="url(#clip0_358_97)">
       <path
         d="M6.54996 1.66666H13.45L18.3333 6.54999V13.45L13.45 18.3333H6.54996L1.66663 13.45V6.54999L6.54996 1.66666Z"
@@ -495,13 +491,7 @@ const errorIcon = (color) => (
 )
 
 const infoIcon = (color) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="20"
-    viewBox="0 0 20 20"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
     <g clipPath="url(#clip0_358_90)">
       <path
         d="M9.99996 18.3333C14.6023 18.3333 18.3333 14.6024 18.3333 10C18.3333 5.39763 14.6023 1.66667 9.99996 1.66667C5.39759 1.66667 1.66663 5.39763 1.66663 10C1.66663 14.6024 5.39759 18.3333 9.99996 18.3333Z"
@@ -534,13 +524,7 @@ const infoIcon = (color) => (
 )
 
 const warningIcon = (color) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="20"
-    viewBox="0 0 20 20"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
     <path
       d="M8.57502 3.21665L1.51668 15C1.37116 15.252 1.29416 15.5377 1.29334 15.8288C1.29253 16.1198 1.36793 16.4059 1.51204 16.6588C1.65615 16.9116 1.86396 17.1223 2.11477 17.2699C2.36559 17.4174 2.65068 17.4968 2.94168 17.5H17.0583C17.3494 17.4968 17.6344 17.4174 17.8853 17.2699C18.1361 17.1223 18.3439 16.9116 18.488 16.6588C18.6321 16.4059 18.7075 16.1198 18.7067 15.8288C18.7059 15.5377 18.6289 15.252 18.4834 15L11.425 3.21665C11.2765 2.97174 11.0673 2.76925 10.8177 2.62872C10.5681 2.48819 10.2865 2.41437 10 2.41437C9.71357 2.41437 9.43196 2.48819 9.18235 2.62872C8.93275 2.76925 8.72358 2.97174 8.57502 3.21665Z"
       stroke={color}
@@ -573,43 +557,43 @@ const themes = {
     border: '#02193a',
     cardBg: 'rgba(248, 249, 255, 1)',
 
-    navActive: "#384BFF",
-    navInactiveBg: "#E3E3E3",
+    navActive: '#384BFF',
+    navInactiveBg: '#E3E3E3',
     navInactiveBorder: 'none',
 
-    statusInfoCol: "#246EFD",
-    statusWarningCol: "#D0911A",
-    statusErrorCol: "#DB504A",
-    statusInfoBg: "rgba(234, 241, 255, 1)",
-    statusWarningBg: "rgba(255, 248, 235, 1)",
-    statusErrorBg: "rgba(246, 240, 246, 1)",
+    statusInfoCol: '#246EFD',
+    statusWarningCol: '#D0911A',
+    statusErrorCol: '#DB504A',
+    statusInfoBg: 'rgba(234, 241, 255, 1)',
+    statusWarningBg: 'rgba(255, 248, 235, 1)',
+    statusErrorBg: 'rgba(246, 240, 246, 1)',
 
     primBtnCol: 'white',
     primBtnBg: '#02193a',
-    primBtnBgH: "#1c3559",
-    primBtnBgA: "#020c19",
+    primBtnBgH: '#1c3559',
+    primBtnBgA: '#020c19',
     secBtnCol: '#02193a',
     secBtnBorderCol: '#E2E2E5',
-    secBtnBgH: "#eee",
-    secBtnBgA: "#ddd",
+    secBtnBgH: '#eee',
+    secBtnBgA: '#ddd',
   },
-  'META_GUIDE': {
+  META_GUIDE: {
     bgMain: '#4E77E1',
     colorMain: 'white',
     colorP: 'rgba(248, 249, 255, 1)',
     border: '#4E77E1',
     cardBg: 'rgba(255, 255, 255, 0.1)',
 
-    navActive: "white",
-    navInactiveBg: "#4E77E1",
+    navActive: 'white',
+    navInactiveBg: '#4E77E1',
     navInactiveBorder: 'white',
 
-    statusInfoCol: "white",
-    statusWarningCol: "white",
-    statusErrorCol: "white",
-    statusInfoBg: "rgba(255, 255, 255, 0.2)",
-    statusWarningBg: "rgba(255, 255, 255, 0.2)",
-    statusErrorBg: "rgba(255, 255, 255, 0.2)",
+    statusInfoCol: 'white',
+    statusWarningCol: 'white',
+    statusErrorCol: 'white',
+    statusInfoBg: 'rgba(255, 255, 255, 0.2)',
+    statusWarningBg: 'rgba(255, 255, 255, 0.2)',
+    statusErrorBg: 'rgba(255, 255, 255, 0.2)',
 
     primBtnCol: '#4E77E1',
     primBtnBgH: 'rgb(242 243 255)',
@@ -643,8 +627,8 @@ const header = (
       {navi ? (
         <>
           <PagesIndicators>
-            {navi.totalPages > 1 && [...Array(navi?.totalPages)].map(
-              (_, index) => (
+            {navi.totalPages > 1 &&
+              [...Array(navi?.totalPages)].map((_, index) => (
                 <Navi
                   key={index}
                   $active={index == navi?.currentPageIndex ? true : false}
@@ -652,8 +636,7 @@ const header = (
                   $navInactiveBg={themes[skin].navInactiveBg}
                   $navInactiveBorder={themes[skin].navInactiveBorder}
                 />
-              )
-            )}
+              ))}
           </PagesIndicators>
           <CalloutHeaderCaption $col={themes[skin].colorMain}>
             Step {navi?.currentChapterIndex + 1} of {navi?.totalChapters}
@@ -675,11 +658,11 @@ const statuses = (
     $bgError={themes[skin].statusErrorBg}
   >
     <IconAlert>
-      {props.status.type === "warning"
+      {props.status.type === 'warning'
         ? warningIcon(themes[skin].statusWarningCol)
-        : props.status.type === "error"
-        ? errorIcon(themes[skin].statusErrorCol)
-        : infoIcon(themes[skin].statusInfoCol)}
+        : props.status.type === 'error'
+          ? errorIcon(themes[skin].statusErrorCol)
+          : infoIcon(themes[skin].statusInfoCol)}
     </IconAlert>
     <TextAlert>{props.status.text}</TextAlert>
   </WrapperAlert>
@@ -687,11 +670,7 @@ const statuses = (
 
 const checkbox = (
   <ContainerCheckbox $type={props.type}>
-    <CheckboxInput
-      type="checkbox"
-      checked={checked}
-      onChange={onDoNotShowChange}
-    />
+    <CheckboxInput type="checkbox" checked={checked} onChange={onDoNotShowChange} />
     <Label htmlFor="checkbox">Don't show this guide again</Label>
   </ContainerCheckbox>
 )
@@ -699,7 +678,7 @@ const checkbox = (
 const actionButton = (btn) => (
   <ActionButton
     key={btn.label}
-    $primary={btn.variant == "primary" ? true : false}
+    $primary={btn.variant == 'primary' ? true : false}
     $primCol={themes[skin].primBtnCol}
     $primBg={themes[skin].primBtnBg}
     $primBgH={themes[skin].primBtnBgH}
@@ -716,67 +695,58 @@ const actionButton = (btn) => (
 )
 
 const navButtons = !buttons ? null : props.type === 'callout' ? (
-  <ActionsGroup $type={props.type}>
-    {buttons.map((btn) => actionButton(btn))}
-  </ActionsGroup>
+  <ActionsGroup $type={props.type}>{buttons.map((btn) => actionButton(btn))}</ActionsGroup>
 ) : buttons?.length > 1 ? (
   <ActionsGroup $type={props.type}>
     {actionButton(buttons[1])}
     {actionButton(buttons[0])}
   </ActionsGroup>
 ) : buttons?.length === 1 ? (
-  <ActionsGroup $type={props.type}>
-    {actionButton(buttons[0])}
-  </ActionsGroup>
-) : <></>
+  <ActionsGroup $type={props.type}>{actionButton(buttons[0])}</ActionsGroup>
+) : (
+  <></>
+)
 
 const callout = (
-  <Callout 
-    data-mweb-context-type="wg-chapter" 
+  <Callout
+    data-mweb-context-type="wg-chapter"
     data-mweb-context-parsed={JSON.stringify({ id: props.id })}
     $border={themes[skin].border}
     $bg={themes[skin].bgMain}
   >
     {header}
     {props.status?.text ? statuses : null}
-    {title ? (<Title $type={props.type} $col={themes[skin].colorMain}>
-      {title}
-    </Title>) : null}
+    {title ? (
+      <Title $type={props.type} $col={themes[skin].colorMain}>
+        {title}
+      </Title>
+    ) : null}
     <MarkdownWrapper $colH={themes[skin].colorMain} $colP={themes[skin].colorP}>
-      <Markdown text={content}/>
+      <Markdown text={content} />
     </MarkdownWrapper>
     {showChecked ? checkbox : null}
     {navButtons}
-    <div data-mweb-insertion-point="hidden" style={{ display: 'none' }}/>
+    <div data-mweb-insertion-point="hidden" style={{ display: 'none' }} />
   </Callout>
 )
 
 const calloutTooltip = {
-  DEFAULT: (
-    <CustomTooltipDefault bsPrefix="wg-tooltip">
-      {callout}
-    </CustomTooltipDefault>
-  ),
-  'META_GUIDE': (
-    <CustomTooltipMeta bsPrefix="wg-tooltip">
-      {callout}
-    </CustomTooltipMeta>
-  ),
+  DEFAULT: <CustomTooltipDefault bsPrefix="wg-tooltip">{callout}</CustomTooltipDefault>,
+  META_GUIDE: <CustomTooltipMeta bsPrefix="wg-tooltip">{callout}</CustomTooltipMeta>,
 }
 
 const infobox = (
-  <InfoBox
-    $border={themes[skin].border}
-    $bg={themes[skin].bgMain}
-  >
+  <InfoBox $border={themes[skin].border} $bg={themes[skin].bgMain}>
     {header}
-    {title ? (<Title $type={props.type} $col={themes[skin].colorMain}>
-      {title}
-    </Title>) : null}
+    {title ? (
+      <Title $type={props.type} $col={themes[skin].colorMain}>
+        {title}
+      </Title>
+    ) : null}
     <Card $bg={themes[skin].cardBg}>
       {props.status?.text ? statuses : null}
       <MarkdownWrapper $colH={themes[skin].colorMain} $colP={themes[skin].colorP}>
-        <Markdown text={content}/>
+        <Markdown text={content} />
       </MarkdownWrapper>
     </Card>
     <Footer>
@@ -791,15 +761,11 @@ const overlayByType = {
     <DappletOverlayTrigger
       show={true}
       overlay={calloutTooltip[skin]}
-      placement={props.placement ?? "auto"}
+      placement={props.placement ?? 'auto'}
       offset={[0, 20]}
       popperConfig={{ strategy: props.strategy ?? 'absolute' }}
     >
-      {typeof props.children === "function" ? (
-        props.children
-      ) : (
-        <span>{props.children}</span>
-      )}
+      {typeof props.children === 'function' ? props.children : <span>{props.children}</span>}
     </DappletOverlayTrigger>
   ),
   infobox,

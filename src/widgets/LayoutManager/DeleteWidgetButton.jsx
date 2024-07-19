@@ -1,11 +1,5 @@
 const RemoveIcon = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="14"
-    height="14"
-    viewBox="0 0 14 14"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
     <circle cx="7" cy="7" r="6.5" stroke="white" />
     <path
       d="M9.24976 4.75L4.74999 9.24977"
@@ -22,7 +16,7 @@ const RemoveIcon = (
       strokeLinejoin="round"
     />
   </svg>
-);
+)
 
 const RemoveAction = styled.div`
   position: relative;
@@ -51,24 +45,23 @@ const RemoveAction = styled.div`
   animation: translateAnimationBtn 0.5s linear forwards;
   transition: all 0.3s;
   svg {
-    cursor:pointer;
+    cursor: pointer;
     height: 100%;
     width: 100%;
     position: absolute;
     left: 0;
     bottom: 0;
     box-sizing: border-box;
-     transition: all 0.3s;
-      &:nth-child(1){
-           fill: #DB504A; 
-        }
-     &:hover {
-          &:nth-child(1){
-           fill: #8F1914; 
-        }
-  }
+    transition: all 0.3s;
+    &:nth-child(1) {
+      fill: #db504a;
     }
-   
-`;
+    &:hover {
+      &:nth-child(1) {
+        fill: #8f1914;
+      }
+    }
+  }
+`
 
-return <RemoveAction onClick={props.onClick}>{RemoveIcon}</RemoveAction>;
+return <RemoveAction onClick={props.onClick}>{RemoveIcon}</RemoveAction>

@@ -45,13 +45,7 @@ return (
       fill="#000000"
     ></path>
 
-    <g
-      fill="none"
-      stroke="#9e9e9e"
-      strokeWidth="3"
-      strokeLinecap="round"
-      strokeMiterlimit="10"
-    >
+    <g fill="none" stroke="#9e9e9e" strokeWidth="3" strokeLinecap="round" strokeMiterlimit="10">
       <path d="M6.7 71.03c.34.41 4.41.35 14.36 5.07"></path>
 
       <path d="M2.9 82.86s6.42-2.24 17.46-.28"></path>
@@ -82,4 +76,4 @@ return (
       fill="#000000"
     ></path>
   </svg>
-);
+)

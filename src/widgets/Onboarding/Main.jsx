@@ -7,26 +7,26 @@ const [showFrom, setShowFrom] = useState(0)
 
 const response = Near.view('app.webguide.near', 'get_guide', { guide_id: props?.link?.id })
 const data = response && JSON.parse(response)
-const lastShow = data && data?.reduce((acc, chapter) => {
-  acc[chapter.id] = Storage.privateGet(chapter.id + '/lastShow')
-  return acc
-}, {})
+const lastShow =
+  data &&
+  data?.reduce((acc, chapter) => {
+    acc[chapter.id] = Storage.privateGet(chapter.id + '/lastShow')
+    return acc
+  }, {})
 
 useEffect(() => {
   if (
-    !start && (
-      lastShow === null || (
-        lastShow && Object.values(lastShow).every(a => a === null)
-      )
-    )
-  ) return;
+    !start &&
+    (lastShow === null || (lastShow && Object.values(lastShow).every((a) => a === null)))
+  )
+    return
   // here if (start || (lastShow && Object.values(lastShow).some(a => a !== null))) -- ToDo: replace?
 
   if (!start) {
     setStart(true)
     return
   }
-  
+
   // *** DISPLAY LOGIC ***
 
   if (lastShow) {
@@ -79,15 +79,18 @@ useEffect(() => {
     setShow(true)
   } else if (lastShow && Object.values(lastShow).some((a) => a === undefined || a?.show)) {
     // with sort - some chapters have been displayed or new
-    data.sort(
-      (a, b) =>
-        !lastShow[a.id] && !lastShow[b.id]
-          ? 0
-          : !lastShow[a.id]
-            ? lastShow[b.id].show ? 0 : 1
-            : !lastShow[b.id]
-              ? lastShow[a.id].show ? 0 : -1
-              : lastShow[a.id].show - lastShow[b.id].show
+    data.sort((a, b) =>
+      !lastShow[a.id] && !lastShow[b.id]
+        ? 0
+        : !lastShow[a.id]
+          ? lastShow[b.id].show
+            ? 0
+            : 1
+          : !lastShow[b.id]
+            ? lastShow[a.id].show
+              ? 0
+              : -1
+            : lastShow[a.id].show - lastShow[b.id].show
     )
     const index = Object.values(lastShow).filter((a) => a && !a.show)?.length
     setShowFrom(index)
@@ -136,7 +139,7 @@ const Onboarding = styled.div`
       transform: translate(-50%, -50%);
     }
   }
-`;
+`
 
 const handleClose = (isDoNotShowAgainChecked, viewedPages) => {
   if (data) {
@@ -144,16 +147,16 @@ const handleClose = (isDoNotShowAgainChecked, viewedPages) => {
     const mutation = data.find((ch) => ch?.id.includes('mutation'))?.id
     data.forEach((chapter) => {
       const isViewed = !!(viewedPages.includes(chapter.id) || lastShow[chapter.id].isViewed)
-      const doNotShowAgain = !!((isDoNotShowAgainChecked && viewedPages.includes(chapter.id)) || lastShow[chapter.id].doNotShowAgain)
-      Storage.privateSet(
-        chapter.id + '/lastShow',
-        {
-          time,
-          doNotShowAgain,
-          mutation,
-          isViewed,
-        }
+      const doNotShowAgain = !!(
+        (isDoNotShowAgainChecked && viewedPages.includes(chapter.id)) ||
+        lastShow[chapter.id].doNotShowAgain
       )
+      Storage.privateSet(chapter.id + '/lastShow', {
+        time,
+        doNotShowAgain,
+        mutation,
+        isViewed,
+      })
     })
   }
   setShow(false)
@@ -161,14 +164,10 @@ const handleClose = (isDoNotShowAgainChecked, viewedPages) => {
 
 const saveData = (inputData) => {
   if (context?.accountId) {
-    Near.call(
-      'app.webguide.near',
-      'set_guide',
-      {
-        guide_id: props.link.id,
-        data: inputData,
-      }
-    )
+    Near.call('app.webguide.near', 'set_guide', {
+      guide_id: props.link.id,
+      data: inputData,
+    })
   }
 }
 
@@ -178,7 +177,7 @@ return (
       <DappletOverlay>
         <Onboarding>
           <Widget
-           loading={<></>}
+            loading={<></>}
             props={{
               handleClose,
               data,
@@ -186,7 +185,7 @@ return (
               setShow,
               link: props.link,
               showFrom,
-              oldRawData: response
+              oldRawData: response,
             }}
             src="${REPL_ACCOUNT}/widget/Onboarding.SandboxOnboarding"
           />

@@ -12,7 +12,7 @@ const ChapterWrapper = (props) => {
       setPreviousAdapter(selectedAdapter)
       setSelectedAdapter('')
     },
-    content:`
+    content: `
 **ID:** ${selectedContext.id}
 
 **Context type:** ${selectedContext.type}
@@ -27,13 +27,13 @@ ${JSON.stringify(selectedContext.parsed, null, 2)}
 `,
     skin: 'META_GUIDE',
     children: ({ ref }) => {
-      props.attachContextRef(ref);
-      return props.children;
-    }
+      props.attachContextRef(ref)
+      return props.children
+    },
   }
   return (
     <Widget
-      src='bos.dapplets.near/widget/WebGuide.OverlayTrigger'
+      src="bos.dapplets.near/widget/WebGuide.OverlayTrigger"
       loading={props?.children}
       props={widgetProps}
     />
@@ -45,30 +45,32 @@ return (
     {/* ACTION */}
     <DappletPortal
       target={{
-        namespace: "mweb",
-        contextType: "mweb-overlay",
-        injectTo: "mweb-actions-panel",
-        if: { id: { eq: "mweb-overlay" } },
-        arrowTo: "context",
+        namespace: 'mweb',
+        contextType: 'mweb-overlay',
+        injectTo: 'mweb-actions-panel',
+        if: { id: { eq: 'mweb-overlay' } },
+        arrowTo: 'context',
       }}
-      component={() => <Widget
-        src='bos.dapplets.near/widget/WebGuide.Action'
-        props={{
-          appId: 'picker-adapter-tester',
-          tooltip: isRunnigApp ? 'Stop Picker Adapter Tester' : 'Run Picker Adapter Tester',
-          isActive: isRunnigApp,
-          children: (<p>PAT</p>),
-          handleAction: () => {
-            if (isRunnigApp) {
-              setPreviousAdapter(selectedAdapter)
-              setSelectedAdapter('')
-            } else {
-              setSelectedAdapter('')
-              toggleIsRunningApp(true)
-            }
-          },
-        }}
-      />}
+      component={() => (
+        <Widget
+          src="bos.dapplets.near/widget/WebGuide.Action"
+          props={{
+            appId: 'picker-adapter-tester',
+            tooltip: isRunnigApp ? 'Stop Picker Adapter Tester' : 'Run Picker Adapter Tester',
+            isActive: isRunnigApp,
+            children: <p>PAT</p>,
+            handleAction: () => {
+              if (isRunnigApp) {
+                setPreviousAdapter(selectedAdapter)
+                setSelectedAdapter('')
+              } else {
+                setSelectedAdapter('')
+                toggleIsRunningApp(true)
+              }
+            },
+          }}
+        />
+      )}
     />
 
     {/* INPUT */}
@@ -77,11 +79,11 @@ return (
         target={{
           namespace: 'mweb',
           contextType: 'mweb-overlay-action',
-          if: { id: { eq: "web-guide-action-picker-adapter-tester" } }
+          if: { id: { eq: 'web-guide-action-picker-adapter-tester' } },
         }}
         component={(props) => (
           <Widget
-            src='bos.dapplets.near/widget/PickerAdapterTester.OverlayTrigger'
+            src="bos.dapplets.near/widget/PickerAdapterTester.OverlayTrigger"
             loading={props?.children}
             props={{
               handleClose: () => {
@@ -92,9 +94,9 @@ return (
               toggleIsRunningApp,
               previousData: previousAdapter,
               children: ({ ref }) => {
-                props.attachContextRef(ref);
-                return props.children;
-              }
+                props.attachContextRef(ref)
+                return props.children
+              },
             }}
           />
         )}
@@ -104,24 +106,19 @@ return (
     {/* PICKER */}
     {isRunnigApp && selectedAdapter ? (
       <DappletContextPicker
-        target={
-          [
-            {
-              namespace: selectedAdapter,
-              if: {}
-            },
-          ]
-        }
+        target={[
+          {
+            namespace: selectedAdapter,
+            if: {},
+          },
+        ]}
         onClick={setSelectedContext}
       />
     ) : null}
 
     {/* CALLOUT */}
     {isRunnigApp && selectedContext ? (
-      <DappletPortal
-        target={selectedContext}
-        component={ChapterWrapper}
-      />
+      <DappletPortal target={selectedContext} component={ChapterWrapper} />
     ) : null}
   </>
 )

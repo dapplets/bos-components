@@ -1,49 +1,43 @@
-const widgets = props.widgets ?? [];
-const apps = props.apps ?? [];
-const {
-  context,
-  isEditMode,
-  createUserLink,
-  deleteUserLink,
-  enableEditMode,
-  disableEditMode,
-} = props;
+const widgets = props.widgets ?? []
+const apps = props.apps ?? []
+const { context, isEditMode, createUserLink, deleteUserLink, enableEditMode, disableEditMode } =
+  props
 
 State.init({
   show: false,
   showMenu: false,
   waitingAppIdsSet: new Set(),
-});
+})
 
-const handleOnMouseEnter = () => State.update({ show: true });
+const handleOnMouseEnter = () => State.update({ show: true })
 
 const handleOnMouseLeave = () => {
-  state.showMenu ? null : isEditMode ? null : State.update({ show: false });
-};
+  state.showMenu ? null : isEditMode ? null : State.update({ show: false })
+}
 
-const handleOpenMenu = () => State.update({ showMenu: true, show: false });
+const handleOpenMenu = () => State.update({ showMenu: true, show: false })
 
-const handleCloseMenu = () => State.update({ showMenu: false, show: false });
+const handleCloseMenu = () => State.update({ showMenu: false, show: false })
 
 const handleSelectComponent = (app) => {
-  State.update({ waitingAppIdsSet: state.waitingAppIdsSet.add(app.id) });
+  State.update({ waitingAppIdsSet: state.waitingAppIdsSet.add(app.id) })
   createUserLink(app.id)
     .then(() => {
-      const waitingAppIdsSet = state.waitingAppIdsSet;
-      waitingAppIdsSet.delete(app.id);
-      State.update({ waitingAppIdsSet });
+      const waitingAppIdsSet = state.waitingAppIdsSet
+      waitingAppIdsSet.delete(app.id)
+      State.update({ waitingAppIdsSet })
     })
     .catch(() => {
-      const waitingAppIdsSet = state.waitingAppIdsSet;
-      waitingAppIdsSet.delete(app.id);
-      State.update({ waitingAppIdsSet });
-    });
-};
+      const waitingAppIdsSet = state.waitingAppIdsSet
+      waitingAppIdsSet.delete(app.id)
+      State.update({ waitingAppIdsSet })
+    })
+}
 
 const OverlayTriggerWrapper = styled.div`
   display: flex;
   z-index: 500;
-`;
+`
 
 const FloatingModal = styled.div`
   position: absolute;
@@ -61,7 +55,7 @@ const FloatingModal = styled.div`
       transform: translate(-50%, -50%);
     }
   }
-`;
+`
 
 return (
   <OverlayTriggerWrapper onMouseOver={handleOnMouseEnter}>
@@ -83,7 +77,7 @@ return (
           deleteUserLink,
         }}
         src="${REPL_ACCOUNT}/widget/LayoutManager.EarOpened"
-         loading={<></>}
+        loading={<></>}
       />
     ) : null}
 
@@ -99,10 +93,10 @@ return (
               waitingAppIdsSet: state.waitingAppIdsSet,
             }}
             src="${REPL_ACCOUNT}/widget/ComponentsSearch"
-             loading={<></>}
+            loading={<></>}
           />
         </FloatingModal>
       </DappletOverlay>
     ) : null}
   </OverlayTriggerWrapper>
-);
+)

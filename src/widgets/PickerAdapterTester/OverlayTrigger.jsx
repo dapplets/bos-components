@@ -1,20 +1,15 @@
-const {
-  handleClose,
-  setSelectedAdapter,
-  toggleIsRunningApp,
-  previousData
-} = props
+const { handleClose, setSelectedAdapter, toggleIsRunningApp, previousData } = props
 
 return (
   <DappletOverlayTrigger
     show={true}
-    popperConfig='fixed'
-    placement='left'
+    popperConfig="fixed"
+    placement="left"
     offset={[0, 45]}
-    overlay={(
+    overlay={
       <div>
         <Widget
-          src='bos.dapplets.near/widget/PickerAdapterTester.Input'
+          src="bos.dapplets.near/widget/PickerAdapterTester.Input"
           loading={props?.children}
           props={{
             handleClose,
@@ -24,12 +19,8 @@ return (
           }}
         />
       </div>
-    )}
+    }
   >
-    {typeof props.children === "function" ? (
-        props.children
-      ) : (
-        <span>{props.children}</span>
-      )}
+    {typeof props.children === 'function' ? props.children : <span>{props.children}</span>}
   </DappletOverlayTrigger>
 )

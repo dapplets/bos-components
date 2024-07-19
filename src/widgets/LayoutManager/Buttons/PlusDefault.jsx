@@ -22,13 +22,7 @@ const ButtonPlusDefault = styled.div`
 `
 
 const plusDefault = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="12"
-    height="13"
-    viewBox="0 0 12 13"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="13" viewBox="0 0 12 13" fill="none">
     <path
       d="M6 1.5V11.5"
       stroke="white"
@@ -46,10 +40,12 @@ const plusDefault = (
   </svg>
 )
 
-return <ButtonPlusDefault
-  default
-  title={!context.accountId ? 'Connect wallet' : null}
-  onClick={!context.accountId ? null : onClick}
->
-  {plusDefault}
-</ButtonPlusDefault>
+return (
+  <ButtonPlusDefault
+    default
+    title={!context.accountId ? 'Connect wallet' : null}
+    onClick={!context.accountId ? null : onClick}
+  >
+    {plusDefault}
+  </ButtonPlusDefault>
+)

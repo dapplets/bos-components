@@ -1,37 +1,37 @@
-const item = props.item;
+const item = props.item
 
 if (!item) {
-  return "";
+  return ''
 }
 
 useEffect(() => {
-  State.update({ hasDislike: null });
-}, [item]);
+  State.update({ hasDislike: null })
+}, [item])
 
-const dislikes = Social.index("dislike", item);
+const dislikes = Social.index('dislike', item)
 
-const dataLoading = dislikes === null;
+const dataLoading = dislikes === null
 
-const dislikesByUsers = {};
+const dislikesByUsers = {}
 
-(dislikes || []).forEach((dislike) => {
-  if (dislike.value.type === "dislike") {
-    dislikesByUsers[dislike.accountId] = dislike;
-  } else if (dislike.value.type === "undislike") {
-    delete dislikesByUsers[dislike.accountId];
+;(dislikes || []).forEach((dislike) => {
+  if (dislike.value.type === 'dislike') {
+    dislikesByUsers[dislike.accountId] = dislike
+  } else if (dislike.value.type === 'undislike') {
+    delete dislikesByUsers[dislike.accountId]
   }
-});
+})
 if (state.hasDislike === true) {
   dislikesByUsers[context.accountId] = {
     accountId: context.accountId,
-  };
+  }
 } else if (state.hasDislike === false) {
-  delete dislikesByUsers[context.accountId];
+  delete dislikesByUsers[context.accountId]
 }
 
-const accountsWithDislikes = Object.keys(dislikesByUsers);
-const dislikeCount = accountsWithDislikes.length;
-const hasDislike = context.accountId && !!dislikesByUsers[context.accountId];
+const accountsWithDislikes = Object.keys(dislikesByUsers)
+const dislikeCount = accountsWithDislikes.length
+const hasDislike = context.accountId && !!dislikesByUsers[context.accountId]
 
 const heartSvg = (
   <svg
@@ -49,7 +49,7 @@ const heartSvg = (
     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
     <path d="M7 13v-8a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v7a1 1 0 0 0 1 1h3a4 4 0 0 1 4 4v1a2 2 0 0 0 4 0v-5h3a2 2 0 0 0 2 -2l-1 -5a2 3 0 0 0 -2 -2h-7a3 3 0 0 0 -3 3"></path>
   </svg>
-);
+)
 
 const heartFillSvg = (
   <svg
@@ -76,7 +76,7 @@ const heartFillSvg = (
       fill="currentColor"
     ></path>
   </svg>
-);
+)
 
 const DislikeButton = styled.div`
   line-height: 20px;
@@ -91,7 +91,7 @@ const DislikeButton = styled.div`
     position: relative;
     &:before {
       margin: -8px;
-      content: "";
+      content: '';
       position: absolute;
       top: 0;
       left: 0;
@@ -123,7 +123,8 @@ const DislikeButton = styled.div`
 
   .loading {
     @keyframes scaleAnimation {
-     0%, 100% {
+      0%,
+      100% {
         transform: scale(1) rotate(0deg);
       }
       25% {
@@ -140,42 +141,42 @@ const DislikeButton = styled.div`
     transform-origin: center;
     animation: scaleAnimation 1s ease-in-out infinite;
   }
-`;
+`
 
 const dislikeClick = () => {
   if (state.loading || dataLoading || !context.accountId) {
-    return;
+    return
   }
   State.update({
     loading: true,
-  });
+  })
   const data = {
     index: {
       dislike: JSON.stringify({
         key: item,
         value: {
-          type: hasDislike ? "undislike" : "dislike",
+          type: hasDislike ? 'undislike' : 'dislike',
         },
       }),
     },
-  };
+  }
 
   if (!hasDislike && props.notifyAccountId) {
     data.index.notify = JSON.stringify({
       key: props.notifyAccountId,
       value: {
-        type: "dislike",
+        type: 'dislike',
         item,
       },
-    });
+    })
   }
   Social.set(data, {
     onCommit: () => State.update({ loading: false, hasDislike: !hasDislike }),
     onCancel: () => State.update({ loading: false }),
-  });
-};
+  })
+}
 
-const title = hasDislike ? "Undislike" : "Dislike";
+const title = hasDislike ? 'Undislike' : 'Dislike'
 
 return (
   <div className="d-inline-flex align-items-center">
@@ -184,21 +185,17 @@ return (
       title={title}
       onClick={dislikeClick}
     >
-      <span
-        className={`icon ${state.loading ? "loading " : ""}${
-          hasDislike ? "disliked" : ""
-        }`}
-      >
+      <span className={`icon ${state.loading ? 'loading ' : ''}${hasDislike ? 'disliked' : ''}`}>
         {hasDislike ? heartFillSvg : heartSvg}
       </span>
-      <span className={`count ${hasDislike ? "disliked" : ""}`}>
+      <span className={`count ${hasDislike ? 'disliked' : ''}`}>
         <Widget
-         loading={<></>}
-          loading={dislikeCount || ""}
+          loading={<></>}
+          loading={dislikeCount || ''}
           src="${REPL_NEAR_SOCIAL_OWNER}/widget/N.Overlay.Faces"
           props={{ accounts: dislikesByUsers, limit: 10 }}
         />
       </span>
     </DislikeButton>
   </div>
-);
+)
