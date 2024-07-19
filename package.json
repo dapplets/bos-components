@@ -18,7 +18,8 @@
     "dist:testnet": "node ./scripts/dist.js bos.dapplets.testnet testnet",
     "diff:mainnet": "cd build && bos components diff bos.dapplets.near network-config mainnet",
     "diff:testnet": "cd build && bos components diff bos.dapplets.testnet network-config testnet",
-    "clean": "rm -rf build"
+    "clean": "rm -rf build",
+    "format": "prettier --write ."
   },
   "repository": {
     "type": "git",
@@ -42,7 +43,8 @@
     "json-stringify-deterministic": "^1.0.12",
     "near-api-js": "^4.0.2",
     "node-fetch": "^2.7.0",
-    "social-db-js": "github:dapplets/social-db-js"
+    "social-db-js": "github:dapplets/social-db-js",
+    "prettier": "3.2.5"
   },
   "dependencies": {}
 }
