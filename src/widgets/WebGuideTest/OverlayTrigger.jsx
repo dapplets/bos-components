@@ -1172,6 +1172,7 @@ const {
   onPageAdd,
   onChapterAdd,
   onPageRemove,
+  buttonRemoveDisabled,
 } = props;
 
 // todo: new
@@ -1394,10 +1395,8 @@ if (props.type === 'callout') {
           <EditInputsBlock>
             <OptionsBlock>
               <ButtonRemove
-                disabled={ navi?.currentChapterIndex + 1 === navi?.totalChapters && navi?.totalChapters === 1}
-                onClick={() => {
-                  onPageRemove();
-                }}
+                disabled={buttonRemoveDisabled}
+                onClick={onPageRemove}
               >
                 {iconRemove} Remove
               </ButtonRemove>
@@ -1446,18 +1445,10 @@ if (props.type === 'callout') {
             </FloatingLabelContainerArea>
           </EditInputsBlock>
           <AddedBlock>
-            <AddedPageButton
-              onClick={() => {
-                onPageAdd();
-              }}
-            >
+            <AddedPageButton onClick={onPageAdd}>
               {iconPlus}Add new page
             </AddedPageButton>
-            <AddedChapterButton
-              onClick={() => {
-                onChapterAdd();
-              }}
-            >
+            <AddedChapterButton onClick={onChapterAdd}>
               {iconPlus}Add new chapter
             </AddedChapterButton>
           </AddedBlock>
@@ -1574,12 +1565,8 @@ if (props.type === 'callout') {
             <EditInputsBlock>
               <OptionsBlock>
                 <ButtonRemove
-                  disabled={
-                    navi?.currentChapterIndex + 1 === navi?.totalChapters && navi?.totalChapters === 1
-                  }
-                  onClick={() => {
-                    onPageRemove();
-                  }}
+                  disabled={buttonRemoveDisabled}
+                  onClick={onPageRemove}
                 >
                   {iconRemove} Remove
                 </ButtonRemove>
@@ -1623,18 +1610,10 @@ if (props.type === 'callout') {
               </FloatingLabelContainerArea>
             </EditInputsBlock>
             <AddedBlock>
-              <AddedPageButton
-                onClick={() => {
-                  onPageAdd();
-                }}
-              >
+              <AddedPageButton onClick={onPageAdd}>
                 {iconPlus}Add new page
               </AddedPageButton>
-              <AddedChapterButton
-                onClick={() => {
-                  onChapterAdd();
-                }}
-              >
+              <AddedChapterButton onClick={onChapterAdd}>
                 {iconPlus}Add new chapter
               </AddedChapterButton>
             </AddedBlock>

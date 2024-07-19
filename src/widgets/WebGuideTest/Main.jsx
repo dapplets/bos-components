@@ -299,6 +299,10 @@ const ChapterWrapper = (props) => {
         setEditMode,
         isEditTarget,
         setEditTarget,
+        buttonRemoveDisabled:
+          currentChapterIndex + 1 === totalChapters &&
+          totalChapters === 1 &&
+          totalPages === 1,
         onTitleChange: handleTitleChange,
         onDescriptionChange: handleDescriptionChange,
         onChapterAdd: handleChapterAdd,
