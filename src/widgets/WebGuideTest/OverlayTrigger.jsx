@@ -1174,7 +1174,7 @@ const {
   onPageRemove,
   buttonRemoveDisabled,
 } = props;
-console.log(navi);
+
 // todo: new
 
 // useEffect(() => {
