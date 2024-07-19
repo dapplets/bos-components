@@ -1,11 +1,5 @@
 const LockedIcon = (
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 14 14"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="7" cy="7" r="6.5" fill="#3D7FFF" stroke="white" />
     <g>
       <path
@@ -22,7 +16,7 @@ const LockedIcon = (
       />
     </g>
   </svg>
-);
+)
 
 const Badge = styled.span`
   @keyframes translateAnimationBtn {
@@ -39,6 +33,6 @@ const Badge = styled.span`
 
   animation: translateAnimationBtn 0.5s linear forwards;
   transition: all 0.3s;
-`;
+`
 
-return <Badge>{LockedIcon}</Badge>;
+return <Badge>{LockedIcon}</Badge>

@@ -1,20 +1,21 @@
 if (
   (!props.widgets || props.widgets.length === 0) &&
   (!props.components || props.components.length === 0)
-) return <></>;
+)
+  return <></>
 
 const [waitingAppIdsSet, changeWaitingAppIdsSet] = useState(new Set())
 
 const handleRemoveWidget = (linkId) => {
-  changeWaitingAppIdsSet((val) => val.add(linkId));
+  changeWaitingAppIdsSet((val) => val.add(linkId))
   const callback = () => {
     waitingAppIdsSet.delete(linkId)
     changeWaitingAppIdsSet((val) => {
       val.delete(linkId)
       return val
-    });
+    })
   }
-  props.deleteUserLink(linkId).then(callback).catch(callback);
+  props.deleteUserLink(linkId).then(callback).catch(callback)
 }
 
 const Container = styled.div`
@@ -22,11 +23,11 @@ const Container = styled.div`
   flex-direction: column;
   margin-top: 12px;
   gap: 10px;
-`;
+`
 
 const WidgetWrapper = styled.div`
   position: relative;
-`;
+`
 
 const WidgetBadgeWrapper = styled.div`
   position: absolute;
@@ -41,10 +42,10 @@ const WidgetBadgeWrapper = styled.div`
   justify-content: center;
   border-radius: 4%;
   backdrop-filter: blur(1px);
-`;
+`
 
 return (
-  <Container id='vertical-layout-manager'>
+  <Container id="vertical-layout-manager">
     {props.widgets
       .filter((w) => w.isSuitable === undefined || w.isSuitable === true)
       .map((widget) => (
@@ -53,23 +54,25 @@ return (
             <WidgetBadgeWrapper
               title={
                 widget.linkAuthorId === context.accountId && !widget.static
-                  ? `Remove ${widget.src.split("widget/").pop()}`
-                  : "disable in edit mode"
+                  ? `Remove ${widget.src.split('widget/').pop()}`
+                  : 'disable in edit mode'
               }
               style={{
-                opacity: widget.linkAuthorId === context.accountId && !widget.static? "1" : "0",
+                opacity: widget.linkAuthorId === context.accountId && !widget.static ? '1' : '0',
               }}
             >
-              {widget.linkAuthorId === context.accountId && !widget.static ? waitingAppIdsSet.has(widget.linkId) ? (
-                <span role="status" aria-hidden="true" class="spinner-grow spinner-grow-sm" />
-              ) : (
-                <Widget
-                  loading={<></>}
-                  src="${REPL_ACCOUNT}/widget/LayoutManager.DeleteWidgetButton"
-                  props={{
-                    onClick: () => handleRemoveWidget(widget.linkId),
-                  }}
-                />
+              {widget.linkAuthorId === context.accountId && !widget.static ? (
+                waitingAppIdsSet.has(widget.linkId) ? (
+                  <span role="status" aria-hidden="true" class="spinner-grow spinner-grow-sm" />
+                ) : (
+                  <Widget
+                    loading={<></>}
+                    src="${REPL_ACCOUNT}/widget/LayoutManager.DeleteWidgetButton"
+                    props={{
+                      onClick: () => handleRemoveWidget(widget.linkId),
+                    }}
+                  />
+                )
               ) : null}
             </WidgetBadgeWrapper>
           ) : null}
@@ -86,27 +89,24 @@ return (
               src={widget.src}
               props={{ ...widget.props, notify: props.notify }}
             />
-            <div
-              data-mweb-insertion-point="hidden"
-              style={{ display: "none" }}
-            />
+            <div data-mweb-insertion-point="hidden" style={{ display: 'none' }} />
           </div>
         </WidgetWrapper>
       ))}
 
-      {props.components
-        ? props.components.map((cmp, i) => {
-            const WrapperComponent = cmp.component;
-            return (
-              <WidgetWrapper key={i}>
-                <WrapperComponent
-                  context={props.context}
-                  attachContextRef={props.attachContextRef}
-                  attachInsPointRef={props.attachInsPointRef}
-                />
-              </WidgetWrapper>
-            );
-          })
-        : null}
+    {props.components
+      ? props.components.map((cmp, i) => {
+          const WrapperComponent = cmp.component
+          return (
+            <WidgetWrapper key={i}>
+              <WrapperComponent
+                context={props.context}
+                attachContextRef={props.attachContextRef}
+                attachInsPointRef={props.attachInsPointRef}
+              />
+            </WidgetWrapper>
+          )
+        })
+      : null}
   </Container>
-);
+)

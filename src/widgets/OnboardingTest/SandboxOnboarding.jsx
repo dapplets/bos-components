@@ -18,14 +18,15 @@ const Container = styled.div`
   box-sizing: border-box;
   width: 630px;
   height: 690px;
-  background: #FFFFFE;
-  border: 1px solid #02193A;
+  background: #fffffe;
+  border: 1px solid #02193a;
   border-radius: 20px;
   padding: 20px;
   gap: 20px;
   z-index: 1000;
   box-shadow: none;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   align-items: center;
   justify-content: center;
 `
@@ -37,11 +38,13 @@ const Header = styled.div`
   width: 100%;
   justify-content: center;
   align-items: center;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  color: #02193A;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  color: #02193a;
 
   h1 {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+      'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     padding: 0;
     margin: 0;
     font-size: 32px;
@@ -77,21 +80,21 @@ const PageIndicatorBtn = styled.button`
   padding: 2px;
   background: none;
   cursor: pointer;
-  transition-duration: .15s;
+  transition-duration: 0.15s;
 
   &:not(:disabled, .active):hover {
-    background: rgba(29,155,240,0.10);
+    background: rgba(29, 155, 240, 0.1);
 
     div {
-      background: rgba(0, 0, 0, .2);
+      background: rgba(0, 0, 0, 0.2);
     }
   }
 
   &:not(:disabled, .active):active {
-    background: rgba(29,155,240,0.20);
+    background: rgba(29, 155, 240, 0.2);
 
     div {
-      background: rgba(0, 0, 0, .3);
+      background: rgba(0, 0, 0, 0.3);
     }
   }
 `
@@ -102,11 +105,11 @@ const PageIndicator = styled.div`
   height: 10px;
   border: none;
   border-radius: 9em;
-  background: rgba(0, 0, 0, .1);
+  background: rgba(0, 0, 0, 0.1);
   margin: 0;
   padding: 0;
   cursor: pointer;
-  transition-duration: .15s;
+  transition-duration: 0.15s;
 
   &.active {
     background: rgba(56, 75, 255, 1);
@@ -129,13 +132,13 @@ const EditButton = styled.button`
   cursor: pointer;
   height: 24px;
   color: #222;
-  transition-duration: .15s;
-  
+  transition-duration: 0.15s;
+
   :hover {
     color: #111;
     background: #eee;
   }
-  
+
   :active {
     color: #000;
     background: #ddd;
@@ -158,10 +161,10 @@ const CloseButton = styled.button`
   svg {
     path {
       stroke: #838891;
-      transition-duration: .2s;
+      transition-duration: 0.2s;
     }
   }
-  
+
   :hover {
     svg {
       path {
@@ -171,10 +174,10 @@ const CloseButton = styled.button`
   }
 `
 
-const closeIcon =  (
+const closeIcon = (
   <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M18 6L6 18"  strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M6 6.5L18 18.5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M18 6L6 18" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M6 6.5L18 18.5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
 
@@ -194,12 +197,13 @@ const WarningMessage = styled.div`
   p {
     padding: 0;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+      'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 150%;
-    color: #384BFF;
+    color: #384bff;
     flex: none;
     flex-grow: 0;
   }
@@ -212,9 +216,27 @@ const WarningMessage = styled.div`
 
 const AlertIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#384BFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M12.01 16L12.01 12" stroke="#384BFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M12.01 8L12 8" stroke="#384BFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path
+      d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+      stroke="#384BFF"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M12.01 16L12.01 12"
+      stroke="#384BFF"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M12.01 8L12 8"
+      stroke="#384BFF"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 )
 
@@ -239,12 +261,12 @@ const ArrowButton = styled.button`
   padding: 4px;
   width: 32px;
   height: 32px;
-  background: #F5F6FE;
+  background: #f5f6fe;
   border: none;
   border-radius: 40px;
   cursor: default;
   transform: ${(p) => (p.direction === 'left' ? 'rotate(0.5turn)' : '')};
-  transition-duration: .15s;
+  transition-duration: 0.15s;
 
   svg {
     path {
@@ -285,8 +307,13 @@ const ArrowButton = styled.button`
 
 const arrowRight = (
   <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M5 12.5H19" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M12 5.5L19 12.5L12 19.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M5 12.5H19" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path
+      d="M12 5.5L19 12.5L12 19.5"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 )
 
@@ -419,18 +446,19 @@ const SuccessButton = styled.button`
   padding: 0px 20px;
   width: 180px;
   height: 42px;
-  background: #02193A;
+  background: #02193a;
   border-radius: 50px;
   border: none;
   cursor: pointer;
 
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 149%;
   text-align: center;
-  color: #FFFFFF;
+  color: #ffffff;
   transition-duration: 0.2s;
 
   :hover {
@@ -438,13 +466,11 @@ const SuccessButton = styled.button`
   }
 `
 
-return (!data || isEditMode) ? (
+return !data || isEditMode ? (
   <Container>
     <Header>
       <h1>Add data</h1>
-      <CloseButton onClick={() => handleClose(false, viewedPages)}>
-        {closeIcon}
-      </CloseButton>
+      <CloseButton onClick={() => handleClose(false, viewedPages)}>{closeIcon}</CloseButton>
     </Header>
     <textarea
       autofocus
@@ -453,16 +479,14 @@ return (!data || isEditMode) ? (
       value={newData}
     />
     <div style={{ display: 'flex', width: '80%', justifyContent: 'space-evenly' }}>
-      {isEditMode ? (
-        <SuccessButton onClick={() => setEditMode(false)}>
-          Cancel
-        </SuccessButton>
-      ) : null}
-      <SuccessButton onClick={() => {
-        saveData(newData)
-        setNewData('')
-        setShow(false)
-      }}>
+      {isEditMode ? <SuccessButton onClick={() => setEditMode(false)}>Cancel</SuccessButton> : null}
+      <SuccessButton
+        onClick={() => {
+          saveData(newData)
+          setNewData('')
+          setShow(false)
+        }}
+      >
         Save
       </SuccessButton>
     </div>
@@ -472,9 +496,7 @@ return (!data || isEditMode) ? (
     <Header>
       <TopLine>
         {context.accountId === link.authorId ? (
-          <EditButton onClick={() => setEditMode(true)}>
-            Edit data
-          </EditButton>
+          <EditButton onClick={() => setEditMode(true)}>Edit data</EditButton>
         ) : null}
         <PagesIndicators>
           {data?.map((chapter, i) => (
@@ -483,37 +505,45 @@ return (!data || isEditMode) ? (
               disabled={i === activeChapterNumber}
               onClick={() => setActiveChapterNumber(i)}
             >
-              <PageIndicator
-                className={i === activeChapterNumber ? 'active' : '' }
-              />
+              <PageIndicator className={i === activeChapterNumber ? 'active' : ''} />
             </PageIndicatorBtn>
           ))}
         </PagesIndicators>
-        <CloseButton onClick={() => handleClose(false, viewedPages)}>
-          {closeIcon}
-        </CloseButton>
+        <CloseButton onClick={() => handleClose(false, viewedPages)}>{closeIcon}</CloseButton>
       </TopLine>
       <h1>{data[activeChapterNumber].title}</h1>
     </Header>
     <CardContainer>
       <ArrowButton
-        direction='left'
+        direction="left"
         disabled={activeChapterNumber - 1 < 0}
-        onClick={() => setActiveChapterNumber(activeChapterNumber - 1 < 0 ? activeChapterNumber : activeChapterNumber - 1)}
+        onClick={() =>
+          setActiveChapterNumber(
+            activeChapterNumber - 1 < 0 ? activeChapterNumber : activeChapterNumber - 1
+          )
+        }
       >
         {arrowRight}
       </ArrowButton>
       <Card>
-        {context.accountId === null ? (<WarningMessage>
-          <AlertIcon/>
-          <p>You must be Logged In to start using this</p>
-        </WarningMessage>) : null}
+        {context.accountId === null ? (
+          <WarningMessage>
+            <AlertIcon />
+            <p>You must be Logged In to start using this</p>
+          </WarningMessage>
+        ) : null}
         <Markdown text={data[activeChapterNumber].content} />
       </Card>
       <ArrowButton
-        direction='right'
+        direction="right"
         disabled={activeChapterNumber + 1 > data.length - 1}
-        onClick={() => setActiveChapterNumber(activeChapterNumber + 1 > data.length - 1 ? activeChapterNumber : activeChapterNumber + 1)}
+        onClick={() =>
+          setActiveChapterNumber(
+            activeChapterNumber + 1 > data.length - 1
+              ? activeChapterNumber
+              : activeChapterNumber + 1
+          )
+        }
       >
         {arrowRight}
       </ArrowButton>
@@ -521,7 +551,11 @@ return (!data || isEditMode) ? (
     <Footer>
       <Checkbox>
         <label>
-          <input type="checkbox" checked={doNotShowAgain} onChange={(e) => setDoNotShowAgain(e.target.checked)} />
+          <input
+            type="checkbox"
+            checked={doNotShowAgain}
+            onChange={(e) => setDoNotShowAgain(e.target.checked)}
+          />
           Don't show it again
         </label>
       </Checkbox>

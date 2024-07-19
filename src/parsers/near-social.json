@@ -34,9 +34,7 @@
         "contextType": "website",
         "if": {
           "id": {
-            "contains": [
-              "social.testnet.dapplets.org"
-            ]
+            "contains": ["social.testnet.dapplets.org"]
           }
         }
       }
@@ -47,9 +45,7 @@
         "props": {
           "id": "string('timeline')"
         },
-        "children": [
-          "post"
-        ]
+        "children": ["post"]
       },
       "post": {
         "component": "${REPL_NEAR_SOCIAL_OWNER}/widget/MainPage.N.Post",
@@ -76,12 +72,7 @@
             "insertionType": "after"
           }
         },
-        "children": [
-          "commentButton",
-          "repostButton",
-          "likeButton",
-          "shareButton"
-        ]
+        "children": ["commentButton", "repostButton", "likeButton", "shareButton"]
       },
       "commentButton": {
         "component": "${REPL_NEAR_SOCIAL_OWNER}/widget/N.CommentButton",

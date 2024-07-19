@@ -16,7 +16,7 @@ const ChapterWrapper = (props) => {
     id: selectedContext.id,
     type: 'callout',
     onClose: handleClose,
-    content:`
+    content: `
 **ID:** ${selectedContext.id}
 
 **Context type:** ${selectedContext.type}
@@ -31,13 +31,13 @@ ${JSON.stringify(selectedContext.parsed, null, 2)}
 `,
     skin: SKIN,
     children: ({ ref }) => {
-      props.attachContextRef(ref);
-      return props.children;
-    }
+      props.attachContextRef(ref)
+      return props.children
+    },
   }
   return (
     <Widget
-      src='${REPL_ACCOUNT}/widget/WebGuide.OverlayTrigger'
+      src="${REPL_ACCOUNT}/widget/WebGuide.OverlayTrigger"
       loading={props?.children}
       props={widgetProps}
     />
@@ -52,30 +52,20 @@ const iconQuestionMark = (isActive) => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <rect
-      width="512"
-      height="512"
-      fill={isActive ? "white" : "#384BFF"}
-    />
+    <rect width="512" height="512" fill={isActive ? 'white' : '#384BFF'} />
     <path
       d="M274.175 72.1535C274.547 69.181 270.812 67.5595 268.894 69.8608L85.1005 290.413C83.4721 292.367 84.8616 295.333 87.4051 295.333H252.602C254.406 295.333 255.802 296.915 255.578 298.705L237.825 440.735C237.453 443.708 241.188 445.329 243.106 443.028L426.9 222.476C428.528 220.522 427.138 217.556 424.595 217.556H259.398C257.594 217.556 256.198 215.974 256.422 214.183L274.175 72.1535Z"
-      fill={isActive ? "#384BFF" : "white"}
-      stroke={isActive ? "#384BFF" : "white"}
+      fill={isActive ? '#384BFF' : 'white'}
+      stroke={isActive ? '#384BFF' : 'white'}
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
   </svg>
-);
+)
 
 const iconTimelineLatch = (color) => (
-  <svg
-    width="15"
-    height="19"
-    viewBox="0 0 15 19"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M0 18.6H0.39L7.27 8.42C7.36 8.24 7.31 8.15 7.12 8.15H4.28L7.27 2.7C7.36 2.52 7.29 2.43 7.07 2.43H3.26C3.15 2.43 3.06 2.49 2.97 2.61L0.19 10.01C0.17 10.19 0.23 10.28 0.38 10.28H3.13L0 18.6ZM8.5 12.27H8.77L13.99 4.6C14.04 4.52 14.05 4.45 14.03 4.4C14.01 4.35 13.95 4.33 13.86 4.33H11.76L13.94 0.3C14.06 0.1 14 0 13.76 0H11.02C10.89 0 10.79 0.0600001 10.72 0.19L8.64 5.67C8.61 5.76 8.61 5.83 8.65 5.88C8.69 5.93 8.75 5.95 8.84 5.95H10.88L8.5 12.27Z"
       fill={color}
@@ -84,13 +74,7 @@ const iconTimelineLatch = (color) => (
 )
 
 const iconNotchLatch = (
-  <svg
-    width="28"
-    height="29"
-    viewBox="0 0 28 29"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="28" height="29" viewBox="0 0 28 29" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M22.168 9.8335V2.8335"
       stroke="#14AE5C"
@@ -115,7 +99,7 @@ const iconNotchLatch = (
 )
 
 const TimelineLatch = styled.button`
-  background-color: ${(props) => props.$variant === 'current' ? '#384bff' : '#384BFF4D'};
+  background-color: ${(props) => (props.$variant === 'current' ? '#384bff' : '#384BFF4D')};
   height: 20px;
   width: ${(props) => `${props.$width + 6}px`};
   border-radius: 6px;
@@ -139,7 +123,7 @@ const NotchLatch = styled.button`
   padding-right: ${(props) => `${props.$position === 'right' ? '0' : '4px'}`};
   background: none;
   border: none;
-  opacity: ${(props) => props.$variant === 'current' ? '1' : '.5'};
+  opacity: ${(props) => (props.$variant === 'current' ? '1' : '.5')};
   cursor: pointer;
 `
 
@@ -151,13 +135,13 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
         $width={contextDimensions.width}
         onClick={() => setSelectedContext(context)}
       >
-        {iconTimelineLatch("white")}
+        {iconTimelineLatch('white')}
       </TimelineLatch>
     )
   }
   if (
-    (context.type === 'notch' && context.id !== 'mutate-button')
-    || context.type === 'mweb-gateway'
+    (context.type === 'notch' && context.id !== 'mutate-button') ||
+    context.type === 'mweb-gateway'
   ) {
     return (
       <NotchLatch
@@ -191,104 +175,101 @@ return (
   <>
     {isRunnigApp ? (
       <DappletContextPicker
-        target={
-          [
-            {
-              namespace: NAMESPACE,
-              contextType: 'timeline',
-              if: {}
-            },
-            {
-              namespace: NAMESPACE,
-              contextType: 'post',
-              if: {}
-            },
-            {
-              namespace: NAMESPACE,
-              contextType: 'postSouthButton',
-              if: {}
-            },
-            {
-              namespace: NAMESPACE,
-              contextType: 'profile',
-              if: {}
-            },
-            {
-              namespace: '${REPL_ACCOUNT}/parser/near-social',
-              if: {}
-            },
-            {
-              namespace: '${REPL_ACCOUNT}/parser/near-social-json',
-              if: {}
-            },
-            {
-              namespace: 'mweb',
-              contextType: 'mweb-overlay',
-              if: { id: { eq: 'mutation-button' } }
-            },
-            {
-              namespace: 'mweb',
-              contextType: 'mweb-overlay',
-              if: { id: { eq: 'open-apps-button' } }
-            },
-            {
-              namespace: 'mweb',
-              contextType: 'mweb-overlay-action',
-              if: {}
-            },
-            {
-              namespace: 'mweb',
-              contextType: 'injected-widget',
-              if: {}
-            },
-            {
-              namespace: 'mweb',
-              contextType: 'notch',
-              if: {}
-            },
-            {
-              namespace: 'mweb',
-              contextType: 'mweb-gateway',
-              if: {}
-            },
-          ]
-        }
+        target={[
+          {
+            namespace: NAMESPACE,
+            contextType: 'timeline',
+            if: {},
+          },
+          {
+            namespace: NAMESPACE,
+            contextType: 'post',
+            if: {},
+          },
+          {
+            namespace: NAMESPACE,
+            contextType: 'postSouthButton',
+            if: {},
+          },
+          {
+            namespace: NAMESPACE,
+            contextType: 'profile',
+            if: {},
+          },
+          {
+            namespace: '${REPL_ACCOUNT}/parser/near-social',
+            if: {},
+          },
+          {
+            namespace: '${REPL_ACCOUNT}/parser/near-social-json',
+            if: {},
+          },
+          {
+            namespace: 'mweb',
+            contextType: 'mweb-overlay',
+            if: { id: { eq: 'mutation-button' } },
+          },
+          {
+            namespace: 'mweb',
+            contextType: 'mweb-overlay',
+            if: { id: { eq: 'open-apps-button' } },
+          },
+          {
+            namespace: 'mweb',
+            contextType: 'mweb-overlay-action',
+            if: {},
+          },
+          {
+            namespace: 'mweb',
+            contextType: 'injected-widget',
+            if: {},
+          },
+          {
+            namespace: 'mweb',
+            contextType: 'notch',
+            if: {},
+          },
+          {
+            namespace: 'mweb',
+            contextType: 'mweb-gateway',
+            if: {},
+          },
+        ]}
         onClick={setSelectedContext}
         LatchComponent={ContextTypeLatch}
       />
     ) : null}
-    
+
     <DappletPortal
       target={{
-        namespace: "mweb",
-        contextType: "mweb-overlay",
-        injectTo: "mweb-actions-panel",
-        if: { id: { eq: "mweb-overlay" } },
-        arrowTo: "context",
+        namespace: 'mweb',
+        contextType: 'mweb-overlay',
+        injectTo: 'mweb-actions-panel',
+        if: { id: { eq: 'mweb-overlay' } },
+        arrowTo: 'context',
       }}
-      component={() => <Widget
-        src='${REPL_ACCOUNT}/widget/WebGuide.Action'
-        props={{
-          appId: 'picker-example',
-          tooltip: isRunnigApp ? 'Stop Picker' : 'Run Picker',
-          isActive: isRunnigApp,
-          children: iconQuestionMark(isRunnigApp),
-          handleAction: () => {
-            if (isRunnigApp) {
-              handleClose()
-            } else {
-              toggleIsRunningApp(true)
-            }
-          },
-        }}
-      />}
+      component={() => (
+        <Widget
+          src="${REPL_ACCOUNT}/widget/WebGuide.Action"
+          props={{
+            appId: 'picker-example',
+            tooltip: isRunnigApp ? 'Stop Picker' : 'Run Picker',
+            isActive: isRunnigApp,
+            children: iconQuestionMark(isRunnigApp),
+            handleAction: () => {
+              if (isRunnigApp) {
+                handleClose()
+              } else {
+                toggleIsRunningApp(true)
+              }
+            },
+          }}
+        />
+      )}
     />
 
     {isRunnigApp && selectedContext ? (
-      <DappletPortal
-        target={selectedContext}
-        component={ChapterWrapper}
-      />
+      <DappletPortal target={selectedContext} component={ChapterWrapper} />
     ) : null}
   </>
 )

@@ -1,58 +1,58 @@
-if (!props.content) return <></>;
+if (!props.content) return <></>
 
-const { nearAccountId, CONTRACT_ADDRESS } = props;
-const { content, is_purchased } = props.content;
+const { nearAccountId, CONTRACT_ADDRESS } = props
+const { content, is_purchased } = props.content
 
 const userAccountId = context.accountId || nearAccountId
 
 /**
  * From near-api-js/packages/near-api-js/src/utils/format.ts
  */
-const NEAR_NOMINATION_EXP = 24;
-const NEAR_NOMINATION = new BN('10', 10).pow(new BN(NEAR_NOMINATION_EXP, 10));
-const ROUNDING_OFFSETS = [];
-const BN10 = new BN(10);
+const NEAR_NOMINATION_EXP = 24
+const NEAR_NOMINATION = new BN('10', 10).pow(new BN(NEAR_NOMINATION_EXP, 10))
+const ROUNDING_OFFSETS = []
+const BN10 = new BN(10)
 
 for (let i = 0, offset = new BN(5); i < NEAR_NOMINATION_EXP; i++) {
-  ROUNDING_OFFSETS[i] = offset;
+  ROUNDING_OFFSETS[i] = offset
   offset = offset.mul(BN10)
 }
 
 function trimTrailingZeroes(value) {
-  return value.replace(/\.?0*$/, '');
+  return value.replace(/\.?0*$/, '')
 }
 
 function formatWithCommas(value) {
-  const pattern = /(-?\d+)(\d{3})/;
+  const pattern = /(-?\d+)(\d{3})/
   while (pattern.test(value)) {
-    value = value.replace(pattern, '$1,$2');
+    value = value.replace(pattern, '$1,$2')
   }
-  return value;
+  return value
 }
 
 function formatNearAmount(balance, fracDigitsExternal) {
   const fracDigits = fracDigitsExternal || NEAR_NOMINATION
 
-  const balanceBN = new BN(balance, 10);
+  const balanceBN = new BN(balance, 10)
   if (fracDigits !== NEAR_NOMINATION_EXP) {
-    const roundingExp = NEAR_NOMINATION_EXP - fracDigits - 1;
+    const roundingExp = NEAR_NOMINATION_EXP - fracDigits - 1
     if (roundingExp > 0) {
-      balanceBN.iadd(ROUNDING_OFFSETS[roundingExp]);
+      balanceBN.iadd(ROUNDING_OFFSETS[roundingExp])
     }
   }
 
-  balance = balanceBN.toString();
-  const wholeStr = balance.substring(0, balance.length - NEAR_NOMINATION_EXP) || '0';
+  balance = balanceBN.toString()
+  const wholeStr = balance.substring(0, balance.length - NEAR_NOMINATION_EXP) || '0'
   const fractionStr = balance
     .substring(balance.length - NEAR_NOMINATION_EXP)
     .padStart(NEAR_NOMINATION_EXP, '0')
-    .substring(0, fracDigits);
+    .substring(0, fracDigits)
 
-  return trimTrailingZeroes(`${formatWithCommas(wholeStr)}.${fractionStr}`);
+  return trimTrailingZeroes(`${formatWithCommas(wholeStr)}.${fractionStr}`)
 }
 
 function formatNear(amount) {
-  return Number(formatNearAmount(amount, 3));
+  return Number(formatNearAmount(amount, 3))
 }
 /**
  * End
@@ -60,7 +60,7 @@ function formatNear(amount) {
 
 State.init({
   basic: false,
-  loading: false
+  loading: false,
 })
 
 const onBuy = () => {
@@ -68,18 +68,18 @@ const onBuy = () => {
     State.update({ loading: true })
     Near.call(
       CONTRACT_ADDRESS,
-      "buy",
+      'buy',
       {
-        content_id: content.id
+        content_id: content.id,
       },
       '50000000000000',
       content.cost
-    );
+    )
   } catch (err) {
-    console.error(err);
-    State.update({ loading: false });
+    console.error(err)
+    State.update({ loading: false })
   }
-};
+}
 
 const Wrapper = styled.div`
   .content-blur-wrapper {
@@ -172,7 +172,7 @@ const Wrapper = styled.div`
   .blurred {
     filter: blur(1em);
   }
-`;
+`
 
 const Loader = () => (
   <svg
@@ -201,15 +201,19 @@ const Loader = () => (
       ></animateTransform>
     </circle>
   </svg>
-);
+)
 
 return (
   <Wrapper>
-    <div className={state.basic ? "content-wrapper-basic" : "content-blur-wrapper"}>
-    {is_purchased ? (
+    <div className={state.basic ? 'content-wrapper-basic' : 'content-blur-wrapper'}>
+      {is_purchased ? (
         <>
           <img className="content-image" src={content.link} />
-          <Widget  loading={<></>} src="${REPL_ACCOUNT}/widget/Paywall.Badge"  props={{ accountId: content.author }}/>
+          <Widget
+            loading={<></>}
+            src="${REPL_ACCOUNT}/widget/Paywall.Badge"
+            props={{ accountId: content.author }}
+          />
         </>
       ) : (
         <>
@@ -223,7 +227,7 @@ return (
                 onClick={() => onBuy(contentId, content.cost)}
                 disabled={state.loading}
               >
-                {state.loading ? <Loader /> : "Buy"}
+                {state.loading ? <Loader /> : 'Buy'}
               </button>
             </div>
           ) : (
@@ -235,13 +239,17 @@ return (
                 onClick={() => onBuy(contentId, content.cost)}
                 disabled={true}
               >
-                {state.loading ? <Loader /> : "Buy"}
+                {state.loading ? <Loader /> : 'Buy'}
               </button>
             </div>
           )}
-          <Widget  loading={<></>} src="${REPL_ACCOUNT}/widget/Paywall.Badge"  props={{ accountId: content.author }}/>
+          <Widget
+            loading={<></>}
+            src="${REPL_ACCOUNT}/widget/Paywall.Badge"
+            props={{ accountId: content.author }}
+          />
         </>
       )}
     </div>
   </Wrapper>
-);
+)
