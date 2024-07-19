@@ -128,6 +128,10 @@ const CustomTooltip = styled('DappletTooltip')`
   }
 `;
 
+const ZIndexWrapper = styled.div`
+  z-index: 99999999;
+`;
+
 const InfoBox = styled.div`
   position: absolute;
   top: 50%;
@@ -1486,7 +1490,9 @@ if (props.type === 'callout') {
       show={true}
       overlay={
         isEditMode ? (
-          <Theme skin={skin}>{callout}</Theme>
+          <ZIndexWrapper>
+            <Theme skin={skin}>{callout}</Theme>
+          </ZIndexWrapper>
         ) : (
           <CustomTooltip bsPrefix={`wg-tooltip-${skin}`}>
             <Theme skin={skin}>{callout}</Theme>
