@@ -13,7 +13,7 @@ const suitableWidgets = widgets.filter(
 );
 
 const isMyLinksInjected = !!widgets.some(
-  (w) => w.linkAuthorId === context.accountId
+  (w) => w.linkAuthorId === context.accountId && !w.static
 );
 
 // Disable edit mode if last widget was removed

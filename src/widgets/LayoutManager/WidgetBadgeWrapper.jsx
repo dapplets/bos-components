@@ -25,21 +25,21 @@ const WidgetBadgeWrapper = styled.div`
 return (
   <WidgetBadgeWrapper
     className={
-      widget.linkAuthorId === context.accountId
+      widget.linkAuthorId === context.accountId && !widget.static
         ? "WidgetHover"
         : ""
     }
     title={
-      widget.linkAuthorId === context.accountId
+      widget.linkAuthorId === context.accountId && !widget.static
         ? `Remove ${widget.src.split("widget/").pop()}`
         : "disable in edit mode"
     }
     style={{
       opacity:
-        widget.linkAuthorId === context.accountId ? "1" : "0",
+        widget.linkAuthorId === context.accountId && !widget.static ? "1" : "0",
     }}
   >
-    {widget.linkAuthorId === context.accountId ? isWaiting ? (
+    {widget.linkAuthorId === context.accountId && !widget.static ? isWaiting ? (
       <span role="status" aria-hidden="true" class="spinner-grow spinner-grow-sm" />
     ) : (
       <Widget
