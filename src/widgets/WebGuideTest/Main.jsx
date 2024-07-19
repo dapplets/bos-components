@@ -18,15 +18,15 @@ const OverlayTriggerWrapper = styled.div`
     box-sizing: border-box;
     z-index: 79;
   }
-`;
+`
 
-const { link } = props;
-const [showApp, setShowApp] = useState(true);
-const [chapterCounter, setChapterCounter] = useState(0);
-const [pageCounter, setPageCounter] = useState(0);
-const [isEditMode, setEditMode] = useState(false);
-const [isEditTarget, setEditTarget] = useState(false);
-const [editingConfig, setEditingConfig] = useState(null);
+const { link } = props
+const [showApp, setShowApp] = useState(true)
+const [chapterCounter, setChapterCounter] = useState(0)
+const [pageCounter, setPageCounter] = useState(0)
+const [isEditMode, setEditMode] = useState(false)
+const [isEditTarget, setEditTarget] = useState(false)
+const [editingConfig, setEditingConfig] = useState(null)
 
 const newChapter = {
   id: 'bos.dapplets.near/gateway/MutableWebExtensionNew',
@@ -42,126 +42,126 @@ const newChapter = {
     },
   ],
   skin: 'META_GUIDE',
-};
+}
 
 const newPage = {
   title: 'Extra Page',
   status: [],
   content: 'This is an extra page added dynamically.',
-};
+}
 
 const response = Near.view('app.webguide.near', 'get_guide', {
   guide_id: link?.id,
-});
-const guideConfig = response && JSON.parse(response);
+})
+const guideConfig = response && JSON.parse(response)
 
 if (
   !guideConfig ||
   !guideConfig.chapters?.length ||
   !guideConfig.chapters[0].pages?.length
 )
-  return <></>;
+  return <></>
 
 useEffect(() => {
-  setEditingConfig(guideConfig);
-}, [guideConfig]);
+  setEditingConfig(guideConfig)
+}, [guideConfig])
 
 const handleClose = () => {
-  setShowApp(false);
-};
+  setShowApp(false)
+}
 
 const handleAction = () => {
-  setShowApp((val) => !val);
-  setChapterCounter(0);
-  setPageCounter(0);
-};
+  setShowApp((val) => !val)
+  setChapterCounter(0)
+  setPageCounter(0)
+}
 
 const handleChapterDecrement = () => {
   if (chapterCounter !== 0) {
-    setChapterCounter((val) => val - 1);
+    setChapterCounter((val) => val - 1)
     setPageCounter(
       editingConfig.chapters[chapterCounter - 1]?.pages?.length
         ? editingConfig.chapters[chapterCounter - 1]?.pages?.length - 1
         : 0
-    );
+    )
   }
-};
+}
 
 const handleChapterIncrement = () => {
   setChapterCounter((val) =>
     Math.min(val + 1, editingConfig.chapters.length - 1)
-  );
-  setPageCounter(0);
-};
+  )
+  setPageCounter(0)
+}
 
 const handleClickPrev = () => {
   if (!pageCounter) {
-    handleChapterDecrement();
+    handleChapterDecrement()
   } else {
-    setPageCounter((val) => val - 1);
+    setPageCounter((val) => val - 1)
   }
-};
+}
 
 const handleClickNext = () => {
   if (
     pageCounter ===
     editingConfig.chapters[chapterCounter]?.pages?.length - 1
   ) {
-    handleChapterIncrement();
+    handleChapterIncrement()
   } else {
-    setPageCounter((val) => val + 1);
+    setPageCounter((val) => val + 1)
   }
-};
+}
 
 const saveData = (inputData) => {
   if (context?.accountId) {
     Near.call('app.webguide.near', 'set_guide', {
       guide_id: link.id,
       data: inputData,
-    });
+    })
   }
-};
+}
 
 const handleTitleChange = (newTitle) => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig));
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
 
   if (
     updatedConfig.chapters[chapterCounter] &&
     updatedConfig.chapters[chapterCounter].pages[pageCounter]
   ) {
-    updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle;
+    updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
   }
 
-  setEditingConfig(updatedConfig);
-};
+  setEditingConfig(updatedConfig)
+}
 
 const handleDescriptionChange = (newDescription) => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig));
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
 
   if (
     updatedConfig.chapters[chapterCounter] &&
     updatedConfig.chapters[chapterCounter].pages[pageCounter]
   ) {
     updatedConfig.chapters[chapterCounter].pages[pageCounter].content =
-      newDescription;
+      newDescription
   }
 
-  setEditingConfig(updatedConfig);
-};
+  setEditingConfig(updatedConfig)
+}
 
 const handleChapterAdd = () => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig));
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
 
   if (updatedConfig.chapters[chapterCounter] !== undefined) {
-    updatedConfig.chapters.splice(chapterCounter + 1, 0, newChapter);
-    setEditingConfig(updatedConfig);
+    updatedConfig.chapters.splice(chapterCounter + 1, 0, newChapter)
+    setEditingConfig(updatedConfig)
   } else {
-    console.error('Current chapter not found at index:', chapterCounter);
+    console.error('Current chapter not found at index:', chapterCounter)
   }
-};
+}
 
 const handlePageAdd = () => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig));
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
 
   if (
     updatedConfig.chapters[chapterCounter] &&
@@ -171,58 +171,59 @@ const handlePageAdd = () => {
       pageCounter + 1,
       0,
       newPage
-    );
-    setEditingConfig(updatedConfig);
-    handleClickNext();
+    )
+    setPageCounter((val) => val + 1)
+    setEditingConfig(updatedConfig)
+
   } else {
     console.error(
       'Chapter or page not found at index:',
       chapterIndex,
       currentPageIndex
-    );
+    )
   }
-};
+}
 
 const handlePageRemove = () => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig));
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
 
   if (
     updatedConfig.chapters[chapterCounter] &&
     updatedConfig.chapters[chapterCounter].pages[pageCounter]
   ) {
-    updatedConfig.chapters[chapterCounter].pages.splice(pageCounter, 1);
-    const newPageCounter = pageCounter > 0 ? pageCounter - 1 : 0;
-    setPageCounter(newPageCounter);
-    setEditingConfig(updatedConfig);
-    handleClickNext();
+    updatedConfig.chapters[chapterCounter].pages.splice(pageCounter, 1)
+    const newPageCounter = pageCounter > 0 ? pageCounter - 1 : 0
+    setPageCounter(newPageCounter)
+    setEditingConfig(updatedConfig)
+
   } else {
     console.error(
       'Chapter or page not found at the specified index:',
       chapterIndex,
       pageIndex
-    );
+    )
   }
-};
+}
 
 const ChapterWrapper = (props) => {
-  const currentChapter = editingConfig.chapters[chapterCounter];
-  if (!currentChapter) return <></>;
-  const pages = currentChapter.pages;
-  if (!pages) return <></>;
-  const currentPage = pages[pageCounter];
-  if (!currentPage) return <></>;
+  const currentChapter = editingConfig.chapters[chapterCounter]
+  if (!currentChapter) return <></>
+  const pages = currentChapter.pages
+  if (!pages) return <></>
+  const currentPage = pages[pageCounter]
+  if (!currentPage) return <></>
 
   const status =
-    currentPage.status.length && Object.entries(currentPage.status[0])[0]; // ToDo: mocked!!!
+    currentPage.status.length && Object.entries(currentPage.status[0])[0] // ToDo: mocked!!!
 
-  const buttons = [];
+  const buttons = []
   if (chapterCounter || pageCounter) {
     buttons.push({
       variant: 'secondary',
       disabled: false,
       onClick: handleClickPrev,
       label: 'Prev',
-    });
+    })
   }
   if (
     chapterCounter === editingConfig.chapters.length - 1 &&
@@ -233,14 +234,14 @@ const ChapterWrapper = (props) => {
       disabled: false,
       onClick: handleClose,
       label: 'Finish',
-    });
+    })
   } else
     buttons.push({
       variant: 'primary',
       disabled: false,
       onClick: handleClickNext,
       label: 'Next',
-    });
+    })
 
   return (
     <Widget
@@ -270,17 +271,17 @@ const ChapterWrapper = (props) => {
         link,
         children:
           currentChapter.type === 'callout' &&
-          currentChapter.arrowTo === 'context'
+            currentChapter.arrowTo === 'context'
             ? ({ ref }) => {
-                props.attachContextRef(ref);
-                return props.children;
-              }
+              props.attachContextRef(ref)
+              return props.children
+            }
             : currentChapter.arrowTo === 'insPoint'
-            ? ({ ref }) => {
-                props.attachInsPointRef(ref);
-                return props.children;
+              ? ({ ref }) => {
+                props.attachInsPointRef(ref)
+                return props.children
               }
-            : props.children,
+              : props.children,
         skin: currentChapter.skin ?? 'DEFAULT',
         isEditMode,
         setEditMode,
@@ -293,8 +294,8 @@ const ChapterWrapper = (props) => {
         onPageRemove: handlePageRemove,
       }}
     />
-  );
-};
+  )
+}
 
 const iconQuestionMark = (isActive) => (
   <svg
@@ -310,7 +311,7 @@ const iconQuestionMark = (isActive) => (
       fill={isActive ? '#384BFF' : 'white'}
     />
   </svg>
-);
+)
 
 const iconTimelineLatch = (color) => (
   <svg
@@ -325,7 +326,7 @@ const iconTimelineLatch = (color) => (
       fill={color}
     />
   </svg>
-);
+)
 
 return (
   <>
@@ -382,13 +383,13 @@ return (
               backgroundColor: 'rgb(56 255 63 / 10%)',
               // borderStyle: 'dashed',
             }}
-            // filled
-            // icon={iconTimelineLatch('#14AE5C')}
-            // icon={() => <></>}
-            // action={() => console.log('Highlighter action')}
+          // filled
+          // icon={iconTimelineLatch('#14AE5C')}
+          // icon={() => <></>}
+          // action={() => console.log('Highlighter action')}
           />
         </>
       )
     ) : null}
   </>
-);
+)
