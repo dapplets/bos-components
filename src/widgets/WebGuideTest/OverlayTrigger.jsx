@@ -954,7 +954,7 @@ const StyledTextarea = styled.textarea`
   }
 `
 
-const EditTargetSpan = styled.button`
+const ClearTargetButton = styled.button`
   outline: none;
   width: 16px;
   height: 16px;
@@ -968,6 +968,24 @@ const EditTargetSpan = styled.button`
   position: absolute;
   top: 17px;
   right: 10px;
+  cursor: pointer;
+`
+
+const EditTargetButton = styled.button`
+  outline: none;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: none;
+  position: absolute;
+  top: 17px;
+  right: 40px;
+  cursor: pointer;
 `
 
 const OptionsBlock = styled.div`
@@ -1026,6 +1044,7 @@ const AddedBlock = styled.div`
   width: 100%;
   margin: 10px 0;
 `
+
 const AddedPageButton = styled.button`
   display: flex;
   align-items: center;
@@ -1067,6 +1086,8 @@ const AddedChapterButton = styled.button`
 `
 
 const {
+  contextId,
+  contextType,
   children,
   content,
   title,
@@ -1084,8 +1105,8 @@ const {
   link,
   isEditMode,
   setEditMode,
-  isEditTarget,
-  setEditTarget,
+  startEditTarget,
+  handleTargetChange,
   onTitleChange,
   onDescriptionChange,
   onPageAdd,
@@ -1244,59 +1265,6 @@ if (props.type === 'callout') {
       data-mweb-context-parsed={JSON.stringify({ id: props.id })}
     >
       {header}
-      {isEditTarget ? (
-        <DappletContextPicker
-          target={[
-            {
-              namespace: NAMESPACE,
-              contextType: 'timeline',
-              if: {},
-            },
-            {
-              namespace: NAMESPACE,
-              contextType: 'post',
-              if: {},
-            },
-            {
-              namespace: NAMESPACE,
-              contextType: 'postSouthButton',
-              if: {},
-            },
-            {
-              namespace: NAMESPACE,
-              contextType: 'profile',
-              if: {},
-            },
-            {
-              namespace: 'mweb',
-              contextType: 'mweb-overlay',
-              if: { id: { eq: 'mutation-button' } },
-            },
-            {
-              namespace: 'mweb',
-              contextType: 'mweb-overlay',
-              if: { id: { eq: 'open-apps-button' } },
-            },
-            {
-              namespace: 'mweb',
-              contextType: 'mweb-overlay-action',
-              if: {},
-            },
-            {
-              namespace: 'mweb',
-              contextType: 'injected-widget',
-              if: {},
-            },
-            {
-              namespace: 'mweb',
-              contextType: 'notch',
-              if: {},
-            },
-          ]}
-          onClick={setSelectedContext}
-          LatchComponent={ContextTypeLatch}
-        />
-      ) : null}
 
       {isEditMode ? (
         <>
@@ -1315,11 +1283,18 @@ if (props.type === 'callout') {
               </ButtonRevert>
             </OptionsBlock>
             <FloatingLabelContainer>
-              <StyledInput id={'target'} readonly type={'text'} value={props.type} />
+              <StyledInput
+                id={'target'}
+                readonly
+                disabled
+                type={'text'}
+                value={contextType && contextId ? `${contextType}/${contextId}` : 'No target'}
+              />
               <StyledLabel htmlFor={'target'}>Target</StyledLabel>
-              <EditTargetSpan onClick={() => setEditTarget(!isEditTarget)}>
-                {iconEditTarget}
-              </EditTargetSpan>
+              <ClearTargetButton onClick={() => handleTargetChange(null)}>
+                <CloseIcon />
+              </ClearTargetButton>
+              <EditTargetButton onClick={startEditTarget}>{iconEditTarget}</EditTargetButton>
             </FloatingLabelContainer>
 
             <FloatingLabelContainer>
@@ -1399,59 +1374,6 @@ if (props.type === 'callout') {
     <Theme skin={skin}>
       <InfoBox>
         {header}
-        {isEditTarget ? (
-          <DappletContextPicker
-            target={[
-              {
-                namespace: NAMESPACE,
-                contextType: 'timeline',
-                if: {},
-              },
-              {
-                namespace: NAMESPACE,
-                contextType: 'post',
-                if: {},
-              },
-              {
-                namespace: NAMESPACE,
-                contextType: 'postSouthButton',
-                if: {},
-              },
-              {
-                namespace: NAMESPACE,
-                contextType: 'profile',
-                if: {},
-              },
-              {
-                namespace: 'mweb',
-                contextType: 'mweb-overlay',
-                if: { id: { eq: 'mutation-button' } },
-              },
-              {
-                namespace: 'mweb',
-                contextType: 'mweb-overlay',
-                if: { id: { eq: 'open-apps-button' } },
-              },
-              {
-                namespace: 'mweb',
-                contextType: 'mweb-overlay-action',
-                if: {},
-              },
-              {
-                namespace: 'mweb',
-                contextType: 'injected-widget',
-                if: {},
-              },
-              {
-                namespace: 'mweb',
-                contextType: 'notch',
-                if: {},
-              },
-            ]}
-            onClick={setSelectedContext}
-            LatchComponent={ContextTypeLatch}
-          />
-        ) : null}
         {!content || isEditMode ? (
           <>
             {navButtonsEdit}
@@ -1469,11 +1391,18 @@ if (props.type === 'callout') {
                 </ButtonRevert>
               </OptionsBlock>
               <FloatingLabelContainer>
-                <StyledInput id={'target'} type={'text'} value={props.type} />
+                <StyledInput
+                  id={'target'}
+                  type={'text'}
+                  readonly
+                  disabled
+                  value={contextId && contextType ? `${contextType}/${contextId}` : 'No target'}
+                />
                 <StyledLabel htmlFor={'target'}>Target</StyledLabel>
-                <EditTargetSpan onClick={() => setEditTarget(!isEditTarget)}>
-                  {iconEditTarget}
-                </EditTargetSpan>
+                <ClearTargetButton onClick={() => handleTargetChange(null)}>
+                  <CloseIcon />
+                </ClearTargetButton>
+                <EditTargetButton onClick={startEditTarget}>{iconEditTarget}</EditTargetButton>
               </FloatingLabelContainer>
 
               <FloatingLabelContainer>
