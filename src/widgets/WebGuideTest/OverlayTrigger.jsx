@@ -917,6 +917,26 @@ const StyledInput = styled.input`
   }
 `
 
+const StyledTarget = styled.div`
+  padding: 25px 10px 10px 10px;
+  background: inherit;
+  color: #fff;
+  line-height: 100%;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid #e2e2e5;
+  width: 100%;
+  outline: none;
+
+  &:focus + label,
+  &:not(:placeholder-shown) + label {
+    top: 0.5rem;
+    font-size: 12px;
+    color: #bbccd0;
+    left: 10px;
+  }
+`
+
 const StyledLabel = styled.label`
   position: absolute;
   top: 25px;
@@ -1315,7 +1335,7 @@ if (props.type === 'callout') {
               </ButtonRevert>
             </OptionsBlock>
             <FloatingLabelContainer>
-              <StyledInput id={'target'} readonly type={'text'} value={props.type} />
+               <StyledTarget id={'target'}>{props.type}</StyledTarget>
               <StyledLabel htmlFor={'target'}>Target</StyledLabel>
               <EditTargetSpan onClick={() => setEditTarget(!isEditTarget)}>
                 {iconEditTarget}
@@ -1469,7 +1489,7 @@ if (props.type === 'callout') {
                 </ButtonRevert>
               </OptionsBlock>
               <FloatingLabelContainer>
-                <StyledInput id={'target'} type={'text'} value={props.type} />
+                <StyledTarget id={'target'}>{props.type}</StyledTarget>
                 <StyledLabel htmlFor={'target'}>Target</StyledLabel>
                 <EditTargetSpan onClick={() => setEditTarget(!isEditTarget)}>
                   {iconEditTarget}
