@@ -1,4 +1,4 @@
-const { appId, isActive, handleAction, tooltip, children } = props;
+const { appId, isActive, handleAction, tooltip, children } = props
 
 const ButtonActionWrapper = styled.button`
   display: flex;
@@ -15,22 +15,19 @@ const ButtonActionWrapper = styled.button`
   box-shadow: 0 4px 5px 0 rgba(45, 52, 60, 0.1);
   transition: all 0.2s ease;
   border: ${(props) =>
-    props.$isActive
-      ? "rgba(56, 75, 255, 1)"
-      : "1px solid rgba(226, 226, 229, 1)"};
-  background: ${(props) =>
-    props.$isActive ? "rgba(56, 75, 255, 1)" : "rgba(248, 249, 255, 1)"};
+    props.$isActive ? 'rgba(56, 75, 255, 1)' : '1px solid rgba(226, 226, 229, 1)'};
+  background: ${(props) => (props.$isActive ? 'rgba(56, 75, 255, 1)' : 'rgba(248, 249, 255, 1)')};
 
   &:hover {
-    background: ${(props) => (props.$isActive ? "#AFB7FF" : "#FFFFFF")};
-    border: ${(props) => (props.$isActive ? "#AFB7FF" : "#FFFFFF")};
+    background: ${(props) => (props.$isActive ? '#AFB7FF' : '#FFFFFF')};
+    border: ${(props) => (props.$isActive ? '#AFB7FF' : '#FFFFFF')};
   }
 
   &:active {
-    background: ${(props) => (props.$isActive ? "#9199E1" : "#EEEFF5")};
-    border: ${(props) => (props.$isActive ? "#9199E1" : "#EEEFF5")};
+    background: ${(props) => (props.$isActive ? '#9199E1' : '#EEEFF5')};
+    border: ${(props) => (props.$isActive ? '#9199E1' : '#EEEFF5')};
   }
-`;
+`
 
 const ImgButtonWrapper = styled.span`
   display: flex;
@@ -42,7 +39,7 @@ const ImgButtonWrapper = styled.span`
   align-items: center;
   width: 18px;
   height: 18px;
-`;
+`
 
 return (
   <ButtonActionWrapper
@@ -52,14 +49,11 @@ return (
     data-mweb-context-type="mweb-overlay-action"
     data-mweb-context-parsed={JSON.stringify({
       id: `web-guide-action-${appId}`,
-      type: "web-guide-action",
+      type: 'web-guide-action',
       appId,
     })}
   >
     <ImgButtonWrapper>{children}</ImgButtonWrapper>
-    <div
-      data-mweb-insertion-point="mweb-overlay-action"
-      style={{ display: "none" }}
-    />
+    <div data-mweb-insertion-point="mweb-overlay-action" style={{ display: 'none' }} />
   </ButtonActionWrapper>
-);
+)

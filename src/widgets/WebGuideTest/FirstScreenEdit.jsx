@@ -1,20 +1,20 @@
-const CustomTooltipDefault = styled("DappletTooltip")`
+const CustomTooltipDefault = styled('DappletTooltip')`
   z-index: 99999999; // over the notch
 
-  &[data-popper-reference-hidden="true"] {
+  &[data-popper-reference-hidden='true'] {
     visibility: hidden;
     pointer-events: none;
   }
-`;
+`
 
-const CustomTooltipMeta = styled("DappletTooltip")`
+const CustomTooltipMeta = styled('DappletTooltip')`
   z-index: 99999999; // over the notch
 
-  &[data-popper-reference-hidden="true"] {
+  &[data-popper-reference-hidden='true'] {
     visibility: hidden;
     pointer-events: none;
   }
-`;
+`
 
 const Callout = styled.div`
   display: flex;
@@ -27,19 +27,20 @@ const Callout = styled.div`
   border-radius: 10px;
 
   background: #f8f9ff;
-  box-shadow: 0px 3px 6px 0px #4741fc0d, 0px 11px 11px 0px #4741fc0a,
-    0px 25px 15px 0px #4741fc08, 0px 44px 17px 0px #4741fc03,
+  box-shadow:
+    0px 3px 6px 0px #4741fc0d,
+    0px 11px 11px 0px #4741fc0a,
+    0px 25px 15px 0px #4741fc08,
+    0px 44px 17px 0px #4741fc03,
     0px 68px 19px 0px #4741fc00;
 
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-`;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+`
 
 const Header = styled.div`
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   color: #02193a;
   position: relative;
   display: flex;
@@ -47,7 +48,7 @@ const Header = styled.div`
   width: 100%;
   justify-content: center;
   align-items: center;
-`;
+`
 
 const TopLine = styled.div`
   position: relative;
@@ -59,7 +60,7 @@ const TopLine = styled.div`
   height: 24px;
   margin: 0;
   padding: 0;
-`;
+`
 
 const EditSpanIcon = styled.div`
   display: flex;
@@ -69,20 +70,17 @@ const EditSpanIcon = styled.div`
   height: 70px;
   background: #ffffff;
   border-radius: 50%;
-  box-shadow: 3px 2px 8px 0px #0000000d, 12px 8px 14px 0px #0000000a,
-    27px 18px 19px 0px #00000008, 47px 32px 23px 0px #00000003,
+  box-shadow:
+    3px 2px 8px 0px #0000000d,
+    12px 8px 14px 0px #0000000a,
+    27px 18px 19px 0px #00000008,
+    47px 32px 23px 0px #00000003,
     74px 50px 25px 0px #00000000;
   margin-bottom: 20px;
-`;
+`
 
 const iconPickerColor = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="32"
-    height="32"
-    viewBox="0 0 32 32"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
     <path
       d="M27.18 3.8388C26.8085 3.4673 26.3675 3.1726 25.8822 2.97154C25.3968 2.77048 24.8766 2.66699 24.3513 2.66699C23.826 2.66699 23.3058 2.77048 22.8204 2.97154C22.3351 3.1726 21.8941 3.4673 21.5226 3.8388L18.6933 6.6668L17.7506 5.7228C17.6268 5.59901 17.4797 5.50083 17.3179 5.43387C17.1561 5.36691 16.9826 5.33247 16.8075 5.33253C16.6324 5.3326 16.459 5.36715 16.2972 5.43423C16.1354 5.50131 15.9884 5.59959 15.8646 5.72347C15.7408 5.84735 15.6427 5.9944 15.5757 6.15623C15.5087 6.31805 15.4743 6.49148 15.4744 6.66661C15.4744 6.84174 15.509 7.01514 15.5761 7.17692C15.6431 7.3387 15.7414 7.48568 15.8653 7.60947L23.408 15.1508C23.6604 15.3879 23.9952 15.5174 24.3414 15.512C24.6877 15.5066 25.0182 15.3668 25.2632 15.122C25.5081 14.8772 25.6482 14.5467 25.6539 14.2005C25.6595 13.8543 25.5302 13.5194 25.2933 13.2668L24.3506 12.3241L27.18 9.4948C27.9299 8.74469 28.3511 7.72746 28.3511 6.6668C28.3511 5.60615 27.9299 4.58892 27.18 3.8388Z"
       fill="#384BFF"
@@ -94,7 +92,7 @@ const iconPickerColor = (
       fill="#384BFF"
     />
   </svg>
-);
+)
 
 const Close = styled.button`
   display: flex;
@@ -105,14 +103,13 @@ const Close = styled.button`
   padding: 0;
   cursor: pointer;
   flex: 1;
-`;
+`
 
 const Title = styled.div`
   padding: 0;
   margin: 0 0 -10px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   color: #02193a;
   font-size: 18px;
   font-style: normal;
@@ -120,7 +117,7 @@ const Title = styled.div`
   line-height: 26.82px;
   text-align: center;
   margin-bottom: 10px;
-`;
+`
 
 const Wrapper = styled.div`
   width: 100%;
@@ -129,7 +126,7 @@ const Wrapper = styled.div`
   text-align: center;
   font-size: 12px;
   margin-bottom: 20px;
-`;
+`
 
 const Footer = styled.div`
   display: flex;
@@ -139,19 +136,17 @@ const Footer = styled.div`
   width: 100%;
   align-items: center;
   gap: 20px;
-`;
+`
 
 const ActionsGroup = styled.div`
   display: flex;
-  flex-direction: ${(props) =>
-    props.$type === "infobox" ? "row-reverse" : "row"};
-  justify-content: ${(props) =>
-    props.$type === "infobox" ? "space-between" : "center"};
+  flex-direction: ${(props) => (props.$type === 'infobox' ? 'row-reverse' : 'row')};
+  justify-content: ${(props) => (props.$type === 'infobox' ? 'space-between' : 'center')};
   align-items: center;
   gap: 10px;
   align-self: stretch;
   flex-grow: 1;
-`;
+`
 
 const ActionButton = styled.div`
   display: flex;
@@ -176,16 +171,10 @@ const ActionButton = styled.div`
   &:hover {
     opacity: 0.5;
   }
-`;
+`
 
 const iconClose = (color) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
     <path
       d="M18 6L6 18"
       stroke={color}
@@ -201,7 +190,7 @@ const iconClose = (color) => (
       strokeLinejoin="round"
     />
   </svg>
-);
+)
 
 const CloseButton = styled.button`
   position: absolute;
@@ -230,7 +219,7 @@ const CloseButton = styled.button`
       }
     }
   }
-`;
+`
 
 const {
   children,
@@ -243,23 +232,23 @@ const {
   checked,
   onDoNotShowChange,
   skin,
-} = props;
+} = props
 
-const [isEditTarget, setEditTarget] = useState(false);
+const [isEditTarget, setEditTarget] = useState(false)
 // todo: new
 
 const header = (
   <Header>
     <TopLine>
-      <Close onClick={onClose}>{iconClose("#838891")}</Close>
+      <Close onClick={onClose}>{iconClose('#838891')}</Close>
     </TopLine>
   </Header>
-);
+)
 
 const actionButton = (btn) => (
   <ActionButton
     key={btn.label}
-    $primary={btn.variant == "primary" ? true : false}
+    $primary={btn.variant == 'primary' ? true : false}
     $primCol={themes[skin].primBtnCol}
     $primBg={themes[skin].primBtnBg}
     $primBgH={themes[skin].primBtnBgH}
@@ -273,12 +262,10 @@ const actionButton = (btn) => (
   >
     {btn.label}
   </ActionButton>
-);
+)
 
-const navButtons = !buttons ? null : props.type === "callout" ? (
-  <ActionsGroup $type={props.type}>
-    {buttons.map((btn) => actionButton(btn))}
-  </ActionsGroup>
+const navButtons = !buttons ? null : props.type === 'callout' ? (
+  <ActionsGroup $type={props.type}>{buttons.map((btn) => actionButton(btn))}</ActionsGroup>
 ) : buttons?.length > 1 ? (
   <ActionsGroup $type={props.type}>
     {actionButton(buttons[1])}
@@ -288,7 +275,7 @@ const navButtons = !buttons ? null : props.type === "callout" ? (
   <ActionsGroup $type={props.type}>{actionButton(buttons[0])}</ActionsGroup>
 ) : (
   <></>
-);
+)
 
 const callout = (
   <Callout
@@ -301,47 +288,47 @@ const callout = (
         target={[
           {
             namespace: NAMESPACE,
-            contextType: "timeline",
+            contextType: 'timeline',
             if: {},
           },
           {
             namespace: NAMESPACE,
-            contextType: "post",
+            contextType: 'post',
             if: {},
           },
           {
             namespace: NAMESPACE,
-            contextType: "postSouthButton",
+            contextType: 'postSouthButton',
             if: {},
           },
           {
             namespace: NAMESPACE,
-            contextType: "profile",
+            contextType: 'profile',
             if: {},
           },
           {
-            namespace: "mweb",
-            contextType: "mweb-overlay",
-            if: { id: { eq: "mutation-button" } },
+            namespace: 'mweb',
+            contextType: 'mweb-overlay',
+            if: { id: { eq: 'mutation-button' } },
           },
           {
-            namespace: "mweb",
-            contextType: "mweb-overlay",
-            if: { id: { eq: "open-apps-button" } },
+            namespace: 'mweb',
+            contextType: 'mweb-overlay',
+            if: { id: { eq: 'open-apps-button' } },
           },
           {
-            namespace: "mweb",
-            contextType: "mweb-overlay-action",
+            namespace: 'mweb',
+            contextType: 'mweb-overlay-action',
             if: {},
           },
           {
-            namespace: "mweb",
-            contextType: "injected-widget",
+            namespace: 'mweb',
+            contextType: 'injected-widget',
             if: {},
           },
           {
-            namespace: "mweb",
-            contextType: "notch",
+            namespace: 'mweb',
+            contextType: 'notch',
             if: {},
           },
         ]}
@@ -358,46 +345,36 @@ const callout = (
       </Title>
 
       <Wrapper>
-        Select the element that will become the starting <br /> point of the
-        sequence using the Picker tool.
+        Select the element that will become the starting <br /> point of the sequence using the
+        Picker tool.
       </Wrapper>
 
-      <ActionButton onClick={() => setEditTarget(!isEditTarget)}>
-        Create
-      </ActionButton>
+      <ActionButton onClick={() => setEditTarget(!isEditTarget)}>Create</ActionButton>
     </>
 
-    <div data-mweb-insertion-point="hidden" style={{ display: "none" }} />
+    <div data-mweb-insertion-point="hidden" style={{ display: 'none' }} />
   </Callout>
-);
+)
 
 const calloutTooltip = {
-  DEFAULT: (
-    <CustomTooltipDefault bsPrefix="wg-tooltip">{callout}</CustomTooltipDefault>
-  ),
-  META_GUIDE: (
-    <CustomTooltipMeta bsPrefix="wg-tooltip">{callout}</CustomTooltipMeta>
-  ),
-};
+  DEFAULT: <CustomTooltipDefault bsPrefix="wg-tooltip">{callout}</CustomTooltipDefault>,
+  META_GUIDE: <CustomTooltipMeta bsPrefix="wg-tooltip">{callout}</CustomTooltipMeta>,
+}
 
-const infobox = <Footer>{navButtons}</Footer>;
+const infobox = <Footer>{navButtons}</Footer>
 
 const overlayByType = {
   callout: (
     <DappletOverlayTrigger
       show={true}
       overlay={calloutTooltip[skin]}
-      placement={props.placement ?? "auto"}
+      placement={props.placement ?? 'auto'}
       offset={[0, 20]}
-      popperConfig={{ strategy: props.strategy ?? "absolute" }}
+      popperConfig={{ strategy: props.strategy ?? 'absolute' }}
     >
-      {typeof props.children === "function" ? (
-        props.children
-      ) : (
-        <span>{props.children}</span>
-      )}
+      {typeof props.children === 'function' ? props.children : <span>{props.children}</span>}
     </DappletOverlayTrigger>
   ),
   infobox,
-};
-return overlayByType[props.type];
+}
+return overlayByType[props.type]
