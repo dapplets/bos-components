@@ -51,6 +51,7 @@
     "${REPL_ACCOUNT}/app/picker-adapter-tester",
     "${REPL_ACCOUNT}/app/TestNotify",
     "${REPL_ACCOUNT}/app/StaticLinkExample",
-    "${REPL_ACCOUNT}/app/LinkDbExample"
+    "${REPL_ACCOUNT}/app/LinkDbExample",
+    "${REPL_ACCOUNT}/app/ControllerExample"
   ]
 }
