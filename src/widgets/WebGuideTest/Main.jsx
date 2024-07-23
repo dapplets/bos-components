@@ -195,6 +195,25 @@ const handlePageRemove = () => {
   }
 }
 
+const handleRevertChanges = () => {
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
+
+  if (
+    guideConfig.chapters[chapterCounter] &&
+    guideConfig.chapters[chapterCounter].pages[pageCounter]
+  ) {
+    updatedConfig.chapters[chapterCounter].pages[pageCounter].title =
+      guideConfig.chapters[chapterCounter].pages[pageCounter].title
+
+    updatedConfig.chapters[chapterCounter].pages[pageCounter].content =
+      guideConfig.chapters[chapterCounter].pages[pageCounter].content
+  } else {
+    updatedConfig.chapters[chapterCounter].pages[pageCounter] = newPage
+  }
+
+  setEditingConfig(updatedConfig)
+}
+
 const ChapterWrapper = (props) => {
   const currentChapter = editingConfig.chapters[chapterCounter]
   if (!currentChapter) return <></>
@@ -279,6 +298,7 @@ const ChapterWrapper = (props) => {
         onChapterAdd: handleChapterAdd,
         onPageAdd: handlePageAdd,
         onPageRemove: handlePageRemove,
+        onRevertChanges: handleRevertChanges,
       }}
     />
   )
