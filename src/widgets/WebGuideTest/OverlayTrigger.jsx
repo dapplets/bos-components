@@ -133,6 +133,8 @@ const ZIndexWrapper = styled.div`
 `
 
 const InfoBox = styled.div`
+  position: relative;
+  overflow: hidden;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -168,6 +170,9 @@ const InfoBox = styled.div`
 `
 
 const Callout = styled.div`
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
   display: flex;
   width: 320px;
   padding: 12px 14px 14px;
@@ -180,6 +185,10 @@ const Callout = styled.div`
   background: var(--bgMain);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+
+  &.edit-mode {
+    width: 360px;
+  }
 `
 
 const Header = styled.div`
@@ -1086,6 +1095,8 @@ const AddedChapterButton = styled.button`
 `
 
 const {
+  guideTitle,
+  guideDescription,
   contextId,
   contextType,
   children,
@@ -1099,7 +1110,6 @@ const {
   checked,
   onDoNotShowChange,
   skin,
-  // todo: new props
   saveTitle,
   saveData,
   link,
@@ -1116,7 +1126,7 @@ const {
   onRevertChanges,
 } = props
 
-// todo: new
+const [showSaveChangesPopup, setShowSaveChangesPopup] = useState(false)
 
 // useEffect(() => {
 //   try {
@@ -1134,7 +1144,6 @@ const {
 //   }
 // }, [])
 
-// todo: new
 const handleSave = () => {
   // todo: uncomment when will be contract function
   // saveData(newData);
@@ -1148,7 +1157,7 @@ const handleSave = () => {
   // }
 }
 
-//todo: test page
+// todo: test page
 
 // todo: test chapter
 
@@ -1264,6 +1273,7 @@ if (props.type === 'callout') {
     <Callout
       data-mweb-context-type="wg-chapter"
       data-mweb-context-parsed={JSON.stringify({ id: props.id })}
+      className={isEditMode ? 'edit-mode' : ''}
     >
       {header}
 
@@ -1327,7 +1337,7 @@ if (props.type === 'callout') {
             {isEditMode ? (
               <SuccessButton onClick={() => setEditMode(false)}>Cancel</SuccessButton>
             ) : null}
-            <SuccessButton onClick={handleSave}>Save guide</SuccessButton>
+            <SuccessButton onClick={() => setShowSaveChangesPopup(true)}>Save guide</SuccessButton>
           </EditButtonsBlock>
         </>
       ) : (
@@ -1341,6 +1351,17 @@ if (props.type === 'callout') {
           {navButtons}
         </>
       )}
+      {showSaveChangesPopup ? (
+        <Widget
+          src="${REPL_ACCOUNT}/widget/WebGuideTest.PublishScreen"
+          props={{
+            onSave: handleSave,
+            onCancel: () => setShowSaveChangesPopup(false),
+            oldTitle: guideTitle,
+            oldDescription: guideDescription,
+          }}
+        />
+      ) : null}
       <div data-mweb-insertion-point="hidden" style={{ display: 'none' }} />
     </Callout>
   )
@@ -1431,7 +1452,9 @@ if (props.type === 'callout') {
               {isEditMode ? (
                 <SuccessButton onClick={() => setEditMode(false)}>Cancel</SuccessButton>
               ) : null}
-              <SuccessButton onClick={handleSave}>Save guide</SuccessButton>
+              <SuccessButton onClick={() => setShowSaveChangesPopup(true)}>
+                Save guide
+              </SuccessButton>
             </EditButtonsBlock>
           </>
         ) : (
@@ -1449,6 +1472,17 @@ if (props.type === 'callout') {
             </Footer>
           </>
         )}
+        {showSaveChangesPopup ? (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/WebGuideTest.PublishScreen"
+            props={{
+              onSave: handleSave,
+              onCancel: () => setShowSaveChangesPopup(false),
+              oldTitle: guideTitle,
+              oldDescription: guideDescription,
+            }}
+          />
+        ) : null}
       </InfoBox>
     </Theme>
   )
