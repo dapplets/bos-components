@@ -1,33 +1,27 @@
-const CustomTooltipDefault = styled('DappletTooltip')`
-  z-index: 99999999; // over the notch
-
-  &[data-popper-reference-hidden='true'] {
-    visibility: hidden;
-    pointer-events: none;
-  }
-`
-
-const CustomTooltipMeta = styled('DappletTooltip')`
-  z-index: 99999999; // over the notch
-
-  &[data-popper-reference-hidden='true'] {
-    visibility: hidden;
-    pointer-events: none;
-  }
-`
-
-const Callout = styled.div`
+const Background = styled.div`
+  box-sizing: content-box;
+  position: absolute;
   display: flex;
-  width: 360px;
-  padding: 20px;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ffffffc4;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+`
+
+const Popup = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+  padding: 20px;
+  padding-bottom: 10px;
   border-radius: 10px;
-
-  background: #d3ddf5;
-
+  background: #fff;
   box-shadow:
     0px 5px 11px 0px #02193a1a,
     0px 19px 19px 0px #02193a17,
@@ -59,67 +53,6 @@ const Wrapper = styled.div`
   color: #7a818b;
   text-align: center;
   font-size: 12px;
-`
-
-const WrapperExport = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  padding-bottom: 10px;
-  border-radius: 10px;
-  background: #fff;
-  box-shadow:
-    0px 5px 11px 0px #02193a1a,
-    0px 19px 19px 0px #02193a17,
-    0px 43px 26px 0px #02193a0d,
-    0px 77px 31px 0px #02193a03,
-    0px 120px 34px 0px #02193a00;
-`
-
-const Footer = styled.div`
-  display: flex;
-  position: relative;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
-  align-items: center;
-  gap: 20px;
-`
-
-const ActionsGroup = styled.div`
-  display: flex;
-  flex-direction: ${(props) => (props.$type === 'infobox' ? 'row-reverse' : 'row')};
-  justify-content: ${(props) => (props.$type === 'infobox' ? 'space-between' : 'center')};
-  align-items: center;
-  gap: 10px;
-  align-self: stretch;
-  flex-grow: 1;
-`
-
-const ActionButton = styled.div`
-  display: flex;
-  box-sizing: border-box;
-  width: 160px;
-  height: 42px;
-  padding: 0px 20px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  text-align: center;
-  font-size: 14px;
-  cursor: pointer;
-
-  background: #3848ff;
-  color: #fff;
-  -webkit-user-select: none; /* Chrome/Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* IE/Edge */
-  user-select: none;
-
-  &:hover {
-    opacity: 0.5;
-  }
 `
 
 const iconExport = (
@@ -326,46 +259,14 @@ const StyledButtonsBottom = styled.div`
   width: 100%;
 `
 
-const { children, content, buttons, skin } = props
+const { onSave, onCancel, oldTitle, oldDescription } = props
 
-const actionButton = (btn) => (
-  <ActionButton
-    key={btn.label}
-    $primary={btn.variant == 'primary' ? true : false}
-    $primCol={themes[skin].primBtnCol}
-    $primBg={themes[skin].primBtnBg}
-    $primBgH={themes[skin].primBtnBgH}
-    $primBgA={themes[skin].primBtnBgA}
-    $secCol={themes[skin].secBtnCol}
-    $secBorderCol={themes[skin].secBtnBorderCol}
-    $secBgH={themes[skin].secBtnBgH}
-    $secBgA={themes[skin].secBtnBgA}
-    onClick={btn.onClick}
-    disabled={btn.disabled}
-  >
-    {btn.label}
-  </ActionButton>
-)
+const [title, onTitleChange] = useState(oldTitle ?? '')
+const [description, onDescriptionChange] = useState(oldDescription ?? '')
 
-const navButtons = !buttons ? null : props.type === 'callout' ? (
-  <ActionsGroup $type={props.type}>{buttons.map((btn) => actionButton(btn))}</ActionsGroup>
-) : buttons?.length > 1 ? (
-  <ActionsGroup $type={props.type}>
-    {actionButton(buttons[1])}
-    {actionButton(buttons[0])}
-  </ActionsGroup>
-) : buttons?.length === 1 ? (
-  <ActionsGroup $type={props.type}>{actionButton(buttons[0])}</ActionsGroup>
-) : (
-  <></>
-)
-
-const callout = (
-  <Callout
-    data-mweb-context-type="wg-chapter"
-    data-mweb-context-parsed={JSON.stringify({ id: props.id })}
-  >
-    <WrapperExport>
+return (
+  <Background>
+    <Popup>
       <Title $type={props.type}>
         You're going to push
         <br /> changes into the blockchain
@@ -373,7 +274,13 @@ const callout = (
 
       <Wrapper>
         <FloatingLabelContainer>
-          <StyledInputOwner id={'owner'} readonly type={'text'} />
+          <StyledInputOwner
+            id={'owner'}
+            readonly
+            disabled
+            type={'text'}
+            value={context.accountId}
+          />
           <StyledLabel htmlFor={'owner'}>Owner</StyledLabel>
         </FloatingLabelContainer>
 
@@ -392,6 +299,8 @@ const callout = (
         <FloatingLabelContainerArea>
           <StyledTextarea
             id={'description'}
+            type={'text'}
+            value={description}
             onChange={(e) => {
               onDescriptionChange(e.target.value)
             }}
@@ -400,48 +309,10 @@ const callout = (
         </FloatingLabelContainerArea>
       </Wrapper>
       <StyledButtonsBottom>
-        <CancelButton
-          onClick={() => {
-            // todo: cancel
-          }}
-        >
-          Cancel
-        </CancelButton>
-        <SaveButton
-          onClick={() => {
-            // todo: Save & Publish
-          }}
-        >
-          Save & Publish
-        </SaveButton>
+        <CancelButton onClick={onCancel}>Cancel</CancelButton>
+        <SaveButton onClick={onSave}>Save & Publish</SaveButton>
       </StyledButtonsBottom>
       <ExportButton>{iconExport}Export</ExportButton>
-    </WrapperExport>
-
-    <div data-mweb-insertion-point="hidden" style={{ display: 'none' }} />
-  </Callout>
+    </Popup>
+  </Background>
 )
-
-const calloutTooltip = {
-  DEFAULT: <CustomTooltipDefault bsPrefix="wg-tooltip">{callout}</CustomTooltipDefault>,
-  META_GUIDE: <CustomTooltipMeta bsPrefix="wg-tooltip">{callout}</CustomTooltipMeta>,
-}
-
-const infobox = <Footer>{navButtons}</Footer>
-
-const overlayByType = {
-  callout: (
-    <DappletOverlayTrigger
-      show={true}
-      overlay={calloutTooltip[skin]}
-      placement={props.placement ?? 'auto'}
-      offset={[0, 20]}
-      popperConfig={{ strategy: props.strategy ?? 'absolute' }}
-    >
-      {typeof props.children === 'function' ? props.children : <span>{props.children}</span>}
-    </DappletOverlayTrigger>
-  ),
-  infobox,
-}
-
-return overlayByType[props.type]

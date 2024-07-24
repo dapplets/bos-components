@@ -344,6 +344,8 @@ const ChapterWrapper = (props) => {
       src="${REPL_ACCOUNT}/widget/WebGuideTest.OverlayTrigger"
       loading={props?.children}
       props={{
+        guideTitle: editingConfig.title,
+        guideDescription: editingConfig.description,
         id: currentChapter.id,
         type: currentChapter.type,
         contextType: currentChapter.target
