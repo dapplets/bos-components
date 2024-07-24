@@ -101,26 +101,16 @@ const [isEditMode, setEditMode] = useState(false)
 const [isEditTarget, setEditTarget] = useState(false)
 const [editingConfig, setEditingConfig] = useState(null)
 
-const newChapter = {
-  id: 'bos.dapplets.near/gateway/MutableWebExtensionNew',
-  type: 'infobox',
-  if: {
-    id: 'newChapterID',
-  },
-  pages: [
-    {
-      title: '',
-      status: [],
-      content: '',
-    },
-  ],
-  skin: 'META_GUIDE',
-}
-
-const newPage = {
+const pageTemplate = {
   title: '',
   status: [],
   content: '',
+}
+
+const chapterTemplate = {
+  type: 'infobox',
+  pages: [pageTemplate],
+  skin: 'META_GUIDE',
 }
 
 const response = Near.view('app.webguide.near', 'get_guide', {
@@ -234,29 +224,21 @@ const handleTargetChange = (newTarget) => {
 
 const handleChapterAdd = () => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-
-  if (updatedConfig.chapters[chapterCounter] !== undefined) {
-    updatedConfig.chapters.splice(chapterCounter + 1, 0, newChapter)
-    setEditingConfig(updatedConfig)
-    handleChapterIncrement()
-  } else {
-    console.error('Current chapter not found at index:', chapterCounter)
-  }
+  const newChapter = JSON.parse(JSON.stringify(chapterTemplate))
+  newChapter.id = `${context.accountId}/chapter/${Math.trunc(Math.random() * 1000000000)}`
+  newChapter.pages[0].id = `${newChapter.id}/page/${Math.trunc(Math.random() * 1000000000)}`
+  updatedConfig.chapters.splice(chapterCounter + 1, 0, newChapter)
+  setEditingConfig(updatedConfig)
+  handleChapterIncrement()
 }
 
 const handlePageAdd = () => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-
-  if (
-    updatedConfig.chapters[chapterCounter] &&
-    updatedConfig.chapters[chapterCounter].pages[pageCounter] !== undefined
-  ) {
-    updatedConfig.chapters[chapterCounter].pages.splice(pageCounter + 1, 0, newPage)
-    setPageCounter((val) => val + 1)
-    setEditingConfig(updatedConfig)
-  } else {
-    console.error('Chapter or page not found at index:', chapterIndex, currentPageIndex)
-  }
+  const newPage = JSON.parse(JSON.stringify(pageTemplate))
+  newPage.id = `${updatedConfig.chapters[chapterCounter].id}/page/${Math.trunc(Math.random() * 1000000000)}`
+  updatedConfig.chapters[chapterCounter].pages.splice(pageCounter + 1, 0, newPage)
+  setPageCounter((val) => val + 1)
+  setEditingConfig(updatedConfig)
 }
 
 const handlePageRemove = () => {
@@ -292,16 +274,32 @@ const handleRevertChanges = () => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
 
   if (
-    guideConfig.chapters[chapterCounter] &&
-    guideConfig.chapters[chapterCounter].pages[pageCounter]
+    !guideConfig.chapters.find(
+      (chapter) => chapter.id === updatedConfig.chapters[chapterCounter].id
+    )
   ) {
+    updatedConfig.chapters[chapterCounter].type = 'infobox'
+    updatedConfig.chapters[chapterCounter].target = undefined
+    updatedConfig.chapters[chapterCounter].pages[pageCounter].title = ''
+    updatedConfig.chapters[chapterCounter].pages[pageCounter].content = ''
+  } else if (
+    !guideConfig.chapters[chapterCounter].pages.find(
+      (page) => page.id === updatedConfig.chapters[chapterCounter].pages[pageCounter].id
+    )
+  ) {
+    updatedConfig.chapters[chapterCounter].type = guideConfig.chapters[chapterCounter].type
+    updatedConfig.chapters[chapterCounter].target =
+      guideConfig.chapters[chapterCounter].target ?? undefined
+    updatedConfig.chapters[chapterCounter].pages[pageCounter].title = ''
+    updatedConfig.chapters[chapterCounter].pages[pageCounter].content = ''
+  } else {
+    updatedConfig.chapters[chapterCounter].type = guideConfig.chapters[chapterCounter].type
+    updatedConfig.chapters[chapterCounter].target =
+      guideConfig.chapters[chapterCounter].target ?? undefined
     updatedConfig.chapters[chapterCounter].pages[pageCounter].title =
       guideConfig.chapters[chapterCounter].pages[pageCounter].title
-
     updatedConfig.chapters[chapterCounter].pages[pageCounter].content =
       guideConfig.chapters[chapterCounter].pages[pageCounter].content
-  } else {
-    updatedConfig.chapters[chapterCounter].pages[pageCounter] = newPage
   }
 
   setEditingConfig(updatedConfig)
