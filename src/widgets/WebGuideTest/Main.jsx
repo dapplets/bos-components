@@ -127,10 +127,12 @@ useEffect(() => {
 
 const handleClose = () => {
   setShowApp(false)
+  setEditMode(false)
 }
 
 const handleAction = () => {
   setShowApp((val) => !val)
+  setEditMode(false)
   setChapterCounter(0)
   setPageCounter(0)
 }
