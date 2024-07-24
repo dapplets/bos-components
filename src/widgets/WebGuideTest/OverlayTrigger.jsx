@@ -1113,6 +1113,7 @@ const {
   onChapterAdd,
   onPageRemove,
   buttonRemoveDisabled,
+  onRevertChanges,
 } = props
 
 // todo: new
@@ -1274,13 +1275,7 @@ if (props.type === 'callout') {
               <ButtonRemove disabled={buttonRemoveDisabled} onClick={onPageRemove}>
                 {iconRemove} Remove
               </ButtonRemove>
-              <ButtonRevert
-                onClick={() => {
-                  // todo: added revert function
-                }}
-              >
-                {iconRevert}Revert changes
-              </ButtonRevert>
+              <ButtonRevert onClick={onRevertChanges}>{iconRevert}Revert changes</ButtonRevert>
             </OptionsBlock>
             <FloatingLabelContainer>
               <StyledInput
@@ -1384,13 +1379,7 @@ if (props.type === 'callout') {
                 <ButtonRemove disabled={buttonRemoveDisabled} onClick={onPageRemove}>
                   {iconRemove} Remove
                 </ButtonRemove>
-                <ButtonRevert
-                  onClick={() => {
-                    // todo: added revert function
-                  }}
-                >
-                  {iconRevert}Revert changes
-                </ButtonRevert>
+                <ButtonRevert onClick={onRevertChanges}>{iconRevert}Revert changes</ButtonRevert>
               </OptionsBlock>
               <FloatingLabelContainer>
                 <StyledInput
