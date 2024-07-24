@@ -39,46 +39,6 @@ const Callout = styled.div`
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 `
 
-const TopLine = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 24px;
-  margin: 0;
-  padding: 0;
-`
-
-const EditSpanIcon = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 70px;
-  height: 70px;
-  background: #ffffff;
-  border-radius: 50%;
-  box-shadow:
-    3px 2px 8px 0px #0000000d,
-    12px 8px 14px 0px #0000000a,
-    27px 18px 19px 0px #00000008,
-    47px 32px 23px 0px #00000003,
-    74px 50px 25px 0px #00000000;
-  margin-bottom: 20px;
-`
-
-const Close = styled.button`
-  display: flex;
-  flex-direction: row-reverse;
-  background: inherit;
-  outline: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  flex: 1;
-`
-
 const Title = styled.div`
   padding: 0;
   margin: 0 0 -10px;
@@ -100,6 +60,7 @@ const Wrapper = styled.div`
   text-align: center;
   font-size: 12px;
 `
+
 const WrapperExport = styled.div`
   width: 100%;
   display: flex;
@@ -200,6 +161,7 @@ const CancelButton = styled.div`
     opacity: 0.5;
   }
 `
+
 const SaveButton = styled.div`
   display: flex;
   box-sizing: border-box;
@@ -364,21 +326,7 @@ const StyledButtonsBottom = styled.div`
   width: 100%;
 `
 
-const {
-  children,
-  content,
-
-  onClose,
-  // status, - conflict with deprecated Window.status property
-  buttons,
-  showChecked,
-  checked,
-  onDoNotShowChange,
-  skin,
-} = props
-
-const [isEditTarget, setEditTarget] = useState(false)
-// todo: new
+const { children, content, buttons, skin } = props
 
 const actionButton = (btn) => (
   <ActionButton
@@ -495,4 +443,5 @@ const overlayByType = {
   ),
   infobox,
 }
+
 return overlayByType[props.type]
