@@ -1291,10 +1291,12 @@ if (props.type === 'callout') {
                 value={contextType && contextId ? `${contextType}/${contextId}` : 'No target'}
               />
               <StyledLabel htmlFor={'target'}>Target</StyledLabel>
-              <ClearTargetButton onClick={() => handleTargetChange(null)}>
+              <ClearTargetButton title="Delete target" onClick={() => handleTargetChange(null)}>
                 <CloseIcon />
               </ClearTargetButton>
-              <EditTargetButton onClick={startEditTarget}>{iconEditTarget}</EditTargetButton>
+              <EditTargetButton title="Pick target" onClick={startEditTarget}>
+                {iconEditTarget}
+              </EditTargetButton>
             </FloatingLabelContainer>
 
             <FloatingLabelContainer>
@@ -1399,10 +1401,12 @@ if (props.type === 'callout') {
                   value={contextId && contextType ? `${contextType}/${contextId}` : 'No target'}
                 />
                 <StyledLabel htmlFor={'target'}>Target</StyledLabel>
-                <ClearTargetButton onClick={() => handleTargetChange(null)}>
+                <ClearTargetButton title="Delete target" onClick={() => handleTargetChange(null)}>
                   <CloseIcon />
                 </ClearTargetButton>
-                <EditTargetButton onClick={startEditTarget}>{iconEditTarget}</EditTargetButton>
+                <EditTargetButton title="Pick target" onClick={startEditTarget}>
+                  {iconEditTarget}
+                </EditTargetButton>
               </FloatingLabelContainer>
 
               <FloatingLabelContainer>
