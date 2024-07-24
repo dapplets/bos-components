@@ -966,7 +966,7 @@ const ClearTargetButton = styled.button`
   padding: 0;
   margin: none;
   position: absolute;
-  top: 17px;
+  top: 6px;
   right: 10px;
   cursor: pointer;
 `
@@ -983,8 +983,8 @@ const EditTargetButton = styled.button`
   padding: 0;
   margin: none;
   position: absolute;
-  top: 17px;
-  right: 40px;
+  top: 6px;
+  right: 32px;
   cursor: pointer;
 `
 
