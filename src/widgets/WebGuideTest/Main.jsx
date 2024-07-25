@@ -118,7 +118,10 @@ const response = Near.view('app.webguide.near', 'get_guide', {
 })
 const guideConfig = response && JSON.parse(response)
 
-if (!guideConfig || !guideConfig.chapters?.length || !guideConfig.chapters[0].pages?.length)
+if (
+  context.accountId !== link.authorId &&
+  (!guideConfig || !guideConfig.chapters?.length || !guideConfig.chapters[0].pages?.length)
+)
   return <></>
 
 useEffect(() => {
@@ -524,6 +527,28 @@ return (
           ]}
           onClick={handleTargetChange}
           LatchComponent={ContextTypeLatch}
+        />
+      ) : !editingConfig.chapters.length ? (
+        <DappletPortal
+          target={{
+            namespace: 'mweb',
+            contextType: 'mweb-overlay-action',
+            if: { id: { eq: 'web-guide-action-web-guide-test' } },
+          }}
+          component={(props) => (
+            <Widget
+              src="${REPL_ACCOUNT}/widget/WebGuideTest.FirstScreenEdit"
+              props={{
+                skin: 'META_GUIDE',
+                startEditTarget: () => setEditTarget(true),
+                onClose: handleClose,
+                children: ({ ref }) => {
+                  props.attachContextRef(ref)
+                  return props.children
+                },
+              }}
+            />
+          )}
         />
       ) : editingConfig.chapters[chapterCounter]?.type === 'infobox' ? (
         <OverlayTriggerWrapper>
