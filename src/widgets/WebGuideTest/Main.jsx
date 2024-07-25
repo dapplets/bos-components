@@ -169,63 +169,44 @@ const handleClickNext = () => {
   }
 }
 
-const saveData = (inputData) => {
-  if (context?.accountId) {
-    Near.call('app.webguide.near', 'set_guide', {
-      guide_id: link.id,
-      data: inputData,
-    })
-  }
-}
+// const saveData = (inputData) => {
+//   if (context?.accountId) {
+//     Near.call('app.webguide.near', 'set_guide', {
+//       guide_id: link.id,
+//       data: inputData,
+//     })
+//   }
+// }
 
-const handleTitleChange = (newTitle) => {
+const handlePageDataChange = ({ newTitle, newContent }) => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-
-  if (
-    updatedConfig.chapters[chapterCounter] &&
-    updatedConfig.chapters[chapterCounter].pages[pageCounter]
-  ) {
-    updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
-  }
-
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
   setEditingConfig(updatedConfig)
 }
 
-const handleDescriptionChange = (newDescription) => {
+const handleTargetSet = (newTarget) => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-
-  if (
-    updatedConfig.chapters[chapterCounter] &&
-    updatedConfig.chapters[chapterCounter].pages[pageCounter]
-  ) {
-    updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newDescription
-  }
-
-  setEditingConfig(updatedConfig)
-}
-
-const handleTargetChange = (newTarget) => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-
-  if (
-    updatedConfig.chapters[chapterCounter] &&
-    updatedConfig.chapters[chapterCounter].pages[pageCounter]
-  ) {
-    if (newTarget === null) {
-      updatedConfig.chapters[chapterCounter].type = 'infobox'
-      updatedConfig.chapters[chapterCounter].target = {}
-    } else {
-      updatedConfig.chapters[chapterCounter].type = 'callout'
-      updatedConfig.chapters[chapterCounter].target = newTarget
-    }
-  }
-
+  updatedConfig.chapters[chapterCounter].type = 'callout'
+  updatedConfig.chapters[chapterCounter].target = newTarget
   setEditingConfig(updatedConfig)
   setEditTarget(false)
 }
 
-const handleChapterAdd = () => {
+const handleTargetRemove = ({ newTitle, newContent }) => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
+  updatedConfig.chapters[chapterCounter].type = 'infobox'
+  updatedConfig.chapters[chapterCounter].target = {}
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
+  setEditingConfig(updatedConfig)
+  setEditTarget(false)
+}
+
+const handleChapterAdd = ({ newTitle, newContent }) => {
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
   const newChapter = JSON.parse(JSON.stringify(chapterTemplate))
   newChapter.id = `${context.accountId}/chapter/${Math.trunc(Math.random() * 1000000000)}`
   newChapter.pages[0].id = `${newChapter.id}/page/${Math.trunc(Math.random() * 1000000000)}`
@@ -234,8 +215,10 @@ const handleChapterAdd = () => {
   handleChapterIncrement()
 }
 
-const handlePageAdd = () => {
+const handlePageAdd = ({ newTitle, newContent }) => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
   const newPage = JSON.parse(JSON.stringify(pageTemplate))
   newPage.id = `${updatedConfig.chapters[chapterCounter].id}/page/${Math.trunc(Math.random() * 1000000000)}`
   updatedConfig.chapters[chapterCounter].pages.splice(pageCounter + 1, 0, newPage)
@@ -307,6 +290,10 @@ const handleRevertChanges = () => {
   setEditingConfig(updatedConfig)
 }
 
+const handleRemoveAllChanges = () => {
+  setEditingConfig(guideConfig)
+}
+
 const ChapterWrapper = (props) => {
   const currentChapter = editingConfig.chapters[chapterCounter]
   if (!currentChapter) return <></>
@@ -371,7 +358,6 @@ const ChapterWrapper = (props) => {
         title: currentPage.title,
         content: currentPage.content,
         showChecked: currentChapter.showChecked,
-        saveData,
         link,
         children:
           currentChapter.type === 'callout' && currentChapter.arrowTo === 'context'
@@ -389,15 +375,15 @@ const ChapterWrapper = (props) => {
         isEditMode,
         setEditMode,
         startEditTarget: () => setEditTarget(true),
-        handleTargetChange,
+        handleTargetRemove,
         buttonRemoveDisabled:
           currentChapterIndex + 1 === totalChapters && totalChapters === 1 && totalPages === 1,
-        onTitleChange: handleTitleChange,
-        onDescriptionChange: handleDescriptionChange,
+        onPageDataChange: handlePageDataChange,
         onChapterAdd: handleChapterAdd,
         onPageAdd: handlePageAdd,
         onPageRemove: handlePageRemove,
         onRevertChanges: handleRevertChanges,
+        handleRemoveAllChanges,
       }}
     />
   )
@@ -409,7 +395,7 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
       <TimelineLatch
         $variant={variant}
         $width={contextDimensions.width}
-        onClick={() => handleTargetChange(context)}
+        onClick={() => handleTargetSet(context)}
       >
         {iconTimelineLatch('white')}
       </TimelineLatch>
@@ -424,7 +410,7 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
         $variant={variant}
         $width={contextDimensions.width}
         $height={contextDimensions.height}
-        onClick={() => handleTargetChange(context)}
+        onClick={() => handleTargetSet(context)}
         $position={'right'}
       >
         {iconNotchLatch}
@@ -437,7 +423,7 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
         $variant={variant}
         $width={contextDimensions.width}
         $height={contextDimensions.height}
-        onClick={() => handleTargetChange(context)}
+        onClick={() => handleTargetSet(context)}
         $position={'left'}
       >
         {iconNotchLatch}
@@ -472,6 +458,7 @@ return (
         )}
       />
     ) : null}
+
     {showApp ? (
       isEditTarget ? (
         <DappletContextPicker
@@ -522,7 +509,7 @@ return (
               if: {},
             },
           ]}
-          onClick={handleTargetChange}
+          onClick={handleTargetSet}
           LatchComponent={ContextTypeLatch}
         />
       ) : editingConfig.chapters[chapterCounter]?.type === 'infobox' ? (
