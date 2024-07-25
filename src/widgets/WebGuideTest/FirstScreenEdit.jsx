@@ -128,26 +128,6 @@ const Wrapper = styled.div`
   margin-bottom: 20px;
 `
 
-const Footer = styled.div`
-  display: flex;
-  position: relative;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
-  align-items: center;
-  gap: 20px;
-`
-
-const ActionsGroup = styled.div`
-  display: flex;
-  flex-direction: ${(props) => (props.$type === 'infobox' ? 'row-reverse' : 'row')};
-  justify-content: ${(props) => (props.$type === 'infobox' ? 'space-between' : 'center')};
-  align-items: center;
-  gap: 10px;
-  align-self: stretch;
-  flex-grow: 1;
-`
-
 const ActionButton = styled.div`
   display: flex;
   box-sizing: border-box;
@@ -192,166 +172,28 @@ const iconClose = (color) => (
   </svg>
 )
 
-const CloseButton = styled.button`
-  position: absolute;
-  right: 0;
-  top: 0;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  background: none;
-  cursor: pointer;
-
-  svg {
-    path {
-      stroke: #838891;
-      transition-duration: 0.2s;
-    }
-  }
-
-  :hover {
-    svg {
-      path {
-        stroke: #555555;
-      }
-    }
-  }
-`
-
-const {
-  children,
-  content,
-
-  onClose,
-  // status, - conflict with deprecated Window.status property
-  buttons,
-  showChecked,
-  checked,
-  onDoNotShowChange,
-  skin,
-} = props
-
-const [isEditTarget, setEditTarget] = useState(false)
-// todo: new
-
-const header = (
-  <Header>
-    <TopLine>
-      <Close onClick={onClose}>{iconClose('#838891')}</Close>
-    </TopLine>
-  </Header>
-)
-
-const actionButton = (btn) => (
-  <ActionButton
-    key={btn.label}
-    $primary={btn.variant == 'primary' ? true : false}
-    $primCol={themes[skin].primBtnCol}
-    $primBg={themes[skin].primBtnBg}
-    $primBgH={themes[skin].primBtnBgH}
-    $primBgA={themes[skin].primBtnBgA}
-    $secCol={themes[skin].secBtnCol}
-    $secBorderCol={themes[skin].secBtnBorderCol}
-    $secBgH={themes[skin].secBtnBgH}
-    $secBgA={themes[skin].secBtnBgA}
-    onClick={btn.onClick}
-    disabled={btn.disabled}
-  >
-    {btn.label}
-  </ActionButton>
-)
-
-const navButtons = !buttons ? null : props.type === 'callout' ? (
-  <ActionsGroup $type={props.type}>{buttons.map((btn) => actionButton(btn))}</ActionsGroup>
-) : buttons?.length > 1 ? (
-  <ActionsGroup $type={props.type}>
-    {actionButton(buttons[1])}
-    {actionButton(buttons[0])}
-  </ActionsGroup>
-) : buttons?.length === 1 ? (
-  <ActionsGroup $type={props.type}>{actionButton(buttons[0])}</ActionsGroup>
-) : (
-  <></>
-)
+const { children, onClose, skin, startEditTarget } = props
 
 const callout = (
   <Callout
     data-mweb-context-type="wg-chapter"
     data-mweb-context-parsed={JSON.stringify({ id: props.id })}
   >
-    {header}
-    {isEditTarget ? (
-      <DappletContextPicker
-        target={[
-          {
-            namespace: NAMESPACE,
-            contextType: 'timeline',
-            if: {},
-          },
-          {
-            namespace: NAMESPACE,
-            contextType: 'post',
-            if: {},
-          },
-          {
-            namespace: NAMESPACE,
-            contextType: 'postSouthButton',
-            if: {},
-          },
-          {
-            namespace: NAMESPACE,
-            contextType: 'profile',
-            if: {},
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'mweb-overlay',
-            if: { id: { eq: 'mutation-button' } },
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'mweb-overlay',
-            if: { id: { eq: 'open-apps-button' } },
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'mweb-overlay-action',
-            if: {},
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'injected-widget',
-            if: {},
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'notch',
-            if: {},
-          },
-        ]}
-        onClick={setSelectedContext}
-        LatchComponent={ContextTypeLatch}
-      />
-    ) : null}
-
-    <>
-      <EditSpanIcon>{iconPickerColor}</EditSpanIcon>
-      <Title $type={props.type}>
-        There's nothing here.
-        <br /> Be the first to create a guide.
-      </Title>
-
-      <Wrapper>
-        Select the element that will become the starting <br /> point of the sequence using the
-        Picker tool.
-      </Wrapper>
-
-      <ActionButton onClick={() => setEditTarget(!isEditTarget)}>Create</ActionButton>
-    </>
-
+    <Header>
+      <TopLine>
+        <Close onClick={onClose}>{iconClose('#838891')}</Close>
+      </TopLine>
+    </Header>
+    <EditSpanIcon>{iconPickerColor}</EditSpanIcon>
+    <Title>
+      There's nothing here.
+      <br /> Be the first to create a guide.
+    </Title>
+    <Wrapper>
+      Select the element that will become the starting <br /> point of the sequence using the Picker
+      tool.
+    </Wrapper>
+    <ActionButton onClick={startEditTarget}>Create</ActionButton>
     <div data-mweb-insertion-point="hidden" style={{ display: 'none' }} />
   </Callout>
 )
@@ -361,20 +203,14 @@ const calloutTooltip = {
   META_GUIDE: <CustomTooltipMeta bsPrefix="wg-tooltip">{callout}</CustomTooltipMeta>,
 }
 
-const infobox = <Footer>{navButtons}</Footer>
-
-const overlayByType = {
-  callout: (
-    <DappletOverlayTrigger
-      show={true}
-      overlay={calloutTooltip[skin]}
-      placement={props.placement ?? 'auto'}
-      offset={[0, 20]}
-      popperConfig={{ strategy: props.strategy ?? 'absolute' }}
-    >
-      {typeof props.children === 'function' ? props.children : <span>{props.children}</span>}
-    </DappletOverlayTrigger>
-  ),
-  infobox,
-}
-return overlayByType[props.type]
+return (
+  <DappletOverlayTrigger
+    show={true}
+    popperConfig="fixed"
+    placement="left"
+    offset={[0, 45]}
+    overlay={calloutTooltip[skin]}
+  >
+    {typeof props.children === 'function' ? props.children : <span>{props.children}</span>}
+  </DappletOverlayTrigger>
+)
