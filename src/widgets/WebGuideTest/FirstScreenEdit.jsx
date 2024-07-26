@@ -1,3 +1,9 @@
+State.init({
+  json: null,
+  isUpload: false,
+  amount: 1,
+})
+
 const CustomTooltipDefault = styled('DappletTooltip')`
   z-index: 99999999; // over the notch
 
@@ -277,6 +283,24 @@ const {
 } = props
 
 const [isEditTarget, setEditTarget] = useState(false)
+
+const uploadFileUpdateState = (body) => {
+  asyncFetch('https://ipfs.near.social/add', {
+    method: 'POST',
+    headers: { Accept: 'application/json' },
+    body,
+  }).then((res) => {
+    const cid = res.body.cid
+    State.update({ json: { cid } })
+  })
+}
+
+const filesOnChange = (files) => {
+  if (files) {
+    State.update({ json: { uploading: true, cid: null } })
+    uploadFileUpdateState(files[0])
+  }
+}
 // todo: new
 
 const header = (
@@ -342,14 +366,14 @@ const callout = (
 
       <Files
         multiple={false}
-        accepts={['txt/*']}
+        accepts={['application/JSON']}
         minFileSize={1}
         clickable
         onChange={filesOnChange}
       >
         <ImportButton>
           {iconImport}
-          {state.img.cid ? state.img.cid : 'Import'}
+          {state.json.cid ? state.json.cid : 'Import'}
         </ImportButton>
       </Files>
     </>
