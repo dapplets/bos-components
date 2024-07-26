@@ -229,6 +229,15 @@ const handlePageAdd = ({ newTitle, newContent }) => {
   setEditingConfig(updatedConfig)
 }
 
+const handleCreateTheFirstChapter = () => {
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
+  const newChapter = JSON.parse(JSON.stringify(chapterTemplate))
+  newChapter.id = `${context.accountId}/chapter/${Math.trunc(Math.random() * 1000000000)}`
+  newChapter.pages[0].id = `${newChapter.id}/page/${Math.trunc(Math.random() * 1000000000)}`
+  updatedConfig.chapters = [newChapter]
+  setEditingConfig(updatedConfig)
+}
+
 const handlePageRemove = () => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
 
@@ -527,7 +536,7 @@ return (
               src="${REPL_ACCOUNT}/widget/WebGuideTest.FirstScreenEdit"
               props={{
                 skin: 'META_GUIDE',
-                startEditTarget: () => setEditTarget(true),
+                handleCreateTheFirstChapter,
                 onClose: handleClose,
                 children: ({ ref }) => {
                   props.attachContextRef(ref)
