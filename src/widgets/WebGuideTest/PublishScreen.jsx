@@ -293,7 +293,7 @@ return (
               onTitleChange(e.target.value)
             }}
           />
-          <StyledLabel htmlFor={'title'}>Page name</StyledLabel>
+          <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
         </FloatingLabelContainer>
 
         <FloatingLabelContainerArea>

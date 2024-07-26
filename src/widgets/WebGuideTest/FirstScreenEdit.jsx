@@ -172,7 +172,7 @@ const iconClose = (color) => (
   </svg>
 )
 
-const { children, onClose, skin, startEditTarget } = props
+const { children, onClose, skin, handleCreateTheFirstChapter } = props
 
 const callout = (
   <Callout
@@ -193,7 +193,7 @@ const callout = (
       Select the element that will become the starting <br /> point of the sequence using the Picker
       tool.
     </Wrapper>
-    <ActionButton onClick={startEditTarget}>Create</ActionButton>
+    <ActionButton onClick={handleCreateTheFirstChapter}>Create</ActionButton>
     <div data-mweb-insertion-point="hidden" style={{ display: 'none' }} />
   </Callout>
 )
