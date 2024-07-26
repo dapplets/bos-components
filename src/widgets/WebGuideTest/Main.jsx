@@ -93,14 +93,6 @@ const NotchLatch = styled.button`
   cursor: pointer;
 `
 
-const { link } = props
-const [showApp, setShowApp] = useState(true)
-const [chapterCounter, setChapterCounter] = useState(0)
-const [pageCounter, setPageCounter] = useState(0)
-const [isEditMode, setEditMode] = useState(false)
-const [isEditTarget, setEditTarget] = useState(false)
-const [editingConfig, setEditingConfig] = useState(null)
-
 const pageTemplate = {
   title: '',
   status: [],
@@ -113,20 +105,34 @@ const chapterTemplate = {
   skin: 'META_GUIDE',
 }
 
-const response = Near.view('app.webguide.near', 'get_guide', {
-  guide_id: link?.id,
-})
+const { link } = props
+const [editingConfig, setEditingConfig] = useState(null)
+const [showApp, setShowApp] = useState(true)
+const [chapterCounter, setChapterCounter] = useState(0)
+const [pageCounter, setPageCounter] = useState(0)
+const [isEditMode, setEditMode] = useState(false)
+const [isEditTarget, setEditTarget] = useState(false)
+const [doShowSaveChangesPopup, setDoShowSaveChangesPopup] = useState(false)
+
+const response =
+  link &&
+  Near.view('app.webguide.near', 'get_guide', {
+    guide_id: link.id,
+  })
 const guideConfig = response && JSON.parse(response)
+
+useEffect(() => {
+  setEditingConfig(response !== JSON.stringify(editingConfig) ? guideConfig : editingConfig)
+  setChapterCounter(response !== JSON.stringify(editingConfig) ? 0 : chapterCounter)
+  setPageCounter(response !== JSON.stringify(editingConfig) ? 0 : pageCounter)
+  setEditMode(response !== JSON.stringify(editingConfig) ? false : isEditMode)
+}, [guideConfig])
 
 if (
   context.accountId !== link.authorId &&
-  (!guideConfig || !guideConfig.chapters?.length || !guideConfig.chapters[0].pages?.length)
+  (!editingConfig || !editingConfig.chapters?.length || !editingConfig.chapters[0].pages?.length)
 )
   return <></>
-
-useEffect(() => {
-  setEditingConfig(guideConfig)
-}, [guideConfig])
 
 const handleClose = () => {
   setShowApp(false)
@@ -151,8 +157,10 @@ const handleChapterDecrement = () => {
   }
 }
 
-const handleChapterIncrement = () => {
-  setChapterCounter((val) => Math.min(val + 1, editingConfig.chapters.length - 1))
+const handleChapterIncrement = (flag) => {
+  setChapterCounter((val) =>
+    Math.min(val + 1, editingConfig.chapters.length - (flag === 'force' ? 0 : 1))
+  )
   setPageCounter(0)
 }
 
@@ -172,14 +180,15 @@ const handleClickNext = () => {
   }
 }
 
-// const saveData = (inputData) => {
-//   if (context?.accountId) {
-//     Near.call('app.webguide.near', 'set_guide', {
-//       guide_id: link.id,
-//       data: inputData,
-//     })
-//   }
-// }
+const handleSave = ({ title, description }) => {
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
+  if (updatedConfig.title !== title) updatedConfig.title = title
+  if (updatedConfig.description !== description) updatedConfig.description = description
+  Near.call('app.webguide.near', 'set_guide', {
+    guide_id: link.id,
+    data: JSON.stringify(updatedConfig),
+  })
+}
 
 const handlePageDataChange = ({ newTitle, newContent }) => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
@@ -215,7 +224,7 @@ const handleChapterAdd = ({ newTitle, newContent }) => {
   newChapter.pages[0].id = `${newChapter.id}/page/${Math.trunc(Math.random() * 1000000000)}`
   updatedConfig.chapters.splice(chapterCounter + 1, 0, newChapter)
   setEditingConfig(updatedConfig)
-  handleChapterIncrement()
+  handleChapterIncrement('force')
 }
 
 const handlePageAdd = ({ newTitle, newContent }) => {
@@ -306,6 +315,20 @@ const handleRemoveAllChanges = () => {
   setEditingConfig(guideConfig)
 }
 
+const openSaveChangesPopup = ({ newTitle, newContent }) => {
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
+  if (updatedConfig.chapters[chapterCounter].pages[pageCounter].title !== newTitle)
+    updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
+  if (updatedConfig.chapters[chapterCounter].pages[pageCounter].content !== newContent)
+    updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
+  setEditingConfig(updatedConfig)
+  setDoShowSaveChangesPopup(true)
+}
+
+const closeSaveChangesPopup = () => {
+  setDoShowSaveChangesPopup(false)
+}
+
 const ChapterWrapper = (props) => {
   const currentChapter = editingConfig.chapters[chapterCounter]
   if (!currentChapter) return <></>
@@ -347,6 +370,7 @@ const ChapterWrapper = (props) => {
       props={{
         guideTitle: editingConfig.title,
         guideDescription: editingConfig.description,
+        isConfigEdited: JSON.stringify(editingConfig) !== JSON.stringify(guideConfig),
         id: currentChapter.id,
         type: currentChapter.type,
         contextType: currentChapter.target
@@ -396,6 +420,10 @@ const ChapterWrapper = (props) => {
         onPageRemove: handlePageRemove,
         onRevertChanges: handleRevertChanges,
         handleRemoveAllChanges,
+        handleSave,
+        doShowSaveChangesPopup,
+        openSaveChangesPopup,
+        closeSaveChangesPopup,
       }}
     />
   )
@@ -524,7 +552,7 @@ return (
           onClick={handleTargetSet}
           LatchComponent={ContextTypeLatch}
         />
-      ) : !editingConfig.chapters.length ? (
+      ) : !editingConfig?.chapters?.length ? (
         <DappletPortal
           target={{
             namespace: 'mweb',

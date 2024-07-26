@@ -1031,6 +1031,7 @@ const AddedChapterButton = styled.button`
 const {
   guideTitle,
   guideDescription,
+  isConfigEdited,
   contextId,
   contextType,
   navi,
@@ -1055,11 +1056,14 @@ const {
   buttonRemoveDisabled,
   onRevertChanges,
   handleRemoveAllChanges,
+  handleSave,
+  doShowSaveChangesPopup,
+  openSaveChangesPopup,
+  closeSaveChangesPopup,
 } = props
 
 const [newTitle, setNewTitle] = useState(title ?? '')
 const [newContent, setNewContent] = useState(content ?? '')
-const [showSaveChangesPopup, setShowSaveChangesPopup] = useState(false)
 
 useEffect(() => {
   setNewTitle(title)
@@ -1081,19 +1085,6 @@ useEffect(() => {
 //     console.error("Error accessing localStorage", error)
 //   }
 // }, [])
-
-const handleSave = () => {
-  // todo: uncomment when will be contract function
-  // saveData(newData);
-  // saveTitle(newTitle);
-  // try {
-  //   localStorage.setItem(`${props.id}newData`, newData)
-  //   localStorage.setItem(`${props.id}newTitle`, newTitle)
-  //   setEditMode(false)
-  // } catch (error) {
-  //   console.error("Error accessing localStorage", error)
-  // }
-}
 
 // todo: test page
 
@@ -1301,7 +1292,9 @@ const editPage = (
           Cancel
         </SuccessButton>
       ) : null}
-      <SuccessButton onClick={() => setShowSaveChangesPopup(true)}>Save guide</SuccessButton>
+      <SuccessButton onClick={() => openSaveChangesPopup({ newTitle, newContent })}>
+        Save guide
+      </SuccessButton>
     </EditButtonsBlock>
   </>
 )
@@ -1328,12 +1321,13 @@ return (
             {navButtons}
           </>
         )}
-        {showSaveChangesPopup ? (
+        {doShowSaveChangesPopup ? (
           <Widget
             src="${REPL_ACCOUNT}/widget/WebGuideTest.PublishScreen"
             props={{
+              isConfigEdited,
               onSave: handleSave,
-              onCancel: () => setShowSaveChangesPopup(false),
+              onCancel: closeSaveChangesPopup,
               oldTitle: guideTitle,
               oldDescription: guideDescription,
             }}
@@ -1361,12 +1355,13 @@ return (
             </Footer>
           </>
         )}
-        {showSaveChangesPopup ? (
+        {doShowSaveChangesPopup ? (
           <Widget
             src="${REPL_ACCOUNT}/widget/WebGuideTest.PublishScreen"
             props={{
+              isConfigEdited,
               onSave: handleSave,
-              onCancel: () => setShowSaveChangesPopup(false),
+              onCancel: closeSaveChangesPopup,
               oldTitle: guideTitle,
               oldDescription: guideDescription,
             }}
