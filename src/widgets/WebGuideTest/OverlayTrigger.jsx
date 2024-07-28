@@ -1357,8 +1357,8 @@ if (props.type === 'callout') {
           props={{
             onSave: handleSave,
             onCancel: () => setShowSaveChangesPopup(false),
-            oldTitle: guideTitle,
-            oldDescription: guideDescription,
+            oldTitle: title,
+            oldDescription: content,
           }}
         />
       ) : null}

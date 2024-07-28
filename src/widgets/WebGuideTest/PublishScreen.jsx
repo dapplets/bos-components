@@ -121,7 +121,7 @@ const SaveButton = styled.div`
   }
 `
 
-const ExportButton = styled.div`
+const ExportButton = styled.button`
   display: flex;
   box-sizing: border-box;
   width: 100%;
@@ -139,6 +139,8 @@ const ExportButton = styled.div`
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE/Edge */
   user-select: none;
+  border: none;
+  outline: none;
 
   svg {
     margin-right: 10px;
@@ -261,24 +263,34 @@ const StyledButtonsBottom = styled.div`
 
 const { onSave, onCancel, oldTitle, oldDescription } = props
 
-const [title, onTitleChange] = useState(oldTitle ?? '')
-const [description, onDescriptionChange] = useState(oldDescription ?? '')
+const [title, onTitleChange] = useState(oldTitle)
+const [description, onDescriptionChange] = useState(oldDescription)
+
+useEffect(()=>{},[document])
+
+console.log(document);
 
 const handleSaveFile = () => {
-  let data //Todo: need data
+  const data = {
+    'title':title,
+    'content':description,
+  }
 
   const jsonString = JSON.stringify(data, null, 2)
 
   const blob = new Blob([jsonString], { type: 'application/json' })
 
   const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
+if(state){
+ const a = document.createElement('a')
   a.href = url
   a.download = 'data.json'
 
   a.click()
 
   URL.revokeObjectURL(url)
+}
+ 
 }
 
 return (
@@ -310,7 +322,7 @@ return (
               onTitleChange(e.target.value)
             }}
           />
-          <StyledLabel htmlFor={'title'}>Page name</StyledLabel>
+          <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
         </FloatingLabelContainer>
 
         <FloatingLabelContainerArea>

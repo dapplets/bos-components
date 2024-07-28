@@ -118,7 +118,10 @@ const response = Near.view('app.webguide.near', 'get_guide', {
 })
 const guideConfig = response && JSON.parse(response)
 
-if (!guideConfig || !guideConfig.chapters?.length || !guideConfig.chapters[0].pages?.length)
+if (
+  context.accountId !== link.authorId &&
+  (!guideConfig || !guideConfig.chapters?.length || !guideConfig.chapters[0].pages?.length)
+)
   return <></>
 
 useEffect(() => {
@@ -240,6 +243,15 @@ const handlePageAdd = () => {
   newPage.id = `${updatedConfig.chapters[chapterCounter].id}/page/${Math.trunc(Math.random() * 1000000000)}`
   updatedConfig.chapters[chapterCounter].pages.splice(pageCounter + 1, 0, newPage)
   setPageCounter((val) => val + 1)
+  setEditingConfig(updatedConfig)
+}
+
+const handleCreateTheFirstChapter = () => {
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
+  const newChapter = JSON.parse(JSON.stringify(chapterTemplate))
+  newChapter.id = `${context.accountId}/chapter/${Math.trunc(Math.random() * 1000000000)}`
+  newChapter.pages[0].id = `${newChapter.id}/page/${Math.trunc(Math.random() * 1000000000)}`
+  updatedConfig.chapters = [newChapter]
   setEditingConfig(updatedConfig)
 }
 
@@ -524,6 +536,28 @@ return (
           ]}
           onClick={handleTargetChange}
           LatchComponent={ContextTypeLatch}
+        />
+      ) : !editingConfig.chapters.length ? (
+        <DappletPortal
+          target={{
+            namespace: 'mweb',
+            contextType: 'mweb-overlay-action',
+            if: { id: { eq: 'web-guide-action-web-guide-test' } },
+          }}
+          component={(props) => (
+            <Widget
+              src="${REPL_ACCOUNT}/widget/WebGuideTest.FirstScreenEdit"
+              props={{
+                skin: 'META_GUIDE',
+                handleCreateTheFirstChapter,
+                onClose: handleClose,
+                children: ({ ref }) => {
+                  props.attachContextRef(ref)
+                  return props.children
+                },
+              }}
+            />
+          )}
         />
       ) : editingConfig.chapters[chapterCounter]?.type === 'infobox' ? (
         <OverlayTriggerWrapper>

@@ -134,26 +134,6 @@ const Wrapper = styled.div`
   margin-bottom: 20px;
 `
 
-const Footer = styled.div`
-  display: flex;
-  position: relative;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
-  align-items: center;
-  gap: 20px;
-`
-
-const ActionsGroup = styled.div`
-  display: flex;
-  flex-direction: ${(props) => (props.$type === 'infobox' ? 'row-reverse' : 'row')};
-  justify-content: ${(props) => (props.$type === 'infobox' ? 'space-between' : 'center')};
-  align-items: center;
-  gap: 10px;
-  align-self: stretch;
-  flex-grow: 1;
-`
-
 const ActionButton = styled.div`
   display: flex;
   box-sizing: border-box;
@@ -269,19 +249,6 @@ const ImportButton = styled.div`
   }
 `
 
-const {
-  children,
-  content,
-
-  onClose,
-  // status, - conflict with deprecated Window.status property
-  buttons,
-  showChecked,
-  checked,
-  onDoNotShowChange,
-  skin,
-} = props
-
 const [isEditTarget, setEditTarget] = useState(false)
 
 const uploadFileUpdateState = (body) => {
@@ -301,7 +268,7 @@ const filesOnChange = (files) => {
     uploadFileUpdateState(files[0])
   }
 }
-// todo: new
+
 
 const header = (
   <Header>
@@ -342,6 +309,7 @@ const navButtons = !buttons ? null : props.type === 'callout' ? (
 ) : (
   <></>
 )
+const { children, onClose, skin, handleCreateTheFirstChapter } = props
 
 const callout = (
   <Callout
@@ -378,6 +346,21 @@ const callout = (
       </Files>
     </>
 
+    <Header>
+      <TopLine>
+        <Close onClick={onClose}>{iconClose('#838891')}</Close>
+      </TopLine>
+    </Header>
+    <EditSpanIcon>{iconPickerColor}</EditSpanIcon>
+    <Title>
+      There's nothing here.
+      <br /> Be the first to create a guide.
+    </Title>
+    <Wrapper>
+      Select the element that will become the starting <br /> point of the sequence using the Picker
+      tool.
+    </Wrapper>
+    <ActionButton onClick={handleCreateTheFirstChapter}>Create</ActionButton>
     <div data-mweb-insertion-point="hidden" style={{ display: 'none' }} />
   </Callout>
 )
@@ -387,20 +370,14 @@ const calloutTooltip = {
   META_GUIDE: <CustomTooltipMeta bsPrefix="wg-tooltip">{callout}</CustomTooltipMeta>,
 }
 
-const infobox = <Footer>{navButtons}</Footer>
-
-const overlayByType = {
-  callout: (
-    <DappletOverlayTrigger
-      show={true}
-      overlay={calloutTooltip[skin]}
-      placement={props.placement ?? 'auto'}
-      offset={[0, 20]}
-      popperConfig={{ strategy: props.strategy ?? 'absolute' }}
-    >
-      {typeof props.children === 'function' ? props.children : <span>{props.children}</span>}
-    </DappletOverlayTrigger>
-  ),
-  infobox,
-}
-return overlayByType[props.type]
+return (
+  <DappletOverlayTrigger
+    show={true}
+    popperConfig="fixed"
+    placement="left"
+    offset={[0, 45]}
+    overlay={calloutTooltip[skin]}
+  >
+    {typeof props.children === 'function' ? props.children : <span>{props.children}</span>}
+  </DappletOverlayTrigger>
+)
