@@ -181,6 +181,14 @@ const saveData = (inputData) => {
   }
 }
 
+const handleClickPageIndicator = (index) => {
+  if (editingConfig.chapters[chapterCounter]?.pages?.length <= index) {
+    return
+  } else {
+    setPageCounter((val) => (val = index))
+  }
+}
+
 const handleTitleChange = (newTitle) => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
 
@@ -410,6 +418,7 @@ const ChapterWrapper = (props) => {
         onPageAdd: handlePageAdd,
         onPageRemove: handlePageRemove,
         onRevertChanges: handleRevertChanges,
+        onClickPageIndicator: handleClickPageIndicator,
       }}
     />
   )

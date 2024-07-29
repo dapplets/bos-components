@@ -248,6 +248,7 @@ const Navi = styled.div`
   width: 10px;
   height: 10px;
   border-radius: 50%;
+  cursor: pointer;
 
   &.active {
     background: var(--navActive);
@@ -1124,6 +1125,7 @@ const {
   onPageRemove,
   buttonRemoveDisabled,
   onRevertChanges,
+  onClickPageIndicator,
 } = props
 
 const [showSaveChangesPopup, setShowSaveChangesPopup] = useState(false)
@@ -1182,6 +1184,7 @@ const header = (
                 <Navi
                   key={index}
                   className={index == navi?.currentPageIndex ? 'active' : 'inactive'}
+                  onClick={() => onClickPageIndicator(index)}
                 />
               ))}
           </PagesIndicators>
