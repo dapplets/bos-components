@@ -11,14 +11,36 @@
         "namespace": "${REPL_ACCOUNT}/parser/common-body-test",
         "contextType": "body",
         "injectTo": "end",
-        "if": { "id": { "not": null, "index": true } },
+        "if": {
+          "id": {
+            "not": null,
+            "index": true
+          }
+        },
         "componentId": "${REPL_ACCOUNT}/widget/WebGuideTest.Main"
       },
       {
         "namespace": "${REPL_ACCOUNT}/parser/common-body",
         "contextType": "body",
         "injectTo": "end",
-        "if": { "id": { "not": null, "index": true } },
+        "if": {
+          "id": {
+            "not": null,
+            "index": true
+          }
+        },
+        "componentId": "${REPL_ACCOUNT}/widget/WebGuideTest.Main"
+      },
+      {
+        "namespace": "${REPL_ACCOUNT}/parser/github-onboarding",
+        "contextType": "body",
+        "injectTo": "end",
+        "if": {
+          "id": {
+            "not": null,
+            "index": true
+          }
+        },
         "componentId": "${REPL_ACCOUNT}/widget/WebGuideTest.Main"
       }
     ]

@@ -105,8 +105,12 @@ const chapterTemplate = {
   skin: 'META_GUIDE',
 }
 
+const configTemplate = {
+  action: true,
+}
+
 const { link } = props
-const [editingConfig, setEditingConfig] = useState(null)
+const [editingConfig, setEditingConfig] = useState(configTemplate)
 const [showApp, setShowApp] = useState(true)
 const [chapterCounter, setChapterCounter] = useState(0)
 const [pageCounter, setPageCounter] = useState(0)
@@ -122,10 +126,13 @@ const response =
 const guideConfig = response && JSON.parse(response)
 
 useEffect(() => {
-  setEditingConfig(response !== JSON.stringify(editingConfig) ? guideConfig : editingConfig)
-  setChapterCounter(response !== JSON.stringify(editingConfig) ? 0 : chapterCounter)
-  setPageCounter(response !== JSON.stringify(editingConfig) ? 0 : pageCounter)
-  setEditMode(response !== JSON.stringify(editingConfig) ? false : isEditMode)
+  setShowApp(!!response)
+  setEditingConfig(
+    response && response !== JSON.stringify(editingConfig) ? guideConfig : editingConfig
+  )
+  setChapterCounter(response && response !== JSON.stringify(editingConfig) ? 0 : chapterCounter)
+  setPageCounter(response && response !== JSON.stringify(editingConfig) ? 0 : pageCounter)
+  setEditMode(response && response !== JSON.stringify(editingConfig) ? false : isEditMode)
 }, [guideConfig])
 
 if (
@@ -245,6 +252,7 @@ const handleCreateTheFirstChapter = () => {
   newChapter.pages[0].id = `${newChapter.id}/page/${Math.trunc(Math.random() * 1000000000)}`
   updatedConfig.chapters = [newChapter]
   setEditingConfig(updatedConfig)
+  setEditMode(true)
 }
 
 const handlePageRemove = () => {
@@ -521,6 +529,16 @@ return (
             {
               namespace: NAMESPACE,
               contextType: 'profile',
+              if: {},
+            },
+            {
+              namespace: '${REPL_ACCOUNT}/parser/github',
+              contextType: 'profile',
+              if: {},
+            },
+            {
+              namespace: '${REPL_ACCOUNT}/parser/github',
+              contextType: 'post',
               if: {},
             },
             {
