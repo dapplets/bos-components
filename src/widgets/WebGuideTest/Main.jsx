@@ -337,8 +337,9 @@ const closeSaveChangesPopup = () => {
   setDoShowSaveChangesPopup(false)
 }
 
+const currentChapter = editingConfig.chapters[chapterCounter]
+
 const ChapterWrapper = (props) => {
-  const currentChapter = editingConfig.chapters[chapterCounter]
   if (!currentChapter) return <></>
   const pages = currentChapter.pages
   if (!pages) return <></>
@@ -386,7 +387,11 @@ const ChapterWrapper = (props) => {
           : currentChapter.contextType,
         contextId: currentChapter.target ? currentChapter.target.id : currentChapter.if?.id?.eq,
         placement: currentChapter.target ? undefined : currentChapter.placement, // ToDo: cannot define placement for target
-        strategy: currentChapter.target ? undefined : currentChapter.strategy, // ToDo: cannot define strategy for target
+        strategy: currentChapter.target
+          ? currentChapter.namespace === 'mweb'
+            ? 'fixed'
+            : undefined
+          : currentChapter.strategy, // ToDo: cannot define strategy for target
         navi: {
           currentChapterIndex: chapterCounter,
           totalChapters: editingConfig.chapters.length,
@@ -404,7 +409,7 @@ const ChapterWrapper = (props) => {
         showChecked: currentChapter.showChecked,
         link,
         children:
-          currentChapter.type === 'callout' && currentChapter.arrowTo === 'context'
+          currentChapter.type === 'callout'
             ? ({ ref }) => {
                 props.attachContextRef(ref)
                 return props.children
@@ -479,6 +484,18 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
     )
   }
   return null
+}
+
+const filterParents = (target) => {
+  const result = {}
+  let current = result
+  let parent = target.parent
+  while (parent && parent.type !== 'shadow-dom' && parent.type !== 'root') {
+    current.parent = { ...parent, parent: undefined }
+    current = current.parent
+    parent = parent.parent
+  }
+  return result.parent
 }
 
 return (
@@ -592,7 +609,7 @@ return (
             />
           )}
         />
-      ) : editingConfig.chapters[chapterCounter]?.type === 'infobox' ? (
+      ) : currentChapter?.type === 'infobox' ? (
         <OverlayTriggerWrapper>
           <DappletOverlay>
             <ChapterWrapper />
@@ -602,23 +619,39 @@ return (
         <>
           <DappletPortal
             target={
-              editingConfig.chapters[chapterCounter]?.target ?? {
-                namespace: editingConfig.chapters[chapterCounter]?.namespace,
-                contextType: editingConfig.chapters[chapterCounter]?.contextType,
-                injectTo: editingConfig.chapters[chapterCounter]?.injectTo,
-                if: editingConfig.chapters[chapterCounter]?.if,
-                insteadOf: editingConfig.chapters[chapterCounter]?.insteadOf,
-              }
+              currentChapter?.target
+                ? {
+                    id: currentChapter.target.id,
+                    namespace: currentChapter.target.namespace,
+                    parsed: currentChapter.target.parsed,
+                    type: currentChapter.target.type,
+                    parent: filterParents(currentChapter.target),
+                  }
+                : {
+                    namespace: currentChapter?.namespace,
+                    contextType: currentChapter?.contextType,
+                    injectTo: currentChapter?.injectTo,
+                    if: currentChapter?.if,
+                    insteadOf: currentChapter?.insteadOf,
+                  }
             }
             component={ChapterWrapper}
           />
           <Highlighter
             target={
-              editingConfig.chapters[chapterCounter]?.target ?? {
-                namespace: editingConfig.chapters[chapterCounter]?.namespace,
-                contextType: editingConfig.chapters[chapterCounter]?.contextType,
-                if: editingConfig.chapters[chapterCounter]?.if,
-              }
+              currentChapter?.target
+                ? {
+                    id: currentChapter.target.id,
+                    namespace: currentChapter.target.namespace,
+                    parsed: currentChapter.target.parsed,
+                    type: currentChapter.target.type,
+                    parent: filterParents(currentChapter.target),
+                  }
+                : {
+                    namespace: currentChapter?.namespace,
+                    contextType: currentChapter?.contextType,
+                    if: currentChapter?.if,
+                  }
             }
             styles={{
               borderColor: '#14AE5C',
