@@ -81,6 +81,7 @@ return (
           contextType: 'mweb-overlay-action',
           if: { id: { eq: 'web-guide-action-picker-adapter-tester' } },
         }}
+        inMemory
         component={(props) => (
           <Widget
             src="bos.dapplets.near/widget/PickerAdapterTester.OverlayTrigger"
@@ -118,7 +119,7 @@ return (
 
     {/* CALLOUT */}
     {isRunnigApp && selectedContext ? (
-      <DappletPortal target={selectedContext} component={ChapterWrapper} />
+      <DappletPortal target={selectedContext} inMemory component={ChapterWrapper} />
     ) : null}
   </>
 )

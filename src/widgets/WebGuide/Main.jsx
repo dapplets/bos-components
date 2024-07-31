@@ -767,8 +767,8 @@ return (
               contextType: guideConfig.chapters[chapterCounter]?.contextType,
               injectTo: guideConfig.chapters[chapterCounter]?.injectTo,
               if: guideConfig.chapters[chapterCounter]?.if,
-              insteadOf: guideConfig.chapters[chapterCounter]?.insteadOf,
             }}
+            inMemory
             component={ChapterWrapper}
           />
           <Highlighter

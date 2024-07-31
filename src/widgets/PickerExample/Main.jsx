@@ -271,7 +271,7 @@ return (
     />
 
     {isRunnigApp && selectedContext ? (
-      <DappletPortal target={selectedContext} component={ChapterWrapper} />
+      <DappletPortal inMemory target={selectedContext} component={ChapterWrapper} />
     ) : null}
   </>
 )
