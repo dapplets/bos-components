@@ -52,6 +52,7 @@
     "${REPL_ACCOUNT}/app/TestNotify",
     "${REPL_ACCOUNT}/app/StaticLinkExample",
     "${REPL_ACCOUNT}/app/LinkDbExample",
-    "${REPL_ACCOUNT}/app/ControllerExample"
+    "${REPL_ACCOUNT}/app/ControllerExample",
+    "${REPL_ACCOUNT}/app/ContextQueryExample"
   ]
 }
