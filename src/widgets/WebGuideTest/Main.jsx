@@ -109,6 +109,8 @@ const configTemplate = {
   action: true,
 }
 
+console.log('props', props)
+
 const { link } = props
 const [editingConfig, setEditingConfig] = useState(configTemplate)
 const [showApp, setShowApp] = useState(true)
@@ -589,6 +591,7 @@ return (
         />
       ) : !editingConfig?.chapters?.length ? (
         <DappletPortal
+          inMemory
           target={{
             namespace: 'mweb',
             contextType: 'mweb-overlay-action',
@@ -618,6 +621,7 @@ return (
       ) : (
         <>
           <DappletPortal
+            inMemory
             target={
               currentChapter?.target
                 ? {
