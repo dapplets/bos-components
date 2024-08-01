@@ -172,12 +172,28 @@ const handleClickNext = () => {
   }
 }
 
-const saveData = (inputData) => {
-  if (context?.accountId) {
-    Near.call('app.webguide.near', 'set_guide', {
-      guide_id: link.id,
-      data: inputData,
-    })
+
+const saveData = (value) => {
+
+  switch (value) {
+    case 'publish':
+      // if (context?.accountId) {
+      //   Near.call('app.webguide.near', 'set_guide', {
+      //     guide_id: link.id,
+      //     data: inputData,
+      //   })
+      // }
+      break
+    case 'export':
+    
+      break
+    default:
+    //   if (context?.accountId) {
+    //   Near.call('app.webguide.near', 'set_guide', {
+    //     guide_id: link.id,
+    //     data: inputData,
+    //   })
+    // }
   }
 }
 
@@ -419,6 +435,11 @@ const ChapterWrapper = (props) => {
         onPageRemove: handlePageRemove,
         onRevertChanges: handleRevertChanges,
         onClickPageIndicator: handleClickPageIndicator,
+        fileExport: editingConfig,
+        items: [
+          { value: 'publish', title: 'Publish' },
+          { value: 'export', title: 'Export guide' },
+        ],
       }}
     />
   )

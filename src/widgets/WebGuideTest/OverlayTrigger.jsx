@@ -1095,6 +1095,130 @@ const AddedChapterButton = styled.button`
   }
 `
 
+const DropdownWrapper = styled.div`
+  position: relative;
+`
+
+const LeftButton = styled('DappletFileDownloader')`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background: #ffffff;
+  color: rgb(56, 75, 255);
+
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20.86px;
+  text-align: center;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: auto;
+  }
+
+  &:hover:not(:disabled) {
+    opacity: 0.75;
+  }
+
+  &:active:not(:disabled) {
+    opacity: 0.5;
+  }
+`
+
+const TextSave = styled.div`
+  display: inline-block;
+  overflow: hidden;
+  word-wrap: no-wrap;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-align: center;
+`
+
+const RightButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-left: 1px solid rgba(226, 226, 229, 0.6);
+  background: #ffffff;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: auto;
+  }
+
+  &:hover:not(:disabled) {
+    opacity: 0.75;
+  }
+
+  &:active:not(:disabled) {
+    opacity: 0.5;
+  }
+`
+
+const ItemGroup = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  right: 0;
+  top: -100px;
+  width: 155px;
+  padding: 10px;
+  gap: 5px;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+  color: rgba(34, 34, 34, 1);
+`
+
+const arrowIcon = (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="8" viewBox="0 0 14 8" fill="none">
+    <path
+      d="M1 1L7 7L13 1"
+      stroke="#4E77E1"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+const DropdownButtonItem = styled('DappletFileDownloader')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 31px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  background: inherit;
+
+  &:hover {
+    background: rgba(217, 222, 225, 1);
+    color: rgba(56, 75, 255, 1);
+  }
+`
+
+const ButtonGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 155px;
+  height: 42px;
+  border-radius: 10px;
+  overflow: hidden;
+`
+
 const {
   guideTitle,
   guideDescription,
@@ -1126,42 +1250,45 @@ const {
   buttonRemoveDisabled,
   onRevertChanges,
   onClickPageIndicator,
+  items,
+  fileExport,
 } = props
 
 const [showSaveChangesPopup, setShowSaveChangesPopup] = useState(false)
+const [currentItem, setCurrentItem] = useState(items[0])
 
-// useEffect(() => {
-//   try {
-//     const storedData = localStorage.setItem(`${props.id}newData`, newData)
-//     const storedTitle = localStorage.setItem(`${props.id}newTitle`, newTitle)
+const handleExportClick = () => {
+  const jsonString = JSON.stringify(fileExport, null, 2)
+  const blob = new Blob([jsonString], { type: 'application/json' })
+  const file = new File([blob], 'webGuideConfig.json')
 
-//     if (storedData) {
-//       setNewData(storedData)
-//     }
-//     if (storedTitle) {
-//       setNewTitle(storedTitle)
-//     }
-//   } catch (error) {
-//     console.error("Error accessing localStorage", error)
-//   }
-// }, [])
-
-const handleSave = () => {
-  // todo: uncomment when will be contract function
-  // saveData(newData);
-  // saveTitle(newTitle);
-  // try {
-  //   localStorage.setItem(`${props.id}newData`, newData)
-  //   localStorage.setItem(`${props.id}newTitle`, newTitle)
-  //   setEditMode(false)
-  // } catch (error) {
-  //   console.error("Error accessing localStorage", error)
-  // }
+  return file
 }
 
-// todo: test page
+const handleButtonItemClick = (item) => {
+  switch (currentItem.value) {
+    case 'publish':
+      //  saveData(currentItem.value)
+      break
+    case 'export':
+      handleExportClick()
+      break
+  }
+  setCurrentItem(item)
+  setShowSaveChangesPopup(false)
+}
 
-// todo: test chapter
+const handleMainButtonClick = () => {
+  switch (currentItem.value) {
+    case 'publish':
+      //  saveData(currentItem.value)
+      break
+    case 'export':
+      handleExportClick()
+      break
+  }
+  setShowSaveChangesPopup(false)
+}
 
 const header = (
   <Header>
@@ -1340,7 +1467,33 @@ if (props.type === 'callout') {
             {isEditMode ? (
               <SuccessButton onClick={() => setEditMode(false)}>Cancel</SuccessButton>
             ) : null}
-            <SuccessButton onClick={() => setShowSaveChangesPopup(true)}>Save guide</SuccessButton>
+            {/* todo: open dropdown */}
+            {/* <SuccessButton onClick={() => setShowSaveChangesPopup(true)}>Save guide</SuccessButton> */}
+
+            <DropdownWrapper>
+              <ButtonGroup>
+                <LeftButton disabled={disabled}>
+                  <TextSave onClick={handleMainButtonClick}>{currentItem.title}</TextSave>
+                </LeftButton>
+
+                <RightButton onClick={() => setShowSaveChangesPopup(!showSaveChangesPopup)}>
+                  {arrowIcon}
+                </RightButton>
+              </ButtonGroup>
+
+              {showSaveChangesPopup ? (
+                <ItemGroup>
+                  {items.map((item) => (
+                    <DropdownButtonItem
+                      key={item.value}
+                      onClick={() => handleButtonItemClick(item)}
+                    >
+                      {item.title}
+                    </DropdownButtonItem>
+                  ))}
+                </ItemGroup>
+              ) : null}
+            </DropdownWrapper>
           </EditButtonsBlock>
         </>
       ) : (
@@ -1354,17 +1507,7 @@ if (props.type === 'callout') {
           {navButtons}
         </>
       )}
-      {showSaveChangesPopup ? (
-        <Widget
-          src="${REPL_ACCOUNT}/widget/WebGuideTest.PublishScreen"
-          props={{
-            onSave: handleSave,
-            onCancel: () => setShowSaveChangesPopup(false),
-            oldTitle: guideTitle,
-            oldDescription: guideDescription,
-          }}
-        />
-      ) : null}
+
       <div data-mweb-insertion-point="hidden" style={{ display: 'none' }} />
     </Callout>
   )
@@ -1455,9 +1598,33 @@ if (props.type === 'callout') {
               {isEditMode ? (
                 <SuccessButton onClick={() => setEditMode(false)}>Cancel</SuccessButton>
               ) : null}
-              <SuccessButton onClick={() => setShowSaveChangesPopup(true)}>
+              {/* <SuccessButton onClick={() => setShowSaveChangesPopup(true)}>
                 Save guide
-              </SuccessButton>
+              </SuccessButton> */}
+              <DropdownWrapper>
+                <ButtonGroup>
+                  <LeftButton disabled={disabled}>
+                    <TextSave onClick={handleMainButtonClick}>{currentItem.title}</TextSave>
+                  </LeftButton>
+
+                  <RightButton onClick={() => setShowSaveChangesPopup(!showSaveChangesPopup)}>
+                    {arrowIcon}
+                  </RightButton>
+                </ButtonGroup>
+
+                {showSaveChangesPopup ? (
+                  <ItemGroup>
+                    {items.map((item) => (
+                      <DropdownButtonItem
+                        key={item.value}
+                        onClick={() => handleButtonItemClick(item)}
+                      >
+                        {item.title}
+                      </DropdownButtonItem>
+                    ))}
+                  </ItemGroup>
+                ) : null}
+              </DropdownWrapper>
             </EditButtonsBlock>
           </>
         ) : (
@@ -1475,17 +1642,6 @@ if (props.type === 'callout') {
             </Footer>
           </>
         )}
-        {showSaveChangesPopup ? (
-          <Widget
-            src="${REPL_ACCOUNT}/widget/WebGuideTest.PublishScreen"
-            props={{
-              onSave: handleSave,
-              onCancel: () => setShowSaveChangesPopup(false),
-              oldTitle: guideTitle,
-              oldDescription: guideDescription,
-            }}
-          />
-        ) : null}
       </InfoBox>
     </Theme>
   )
