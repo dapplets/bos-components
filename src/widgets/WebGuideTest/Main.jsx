@@ -172,9 +172,8 @@ const handleClickNext = () => {
   }
 }
 
-
 const saveData = (value) => {
-
+  console.log(value);
   switch (value) {
     case 'publish':
       // if (context?.accountId) {
@@ -185,8 +184,8 @@ const saveData = (value) => {
       // }
       break
     case 'export':
-    
-      break
+      return handleExportClick()
+
     default:
     //   if (context?.accountId) {
     //   Near.call('app.webguide.near', 'set_guide', {
@@ -343,6 +342,15 @@ const handleRevertChanges = () => {
   setEditingConfig(updatedConfig)
 }
 
+const handleExportClick = () => {
+  const jsonString = JSON.stringify(editingConfig, null, 2)
+
+  const blob = new Blob([jsonString], { type: 'application/json' })
+  const file = new File([blob], 'webGuideConfig.json')
+
+  return file
+}
+
 const ChapterWrapper = (props) => {
   const currentChapter = editingConfig.chapters[chapterCounter]
   if (!currentChapter) return <></>
@@ -435,7 +443,6 @@ const ChapterWrapper = (props) => {
         onPageRemove: handlePageRemove,
         onRevertChanges: handleRevertChanges,
         onClickPageIndicator: handleClickPageIndicator,
-        fileExport: editingConfig,
         items: [
           { value: 'publish', title: 'Publish' },
           { value: 'export', title: 'Export guide' },

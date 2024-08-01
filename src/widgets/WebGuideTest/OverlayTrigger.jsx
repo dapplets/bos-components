@@ -1251,43 +1251,18 @@ const {
   onRevertChanges,
   onClickPageIndicator,
   items,
-  fileExport,
 } = props
 
 const [showSaveChangesPopup, setShowSaveChangesPopup] = useState(false)
 const [currentItem, setCurrentItem] = useState(items[0])
 
-const handleExportClick = () => {
-  const jsonString = JSON.stringify(fileExport, null, 2)
-  const blob = new Blob([jsonString], { type: 'application/json' })
-  const file = new File([blob], 'webGuideConfig.json')
-
-  return file
-}
-
 const handleButtonItemClick = (item) => {
-  switch (currentItem.value) {
-    case 'publish':
-      //  saveData(currentItem.value)
-      break
-    case 'export':
-      handleExportClick()
-      break
-  }
   setCurrentItem(item)
   setShowSaveChangesPopup(false)
 }
 
-const handleMainButtonClick = () => {
-  switch (currentItem.value) {
-    case 'publish':
-      //  saveData(currentItem.value)
-      break
-    case 'export':
-      handleExportClick()
-      break
-  }
-  setShowSaveChangesPopup(false)
+const handleMainButtonClick = (value) => {
+  saveData(value), setShowSaveChangesPopup(false)
 }
 
 const header = (
