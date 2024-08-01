@@ -173,7 +173,7 @@ const handleClickNext = () => {
 }
 
 const saveData = (value) => {
-  console.log(value);
+
   switch (value) {
     case 'publish':
       // if (context?.accountId) {
@@ -420,14 +420,14 @@ const ChapterWrapper = (props) => {
         children:
           currentChapter.type === 'callout' && currentChapter.arrowTo === 'context'
             ? ({ ref }) => {
-                props.attachContextRef(ref)
-                return props.children
-              }
+              props.attachContextRef(ref)
+              return props.children
+            }
             : currentChapter.arrowTo === 'insPoint'
               ? ({ ref }) => {
-                  props.attachInsPointRef(ref)
-                  return props.children
-                }
+                props.attachInsPointRef(ref)
+                return props.children
+              }
               : props.children,
         skin: currentChapter.skin ?? 'DEFAULT',
         isEditMode,
@@ -629,10 +629,10 @@ return (
               backgroundColor: 'rgb(56 255 63 / 10%)',
               // borderStyle: 'dashed',
             }}
-            // filled
-            // icon={iconTimelineLatch('#14AE5C')}
-            // icon={() => <></>}
-            // action={() => console.log('Highlighter action')}
+          // filled
+          // icon={iconTimelineLatch('#14AE5C')}
+          // icon={() => <></>}
+          // action={() => console.log('Highlighter action')}
           />
         </>
       )

@@ -1262,7 +1262,8 @@ const handleButtonItemClick = (item) => {
 }
 
 const handleMainButtonClick = (value) => {
-  saveData(value), setShowSaveChangesPopup(false)
+  saveData(value)
+  setShowSaveChangesPopup(false)
 }
 
 const header = (
@@ -1448,7 +1449,7 @@ if (props.type === 'callout') {
             <DropdownWrapper>
               <ButtonGroup>
                 <LeftButton disabled={disabled}>
-                  <TextSave onClick={handleMainButtonClick}>{currentItem.title}</TextSave>
+                  <TextSave onClick={()=>handleMainButtonClick(currentItem.value)}>{currentItem.title}</TextSave>
                 </LeftButton>
 
                 <RightButton onClick={() => setShowSaveChangesPopup(!showSaveChangesPopup)}>
@@ -1579,7 +1580,7 @@ if (props.type === 'callout') {
               <DropdownWrapper>
                 <ButtonGroup>
                   <LeftButton disabled={disabled}>
-                    <TextSave onClick={handleMainButtonClick}>{currentItem.title}</TextSave>
+                    <TextSave onClick={()=>handleMainButtonClick(currentItem.value)}>{currentItem.title}</TextSave>
                   </LeftButton>
 
                   <RightButton onClick={() => setShowSaveChangesPopup(!showSaveChangesPopup)}>
