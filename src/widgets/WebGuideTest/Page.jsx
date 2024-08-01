@@ -1044,7 +1044,7 @@ const {
   skin,
   title,
   content,
-  link,
+  mutatorId,
   isEditMode,
   setEditMode,
   startEditTarget,
@@ -1101,7 +1101,7 @@ const header = (
   <Header>
     <TopLine>
       <HeaderButtonGroup>
-        {context.accountId === link.authorId ? (
+        {context.accountId === mutatorId ? (
           <EditButton
             onClick={() => {
               handleSavePageChanges()

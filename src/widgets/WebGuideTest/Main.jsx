@@ -109,9 +109,9 @@ const configTemplate = {
   action: true,
 }
 
-console.log('props', props)
-
-const { link } = props
+const { accountId } = context
+const { linkDb, context: appContext } = props
+const [guideConfig, setGuideConfig] = useState(null)
 const [editingConfig, setEditingConfig] = useState(configTemplate)
 const [showApp, setShowApp] = useState(true)
 const [chapterCounter, setChapterCounter] = useState(0)
@@ -120,25 +120,45 @@ const [isEditMode, setEditMode] = useState(false)
 const [isEditTarget, setEditTarget] = useState(false)
 const [doShowSaveChangesPopup, setDoShowSaveChangesPopup] = useState(false)
 
-const response =
-  link &&
-  Near.view('app.webguide.near', 'get_guide', {
-    guide_id: link.id,
-  })
-const guideConfig = response && JSON.parse(response)
+const findParentContext = (context, type) => {
+  if (!context) return null
+  if (context.type === type) return context
+  return findParentContext(context.parent, type)
+}
+
+const getMutationId = () => {
+  const websiteContext = findParentContext(appContext, 'website')
+  if (!websiteContext) return null
+  return websiteContext.parsed.mutationId
+}
+
+const mutationId = getMutationId()
+const mutatorId = mutationId?.split('/')[0]
 
 useEffect(() => {
-  setShowApp(!!response)
-  setEditingConfig(
-    response && response !== JSON.stringify(editingConfig) ? guideConfig : editingConfig
-  )
-  setChapterCounter(response && response !== JSON.stringify(editingConfig) ? 0 : chapterCounter)
-  setPageCounter(response && response !== JSON.stringify(editingConfig) ? 0 : pageCounter)
-  setEditMode(response && response !== JSON.stringify(editingConfig) ? false : isEditMode)
+  linkDb.get(appContext, mutatorId).then((response) => {
+    if (!response) return
+    setGuideConfig(JSON.parse(response[mutatorId]))
+  })
+}, [])
+
+useEffect(() => {
+  setShowApp(!!guideConfig)
+  if (guideConfig && JSON.stringify(guideConfig) !== JSON.stringify(editingConfig)) {
+    setEditingConfig(guideConfig)
+    setChapterCounter(0)
+    setPageCounter(0)
+    setEditMode(false)
+  } else {
+    setEditingConfig(editingConfig)
+    setChapterCounter(chapterCounter)
+    setPageCounter(pageCounter)
+    setEditMode(isEditMode)
+  }
 }, [guideConfig])
 
 if (
-  context.accountId !== link.authorId &&
+  accountId !== mutatorId &&
   (!editingConfig || !editingConfig.chapters?.length || !editingConfig.chapters[0].pages?.length)
 )
   return <></>
@@ -193,9 +213,12 @@ const handleSave = ({ title, description }) => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
   if (updatedConfig.title !== title) updatedConfig.title = title
   if (updatedConfig.description !== description) updatedConfig.description = description
-  Near.call('app.webguide.near', 'set_guide', {
-    guide_id: link.id,
-    data: JSON.stringify(updatedConfig),
+  linkDb.set(appContext, { [mutatorId]: JSON.stringify(updatedConfig) }).then(() => {
+    setGuideConfig(updatedConfig)
+    setEditMode(false)
+    setDoShowSaveChangesPopup(false)
+    setChapterCounter(0)
+    setPageCounter(0)
   })
 }
 
@@ -229,7 +252,7 @@ const handleChapterAdd = ({ newTitle, newContent }) => {
   updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
   updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
   const newChapter = JSON.parse(JSON.stringify(chapterTemplate))
-  newChapter.id = `${context.accountId}/chapter/${Math.trunc(Math.random() * 1000000000)}`
+  newChapter.id = `${accountId}/chapter/${Math.trunc(Math.random() * 1000000000)}`
   newChapter.pages[0].id = `${newChapter.id}/page/${Math.trunc(Math.random() * 1000000000)}`
   updatedConfig.chapters.splice(chapterCounter + 1, 0, newChapter)
   setEditingConfig(updatedConfig)
@@ -250,7 +273,7 @@ const handlePageAdd = ({ newTitle, newContent }) => {
 const handleCreateTheFirstChapter = () => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
   const newChapter = JSON.parse(JSON.stringify(chapterTemplate))
-  newChapter.id = `${context.accountId}/chapter/${Math.trunc(Math.random() * 1000000000)}`
+  newChapter.id = `${accountId}/chapter/${Math.trunc(Math.random() * 1000000000)}`
   newChapter.pages[0].id = `${newChapter.id}/page/${Math.trunc(Math.random() * 1000000000)}`
   updatedConfig.chapters = [newChapter]
   setEditingConfig(updatedConfig)
@@ -409,7 +432,7 @@ const ChapterWrapper = (props) => {
         title: currentPage.title,
         content: currentPage.content,
         showChecked: currentChapter.showChecked,
-        link,
+        mutatorId,
         children:
           currentChapter.type === 'callout'
             ? ({ ref }) => {
