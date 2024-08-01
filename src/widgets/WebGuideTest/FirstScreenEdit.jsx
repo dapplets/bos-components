@@ -1,3 +1,8 @@
+State.init({
+  json: null,
+  isUpload: false,
+  amount: 1,
+})
 const CustomTooltipDefault = styled('DappletTooltip')`
   z-index: 99999999; // over the notch
 
@@ -172,7 +177,91 @@ const iconClose = (color) => (
   </svg>
 )
 
+const iconImport = (
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" viewBox="0 0 16 18" fill="none">
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M10.9417 7.6995C10.8245 7.58012 10.6657 7.51306 10.5 7.51306C10.3344 7.51306 10.1756 7.58012 10.0584 7.6995L8.62504 9.1615V2.2C8.62504 2.03092 8.55919 1.86877 8.44198 1.74922C8.32477 1.62966 8.1658 1.5625 8.00004 1.5625C7.83428 1.5625 7.6753 1.62966 7.55809 1.74922C7.44088 1.86877 7.37504 2.03092 7.37504 2.2V9.1615L5.9417 7.6995C5.82322 7.58689 5.66652 7.52559 5.5046 7.5285C5.34268 7.53141 5.18819 7.59832 5.07368 7.71512C4.95917 7.83192 4.89358 7.9895 4.89072 8.15466C4.88787 8.31981 4.94797 8.47965 5.05837 8.6005L7.55837 11.1505C7.67556 11.2699 7.83441 11.3369 8.00004 11.3369C8.16566 11.3369 8.32451 11.2699 8.4417 11.1505L10.9417 8.6005C11.0587 8.48097 11.1245 8.31894 11.1245 8.15C11.1245 7.98106 11.0587 7.81903 10.9417 7.6995Z"
+      fill="#4E77E1"
+    />
+    <path
+      d="M12.7902 9C12.4168 9 12.0902 9.2329 11.826 9.50235L9.326 12.0523C9.15189 12.2299 8.94519 12.3708 8.7177 12.4669C8.49021 12.563 8.24639 12.6125 8.00016 12.6125C7.75393 12.6125 7.51011 12.563 7.28263 12.4669C7.05514 12.3708 6.84844 12.2299 6.67433 12.0523L4.17433 9.50235C3.91016 9.2329 3.5835 9 3.21016 9H1.3335C1.3335 10.8035 2.03588 12.5331 3.28612 13.8083C4.53636 15.0836 6.23205 15.8 8.00016 15.8C9.76827 15.8 11.464 15.0836 12.7142 13.8083C13.9645 12.5331 14.6668 10.8035 14.6668 9H12.7902Z"
+      fill="#4E77E1"
+    />
+  </svg>
+)
+
+const CloseButton = styled.button`
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+
+  svg {
+    path {
+      stroke: #838891;
+      transition-duration: 0.2s;
+    }
+  }
+
+  :hover {
+    svg {
+      path {
+        stroke: #555555;
+      }
+    }
+  }
+`
+
+const ImportButton = styled.div('DappletFileDownloader')`
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0px 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+  background: transparent;
+  border:none;
+  color: #4e77e1;
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+  user-select: none;
+
+  svg {
+    margin-right: 10px;
+  }
+
+  &:hover {
+    opacity: 0.5;
+  }
+`
+
 const { children, onClose, skin, handleCreateTheFirstChapter } = props
+
+const [isEditTarget, setEditTarget] = useState(false)
+
+const uploadFileUpdateState = (value) => {
+  return value
+}
+
+const filesOnChange = (files) => {
+  if (files) {
+    return uploadFileUpdateState(files[0])
+  }
+}
 
 const callout = (
   <Callout
@@ -184,16 +273,33 @@ const callout = (
         <Close onClick={onClose}>{iconClose('#838891')}</Close>
       </TopLine>
     </Header>
+
     <EditSpanIcon>{iconPickerColor}</EditSpanIcon>
-    <Title>
+    <Title $type={props.type}>
       There's nothing here.
       <br /> Be the first to create a guide.
     </Title>
+
     <Wrapper>
       Select the element that will become the starting <br /> point of the sequence using the Picker
       tool.
     </Wrapper>
+
     <ActionButton onClick={handleCreateTheFirstChapter}>Create</ActionButton>
+
+    <Files
+      multiple={false}
+      accepts={['application/json']}
+      minFileSize={1}
+      clickable
+      // onChange={filesOnChange}
+    >
+      <ImportButton onChange={filesOnChange}>
+        {iconImport}
+        {state.json.cid ? state.json.cid : 'Import'}
+      </ImportButton>
+    </Files>
+
     <div data-mweb-insertion-point="hidden" style={{ display: 'none' }} />
   </Callout>
 )
