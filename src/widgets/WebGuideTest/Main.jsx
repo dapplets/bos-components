@@ -142,9 +142,15 @@ useEffect(() => {
   })
 }, [])
 
+const localConfig = Storage.privateGet(appContext)
+
 useEffect(() => {
-  setShowApp(!!guideConfig)
-  if (guideConfig && JSON.stringify(guideConfig) !== JSON.stringify(editingConfig)) {
+  setShowApp(!!guideConfig || !!localConfig)
+  if (localConfig) {
+    if (localConfig !== JSON.stringify(editingConfig)) {
+      setEditingConfig(JSON.parse(localConfig))
+    }
+  } else if (guideConfig && JSON.stringify(guideConfig) !== JSON.stringify(editingConfig)) {
     setEditingConfig(guideConfig)
     setChapterCounter(0)
     setPageCounter(0)
@@ -155,13 +161,19 @@ useEffect(() => {
     setPageCounter(pageCounter)
     setEditMode(isEditMode)
   }
-}, [guideConfig])
+}, [guideConfig, localConfig])
 
 if (
   accountId !== mutatorId &&
   (!editingConfig || !editingConfig.chapters?.length || !editingConfig.chapters[0].pages?.length)
 )
   return <></>
+
+const saveConfigToLocalStorage = (data) =>
+  Storage.privateSet(
+    appContext,
+    !data || JSON.stringify(data) === JSON.stringify(guideConfig) ? undefined : JSON.stringify(data)
+  )
 
 const handleClose = () => {
   setShowApp(false)
@@ -219,6 +231,7 @@ const handleSave = ({ title, description }) => {
     setDoShowSaveChangesPopup(false)
     setChapterCounter(0)
     setPageCounter(0)
+    saveConfigToLocalStorage(null)
   })
 }
 
@@ -227,6 +240,7 @@ const handlePageDataChange = ({ newTitle, newContent }) => {
   updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
   updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
   setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
 }
 
 const handleTargetSet = (newTarget) => {
@@ -235,6 +249,7 @@ const handleTargetSet = (newTarget) => {
   updatedConfig.chapters[chapterCounter].target = newTarget
   setEditingConfig(updatedConfig)
   setEditTarget(false)
+  saveConfigToLocalStorage(updatedConfig)
 }
 
 const handleTargetRemove = ({ newTitle, newContent }) => {
@@ -245,6 +260,7 @@ const handleTargetRemove = ({ newTitle, newContent }) => {
   updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
   setEditingConfig(updatedConfig)
   setEditTarget(false)
+  saveConfigToLocalStorage(updatedConfig)
 }
 
 const handleChapterAdd = ({ newTitle, newContent }) => {
@@ -257,6 +273,7 @@ const handleChapterAdd = ({ newTitle, newContent }) => {
   updatedConfig.chapters.splice(chapterCounter + 1, 0, newChapter)
   setEditingConfig(updatedConfig)
   handleChapterIncrement('force')
+  saveConfigToLocalStorage(updatedConfig)
 }
 
 const handlePageAdd = ({ newTitle, newContent }) => {
@@ -268,6 +285,7 @@ const handlePageAdd = ({ newTitle, newContent }) => {
   updatedConfig.chapters[chapterCounter].pages.splice(pageCounter + 1, 0, newPage)
   setPageCounter((val) => val + 1)
   setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
 }
 
 const handleCreateTheFirstChapter = () => {
@@ -304,6 +322,7 @@ const handlePageRemove = () => {
     }
 
     setEditingConfig(updatedConfig)
+    saveConfigToLocalStorage(updatedConfig)
   } else {
     console.error('Chapter or page not found at the specified index:', chapterCounter, pageCounter)
   }
@@ -313,6 +332,7 @@ const handleRevertChanges = () => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
 
   if (
+    !guideConfig ||
     !guideConfig.chapters.find(
       (chapter) => chapter.id === updatedConfig.chapters[chapterCounter].id
     )
@@ -342,10 +362,12 @@ const handleRevertChanges = () => {
   }
 
   setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
 }
 
 const handleRemoveAllChanges = () => {
-  setEditingConfig(guideConfig)
+  setEditingConfig(guideConfig || configTemplate)
+  saveConfigToLocalStorage(null)
 }
 
 const openSaveChangesPopup = ({ newTitle, newContent }) => {
@@ -356,11 +378,10 @@ const openSaveChangesPopup = ({ newTitle, newContent }) => {
     updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
   setEditingConfig(updatedConfig)
   setDoShowSaveChangesPopup(true)
+  saveConfigToLocalStorage(updatedConfig)
 }
 
-const closeSaveChangesPopup = () => {
-  setDoShowSaveChangesPopup(false)
-}
+const closeSaveChangesPopup = () => setDoShowSaveChangesPopup(false)
 
 const currentChapter = editingConfig.chapters[chapterCounter]
 
@@ -383,12 +404,14 @@ const ChapterWrapper = (props) => {
     })
   }
   if (chapterCounter === editingConfig.chapters.length - 1 && pageCounter === pages.length - 1) {
-    buttons.push({
-      variant: 'primary',
-      disabled: false,
-      onClick: handleClose,
-      label: 'Finish',
-    })
+    if (!isEditMode) {
+      buttons.push({
+        variant: 'primary',
+        disabled: false,
+        onClick: handleClose,
+        label: 'Finish',
+      })
+    }
   } else
     buttons.push({
       variant: 'primary',
@@ -405,6 +428,9 @@ const ChapterWrapper = (props) => {
         guideTitle: editingConfig.title,
         guideDescription: editingConfig.description,
         isConfigEdited: JSON.stringify(editingConfig) !== JSON.stringify(guideConfig),
+        isPageEdited:
+          JSON.stringify(currentPage) !==
+          JSON.stringify(guideConfig.chapters[chapterCounter].pages[pageCounter]),
         id: currentChapter.id,
         type: currentChapter.type,
         contextType: currentChapter.target

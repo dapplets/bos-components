@@ -1,6 +1,6 @@
 const CustomTooltip = styled('DappletTooltip')`
   z-index: 99999999; // over the notch
-  min-height: 160px;
+  min-height: 140px;
   width: 320px;
 
   &[data-popper-reference-hidden='true'] {
