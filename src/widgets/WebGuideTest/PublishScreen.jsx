@@ -16,6 +16,8 @@ const Background = styled.div`
 const Popup = styled.div`
   box-sizing: border-box;
   display: flex;
+  position: relative;
+  overflow: hidden;
   flex-direction: column;
   width: 320px;
   padding: 20px;
@@ -119,6 +121,7 @@ const SaveButton = styled.button`
 
   &:disabled {
     opacity: 0.5;
+    cursor: default;
   }
 
   &:hover:not(:disabled) {
@@ -265,6 +268,73 @@ const StyledButtonsBottom = styled.div`
   width: 100%;
 `
 
+const LoaderBackground = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+`
+
+const Loader = styled.div`
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  border: 3px solid;
+  border-color: #282828 #282828 transparent transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+
+  &::after,
+  &::before {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    border: 3px solid;
+    border-color: transparent transparent #4e77e1 #4e77e1;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: rotationBack 0.5s linear infinite;
+    transform-origin: center center;
+  }
+  &::before {
+    width: 32px;
+    height: 32px;
+    border-color: #282828 #282828 transparent transparent;
+    animation: rotation 1.5s linear infinite;
+  }
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes rotationBack {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(-360deg);
+    }
+  }
+`
+
 const { isConfigEdited, onSave, onCancel, oldTitle, oldDescription } = props
 oldTitle = oldTitle ?? ''
 oldDescription = oldDescription ?? ''
@@ -281,72 +351,64 @@ const handleSave = () => {
 return (
   <Background>
     <Popup>
-      {savingStarted ? (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
+      <Title $type={props.type}>
+        You're going to push
+        <br /> changes into the blockchain
+      </Title>
+
+      <Wrapper>
+        <FloatingLabelContainer>
+          <StyledInputOwner
+            id={'owner'}
+            readonly
+            disabled
+            type={'text'}
+            value={context.accountId}
+          />
+          <StyledLabel htmlFor={'owner'}>Owner</StyledLabel>
+        </FloatingLabelContainer>
+
+        <FloatingLabelContainer>
+          <StyledInput
+            id={'title'}
+            type={'text'}
+            value={title}
+            onChange={(e) => {
+              onTitleChange(e.target.value)
+            }}
+          />
+          <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
+        </FloatingLabelContainer>
+
+        <FloatingLabelContainerArea>
+          <StyledTextarea
+            id={'description'}
+            type={'text'}
+            value={description}
+            onChange={(e) => {
+              onDescriptionChange(e.target.value)
+            }}
+          ></StyledTextarea>
+          <StyledLabel htmlFor={'description'}>Description</StyledLabel>
+        </FloatingLabelContainerArea>
+      </Wrapper>
+
+      <StyledButtonsBottom>
+        <CancelButton onClick={onCancel}>Cancel</CancelButton>
+        <SaveButton
+          disabled={!isConfigEdited && title === oldTitle && description === oldDescription}
+          onClick={handleSave}
         >
-          <p>Please reload the page after applying the transaction.</p>
-          <CancelButton onClick={() => setSavingStarted(false)}>Back</CancelButton>
-        </div>
-      ) : (
-        <>
-          <Title $type={props.type}>
-            You're going to push
-            <br /> changes into the blockchain
-          </Title>
+          Save & Publish
+        </SaveButton>
+      </StyledButtonsBottom>
 
-          <Wrapper>
-            <FloatingLabelContainer>
-              <StyledInputOwner
-                id={'owner'}
-                readonly
-                disabled
-                type={'text'}
-                value={context.accountId}
-              />
-              <StyledLabel htmlFor={'owner'}>Owner</StyledLabel>
-            </FloatingLabelContainer>
+      <ExportButton>{iconExport}Export</ExportButton>
 
-            <FloatingLabelContainer>
-              <StyledInput
-                id={'title'}
-                type={'text'}
-                value={title}
-                onChange={(e) => {
-                  onTitleChange(e.target.value)
-                }}
-              />
-              <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
-            </FloatingLabelContainer>
-
-            <FloatingLabelContainerArea>
-              <StyledTextarea
-                id={'description'}
-                type={'text'}
-                value={description}
-                onChange={(e) => {
-                  onDescriptionChange(e.target.value)
-                }}
-              ></StyledTextarea>
-              <StyledLabel htmlFor={'description'}>Description</StyledLabel>
-            </FloatingLabelContainerArea>
-          </Wrapper>
-          <StyledButtonsBottom>
-            <CancelButton onClick={onCancel}>Cancel</CancelButton>
-            <SaveButton
-              disabled={!isConfigEdited && title === oldTitle && description === oldDescription}
-              onClick={handleSave}
-            >
-              Save & Publish
-            </SaveButton>
-          </StyledButtonsBottom>
-          <ExportButton>{iconExport}Export</ExportButton>
-        </>
+      {savingStarted && (
+        <LoaderBackground>
+          <Loader />
+        </LoaderBackground>
       )}
     </Popup>
   </Background>
