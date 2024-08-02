@@ -93,14 +93,6 @@ const NotchLatch = styled.button`
   cursor: pointer;
 `
 
-const { link } = props
-const [showApp, setShowApp] = useState(true)
-const [chapterCounter, setChapterCounter] = useState(0)
-const [pageCounter, setPageCounter] = useState(0)
-const [isEditMode, setEditMode] = useState(false)
-const [isEditTarget, setEditTarget] = useState(false)
-const [editingConfig, setEditingConfig] = useState(null)
-
 const pageTemplate = {
   title: '',
   status: [],
@@ -113,20 +105,63 @@ const chapterTemplate = {
   skin: 'META_GUIDE',
 }
 
-const response = Near.view('app.webguide.near', 'get_guide', {
-  guide_id: link?.id,
-})
-const guideConfig = response && JSON.parse(response)
+const configTemplate = {
+  action: true,
+}
 
-if (
-  context.accountId !== link.authorId &&
-  (!guideConfig || !guideConfig.chapters?.length || !guideConfig.chapters[0].pages?.length)
-)
-  return <></>
+const { accountId } = context
+const { linkDb, context: appContext } = props
+const [guideConfig, setGuideConfig] = useState(null)
+const [editingConfig, setEditingConfig] = useState(configTemplate)
+const [showApp, setShowApp] = useState(true)
+const [chapterCounter, setChapterCounter] = useState(0)
+const [pageCounter, setPageCounter] = useState(0)
+const [isEditMode, setEditMode] = useState(false)
+const [isEditTarget, setEditTarget] = useState(false)
+const [doShowSaveChangesPopup, setDoShowSaveChangesPopup] = useState(false)
+
+const findParentContext = (context, type) => {
+  if (!context) return null
+  if (context.type === type) return context
+  return findParentContext(context.parent, type)
+}
+
+const getMutationId = () => {
+  const websiteContext = findParentContext(appContext, 'website')
+  if (!websiteContext) return null
+  return websiteContext.parsed.mutationId
+}
+
+const mutationId = getMutationId()
+const mutatorId = mutationId?.split('/')[0]
 
 useEffect(() => {
-  setEditingConfig(guideConfig)
+  linkDb.get(appContext, mutatorId).then((response) => {
+    if (!response) return
+    setGuideConfig(JSON.parse(response[mutatorId]))
+  })
+}, [])
+
+useEffect(() => {
+  setShowApp(!!guideConfig)
+  if (guideConfig && JSON.stringify(guideConfig) !== JSON.stringify(editingConfig)) {
+    setEditingConfig(guideConfig)
+    setChapterCounter(0)
+    setPageCounter(0)
+    setEditMode(false)
+  } else {
+    setEditingConfig(editingConfig)
+    setChapterCounter(chapterCounter)
+    setPageCounter(pageCounter)
+    setEditMode(isEditMode)
+  }
 }, [guideConfig])
+
+if (
+  accountId !== mutatorId &&
+  (!editingConfig || !editingConfig.chapters?.length || !editingConfig.chapters[0].pages?.length)
+)
+  return <></>
 
 const handleClose = () => {
   setShowApp(false)
@@ -151,8 +186,10 @@ const handleChapterDecrement = () => {
   }
 }
 
-const handleChapterIncrement = () => {
-  setChapterCounter((val) => Math.min(val + 1, editingConfig.chapters.length - 1))
+const handleChapterIncrement = (flag) => {
+  setChapterCounter((val) =>
+    Math.min(val + 1, editingConfig.chapters.length - (flag === 'force' ? 0 : 1))
+  )
   setPageCounter(0)
 }
 
@@ -172,73 +209,60 @@ const handleClickNext = () => {
   }
 }
 
-const saveData = (inputData) => {
-  if (context?.accountId) {
-    Near.call('app.webguide.near', 'set_guide', {
-      guide_id: link.id,
-      data: inputData,
-    })
-  }
+const handleSave = ({ title, description }) => {
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
+  if (updatedConfig.title !== title) updatedConfig.title = title
+  if (updatedConfig.description !== description) updatedConfig.description = description
+  linkDb.set(appContext, { [mutatorId]: JSON.stringify(updatedConfig) }).then(() => {
+    setGuideConfig(updatedConfig)
+    setEditMode(false)
+    setDoShowSaveChangesPopup(false)
+    setChapterCounter(0)
+    setPageCounter(0)
+  })
 }
 
-const handleTitleChange = (newTitle) => {
+const handlePageDataChange = ({ newTitle, newContent }) => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-
-  if (
-    updatedConfig.chapters[chapterCounter] &&
-    updatedConfig.chapters[chapterCounter].pages[pageCounter]
-  ) {
-    updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
-  }
-
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
   setEditingConfig(updatedConfig)
 }
 
-const handleDescriptionChange = (newDescription) => {
+const handleTargetSet = (newTarget) => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-
-  if (
-    updatedConfig.chapters[chapterCounter] &&
-    updatedConfig.chapters[chapterCounter].pages[pageCounter]
-  ) {
-    updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newDescription
-  }
-
-  setEditingConfig(updatedConfig)
-}
-
-const handleTargetChange = (newTarget) => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-
-  if (
-    updatedConfig.chapters[chapterCounter] &&
-    updatedConfig.chapters[chapterCounter].pages[pageCounter]
-  ) {
-    if (newTarget === null) {
-      updatedConfig.chapters[chapterCounter].type = 'infobox'
-      updatedConfig.chapters[chapterCounter].target = {}
-    } else {
-      updatedConfig.chapters[chapterCounter].type = 'callout'
-      updatedConfig.chapters[chapterCounter].target = newTarget
-    }
-  }
-
+  updatedConfig.chapters[chapterCounter].type = 'callout'
+  updatedConfig.chapters[chapterCounter].target = newTarget
   setEditingConfig(updatedConfig)
   setEditTarget(false)
 }
 
-const handleChapterAdd = () => {
+const handleTargetRemove = ({ newTitle, newContent }) => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
+  updatedConfig.chapters[chapterCounter].type = 'infobox'
+  updatedConfig.chapters[chapterCounter].target = {}
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
+  setEditingConfig(updatedConfig)
+  setEditTarget(false)
+}
+
+const handleChapterAdd = ({ newTitle, newContent }) => {
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
   const newChapter = JSON.parse(JSON.stringify(chapterTemplate))
-  newChapter.id = `${context.accountId}/chapter/${Math.trunc(Math.random() * 1000000000)}`
+  newChapter.id = `${accountId}/chapter/${Math.trunc(Math.random() * 1000000000)}`
   newChapter.pages[0].id = `${newChapter.id}/page/${Math.trunc(Math.random() * 1000000000)}`
   updatedConfig.chapters.splice(chapterCounter + 1, 0, newChapter)
   setEditingConfig(updatedConfig)
-  handleChapterIncrement()
+  handleChapterIncrement('force')
 }
 
-const handlePageAdd = () => {
+const handlePageAdd = ({ newTitle, newContent }) => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
   const newPage = JSON.parse(JSON.stringify(pageTemplate))
   newPage.id = `${updatedConfig.chapters[chapterCounter].id}/page/${Math.trunc(Math.random() * 1000000000)}`
   updatedConfig.chapters[chapterCounter].pages.splice(pageCounter + 1, 0, newPage)
@@ -249,10 +273,11 @@ const handlePageAdd = () => {
 const handleCreateTheFirstChapter = () => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
   const newChapter = JSON.parse(JSON.stringify(chapterTemplate))
-  newChapter.id = `${context.accountId}/chapter/${Math.trunc(Math.random() * 1000000000)}`
+  newChapter.id = `${accountId}/chapter/${Math.trunc(Math.random() * 1000000000)}`
   newChapter.pages[0].id = `${newChapter.id}/page/${Math.trunc(Math.random() * 1000000000)}`
   updatedConfig.chapters = [newChapter]
   setEditingConfig(updatedConfig)
+  setEditMode(true)
 }
 
 const handlePageRemove = () => {
@@ -319,8 +344,27 @@ const handleRevertChanges = () => {
   setEditingConfig(updatedConfig)
 }
 
+const handleRemoveAllChanges = () => {
+  setEditingConfig(guideConfig)
+}
+
+const openSaveChangesPopup = ({ newTitle, newContent }) => {
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
+  if (updatedConfig.chapters[chapterCounter].pages[pageCounter].title !== newTitle)
+    updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
+  if (updatedConfig.chapters[chapterCounter].pages[pageCounter].content !== newContent)
+    updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
+  setEditingConfig(updatedConfig)
+  setDoShowSaveChangesPopup(true)
+}
+
+const closeSaveChangesPopup = () => {
+  setDoShowSaveChangesPopup(false)
+}
+
+const currentChapter = editingConfig.chapters[chapterCounter]
+
 const ChapterWrapper = (props) => {
-  const currentChapter = editingConfig.chapters[chapterCounter]
   if (!currentChapter) return <></>
   const pages = currentChapter.pages
   if (!pages) return <></>
@@ -360,6 +404,7 @@ const ChapterWrapper = (props) => {
       props={{
         guideTitle: editingConfig.title,
         guideDescription: editingConfig.description,
+        isConfigEdited: JSON.stringify(editingConfig) !== JSON.stringify(guideConfig),
         id: currentChapter.id,
         type: currentChapter.type,
         contextType: currentChapter.target
@@ -367,7 +412,11 @@ const ChapterWrapper = (props) => {
           : currentChapter.contextType,
         contextId: currentChapter.target ? currentChapter.target.id : currentChapter.if?.id?.eq,
         placement: currentChapter.target ? undefined : currentChapter.placement, // ToDo: cannot define placement for target
-        strategy: currentChapter.target ? undefined : currentChapter.strategy, // ToDo: cannot define strategy for target
+        strategy: currentChapter.target
+          ? currentChapter.namespace === 'mweb'
+            ? 'fixed'
+            : undefined
+          : currentChapter.strategy, // ToDo: cannot define strategy for target
         navi: {
           currentChapterIndex: chapterCounter,
           totalChapters: editingConfig.chapters.length,
@@ -383,10 +432,9 @@ const ChapterWrapper = (props) => {
         title: currentPage.title,
         content: currentPage.content,
         showChecked: currentChapter.showChecked,
-        saveData,
-        link,
+        mutatorId,
         children:
-          currentChapter.type === 'callout' && currentChapter.arrowTo === 'context'
+          currentChapter.type === 'callout'
             ? ({ ref }) => {
                 props.attachContextRef(ref)
                 return props.children
@@ -401,15 +449,19 @@ const ChapterWrapper = (props) => {
         isEditMode,
         setEditMode,
         startEditTarget: () => setEditTarget(true),
-        handleTargetChange,
+        handleTargetRemove,
         buttonRemoveDisabled:
           currentChapterIndex + 1 === totalChapters && totalChapters === 1 && totalPages === 1,
-        onTitleChange: handleTitleChange,
-        onDescriptionChange: handleDescriptionChange,
+        onPageDataChange: handlePageDataChange,
         onChapterAdd: handleChapterAdd,
         onPageAdd: handlePageAdd,
         onPageRemove: handlePageRemove,
         onRevertChanges: handleRevertChanges,
+        handleRemoveAllChanges,
+        handleSave,
+        doShowSaveChangesPopup,
+        openSaveChangesPopup,
+        closeSaveChangesPopup,
       }}
     />
   )
@@ -421,7 +473,7 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
       <TimelineLatch
         $variant={variant}
         $width={contextDimensions.width}
-        onClick={() => handleTargetChange(context)}
+        onClick={() => handleTargetSet(context)}
       >
         {iconTimelineLatch('white')}
       </TimelineLatch>
@@ -436,7 +488,7 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
         $variant={variant}
         $width={contextDimensions.width}
         $height={contextDimensions.height}
-        onClick={() => handleTargetChange(context)}
+        onClick={() => handleTargetSet(context)}
         $position={'right'}
       >
         {iconNotchLatch}
@@ -449,7 +501,7 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
         $variant={variant}
         $width={contextDimensions.width}
         $height={contextDimensions.height}
-        onClick={() => handleTargetChange(context)}
+        onClick={() => handleTargetSet(context)}
         $position={'left'}
       >
         {iconNotchLatch}
@@ -457,6 +509,18 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
     )
   }
   return null
+}
+
+const filterParents = (target) => {
+  const result = {}
+  let current = result
+  let parent = target.parent
+  while (parent && parent.type !== 'shadow-dom' && parent.type !== 'root') {
+    current.parent = { ...parent, parent: undefined }
+    current = current.parent
+    parent = parent.parent
+  }
+  return result.parent
 }
 
 return (
@@ -484,6 +548,7 @@ return (
         )}
       />
     ) : null}
+
     {showApp ? (
       isEditTarget ? (
         <DappletContextPicker
@@ -506,6 +571,16 @@ return (
             {
               namespace: NAMESPACE,
               contextType: 'profile',
+              if: {},
+            },
+            {
+              namespace: '${REPL_ACCOUNT}/parser/github',
+              contextType: 'profile',
+              if: {},
+            },
+            {
+              namespace: '${REPL_ACCOUNT}/parser/github',
+              contextType: 'post',
               if: {},
             },
             {
@@ -534,11 +609,12 @@ return (
               if: {},
             },
           ]}
-          onClick={handleTargetChange}
+          onClick={handleTargetSet}
           LatchComponent={ContextTypeLatch}
         />
-      ) : !editingConfig.chapters.length ? (
+      ) : !editingConfig?.chapters?.length ? (
         <DappletPortal
+          inMemory
           target={{
             namespace: 'mweb',
             contextType: 'mweb-overlay-action',
@@ -559,7 +635,7 @@ return (
             />
           )}
         />
-      ) : editingConfig.chapters[chapterCounter]?.type === 'infobox' ? (
+      ) : currentChapter?.type === 'infobox' ? (
         <OverlayTriggerWrapper>
           <DappletOverlay>
             <ChapterWrapper />
@@ -568,24 +644,41 @@ return (
       ) : (
         <>
           <DappletPortal
+            inMemory
             target={
-              editingConfig.chapters[chapterCounter]?.target ?? {
-                namespace: editingConfig.chapters[chapterCounter]?.namespace,
-                contextType: editingConfig.chapters[chapterCounter]?.contextType,
-                injectTo: editingConfig.chapters[chapterCounter]?.injectTo,
-                if: editingConfig.chapters[chapterCounter]?.if,
-                insteadOf: editingConfig.chapters[chapterCounter]?.insteadOf,
-              }
+              currentChapter?.target
+                ? {
+                    id: currentChapter.target.id,
+                    namespace: currentChapter.target.namespace,
+                    parsed: currentChapter.target.parsed,
+                    type: currentChapter.target.type,
+                    parent: filterParents(currentChapter.target),
+                  }
+                : {
+                    namespace: currentChapter?.namespace,
+                    contextType: currentChapter?.contextType,
+                    injectTo: currentChapter?.injectTo,
+                    if: currentChapter?.if,
+                    insteadOf: currentChapter?.insteadOf,
+                  }
             }
             component={ChapterWrapper}
           />
           <Highlighter
             target={
-              editingConfig.chapters[chapterCounter]?.target ?? {
-                namespace: editingConfig.chapters[chapterCounter]?.namespace,
-                contextType: editingConfig.chapters[chapterCounter]?.contextType,
-                if: editingConfig.chapters[chapterCounter]?.if,
-              }
+              currentChapter?.target
+                ? {
+                    id: currentChapter.target.id,
+                    namespace: currentChapter.target.namespace,
+                    parsed: currentChapter.target.parsed,
+                    type: currentChapter.target.type,
+                    parent: filterParents(currentChapter.target),
+                  }
+                : {
+                    namespace: currentChapter?.namespace,
+                    contextType: currentChapter?.contextType,
+                    if: currentChapter?.if,
+                  }
             }
             styles={{
               borderColor: '#14AE5C',

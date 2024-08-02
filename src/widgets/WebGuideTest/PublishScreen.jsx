@@ -70,7 +70,7 @@ const iconExport = (
   </svg>
 )
 
-const CancelButton = styled.div`
+const CancelButton = styled.button`
   display: flex;
   box-sizing: border-box;
   width: 135px;
@@ -95,7 +95,7 @@ const CancelButton = styled.div`
   }
 `
 
-const SaveButton = styled.div`
+const SaveButton = styled.button`
   display: flex;
   box-sizing: border-box;
   width: 135px;
@@ -103,6 +103,7 @@ const SaveButton = styled.div`
   padding: 0px 20px;
   justify-content: center;
   align-items: center;
+  border: none;
   border-radius: 10px;
   text-align: center;
   font-size: 14px;
@@ -116,12 +117,16 @@ const SaveButton = styled.div`
   user-select: none;
   padding: 0;
 
-  &:hover {
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  &:hover:not(:disabled) {
     opacity: 0.5;
   }
 `
 
-const ExportButton = styled.div`
+const ExportButton = styled.button`
   display: flex;
   box-sizing: border-box;
   width: 100%;
@@ -129,6 +134,7 @@ const ExportButton = styled.div`
   padding: 0px 20px;
   justify-content: center;
   align-items: center;
+  border: none;
   border-radius: 10px;
   text-align: center;
   font-size: 14px;
@@ -223,6 +229,7 @@ const StyledLabel = styled.label`
   color: #bbccd0;
   pointer-events: none;
   transition: all 0.2s ease 0s;
+  background: none;
 `
 
 const StyledTextarea = styled.textarea`
@@ -242,7 +249,6 @@ const StyledTextarea = styled.textarea`
   &:not(:placeholder-shown) + label {
     height: 25px;
     width: 99%;
-    background: inherit;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -259,60 +265,89 @@ const StyledButtonsBottom = styled.div`
   width: 100%;
 `
 
-const { onSave, onCancel, oldTitle, oldDescription } = props
+const { isConfigEdited, onSave, onCancel, oldTitle, oldDescription } = props
+oldTitle = oldTitle ?? ''
+oldDescription = oldDescription ?? ''
 
-const [title, onTitleChange] = useState(oldTitle ?? '')
-const [description, onDescriptionChange] = useState(oldDescription ?? '')
+const [title, onTitleChange] = useState(oldTitle)
+const [description, onDescriptionChange] = useState(oldDescription)
+const [savingStarted, setSavingStarted] = useState(false)
+
+const handleSave = () => {
+  setSavingStarted(true)
+  onSave({ title, description })
+}
 
 return (
   <Background>
     <Popup>
-      <Title $type={props.type}>
-        You're going to push
-        <br /> changes into the blockchain
-      </Title>
+      {savingStarted ? (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <p>Please reload the page after applying the transaction.</p>
+          <CancelButton onClick={() => setSavingStarted(false)}>Back</CancelButton>
+        </div>
+      ) : (
+        <>
+          <Title $type={props.type}>
+            You're going to push
+            <br /> changes into the blockchain
+          </Title>
 
-      <Wrapper>
-        <FloatingLabelContainer>
-          <StyledInputOwner
-            id={'owner'}
-            readonly
-            disabled
-            type={'text'}
-            value={context.accountId}
-          />
-          <StyledLabel htmlFor={'owner'}>Owner</StyledLabel>
-        </FloatingLabelContainer>
+          <Wrapper>
+            <FloatingLabelContainer>
+              <StyledInputOwner
+                id={'owner'}
+                readonly
+                disabled
+                type={'text'}
+                value={context.accountId}
+              />
+              <StyledLabel htmlFor={'owner'}>Owner</StyledLabel>
+            </FloatingLabelContainer>
 
-        <FloatingLabelContainer>
-          <StyledInput
-            id={'title'}
-            type={'text'}
-            value={title}
-            onChange={(e) => {
-              onTitleChange(e.target.value)
-            }}
-          />
-          <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
-        </FloatingLabelContainer>
+            <FloatingLabelContainer>
+              <StyledInput
+                id={'title'}
+                type={'text'}
+                value={title}
+                onChange={(e) => {
+                  onTitleChange(e.target.value)
+                }}
+              />
+              <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
+            </FloatingLabelContainer>
 
-        <FloatingLabelContainerArea>
-          <StyledTextarea
-            id={'description'}
-            type={'text'}
-            value={description}
-            onChange={(e) => {
-              onDescriptionChange(e.target.value)
-            }}
-          ></StyledTextarea>
-          <StyledLabel htmlFor={'description'}>Description</StyledLabel>
-        </FloatingLabelContainerArea>
-      </Wrapper>
-      <StyledButtonsBottom>
-        <CancelButton onClick={onCancel}>Cancel</CancelButton>
-        <SaveButton onClick={onSave}>Save & Publish</SaveButton>
-      </StyledButtonsBottom>
-      <ExportButton>{iconExport}Export</ExportButton>
+            <FloatingLabelContainerArea>
+              <StyledTextarea
+                id={'description'}
+                type={'text'}
+                value={description}
+                onChange={(e) => {
+                  onDescriptionChange(e.target.value)
+                }}
+              ></StyledTextarea>
+              <StyledLabel htmlFor={'description'}>Description</StyledLabel>
+            </FloatingLabelContainerArea>
+          </Wrapper>
+          <StyledButtonsBottom>
+            <CancelButton onClick={onCancel}>Cancel</CancelButton>
+            <SaveButton
+              disabled={!isConfigEdited && title === oldTitle && description === oldDescription}
+              onClick={handleSave}
+            >
+              Save & Publish
+            </SaveButton>
+          </StyledButtonsBottom>
+          <ExportButton>{iconExport}Export</ExportButton>
+        </>
+      )}
     </Popup>
   </Background>
 )

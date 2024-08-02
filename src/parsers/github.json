@@ -5,12 +5,20 @@
       {
         "namespace": "engine",
         "contextType": "website",
-        "if": { "id": { "eq": "github.com" } }
+        "if": {
+          "id": {
+            "eq": "github.com"
+          }
+        }
       },
       {
         "namespace": "engine",
         "contextType": "website",
-        "if": { "id": { "eq": "www.github.com" } }
+        "if": {
+          "id": {
+            "eq": "www.github.com"
+          }
+        }
       }
     ],
     "contexts": {
@@ -23,7 +31,10 @@
           "img": "string(//div[@class='Overlay-titleWrap']//img/@src)",
           "url": "string(//html/head/meta[@property='og:url']/@content)"
         },
-        "children": ["post", "profile"]
+        "children": [
+          "post",
+          "profile"
+        ]
       },
       "post": {
         "selector": ".TimelineItem.js-comment-container, .js-timeline-progressive-focus-container .timeline-comment-group",
@@ -64,14 +75,17 @@
       "profile": {
         "selector": ".js-profile-editable-replace",
         "props": {
-          "id": "normalize-space(substring-before(substring-after(string(.//h1/span[2]), '\\n'), '\\n'))",
+          "id": "normalize-space(substring-before(substring-after(string(.//h1/span[2]), '\n'), '\n'))",
           "authorFullname": "normalize-space(string(.//h1/span[1]))",
-          "authorUsername": "normalize-space(substring-before(substring-after(string(.//h1/span[2]), '\\n'), '\\n'))",
+          "authorUsername": "normalize-space(substring-before(substring-after(string(.//h1/span[2]), '\n'), '\n'))",
           "authorImg": "string(.//img/@src)",
-          "url": "concat('https://github.com/', normalize-space(substring-before(substring-after(string(.//h1/span[2]), '\\n'), '\\n')))"
+          "url": "concat('https://github.com/', normalize-space(substring-before(substring-after(string(.//h1/span[2]), '\n'), '\n')))"
         },
         "insertionPoints": {
-          "southPanel": { "selector": "div.clearfix", "insertionType": "end" },
+          "southPanel": {
+            "selector": "div.clearfix",
+            "insertionType": "end"
+          },
           "avatar": {
             "selector": "div.clearfix > div",
             "insertionType": "end"
