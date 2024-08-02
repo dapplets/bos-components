@@ -18,6 +18,7 @@ const DefaultTheme = styled.div`
 
   --primBtnCol: white;
   --primBtnBg: #02193a;
+  --primBtnBg01: #02193a1a;
   --primBtnBgH: #1c3559;
   --primBtnBgA: #020c19;
   --secBtnCol: #02193a;
@@ -46,6 +47,7 @@ const MetaGuideTheme = styled.div`
 
   --primBtnCol: #4e77e1;
   --primBtnBg: white;
+  --primBtnBg01: #ffffff1a;
   --primBtnBgH: rgb(242 243 255);
   --primBtnBgA: rgb(222 225 255);
   --secBtnCol: white;
@@ -639,7 +641,8 @@ const EditButtonsBlock = styled.div`
   display: flex;
   width: 100%;
   gap: 10px;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  padding: 0 10px;
 `
 
 const editIcon = (
@@ -782,9 +785,8 @@ const SuccessButton = styled.button`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 0px 20px;
-  width: 155px;
-  height: 42px;
+  padding: 10px 20px;
+  min-width: 110px;
   background: var(--primBtnCol);
   border-radius: 10px;
   border: 1px solid var(--primBtnBg);
@@ -800,8 +802,13 @@ const SuccessButton = styled.button`
   color: var(--primBtnBg);
   transition-duration: 0.2s;
 
-  :hover {
+  &:disabled {
     opacity: 0.5;
+    cursor: default;
+  }
+
+  &:hover:not(:disabled) {
+    background: var(--primBtnBg01);
   }
 `
 
@@ -897,21 +904,18 @@ const StyledTextarea = styled.textarea`
   }
 `
 
-const ClearTargetButton = styled.button`
-  outline: none;
-  width: 16px;
-  height: 16px;
+const InputButtons = styled.div`
   display: flex;
+  flex-direction: row-reverse;
+  gap: 6px;
   align-items: center;
   justify-content: center;
   background: transparent;
-  border: none;
   padding: 0;
-  margin: none;
+  margin: 0;
   position: absolute;
   top: 6px;
   right: 10px;
-  cursor: pointer;
 `
 
 const EditTargetButton = styled.button`
@@ -924,10 +928,7 @@ const EditTargetButton = styled.button`
   background: transparent;
   border: none;
   padding: 0;
-  margin: none;
-  position: absolute;
-  top: 6px;
-  right: 32px;
+  margin: 0;
   cursor: pointer;
 `
 
@@ -945,7 +946,6 @@ const ButtonRemove = styled.button`
   border: none;
   background: transparent;
   color: #fff;
-  width: 50%;
   font-size: 12px;
   cursor: pointer;
 
@@ -956,6 +956,7 @@ const ButtonRemove = styled.button`
   &:hover {
     opacity: 0.5;
   }
+
   &:disabled {
     opacity: 0.3;
   }
@@ -968,7 +969,6 @@ const ButtonRevert = styled.button`
   border: none;
   background: transparent;
   color: #fff;
-  width: 50%;
   font-size: 12px;
   cursor: pointer;
 
@@ -976,7 +976,12 @@ const ButtonRevert = styled.button`
     margin-right: 5px;
   }
 
-  &:hover {
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  &:hover:not(:disabled) {
     opacity: 0.5;
   }
 `
@@ -1032,6 +1037,7 @@ const {
   guideTitle,
   guideDescription,
   isConfigEdited,
+  isPageEdited,
   contextId,
   contextType,
   navi,
@@ -1217,9 +1223,18 @@ const editPage = (
     <EditInputsBlock>
       <OptionsBlock>
         <ButtonRemove disabled={buttonRemoveDisabled} onClick={onPageRemove}>
-          {iconRemove} Remove
+          {iconRemove} Remove page
         </ButtonRemove>
-        <ButtonRevert onClick={onRevertChanges}>{iconRevert}Revert changes</ButtonRevert>
+        <ButtonRevert
+          disabled={!isPageEdited && newTitle === (title ?? '') && newContent === (content ?? '')}
+          onClick={() => {
+            setNewTitle(title ?? '')
+            setNewContent(content ?? '')
+            onRevertChanges()
+          }}
+        >
+          {iconRevert}Delete page changes
+        </ButtonRevert>
       </OptionsBlock>
 
       <FloatingLabelContainer>
@@ -1231,21 +1246,25 @@ const editPage = (
           value={contextType && contextId ? `${contextType}/${contextId}` : 'No target'}
         />
         <StyledLabel htmlFor={'target'}>Target</StyledLabel>
-        <ClearTargetButton
-          title="Delete target"
-          onClick={() => handleTargetRemove({ newTitle, newContent })}
-        >
-          <CloseIcon />
-        </ClearTargetButton>
-        <EditTargetButton
-          title="Pick target"
-          onClick={() => {
-            handleSavePageChanges()
-            startEditTarget()
-          }}
-        >
-          {iconEditTarget}
-        </EditTargetButton>
+        <InputButtons>
+          {props.type === 'callout' && (
+            <EditTargetButton
+              title="Delete target"
+              onClick={() => handleTargetRemove({ newTitle, newContent })}
+            >
+              <CloseIcon />
+            </EditTargetButton>
+          )}
+          <EditTargetButton
+            title="Pick target"
+            onClick={() => {
+              handleSavePageChanges()
+              startEditTarget()
+            }}
+          >
+            {iconEditTarget}
+          </EditTargetButton>
+        </InputButtons>
       </FloatingLabelContainer>
 
       <FloatingLabelContainer>
@@ -1289,10 +1308,15 @@ const editPage = (
             handleRemoveAllChanges()
           }}
         >
-          Cancel
+          {isConfigEdited || newTitle !== (title ?? '') || newContent !== (content ?? '')
+            ? 'Delete all local changes'
+            : 'Cancel'}
         </SuccessButton>
       ) : null}
-      <SuccessButton onClick={() => openSaveChangesPopup({ newTitle, newContent })}>
+      <SuccessButton
+        disabled={!isConfigEdited && newTitle === (title ?? '') && newContent === (content ?? '')}
+        onClick={() => openSaveChangesPopup({ newTitle, newContent })}
+      >
         Save guide
       </SuccessButton>
     </EditButtonsBlock>
@@ -1338,7 +1362,7 @@ return (
     ) : props.type === 'infobox' ? (
       <InfoBox>
         {header}
-        {!content || isEditMode ? (
+        {isEditMode ? (
           editPage
         ) : (
           <>
