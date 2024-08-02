@@ -534,6 +534,9 @@ const ActionButton = styled.div`
     &:active {
       background: var(--primBtnBgA);
     }
+    &:disabled {
+      opacity: 0.3;
+    }
   }
 
   &.secondary {
@@ -547,6 +550,9 @@ const ActionButton = styled.div`
 
     &:active {
       background: var(--secBtnBgA);
+    }
+    &:disabled {
+      opacity: 0.3;
     }
   }
 `
@@ -573,6 +579,10 @@ const ActionButtonEdit = styled.div`
 
   &:hover {
     opacity: 0.5;
+  }
+
+  &:disabled {
+    opacity: 0.3;
   }
 `
 
@@ -1069,6 +1079,9 @@ const AddedPageButton = styled.button`
   svg {
     margin-right: 5px;
   }
+  &:disabled {
+    opacity: 0.3;
+  }
 
   &:hover {
     opacity: 0.5;
@@ -1092,6 +1105,9 @@ const AddedChapterButton = styled.button`
 
   &:hover {
     opacity: 0.5;
+  }
+  &:disabled {
+    opacity: 0.3;
   }
 `
 
@@ -1335,11 +1351,14 @@ const actionButton = (btn) => (
 
 const actionButtonEdit = (btn) => (
   <ActionButtonEdit
+    style={{ opacity: !btn.disabled && content.length !== 0 && title.length !== 0 ? '1' : '0.3' }}
     key={btn.label}
     onClick={() => {
-      btn.onClick()
+      if (!btn.disabled && content.length !== 0 && title.length !== 0) {
+        btn.onClick()
+      }
     }}
-    disabled={btn.disabled}
+    disabled={btn.disabled || content.length === 0 || title.length === 0}
   >
     {btn.label.toLowerCase().includes('prev') ? iconPrevEdit : null} {btn.label}{' '}
     {btn.label.toLowerCase().includes('next') ? iconNextEdit : null}
@@ -1410,7 +1429,7 @@ if (props.type === 'callout') {
               </EditTargetButton>
             </FloatingLabelContainer>
 
-            <FloatingLabelContainer>
+            <FloatingLabelContainer title={title.length === 0 && 'ADD CONTENT'}>
               <StyledInput
                 id={'title'}
                 type={'text'}
@@ -1422,7 +1441,7 @@ if (props.type === 'callout') {
               <StyledLabel htmlFor={'title'}>Page name</StyledLabel>
             </FloatingLabelContainer>
 
-            <FloatingLabelContainerArea>
+            <FloatingLabelContainerArea title={content.length === 0 && 'ADD CONTENT'}>
               <StyledTextarea
                 id={'description'}
                 value={content}
@@ -1434,8 +1453,16 @@ if (props.type === 'callout') {
             </FloatingLabelContainerArea>
           </EditInputsBlock>
           <AddedBlock>
-            <AddedPageButton onClick={onPageAdd}>{iconPlus}Add new page</AddedPageButton>
-            <AddedChapterButton onClick={onChapterAdd}>
+            <AddedPageButton
+              disabled={title.length === 0 || content.length === 0}
+              onClick={onPageAdd}
+            >
+              {iconPlus}Add new page
+            </AddedPageButton>
+            <AddedChapterButton
+              disabled={title.length === 0 || content.length === 0}
+              onClick={onChapterAdd}
+            >
               {iconPlus}Add new chapter
             </AddedChapterButton>
           </AddedBlock>
@@ -1544,7 +1571,7 @@ if (props.type === 'callout') {
                 </EditTargetButton>
               </FloatingLabelContainer>
 
-              <FloatingLabelContainer>
+              <FloatingLabelContainer title={title.length === 0 && 'ADD CONTENT'}>
                 <StyledInput
                   id={'title'}
                   type={'text'}
@@ -1556,7 +1583,7 @@ if (props.type === 'callout') {
                 <StyledLabel htmlFor={'title'}>Page name</StyledLabel>
               </FloatingLabelContainer>
 
-              <FloatingLabelContainerArea>
+              <FloatingLabelContainerArea title={content.length === 0 && 'ADD CONTENT'}>
                 <StyledTextarea
                   id={'description'}
                   value={content}
@@ -1568,8 +1595,16 @@ if (props.type === 'callout') {
               </FloatingLabelContainerArea>
             </EditInputsBlock>
             <AddedBlock>
-              <AddedPageButton onClick={onPageAdd}>{iconPlus}Add new page</AddedPageButton>
-              <AddedChapterButton onClick={onChapterAdd}>
+              <AddedPageButton
+                disabled={title.length === 0 || content.length === 0}
+                onClick={onPageAdd}
+              >
+                {iconPlus}Add new page
+              </AddedPageButton>
+              <AddedChapterButton
+                disabled={title.length === 0 || content.length === 0}
+                onClick={onChapterAdd}
+              >
                 {iconPlus}Add new chapter
               </AddedChapterButton>
             </AddedBlock>
@@ -1584,7 +1619,7 @@ if (props.type === 'callout') {
                 <ButtonGroup>
                   <LeftButton
                     onClick={() => handleMainButtonClick(currentItem.value)}
-                    disabled={disabled}
+                    disabled={disabled || title.length === 0 || content.length === 0}
                   >
                     <TextSave>{currentItem.title}</TextSave>
                   </LeftButton>
