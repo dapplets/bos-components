@@ -426,18 +426,11 @@ const ActionsGroup = styled.div`
 
 const ActionsGroupEdit = styled.div`
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
   align-self: stretch;
-
-  &.infobox {
-    flex-direction: row-reverse;
-  }
-
-  &.callout {
-    flex-direction: row;
-  }
 `
 
 const ActionButton = styled.div`
@@ -1201,19 +1194,21 @@ const navButtons = !buttons ? null : props.type === 'callout' ? (
   <></>
 )
 
-const navButtonsEdit = !buttons ? null : props.type === 'callout' ? (
-  <ActionsGroupEdit className={props.type}>
-    {buttons.map((btn) => actionButtonEdit(btn))}
-  </ActionsGroupEdit>
-) : buttons?.length > 1 ? (
-  <ActionsGroupEdit className={props.type}>
+const navButtonsEdit = !buttons?.length ? null : buttons?.length > 1 ? (
+  <ActionsGroupEdit>
+    {actionButtonEdit(buttons[0])}
     {actionButtonEdit(buttons[1])}
+  </ActionsGroupEdit>
+) : buttons[0].variant === 'primary' ? (
+  <ActionsGroupEdit>
+    <div></div>
     {actionButtonEdit(buttons[0])}
   </ActionsGroupEdit>
-) : buttons?.length === 1 ? (
-  <ActionsGroupEdit className={props.type}>{actionButtonEdit(buttons[0])}</ActionsGroupEdit>
 ) : (
-  <></>
+  <ActionsGroupEdit>
+    {actionButtonEdit(buttons[0])}
+    <div></div>
+  </ActionsGroupEdit>
 )
 
 const editPage = (
