@@ -1193,7 +1193,7 @@ const arrowIcon = (
   </svg>
 )
 
-const DropdownButtonItem = styled('DappletFileDownloader')`
+const DropdownButtonItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1262,8 +1262,8 @@ const handleButtonItemClick = (item) => {
 }
 
 const handleMainButtonClick = (value) => {
-  saveData(value)
-  setShowSaveChangesPopup(false)
+  return saveData(value)
+  // setShowSaveChangesPopup(false)
 }
 
 const header = (
@@ -1448,8 +1448,11 @@ if (props.type === 'callout') {
 
             <DropdownWrapper>
               <ButtonGroup>
-                <LeftButton disabled={disabled}>
-                  <TextSave onClick={()=>handleMainButtonClick(currentItem.value)}>{currentItem.title}</TextSave>
+                <LeftButton
+                  onClick={() => handleMainButtonClick(currentItem.value)}
+                  disabled={disabled}
+                >
+                  <TextSave>{currentItem.title}</TextSave>
                 </LeftButton>
 
                 <RightButton onClick={() => setShowSaveChangesPopup(!showSaveChangesPopup)}>
@@ -1579,8 +1582,11 @@ if (props.type === 'callout') {
               </SuccessButton> */}
               <DropdownWrapper>
                 <ButtonGroup>
-                  <LeftButton disabled={disabled}>
-                    <TextSave onClick={()=>handleMainButtonClick(currentItem.value)}>{currentItem.title}</TextSave>
+                  <LeftButton
+                    onClick={() => handleMainButtonClick(currentItem.value)}
+                    disabled={disabled}
+                  >
+                    <TextSave>{currentItem.title}</TextSave>
                   </LeftButton>
 
                   <RightButton onClick={() => setShowSaveChangesPopup(!showSaveChangesPopup)}>

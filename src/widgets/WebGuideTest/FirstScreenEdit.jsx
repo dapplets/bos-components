@@ -221,7 +221,7 @@ const CloseButton = styled.button`
   }
 `
 
-const ImportButton = styled.div('DappletFileDownloader')`
+const ImportButton = styled.button`
   display: flex;
   box-sizing: border-box;
   width: 100%;
@@ -233,7 +233,7 @@ const ImportButton = styled.div('DappletFileDownloader')`
   font-size: 14px;
   cursor: pointer;
   background: transparent;
-  border:none;
+  border: none;
   color: #4e77e1;
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
@@ -249,18 +249,23 @@ const ImportButton = styled.div('DappletFileDownloader')`
   }
 `
 
-const { children, onClose, skin, handleCreateTheFirstChapter } = props
+const { children, onClose, skin, handleCreateTheFirstChapter, handleAddNewGuide } = props
 
 const [isEditTarget, setEditTarget] = useState(false)
 
-const uploadFileUpdateState = (value) => {
-  return value
-}
-
 const filesOnChange = (files) => {
-  if (files) {
-    return uploadFileUpdateState(files[0])
-  }
+  const [file] = files
+  console.log(files)
+  file
+    .text()
+    .then((json) => {
+      const webGuideConfig = JSON.parse(json)
+      console.log(webGuideConfig, 'webGuideConfig')
+      handleAddNewGuide(webGuideConfig)
+    })
+    .catch((err) => {
+      console.error(err)
+    })
 }
 
 const callout = (
@@ -291,10 +296,10 @@ const callout = (
       multiple={false}
       accepts={['application/json']}
       minFileSize={1}
+      onChange={filesOnChange}
       clickable
-      // onChange={filesOnChange}
     >
-      <ImportButton onChange={filesOnChange}>
+      <ImportButton>
         {iconImport}
         {state.json.cid ? state.json.cid : 'Import'}
       </ImportButton>

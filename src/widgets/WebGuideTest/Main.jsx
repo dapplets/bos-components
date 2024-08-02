@@ -128,6 +128,10 @@ useEffect(() => {
   setEditingConfig(guideConfig)
 }, [guideConfig])
 
+const handleAddNewGuide = (guide) => {
+  setEditingConfig(guide)
+}
+
 const handleClose = () => {
   setShowApp(false)
   setEditMode(false)
@@ -173,7 +177,6 @@ const handleClickNext = () => {
 }
 
 const saveData = (value) => {
-
   switch (value) {
     case 'publish':
       // if (context?.accountId) {
@@ -346,6 +349,7 @@ const handleExportClick = () => {
   const jsonString = JSON.stringify(editingConfig, null, 2)
 
   const blob = new Blob([jsonString], { type: 'application/json' })
+
   const file = new File([blob], 'webGuideConfig.json')
 
   return file
@@ -420,14 +424,14 @@ const ChapterWrapper = (props) => {
         children:
           currentChapter.type === 'callout' && currentChapter.arrowTo === 'context'
             ? ({ ref }) => {
-              props.attachContextRef(ref)
-              return props.children
-            }
-            : currentChapter.arrowTo === 'insPoint'
-              ? ({ ref }) => {
-                props.attachInsPointRef(ref)
+                props.attachContextRef(ref)
                 return props.children
               }
+            : currentChapter.arrowTo === 'insPoint'
+              ? ({ ref }) => {
+                  props.attachInsPointRef(ref)
+                  return props.children
+                }
               : props.children,
         skin: currentChapter.skin ?? 'DEFAULT',
         isEditMode,
@@ -587,6 +591,7 @@ return (
               props={{
                 skin: 'META_GUIDE',
                 handleCreateTheFirstChapter,
+                handleAddNewGuide,
                 onClose: handleClose,
                 children: ({ ref }) => {
                   props.attachContextRef(ref)
@@ -629,10 +634,10 @@ return (
               backgroundColor: 'rgb(56 255 63 / 10%)',
               // borderStyle: 'dashed',
             }}
-          // filled
-          // icon={iconTimelineLatch('#14AE5C')}
-          // icon={() => <></>}
-          // action={() => console.log('Highlighter action')}
+            // filled
+            // icon={iconTimelineLatch('#14AE5C')}
+            // icon={() => <></>}
+            // action={() => console.log('Highlighter action')}
           />
         </>
       )
