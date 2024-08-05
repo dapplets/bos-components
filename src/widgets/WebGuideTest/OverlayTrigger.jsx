@@ -241,8 +241,7 @@ const PagesIndicators = styled.div`
   flex: 1;
 `
 
-// const Navi = styled.button` // ToDo: for navigation
-const Navi = styled.div`
+const Navi = styled.button`
   box-sizing: border-box;
   padding: 0;
   width: 10px;
@@ -1121,8 +1120,8 @@ const LeftButton = styled('DappletFileDownloader')`
   justify-content: center;
   align-items: center;
   border: none;
-  background: #ffffff;
-  color: rgb(56, 75, 255);
+  background: var(--primBtnBg);
+  color: var(--primBtnCol);
 
   font-size: 14px;
   font-weight: 400;
@@ -1161,7 +1160,7 @@ const RightButton = styled.button`
   height: 42px;
   border: none;
   border-left: 1px solid rgba(226, 226, 229, 0.6);
-  background: #ffffff;
+  background: var(--primBtnBg);
   cursor: pointer;
 
   &:disabled {
@@ -1190,11 +1189,11 @@ const ItemGroup = styled.div`
   padding: 10px;
   gap: 5px;
   border-radius: 10px;
-  background: #fff;
+  background: var(--primBtnBg);
   font-size: 14px;
   font-weight: 400;
   text-align: center;
-  color: rgba(34, 34, 34, 1);
+  color: #222222;
 `
 
 const arrowIcon = (
@@ -1221,8 +1220,8 @@ const DropdownButtonItem = styled.div`
   background: inherit;
 
   &:hover {
-    background: rgba(217, 222, 225, 1);
-    color: rgba(56, 75, 255, 1);
+    background: #e2e2e5;
+    color: var(--primBtnCol);
   }
 `
 
@@ -1308,7 +1307,7 @@ const header = (
               ))}
           </PagesIndicators>
           <CalloutHeaderCaption>
-            Step {navi?.currentChapterIndex + 1} of {navi?.totalChapters}
+            Chapter {navi?.currentChapterIndex + 1} of {navi?.totalChapters}
           </CalloutHeaderCaption>
         </>
       ) : null}
