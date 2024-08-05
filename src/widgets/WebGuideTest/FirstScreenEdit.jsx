@@ -1,8 +1,3 @@
-State.init({
-  json: null,
-  isUpload: false,
-  amount: 1,
-})
 const CustomTooltipDefault = styled('DappletTooltip')`
   z-index: 99999999; // over the notch
 
@@ -185,35 +180,6 @@ const iconImport = (
   </svg>
 )
 
-const CloseButton = styled.button`
-  position: absolute;
-  right: 0;
-  top: 0;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  background: none;
-  cursor: pointer;
-
-  svg {
-    path {
-      stroke: #838891;
-      transition-duration: 0.2s;
-    }
-  }
-
-  :hover {
-    svg {
-      path {
-        stroke: #555555;
-      }
-    }
-  }
-`
-
 const ImportButton = styled.button`
   display: flex;
   box-sizing: border-box;
@@ -243,6 +209,12 @@ const ImportButton = styled.button`
 `
 
 const { children, onClose, skin, handleCreateTheFirstChapter, handleAddNewGuide } = props
+
+State.init({
+  json: null,
+  isUpload: false,
+  amount: 1,
+})
 
 const [isEditTarget, setEditTarget] = useState(false)
 
