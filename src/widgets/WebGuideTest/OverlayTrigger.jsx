@@ -526,11 +526,11 @@ const ActionButton = styled.div`
     background: var(--primBtnBg);
     color: var(--primBtnCol);
 
-    &:hover {
+    &:hover&:not(:disabled) {
       background: var(--primBtnBgH);
     }
 
-    &:active {
+    &:active&:not(:disabled) {
       background: var(--primBtnBgA);
     }
     &:disabled {
@@ -543,13 +543,14 @@ const ActionButton = styled.div`
     background: initial;
     color: var(--secBtnCol);
 
-    &:hover {
+    &:hover&:not(:disabled) {
       background: var(--secBtnBgH);
     }
 
-    &:active {
+    &:active&:not(:disabled) {
       background: var(--secBtnBgA);
     }
+
     &:disabled {
       opacity: 0.3;
     }
@@ -576,7 +577,7 @@ const ActionButtonEdit = styled.div`
   font-size: 12px;
   color: #fff;
 
-  &:hover {
+  &:hover&:not(:disabled) {
     opacity: 0.5;
   }
 
@@ -1078,11 +1079,13 @@ const AddedPageButton = styled.button`
   svg {
     margin-right: 5px;
   }
+
   &:disabled {
     opacity: 0.3;
+    cursor: default;
   }
 
-  &:hover {
+  &:hover&:not(:disabled) {
     opacity: 0.5;
   }
 `
@@ -1302,6 +1305,7 @@ const header = (
                 <Navi
                   key={index}
                   className={index == navi?.currentPageIndex ? 'active' : 'inactive'}
+                  title={`Page ${index + 1}`}
                   onClick={() => onClickPageIndicator(index)}
                 />
               ))}
@@ -1349,19 +1353,9 @@ const actionButton = (btn) => (
 )
 
 const actionButtonEdit = (btn) => (
-  <ActionButtonEdit
-    title={(title.length === 0 || content.length === 0) && 'Add content'}
-    style={{ opacity: !btn.disabled && content.length !== 0 && title.length !== 0 ? '1' : '0.3' }}
-    key={btn.label}
-    onClick={() => {
-      if (!btn.disabled && content.length !== 0 && title.length !== 0) {
-        btn.onClick()
-      }
-    }}
-    disabled={btn.disabled || content.length === 0 || title.length === 0}
-  >
-    {btn.label.toLowerCase().includes('prev') ? iconPrevEdit : null} {btn.label}{' '}
-    {btn.label.toLowerCase().includes('next') ? iconNextEdit : null}
+  <ActionButtonEdit key={btn.label} onClick={() => btn.onClick()} disabled={btn.disabled}>
+    {btn.label.toLowerCase().includes('previous') ? iconPrevEdit : null}
+    {btn.label} {btn.label.toLowerCase().includes('next') ? iconNextEdit : null}
   </ActionButtonEdit>
 )
 
@@ -1454,20 +1448,13 @@ if (props.type === 'callout') {
           </EditInputsBlock>
           <AddedBlock>
             <AddedPageButton
-              title={
-                ((title.length === 0 || content.length === 0) && 'Add content') ||
-                (navi.currentPageIndex === 4 && 'Max 5 pages in the chapter')
-              }
-              disabled={title.length === 0 || content.length === 0 || navi.currentPageIndex === 4}
+              title="Up to 5 pages for the chapter"
+              disabled={navi.totalPages >= 5}
               onClick={onPageAdd}
             >
               {iconPlus}Add new page
             </AddedPageButton>
-            <AddedChapterButton
-              title={(title.length === 0 || content.length === 0) && 'Add content'}
-              disabled={title.length === 0 || content.length === 0}
-              onClick={onChapterAdd}
-            >
+            <AddedChapterButton onClick={onChapterAdd}>
               {iconPlus}Add new chapter
             </AddedChapterButton>
           </AddedBlock>
@@ -1480,10 +1467,7 @@ if (props.type === 'callout') {
 
             <DropdownWrapper>
               <ButtonGroup>
-                <LeftButton
-                  onClick={() => handleMainButtonClick(currentItem.value)}
-                  disabled={disabled}
-                >
+                <LeftButton onClick={() => handleMainButtonClick(currentItem.value)}>
                   <TextSave>{currentItem.title}</TextSave>
                 </LeftButton>
 
@@ -1601,20 +1585,13 @@ if (props.type === 'callout') {
             </EditInputsBlock>
             <AddedBlock>
               <AddedPageButton
-                title={
-                  ((title.length === 0 || content.length === 0) && 'Add content') ||
-                  (navi.currentPageIndex === 4 && 'Max 5 pages in the chapter')
-                }
-                disabled={title.length === 0 || content.length === 0 || navi.currentPageIndex === 4}
+                title="Up to 5 pages for the chapter"
+                disabled={navi.totalPages >= 5}
                 onClick={onPageAdd}
               >
                 {iconPlus}Add new page
               </AddedPageButton>
-              <AddedChapterButton
-                title={(title.length === 0 || content.length === 0) && 'Add content'}
-                disabled={title.length === 0 || content.length === 0}
-                onClick={onChapterAdd}
-              >
+              <AddedChapterButton onClick={onChapterAdd}>
                 {iconPlus}Add new chapter
               </AddedChapterButton>
             </AddedBlock>
@@ -1626,18 +1603,12 @@ if (props.type === 'callout') {
                 Save guide
               </SuccessButton> */}
               <DropdownWrapper>
-                <ButtonGroup title={(title.length === 0 || content.length === 0) && 'Add content'}>
-                  <LeftButton
-                    onClick={() => handleMainButtonClick(currentItem.value)}
-                    disabled={disabled || title.length === 0 || content.length === 0}
-                  >
+                <ButtonGroup>
+                  <LeftButton onClick={() => handleMainButtonClick(currentItem.value)}>
                     <TextSave>{currentItem.title}</TextSave>
                   </LeftButton>
 
-                  <RightButton
-                    disabled={disabled || title.length === 0 || content.length === 0}
-                    onClick={() => setShowSaveChangesPopup(!showSaveChangesPopup)}
-                  >
+                  <RightButton onClick={() => setShowSaveChangesPopup(!showSaveChangesPopup)}>
                     {arrowIcon}
                   </RightButton>
                 </ButtonGroup>

@@ -371,7 +371,7 @@ const ChapterWrapper = (props) => {
       variant: 'secondary',
       disabled: false,
       onClick: handleClickPrev,
-      label: 'Prev',
+      label: 'Previous',
     })
   }
   if (chapterCounter === editingConfig.chapters.length - 1 && pageCounter === pages.length - 1) {
