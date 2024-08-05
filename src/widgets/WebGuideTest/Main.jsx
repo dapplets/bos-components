@@ -118,7 +118,6 @@ const [chapterCounter, setChapterCounter] = useState(0)
 const [pageCounter, setPageCounter] = useState(0)
 const [isEditMode, setEditMode] = useState(false)
 const [isEditTarget, setEditTarget] = useState(false)
-const [doShowSaveChangesPopup, setDoShowSaveChangesPopup] = useState(false)
 
 const findParentContext = (context, type) => {
   if (!context) return null
@@ -225,49 +224,45 @@ const handleClickNext = () => {
   }
 }
 
-const saveData = (value) => {
-  switch (value) {
-    case 'publish':
-      // if (context?.accountId) {
-      //   Near.call('app.webguide.near', 'set_guide', {
-      //     guide_id: link.id,
-      //     data: inputData,
-      //   })
-      // }
-      break
-    case 'export':
-      return handleExportClick()
-
-    default:
-    //   if (context?.accountId) {
-    //   Near.call('app.webguide.near', 'set_guide', {
-    //     guide_id: link.id,
-    //     data: inputData,
-    //   })
-    // }
-  }
-}
-
-const handleSave = ({ title, description }) => {
+const handleSave = ({ newTitle, newContent }) => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-  if (updatedConfig.title !== title) updatedConfig.title = title
-  if (updatedConfig.description !== description) updatedConfig.description = description
-  linkDb.set(appContext, { [mutatorId]: JSON.stringify(updatedConfig) }).then(() => {
-    setGuideConfig(updatedConfig)
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
+  const isConfigEdited = JSON.stringify(updatedConfig) !== JSON.stringify(guideConfig)
+  if (isConfigEdited) {
+    linkDb.set(appContext, { [mutatorId]: JSON.stringify(updatedConfig) }).then(() => {
+      setGuideConfig(updatedConfig)
+      setEditMode(false)
+      setChapterCounter(0)
+      setPageCounter(0)
+      saveConfigToLocalStorage(null)
+    })
+  } else {
+    setGuideConfig(guideConfig)
     setEditMode(false)
-    setDoShowSaveChangesPopup(false)
     setChapterCounter(0)
     setPageCounter(0)
     saveConfigToLocalStorage(null)
-  })
+  }
 }
 
-const handleClickPageIndicator = (index) => {
-  if (editingConfig.chapters[chapterCounter]?.pages?.length <= index) {
-    return
-  } else {
-    setPageCounter((val) => (val = index))
-  }
+const handleExportConfig = ({ newTitle, newContent }) => {
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
+  const jsonString = JSON.stringify(updatedConfig, null, 2)
+  const blob = new Blob([jsonString], { type: 'application/json' })
+  const file = new File([blob], 'webGuideConfig.json')
+  return file
+}
+
+const handleClickPageIndicator = ({ index, newTitle, newContent }) => {
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
+  setPageCounter((val) => (val = index))
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
 }
 
 const handlePageDataChange = ({ newTitle, newContent }) => {
@@ -400,16 +395,6 @@ const handleRevertChanges = () => {
   saveConfigToLocalStorage(updatedConfig)
 }
 
-const handleExportClick = () => {
-  const jsonString = JSON.stringify(editingConfig, null, 2)
-
-  const blob = new Blob([jsonString], { type: 'application/json' })
-
-  const file = new File([blob], 'webGuideConfig.json')
-
-  return file
-}
-
 const handleRemoveAllChanges = () => {
   setEditingConfig(guideConfig || configTemplate)
   saveConfigToLocalStorage(null)
@@ -422,11 +407,8 @@ const openSaveChangesPopup = ({ newTitle, newContent }) => {
   if (updatedConfig.chapters[chapterCounter].pages[pageCounter].content !== newContent)
     updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
   setEditingConfig(updatedConfig)
-  setDoShowSaveChangesPopup(true)
   saveConfigToLocalStorage(updatedConfig)
 }
-
-const closeSaveChangesPopup = () => setDoShowSaveChangesPopup(false)
 
 const currentChapter = editingConfig.chapters[chapterCounter]
 
@@ -529,15 +511,9 @@ const ChapterWrapper = (props) => {
         onPageRemove: handlePageRemove,
         onRevertChanges: handleRevertChanges,
         onClickPageIndicator: handleClickPageIndicator,
-        items: [
-          { value: 'publish', title: 'Publish' },
-          { value: 'export', title: 'Export guide' },
-        ],
         handleRemoveAllChanges,
+        handleExportConfig,
         handleSave,
-        doShowSaveChangesPopup,
-        openSaveChangesPopup,
-        closeSaveChangesPopup,
       }}
     />
   )

@@ -218,7 +218,7 @@ const ImportButton = styled.button`
   display: flex;
   box-sizing: border-box;
   width: 100%;
-  padding: 0px 20px;
+  padding: 12px 20px 6px;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
