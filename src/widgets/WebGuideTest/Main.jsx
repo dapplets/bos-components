@@ -118,7 +118,6 @@ const [chapterCounter, setChapterCounter] = useState(0)
 const [pageCounter, setPageCounter] = useState(0)
 const [isEditMode, setEditMode] = useState(false)
 const [isEditTarget, setEditTarget] = useState(false)
-const [doShowSaveChangesPopup, setDoShowSaveChangesPopup] = useState(false)
 
 const findParentContext = (context, type) => {
   if (!context) return null
@@ -175,6 +174,10 @@ const saveConfigToLocalStorage = (data) =>
     !data || JSON.stringify(data) === JSON.stringify(guideConfig) ? undefined : JSON.stringify(data)
   )
 
+const handleAddNewGuide = (guide) => {
+  setEditingConfig(guide)
+}
+
 const handleClose = () => {
   setShowApp(false)
   setEditMode(false)
@@ -221,18 +224,45 @@ const handleClickNext = () => {
   }
 }
 
-const handleSave = ({ title, description }) => {
+const handleSave = ({ newTitle, newContent }) => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-  if (updatedConfig.title !== title) updatedConfig.title = title
-  if (updatedConfig.description !== description) updatedConfig.description = description
-  linkDb.set(appContext, { [mutatorId]: JSON.stringify(updatedConfig) }).then(() => {
-    setGuideConfig(updatedConfig)
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
+  const isConfigEdited = JSON.stringify(updatedConfig) !== JSON.stringify(guideConfig)
+  if (isConfigEdited) {
+    linkDb.set(appContext, { [mutatorId]: JSON.stringify(updatedConfig) }).then(() => {
+      setGuideConfig(updatedConfig)
+      setEditMode(false)
+      setChapterCounter(0)
+      setPageCounter(0)
+      saveConfigToLocalStorage(null)
+    })
+  } else {
+    setGuideConfig(guideConfig)
     setEditMode(false)
-    setDoShowSaveChangesPopup(false)
     setChapterCounter(0)
     setPageCounter(0)
     saveConfigToLocalStorage(null)
-  })
+  }
+}
+
+const handleExportConfig = ({ newTitle, newContent }) => {
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
+  const jsonString = JSON.stringify(updatedConfig, null, 2)
+  const blob = new Blob([jsonString], { type: 'application/json' })
+  const file = new File([blob], 'webGuideConfig.json')
+  return file
+}
+
+const handleClickPageIndicator = ({ index, newTitle, newContent }) => {
+  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
+  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
+  setPageCounter((val) => (val = index))
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
 }
 
 const handlePageDataChange = ({ newTitle, newContent }) => {
@@ -377,11 +407,8 @@ const openSaveChangesPopup = ({ newTitle, newContent }) => {
   if (updatedConfig.chapters[chapterCounter].pages[pageCounter].content !== newContent)
     updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
   setEditingConfig(updatedConfig)
-  setDoShowSaveChangesPopup(true)
   saveConfigToLocalStorage(updatedConfig)
 }
-
-const closeSaveChangesPopup = () => setDoShowSaveChangesPopup(false)
 
 const currentChapter = editingConfig.chapters[chapterCounter]
 
@@ -400,7 +427,7 @@ const ChapterWrapper = (props) => {
       variant: 'secondary',
       disabled: false,
       onClick: handleClickPrev,
-      label: 'Prev',
+      label: 'Previous',
     })
   }
   if (chapterCounter === editingConfig.chapters.length - 1 && pageCounter === pages.length - 1) {
@@ -483,11 +510,10 @@ const ChapterWrapper = (props) => {
         onPageAdd: handlePageAdd,
         onPageRemove: handlePageRemove,
         onRevertChanges: handleRevertChanges,
+        onClickPageIndicator: handleClickPageIndicator,
         handleRemoveAllChanges,
+        handleExportConfig,
         handleSave,
-        doShowSaveChangesPopup,
-        openSaveChangesPopup,
-        closeSaveChangesPopup,
       }}
     />
   )
@@ -652,6 +678,7 @@ return (
               props={{
                 skin: 'META_GUIDE',
                 handleCreateTheFirstChapter,
+                handleAddNewGuide,
                 onClose: handleClose,
                 children: ({ ref }) => {
                   props.attachContextRef(ref)
