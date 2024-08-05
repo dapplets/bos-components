@@ -1,71 +1,71 @@
-const CustomTooltip = styled('DappletTooltip')`
-  z-index: 99999999; // over the notch
-  min-height: 140px;
-  width: 320px;
+const DefaultTheme = styled.div`
+  --bgMain: #fffffe;
+  --colorMain: #02193a;
+  --colorP: #777777;
+  --border: #02193a;
+  --cardBg: rgba(248, 249, 255, 1);
 
-  &[data-popper-reference-hidden='true'] {
-    position: fixed !important;
-    left: 50% !important;
-    transform: translate(-100%, 0px) !important;
-  }
+  --navActive: #384bff;
+  --navInactiveBg: #e3e3e3;
+  --navInactiveBorder: none;
 
-  &.bs-tooltip-bottom[data-popper-reference-hidden='true'] {
-    top: 22px !important;
-  }
+  --statusInfoCol: #246efd;
+  --statusWarningCol: #d0911a;
+  --statusErrorCol: #db504a;
+  --statusInfoBg: rgba(234, 241, 255, 1);
+  --statusWarningBg: rgba(255, 248, 235, 1);
+  --statusErrorBg: rgba(246, 240, 246, 1);
 
-  &.bs-tooltip-top[data-popper-reference-hidden='true'] {
-    bottom: 22px !important;
-  }
-
-  .tooltip-arrow::before {
-    border: none;
-    display: inline-block;
-  }
-
-  &.wg-tooltip-DEFAULT .tooltip-arrow::before {
-    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='19' height='38' viewBox='18 0 20 38' fill='none' ><path d='M34.3818 22.1845L19.5654 36.0575L19.5654 1.8284L34.3715 15.6052C36.2802 17.3812 36.285 20.4025 34.3818 22.1845Z' fill='%23FFFFFE' stroke='%2302193A' /><path d='M16.5693 2.96185L20.0642 2.96185L21.0642 3.96185L21.0642 33.9619L20.0642 34.9619H16.5693L16.5693 2.96185Z' fill='%23FFFFFE' /></svg>");
-  }
-
-  &.wg-tooltip-META_GUIDE .tooltip-arrow::before {
-    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='19' height='38' viewBox='18 0 20 38' fill='none' ><path d='M34.3818 22.1845L19.5654 36.0575L19.5654 1.8284L34.3715 15.6052C36.2802 17.3812 36.285 20.4025 34.3818 22.1845Z' fill='%234E77E1' stroke='%234E77E1' /><path d='M16.5693 2.96185L20.0642 2.96185L21.0642 3.96185L21.0642 33.9619L20.0642 34.9619H16.5693L16.5693 2.96185Z' fill='%234E77E1' /></svg>");
-  }
-
-  &.bs-tooltip-top .tooltip-arrow {
-    bottom: -29px;
-
-    &::before {
-      transform: rotate(90deg);
-    }
-  }
-
-  &.bs-tooltip-end .tooltip-arrow {
-    left: -18px;
-
-    &::before {
-      transform: rotate(180deg);
-    }
-  }
-
-  &.bs-tooltip-bottom .tooltip-arrow {
-    top: -29px;
-
-    &::before {
-      transform: rotate(-90deg);
-    }
-  }
-
-  &.bs-tooltip-start .tooltip-arrow {
-    right: -18px;
-
-    &::before {
-      transform: rotate(0deg);
-    }
-  }
+  --primBtnCol: white;
+  --primBtnBg: #02193a;
+  --primBtnBg01: #02193a1a;
+  --primBtnBgH: #1c3559;
+  --primBtnBgA: #020c19;
+  --secBtnCol: #02193a;
+  --secBtnBorderCol: #e2e2e5;
+  --secBtnBgH: #eee;
+  --secBtnBgA: #ddd;
 `
 
-const ZIndexWrapper = styled.div`
-  z-index: 99999999;
+const MetaGuideTheme = styled.div`
+  --bgMain: #4e77e1;
+  --colorMain: white;
+  --colorP: rgba(248, 249, 255, 1);
+  --border: #4e77e1;
+  --cardBg: rgba(255, 255, 255, 0.1);
+
+  --navActive: white;
+  --navInactiveBg: #4e77e1;
+  --navInactiveBorder: white;
+
+  --statusInfoCol: white;
+  --statusWarningCol: white;
+  --statusErrorCol: white;
+  --statusInfoBg: rgba(255, 255, 255, 0.2);
+  --statusWarningBg: rgba(255, 255, 255, 0.2);
+  --statusErrorBg: rgba(255, 255, 255, 0.2);
+
+  --primBtnCol: #4e77e1;
+  --primBtnBg: white;
+  --primBtnBg01: #ffffff1a;
+  --primBtnBgH: rgb(242 243 255);
+  --primBtnBgA: rgb(222 225 255);
+  --secBtnCol: white;
+  --secBtnBorderCol: white;
+  --secBtnBgH: #5f84e4;
+  --secBtnBgA: #6c8ee5;
 `
+
+const Theme = ({ skin, children }) => {
+  switch (skin) {
+    case 'DEFAULT':
+      return <DefaultTheme children={children} />
+    case 'META_GUIDE':
+      return <MetaGuideTheme children={children} />
+    default:
+      return <></>
+  }
+}
 
 const InfoBox = styled.div`
   position: relative;
@@ -124,6 +124,7 @@ const Callout = styled.div`
   &.edit-mode {
     width: 360px;
   }
+  z-index: 99999999;
 `
 
 const Header = styled.div`
@@ -176,13 +177,13 @@ const PagesIndicators = styled.div`
   flex: 1;
 `
 
-const Navi = styled.button`
+// const Navi = styled.button` // ToDo: for navigation
+const Navi = styled.div`
   box-sizing: border-box;
   padding: 0;
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  cursor: pointer;
 
   &.active {
     background: var(--navActive);
@@ -425,18 +426,11 @@ const ActionsGroup = styled.div`
 
 const ActionsGroupEdit = styled.div`
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
   align-self: stretch;
-
-  &.infobox {
-    flex-direction: row-reverse;
-  }
-
-  &.callout {
-    flex-direction: row;
-  }
 `
 
 const ActionButton = styled.div`
@@ -461,15 +455,12 @@ const ActionButton = styled.div`
     background: var(--primBtnBg);
     color: var(--primBtnCol);
 
-    &:hover&:not(:disabled) {
+    &:hover {
       background: var(--primBtnBgH);
     }
 
-    &:active&:not(:disabled) {
+    &:active {
       background: var(--primBtnBgA);
-    }
-    &:disabled {
-      opacity: 0.3;
     }
   }
 
@@ -478,16 +469,12 @@ const ActionButton = styled.div`
     background: initial;
     color: var(--secBtnCol);
 
-    &:hover&:not(:disabled) {
+    &:hover {
       background: var(--secBtnBgH);
     }
 
-    &:active&:not(:disabled) {
+    &:active {
       background: var(--secBtnBgA);
-    }
-
-    &:disabled {
-      opacity: 0.3;
     }
   }
 `
@@ -512,12 +499,8 @@ const ActionButtonEdit = styled.div`
   font-size: 12px;
   color: #fff;
 
-  &:hover&:not(:disabled) {
+  &:hover {
     opacity: 0.5;
-  }
-
-  &:disabled {
-    opacity: 0.3;
   }
 `
 
@@ -651,7 +634,8 @@ const EditButtonsBlock = styled.div`
   display: flex;
   width: 100%;
   gap: 10px;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  padding: 0 10px;
 `
 
 const editIcon = (
@@ -794,9 +778,8 @@ const SuccessButton = styled.button`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 0px 20px;
-  width: 155px;
-  height: 42px;
+  padding: 10px 20px;
+  min-width: 110px;
   background: var(--primBtnCol);
   border-radius: 10px;
   border: 1px solid var(--primBtnBg);
@@ -812,8 +795,13 @@ const SuccessButton = styled.button`
   color: var(--primBtnBg);
   transition-duration: 0.2s;
 
-  :hover {
+  &:disabled {
     opacity: 0.5;
+    cursor: default;
+  }
+
+  &:hover:not(:disabled) {
+    background: var(--primBtnBg01);
   }
 `
 
@@ -909,21 +897,18 @@ const StyledTextarea = styled.textarea`
   }
 `
 
-const ClearTargetButton = styled.button`
-  outline: none;
-  width: 16px;
-  height: 16px;
+const InputButtons = styled.div`
   display: flex;
+  flex-direction: row-reverse;
+  gap: 6px;
   align-items: center;
   justify-content: center;
   background: transparent;
-  border: none;
   padding: 0;
-  margin: none;
+  margin: 0;
   position: absolute;
   top: 6px;
   right: 10px;
-  cursor: pointer;
 `
 
 const EditTargetButton = styled.button`
@@ -936,10 +921,7 @@ const EditTargetButton = styled.button`
   background: transparent;
   border: none;
   padding: 0;
-  margin: none;
-  position: absolute;
-  top: 6px;
-  right: 32px;
+  margin: 0;
   cursor: pointer;
 `
 
@@ -957,7 +939,6 @@ const ButtonRemove = styled.button`
   border: none;
   background: transparent;
   color: #fff;
-  width: 50%;
   font-size: 12px;
   cursor: pointer;
 
@@ -968,6 +949,7 @@ const ButtonRemove = styled.button`
   &:hover {
     opacity: 0.5;
   }
+
   &:disabled {
     opacity: 0.3;
   }
@@ -980,7 +962,6 @@ const ButtonRevert = styled.button`
   border: none;
   background: transparent;
   color: #fff;
-  width: 50%;
   font-size: 12px;
   cursor: pointer;
 
@@ -988,7 +969,12 @@ const ButtonRevert = styled.button`
     margin-right: 5px;
   }
 
-  &:hover {
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  &:hover:not(:disabled) {
     opacity: 0.5;
   }
 `
@@ -1015,12 +1001,7 @@ const AddedPageButton = styled.button`
     margin-right: 5px;
   }
 
-  &:disabled {
-    opacity: 0.3;
-    cursor: default;
-  }
-
-  &:hover&:not(:disabled) {
+  &:hover {
     opacity: 0.5;
   }
 `
@@ -1043,143 +1024,15 @@ const AddedChapterButton = styled.button`
   &:hover {
     opacity: 0.5;
   }
-  &:disabled {
-    opacity: 0.3;
-  }
-`
-
-const DropdownWrapper = styled.div`
-  position: relative;
-`
-
-const LeftButton = styled('DappletFileDownloader')`
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  background: var(--primBtnBg);
-  color: var(--primBtnCol);
-
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20.86px;
-  text-align: center;
-  cursor: pointer;
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: auto;
-  }
-
-  &:hover:not(:disabled) {
-    opacity: 0.75;
-  }
-
-  &:active:not(:disabled) {
-    opacity: 0.5;
-  }
-`
-
-const TextSave = styled.div`
-  display: inline-block;
-  overflow: hidden;
-  word-wrap: no-wrap;
-  text-overflow: ellipsis;
-  width: 100%;
-  text-align: center;
-`
-
-const RightButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 42px;
-  height: 42px;
-  border: none;
-  border-left: 1px solid rgba(226, 226, 229, 0.6);
-  background: var(--primBtnBg);
-  cursor: pointer;
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: auto;
-  }
-
-  &:hover:not(:disabled) {
-    opacity: 0.75;
-  }
-
-  &:active:not(:disabled) {
-    opacity: 0.5;
-  }
-`
-
-const ItemGroup = styled.div`
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  right: 0;
-  top: -100px;
-  width: 155px;
-  padding: 10px;
-  gap: 5px;
-  border-radius: 10px;
-  background: var(--primBtnBg);
-  font-size: 14px;
-  font-weight: 400;
-  text-align: center;
-  color: #222222;
-`
-
-const arrowIcon = (
-  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="8" viewBox="0 0 14 8" fill="none">
-    <path
-      d="M1 1L7 7L13 1"
-      stroke="#4E77E1"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-)
-
-const DropdownButtonItem = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 31px;
-  border-radius: 4px;
-  cursor: pointer;
-  border: none;
-  background: inherit;
-
-  &:hover {
-    background: #e2e2e5;
-    color: var(--primBtnCol);
-  }
-`
-
-const ButtonGroup = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 155px;
-  height: 42px;
-  border-radius: 10px;
-  overflow: hidden;
 `
 
 const {
   guideTitle,
   guideDescription,
+  isConfigEdited,
+  isPageEdited,
   contextId,
   contextType,
-  children,
-  content,
-  title,
   navi,
   onClose,
   // status, - conflict with deprecated Window.status property
@@ -1188,43 +1041,72 @@ const {
   checked,
   onDoNotShowChange,
   skin,
-  saveTitle,
-  saveData,
-  link,
+  title,
+  content,
+  mutatorId,
   isEditMode,
   setEditMode,
   startEditTarget,
-  handleTargetChange,
-  onTitleChange,
-  onDescriptionChange,
+  handleTargetRemove,
+  onPageDataChange,
   onPageAdd,
   onChapterAdd,
   onPageRemove,
   buttonRemoveDisabled,
   onRevertChanges,
-  onClickPageIndicator,
-  items,
+  handleRemoveAllChanges,
+  handleSave,
+  doShowSaveChangesPopup,
+  openSaveChangesPopup,
+  closeSaveChangesPopup,
 } = props
 
-const [showSaveChangesPopup, setShowSaveChangesPopup] = useState(false)
-const [currentItem, setCurrentItem] = useState(items[0])
+const [newTitle, setNewTitle] = useState(title ?? '')
+const [newContent, setNewContent] = useState(content ?? '')
 
-const handleButtonItemClick = (item) => {
-  setCurrentItem(item)
-  setShowSaveChangesPopup(false)
-}
+useEffect(() => {
+  setNewTitle(title)
+  setNewContent(content)
+}, [navi, title, content])
 
-const handleMainButtonClick = (value) => {
-  return saveData(value)
-  // setShowSaveChangesPopup(false)
+// useEffect(() => {
+//   try {
+//     const storedData = localStorage.setItem(`${props.id}newData`, newData)
+//     const storedTitle = localStorage.setItem(`${props.id}newTitle`, newTitle)
+
+//     if (storedData) {
+//       setNewData(storedData)
+//     }
+//     if (storedTitle) {
+//       setNewTitle(storedTitle)
+//     }
+//   } catch (error) {
+//     console.error("Error accessing localStorage", error)
+//   }
+// }, [])
+
+// todo: test page
+
+// todo: test chapter
+
+const handleSavePageChanges = () => {
+  onPageDataChange({
+    newTitle,
+    newContent,
+  })
 }
 
 const header = (
   <Header>
     <TopLine>
       <HeaderButtonGroup>
-        {context.accountId === link.authorId ? (
-          <EditButton onClick={() => setEditMode(!isEditMode)}>
+        {context.accountId === mutatorId ? (
+          <EditButton
+            onClick={() => {
+              handleSavePageChanges()
+              setEditMode(!isEditMode)
+            }}
+          >
             {isEditMode ? viewIcon : editIcon}
           </EditButton>
         ) : null}
@@ -1240,13 +1122,11 @@ const header = (
                 <Navi
                   key={index}
                   className={index == navi?.currentPageIndex ? 'active' : 'inactive'}
-                  title={`Page ${index + 1}`}
-                  onClick={() => onClickPageIndicator(index)}
                 />
               ))}
           </PagesIndicators>
           <CalloutHeaderCaption>
-            Chapter {navi?.currentChapterIndex + 1} of {navi?.totalChapters}
+            Step {navi?.currentChapterIndex + 1} of {navi?.totalChapters}
           </CalloutHeaderCaption>
         </>
       ) : null}
@@ -1288,9 +1168,16 @@ const actionButton = (btn) => (
 )
 
 const actionButtonEdit = (btn) => (
-  <ActionButtonEdit key={btn.label} onClick={() => btn.onClick()} disabled={btn.disabled}>
-    {btn.label.toLowerCase().includes('previous') ? iconPrevEdit : null}
-    {btn.label} {btn.label.toLowerCase().includes('next') ? iconNextEdit : null}
+  <ActionButtonEdit
+    key={btn.label}
+    onClick={() => {
+      handleSavePageChanges()
+      btn.onClick()
+    }}
+    disabled={btn.disabled}
+  >
+    {btn.label.toLowerCase().includes('prev') ? iconPrevEdit : null} {btn.label}{' '}
+    {btn.label.toLowerCase().includes('next') ? iconNextEdit : null}
   </ActionButtonEdit>
 )
 
@@ -1307,262 +1194,171 @@ const navButtons = !buttons ? null : props.type === 'callout' ? (
   <></>
 )
 
-const navButtonsEdit = !buttons ? null : props.type === 'callout' ? (
-  <ActionsGroupEdit className={props.type}>
-    {buttons.map((btn) => actionButtonEdit(btn))}
-  </ActionsGroupEdit>
-) : buttons?.length > 1 ? (
-  <ActionsGroupEdit className={props.type}>
+const navButtonsEdit = !buttons?.length ? null : buttons?.length > 1 ? (
+  <ActionsGroupEdit>
+    {actionButtonEdit(buttons[0])}
     {actionButtonEdit(buttons[1])}
+  </ActionsGroupEdit>
+) : buttons[0].variant === 'primary' ? (
+  <ActionsGroupEdit>
+    <div></div>
     {actionButtonEdit(buttons[0])}
   </ActionsGroupEdit>
-) : buttons?.length === 1 ? (
-  <ActionsGroupEdit className={props.type}>{actionButtonEdit(buttons[0])}</ActionsGroupEdit>
 ) : (
-  <></>
+  <ActionsGroupEdit>
+    {actionButtonEdit(buttons[0])}
+    <div></div>
+  </ActionsGroupEdit>
 )
 
-if (props.type === 'callout') {
-  const callout = (
-    <Callout
-      data-mweb-context-type="wg-chapter"
-      data-mweb-context-parsed={JSON.stringify({ id: props.id })}
-      className={isEditMode ? 'edit-mode' : ''}
-    >
-      {header}
+const editPage = (
+  <>
+    {navButtonsEdit}
 
-      {isEditMode ? (
-        <>
-          {navButtonsEdit}
-          <EditInputsBlock>
-            <OptionsBlock>
-              <ButtonRemove disabled={buttonRemoveDisabled} onClick={onPageRemove}>
-                {iconRemove} Remove
-              </ButtonRemove>
-              <ButtonRevert onClick={onRevertChanges}>{iconRevert}Revert changes</ButtonRevert>
-            </OptionsBlock>
-            <FloatingLabelContainer>
-              <StyledInput
-                id={'target'}
-                readonly
-                disabled
-                type={'text'}
-                value={contextType && contextId ? `${contextType}/${contextId}` : 'No target'}
-              />
-              <StyledLabel htmlFor={'target'}>Target</StyledLabel>
-              <ClearTargetButton title="Delete target" onClick={() => handleTargetChange(null)}>
-                <CloseIcon />
-              </ClearTargetButton>
-              <EditTargetButton title="Pick target" onClick={startEditTarget}>
-                {iconEditTarget}
-              </EditTargetButton>
-            </FloatingLabelContainer>
+    <EditInputsBlock>
+      <OptionsBlock>
+        <ButtonRemove disabled={buttonRemoveDisabled} onClick={onPageRemove}>
+          {iconRemove} Remove page
+        </ButtonRemove>
+        <ButtonRevert
+          disabled={!isPageEdited && newTitle === (title ?? '') && newContent === (content ?? '')}
+          onClick={() => {
+            setNewTitle(title ?? '')
+            setNewContent(content ?? '')
+            onRevertChanges()
+          }}
+        >
+          {iconRevert}Delete page changes
+        </ButtonRevert>
+      </OptionsBlock>
 
-            <FloatingLabelContainer>
-              <StyledInput
-                id={'title'}
-                type={'text'}
-                value={title}
-                onChange={(e) => {
-                  onTitleChange(e.target.value)
-                }}
-              />
-              <StyledLabel htmlFor={'title'}>Page name</StyledLabel>
-            </FloatingLabelContainer>
-
-            <FloatingLabelContainerArea>
-              <StyledTextarea
-                id={'description'}
-                value={content}
-                onChange={(e) => {
-                  onDescriptionChange(e.target.value)
-                }}
-              ></StyledTextarea>
-              <StyledLabel htmlFor={'description'}>Description</StyledLabel>
-            </FloatingLabelContainerArea>
-          </EditInputsBlock>
-          <AddedBlock>
-            <AddedPageButton
-              title="Up to 5 pages for the chapter"
-              disabled={navi.totalPages >= 5}
-              onClick={onPageAdd}
+      <FloatingLabelContainer>
+        <StyledInput
+          id={'target'}
+          type={'text'}
+          readonly
+          disabled
+          value={contextType && contextId ? `${contextType}/${contextId}` : 'No target'}
+        />
+        <StyledLabel htmlFor={'target'}>Target</StyledLabel>
+        <InputButtons>
+          {props.type === 'callout' && (
+            <EditTargetButton
+              title="Delete target"
+              onClick={() => handleTargetRemove({ newTitle, newContent })}
             >
-              {iconPlus}Add new page
-            </AddedPageButton>
-            <AddedChapterButton onClick={onChapterAdd}>
-              {iconPlus}Add new chapter
-            </AddedChapterButton>
-          </AddedBlock>
-          <EditButtonsBlock>
-            {isEditMode ? (
-              <SuccessButton onClick={() => setEditMode(false)}>Cancel</SuccessButton>
-            ) : null}
-            {/* todo: open dropdown */}
-            {/* <SuccessButton onClick={() => setShowSaveChangesPopup(true)}>Save guide</SuccessButton> */}
+              <CloseIcon />
+            </EditTargetButton>
+          )}
+          <EditTargetButton
+            title="Pick target"
+            onClick={() => {
+              handleSavePageChanges()
+              startEditTarget()
+            }}
+          >
+            {iconEditTarget}
+          </EditTargetButton>
+        </InputButtons>
+      </FloatingLabelContainer>
 
-            <DropdownWrapper>
-              <ButtonGroup>
-                <LeftButton onClick={() => handleMainButtonClick(currentItem.value)}>
-                  <TextSave>{currentItem.title}</TextSave>
-                </LeftButton>
+      <FloatingLabelContainer>
+        <StyledInput
+          id={'title'}
+          type={'text'}
+          value={newTitle}
+          onChange={(e) => {
+            setNewTitle(e.target.value)
+          }}
+        />
+        <StyledLabel htmlFor={'title'}>Page name</StyledLabel>
+      </FloatingLabelContainer>
 
-                <RightButton onClick={() => setShowSaveChangesPopup(!showSaveChangesPopup)}>
-                  {arrowIcon}
-                </RightButton>
-              </ButtonGroup>
+      <FloatingLabelContainerArea>
+        <StyledTextarea
+          id={'content'}
+          value={newContent}
+          onChange={(e) => {
+            setNewContent(e.target.value)
+          }}
+        ></StyledTextarea>
+        <StyledLabel htmlFor={'content'}>Description</StyledLabel>
+      </FloatingLabelContainerArea>
+    </EditInputsBlock>
 
-              {showSaveChangesPopup ? (
-                <ItemGroup>
-                  {items.map((item) => (
-                    <DropdownButtonItem
-                      key={item.value}
-                      onClick={() => handleButtonItemClick(item)}
-                    >
-                      {item.title}
-                    </DropdownButtonItem>
-                  ))}
-                </ItemGroup>
-              ) : null}
-            </DropdownWrapper>
-          </EditButtonsBlock>
-        </>
-      ) : (
-        <>
-          {props.status?.text ? statuses : null}
-          {title ? <Title className={props.type}>{title}</Title> : null}
-          <MarkdownWrapper>
-            <Markdown text={content} />
-          </MarkdownWrapper>
-          {showChecked ? checkbox : null}
-          {navButtons}
-        </>
-      )}
+    <AddedBlock>
+      <AddedPageButton onClick={() => onPageAdd({ newTitle, newContent })}>
+        {iconPlus}Add new page
+      </AddedPageButton>
+      <AddedChapterButton onClick={() => onChapterAdd({ newTitle, newContent })}>
+        {iconPlus}Add new chapter
+      </AddedChapterButton>
+    </AddedBlock>
 
-      <div data-mweb-insertion-point="hidden" style={{ display: 'none' }} />
-    </Callout>
-  )
+    <EditButtonsBlock>
+      {isEditMode ? (
+        <SuccessButton
+          onClick={() => {
+            setEditMode(false)
+            handleRemoveAllChanges()
+          }}
+        >
+          {isConfigEdited || newTitle !== (title ?? '') || newContent !== (content ?? '')
+            ? 'Delete all local changes'
+            : 'Cancel'}
+        </SuccessButton>
+      ) : null}
+      <SuccessButton
+        disabled={!isConfigEdited && newTitle === (title ?? '') && newContent === (content ?? '')}
+        onClick={() => openSaveChangesPopup({ newTitle, newContent })}
+      >
+        Save guide
+      </SuccessButton>
+    </EditButtonsBlock>
+  </>
+)
 
-  return (
-    <DappletOverlayTrigger
-      show={true}
-      overlay={
-        isEditMode ? (
-          <ZIndexWrapper>
-            <Theme skin={skin}>{callout}</Theme>
-          </ZIndexWrapper>
+return (
+  <Theme skin={skin}>
+    {props.type === 'callout' ? (
+      <Callout
+        data-mweb-context-type="wg-chapter"
+        data-mweb-context-parsed={JSON.stringify({ id: props.id })}
+        className={isEditMode ? 'edit-mode' : ''}
+      >
+        {header}
+        {isEditMode ? (
+          editPage
         ) : (
-          <CustomTooltip bsPrefix={`wg-tooltip-${skin}`}>
-            <Theme skin={skin}>{callout}</Theme>
-          </CustomTooltip>
-        )
-      }
-      placement={props.placement ?? 'auto'}
-      offset={[0, 20]}
-      popperConfig={{ strategy: props.strategy ?? 'absolute' }}
-    >
-      {typeof props.children === 'function' ? props.children : <span>{props.children}</span>}
-    </DappletOverlayTrigger>
-  )
-} else if (props.type === 'infobox') {
-  return (
-    <Theme skin={skin}>
+          <>
+            {props.status?.text ? statuses : null}
+            {title ? <Title className={props.type}>{title}</Title> : null}
+            <MarkdownWrapper>
+              <Markdown text={content} />
+            </MarkdownWrapper>
+            {showChecked ? checkbox : null}
+            {navButtons}
+          </>
+        )}
+        {doShowSaveChangesPopup ? (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/WebGuideTest.PublishScreen"
+            props={{
+              isConfigEdited,
+              onSave: handleSave,
+              onCancel: closeSaveChangesPopup,
+              oldTitle: guideTitle,
+              oldDescription: guideDescription,
+            }}
+          />
+        ) : null}
+        <div data-mweb-insertion-point="hidden" style={{ display: 'none' }} />
+      </Callout>
+    ) : props.type === 'infobox' ? (
       <InfoBox>
         {header}
-        {!content || isEditMode ? (
-          <>
-            {navButtonsEdit}
-            <EditInputsBlock>
-              <OptionsBlock>
-                <ButtonRemove disabled={buttonRemoveDisabled} onClick={onPageRemove}>
-                  {iconRemove} Remove
-                </ButtonRemove>
-                <ButtonRevert onClick={onRevertChanges}>{iconRevert}Revert changes</ButtonRevert>
-              </OptionsBlock>
-              <FloatingLabelContainer>
-                <StyledInput
-                  id={'target'}
-                  type={'text'}
-                  readonly
-                  disabled
-                  value={contextId && contextType ? `${contextType}/${contextId}` : 'No target'}
-                />
-                <StyledLabel htmlFor={'target'}>Target</StyledLabel>
-                <ClearTargetButton title="Delete target" onClick={() => handleTargetChange(null)}>
-                  <CloseIcon />
-                </ClearTargetButton>
-                <EditTargetButton title="Pick target" onClick={startEditTarget}>
-                  {iconEditTarget}
-                </EditTargetButton>
-              </FloatingLabelContainer>
-
-              <FloatingLabelContainer>
-                <StyledInput
-                  id={'title'}
-                  type={'text'}
-                  value={title}
-                  onChange={(e) => {
-                    onTitleChange(e.target.value)
-                  }}
-                />
-                <StyledLabel htmlFor={'title'}>Page name</StyledLabel>
-              </FloatingLabelContainer>
-
-              <FloatingLabelContainerArea>
-                <StyledTextarea
-                  id={'description'}
-                  value={content}
-                  onChange={(e) => {
-                    onDescriptionChange(e.target.value)
-                  }}
-                ></StyledTextarea>
-                <StyledLabel htmlFor={'description'}>Description</StyledLabel>
-              </FloatingLabelContainerArea>
-            </EditInputsBlock>
-            <AddedBlock>
-              <AddedPageButton
-                title="Up to 5 pages for the chapter"
-                disabled={navi.totalPages >= 5}
-                onClick={onPageAdd}
-              >
-                {iconPlus}Add new page
-              </AddedPageButton>
-              <AddedChapterButton onClick={onChapterAdd}>
-                {iconPlus}Add new chapter
-              </AddedChapterButton>
-            </AddedBlock>
-            <EditButtonsBlock>
-              {isEditMode ? (
-                <SuccessButton onClick={() => setEditMode(false)}>Cancel</SuccessButton>
-              ) : null}
-              {/* <SuccessButton onClick={() => setShowSaveChangesPopup(true)}>
-                Save guide
-              </SuccessButton> */}
-              <DropdownWrapper>
-                <ButtonGroup>
-                  <LeftButton onClick={() => handleMainButtonClick(currentItem.value)}>
-                    <TextSave>{currentItem.title}</TextSave>
-                  </LeftButton>
-
-                  <RightButton onClick={() => setShowSaveChangesPopup(!showSaveChangesPopup)}>
-                    {arrowIcon}
-                  </RightButton>
-                </ButtonGroup>
-
-                {showSaveChangesPopup ? (
-                  <ItemGroup>
-                    {items.map((item) => (
-                      <DropdownButtonItem
-                        key={item.value}
-                        onClick={() => handleButtonItemClick(item)}
-                      >
-                        {item.title}
-                      </DropdownButtonItem>
-                    ))}
-                  </ItemGroup>
-                ) : null}
-              </DropdownWrapper>
-            </EditButtonsBlock>
-          </>
+        {isEditMode ? (
+          editPage
         ) : (
           <>
             {title ? <Title className={props.type}>{title}</Title> : null}
@@ -1578,37 +1374,21 @@ if (props.type === 'callout') {
             </Footer>
           </>
         )}
+        {doShowSaveChangesPopup ? (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/WebGuideTest.PublishScreen"
+            props={{
+              isConfigEdited,
+              onSave: handleSave,
+              onCancel: closeSaveChangesPopup,
+              oldTitle: guideTitle,
+              oldDescription: guideDescription,
+            }}
+          />
+        ) : null}
       </InfoBox>
-    </Theme>
-  )
-} else {
-  return <></>
-}
-
-return props.type === 'callout' ? (
-  <DappletOverlayTrigger
-    show={true}
-    popperConfig={{ strategy: props.strategy ?? 'absolute' }}
-    placement={props.placement ?? 'auto'}
-    offset={[0, 20]}
-    overlay={
-      <CustomTooltip bsPrefix={`wg-tooltip-${props.skin}`}>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/WebGuideTest.Page"
-          loading={props?.children}
-          props={{ ...props, children: undefined }}
-        />
-      </CustomTooltip>
-    }
-  >
-    {typeof props.children === 'function' ? props.children : <span>{props.children}</span>}
-  </DappletOverlayTrigger>
-) : props.type === 'infobox' ? (
-  <Widget
-    src="${REPL_ACCOUNT}/widget/WebGuideTest.Page"
-    loading={props?.children}
-    props={{ ...props, children: undefined }}
-  />
-) : (
-  <></>
+    ) : (
+      <></>
+    )}
+  </Theme>
 )

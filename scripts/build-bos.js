@@ -41,7 +41,7 @@ const replaceInEveryFile = (directory) => {
 exec(`mkdir -p ${to}`, (err) => {
   if (err) throw err
 
-  exec(`cp -r ${from}/ ${to}`, (err) => {
+  exec(`cp -r ${from}/* ${to}`, (err) => {
     if (err) throw err
     replaceInEveryFile(to)
   })

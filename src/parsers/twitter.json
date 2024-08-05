@@ -5,22 +5,38 @@
       {
         "namespace": "engine",
         "contextType": "website",
-        "if": { "id": { "eq": "twitter.com" } }
+        "if": {
+          "id": {
+            "eq": "twitter.com"
+          }
+        }
       },
       {
         "namespace": "engine",
         "contextType": "website",
-        "if": { "id": { "eq": "x.com" } }
+        "if": {
+          "id": {
+            "eq": "x.com"
+          }
+        }
       },
       {
         "namespace": "engine",
         "contextType": "website",
-        "if": { "id": { "eq": "www.x.com" } }
+        "if": {
+          "id": {
+            "eq": "www.x.com"
+          }
+        }
       },
       {
         "namespace": "engine",
         "contextType": "website",
-        "if": { "id": { "eq": "www.twitter.com" } }
+        "if": {
+          "id": {
+            "eq": "www.twitter.com"
+          }
+        }
       }
     ],
     "contexts": {
@@ -33,7 +49,10 @@
           "img": "string(//*[@aria-label='Account menu']//img/@src)",
           "url": "string(//html/head/meta[@property='og:url']/@content)"
         },
-        "children": ["timeline", "profile"]
+        "children": [
+          "timeline",
+          "profile"
+        ]
       },
       "timeline": {
         "selector": "main div.css-175oi2r.r-1ua6aaf.r-th6na.r-1phboty.r-16y2uox.r-184en5c.r-1c4cdxw.r-1t251xo.r-f8sm7e.r-13qz1uu.r-1ye8kvj div.css-175oi2r.r-f8sm7e.r-13qz1uu.r-1ye8kvj > section > div",
@@ -41,7 +60,9 @@
           "id": "string('timeline')",
           "title": "string(./@aria-label)"
         },
-        "children": ["post"]
+        "children": [
+          "post"
+        ]
       },
       "post": {
         "selector": "div[data-testid=cellInnerDiv]",
@@ -74,20 +95,24 @@
             "insertionType": "end"
           }
         },
-        "children": ["postSouthButton"]
+        "children": [
+          "postSouthButton"
+        ]
       },
       "postSouthButton": {
         "selector": "div[role='group'] > div.css-175oi2r",
-        "props": { "id": "string(.//*/@data-testid)" }
+        "props": {
+          "id": "string(.//*/@data-testid)"
+        }
       },
       "profile": {
         "selector": "main div.css-175oi2r.r-1ua6aaf.r-th6na.r-1phboty.r-16y2uox.r-184en5c.r-1c4cdxw.r-1t251xo.r-f8sm7e.r-13qz1uu.r-1ye8kvj > div.css-175oi2r > div:nth-child(3) > div > div.css-175oi2r.r-f8sm7e.r-13qz1uu.r-1ye8kvj > div",
         "props": {
-          "id": "substring-after(string(.//*[@data-testid='UserName']/div/div/div[2]//span), '@')",
+          "id": "substring-after(string(.//*[@data-testid='UserName']), '@')",
           "authorFullname": "string(.//*[@data-testid='UserName']//span[1])",
-          "authorUsername": "substring-after(string(.//*[@data-testid='UserName']/div/div/div[2]//span), '@')",
+          "authorUsername": "substring-after(string(.//*[@data-testid='UserName']), '@')",
           "authorImg": "string(.//img[contains(@alt,'Opens profile photo')]/@src)",
-          "url": "concat('https://x.com/', substring-after(string(.//*[@data-testid='UserName']/div/div/div[2]//span), '@'))"
+          "url": "concat('https://x.com/', substring-after(string(.//*[@data-testid='UserName']), '@'))"
         },
         "insertionPoints": {
           "southPanel": {
