@@ -224,10 +224,24 @@ const handleClickNext = () => {
   }
 }
 
+const getEmptyPages = (config) =>
+  config.chapters
+    .map((chapter, i) =>
+      chapter.pages
+        .map((page, j) => (!page.title.trim() && !page.content.trim() ? `${i + 1}-${j + 1}` : null))
+        .filter((page) => page)
+    )
+    .filter((val) => val?.length)
+    .flat()
+
 const handleSave = ({ newTitle, newContent }) => {
   const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
   updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
   updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
+
+  const emptyPages = getEmptyPages(updatedConfig)
+  if (emptyPages?.length) return emptyPages
+
   const isConfigEdited = JSON.stringify(updatedConfig) !== JSON.stringify(guideConfig)
   if (isConfigEdited) {
     linkDb.set(appContext, { [mutatorId]: JSON.stringify(updatedConfig) }).then(() => {
