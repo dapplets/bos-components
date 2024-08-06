@@ -20,17 +20,7 @@ const OverlayTriggerWrapper = styled.div`
   }
 `
 
-const iconQuestionMark = (isActive) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-    <rect width="18" height="18" rx="9" fill={isActive ? 'white' : '#02193A'} />
-    <path
-      d="M7.84446 12.85H9.60281V14.5H7.84446V12.85ZM9.01669 3.5C12.1524 3.621 13.5181 6.591 11.6542 8.8185C11.1677 9.3685 10.3823 9.7315 9.9955 10.1935C9.60281 10.65 9.60281 11.2 9.60281 11.75H7.84446C7.84446 10.8315 7.84446 10.056 8.23716 9.506C8.62399 8.956 9.40939 8.6315 9.89586 8.2685C11.3143 7.0365 10.9626 5.293 9.01669 5.15C8.55035 5.15 8.10311 5.32384 7.77335 5.63327C7.4436 5.94271 7.25835 6.36239 7.25835 6.8H5.5C5.5 5.92479 5.87051 5.08542 6.53001 4.46655C7.18952 3.84768 8.08401 3.5 9.01669 3.5Z"
-      fill={isActive ? '#384BFF' : 'white'}
-    />
-  </svg>
-)
-
-const iconTimelineLatch = (color) => (
+const TimelineLatchIcon = ({ color }) => (
   <svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M0 18.6H0.39L7.27 8.42C7.36 8.24 7.31 8.15 7.12 8.15H4.28L7.27 2.7C7.36 2.52 7.29 2.43 7.07 2.43H3.26C3.15 2.43 3.06 2.49 2.97 2.61L0.19 10.01C0.17 10.19 0.23 10.28 0.38 10.28H3.13L0 18.6ZM8.5 12.27H8.77L13.99 4.6C14.04 4.52 14.05 4.45 14.03 4.4C14.01 4.35 13.95 4.33 13.86 4.33H11.76L13.94 0.3C14.06 0.1 14 0 13.76 0H11.02C10.89 0 10.79 0.0600001 10.72 0.19L8.64 5.67C8.61 5.76 8.61 5.83 8.65 5.88C8.69 5.93 8.75 5.95 8.84 5.95H10.88L8.5 12.27Z"
@@ -39,7 +29,7 @@ const iconTimelineLatch = (color) => (
   </svg>
 )
 
-const iconNotchLatch = (
+const NotchLatchIcon = () => (
   <svg width="28" height="29" viewBox="0 0 28 29" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M22.168 9.8335V2.8335"
@@ -64,6 +54,7 @@ const iconNotchLatch = (
   </svg>
 )
 
+// ToDo: Styled components cause unnecessary re-rendering in BOS
 const TimelineLatch = styled.button`
   background-color: ${(props) => (props.$variant === 'current' ? '#384bff' : '#384BFF4D')};
   height: 20px;
@@ -78,6 +69,7 @@ const TimelineLatch = styled.button`
   cursor: pointer;
 `
 
+// ToDo: Styled components cause unnecessary re-rendering in BOS
 const NotchLatch = styled.button`
   display: flex;
   position: absolute;
@@ -93,24 +85,99 @@ const NotchLatch = styled.button`
   cursor: pointer;
 `
 
-const pageTemplate = {
+// ToDo: move to the engine?
+const MiniOverlayTarget = {
+  namespace: 'mweb',
+  contextType: 'mweb-overlay',
+  injectTo: 'mweb-actions-panel',
+  if: { id: { eq: 'mweb-overlay' } },
+  arrowTo: 'context',
+}
+
+const AllowedContextsToPick = [
+  {
+    namespace: '${REPL_ACCOUNT}/parser/twitter',
+    type: 'timeline',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/twitter',
+    type: 'post',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/twitter',
+    type: 'postSouthButton',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/twitter',
+    type: 'profile',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/twitter',
+    type: 'postAvatar',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/github',
+    type: 'profile',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/github',
+    type: 'post',
+  },
+  {
+    namespace: 'mweb',
+    type: 'mweb-overlay',
+    id: 'mutation-button',
+  },
+  {
+    namespace: 'mweb',
+    type: 'mweb-overlay',
+    id: 'open-apps-button',
+  },
+  {
+    namespace: 'mweb',
+    type: 'mweb-overlay-action',
+  },
+  {
+    namespace: 'mweb',
+    type: 'injected-widget',
+  },
+  {
+    namespace: 'mweb',
+    type: 'notch',
+  },
+]
+
+// Random ID used in chapters and pages for a unique context ID to create nested callouts in the future.
+const generateRandomId = () => {
+  return Math.random().toString(16).substring(2, 10)
+}
+
+const generateNewPage = () => ({
+  id: generateRandomId(),
   title: '',
   status: [],
   content: '',
-}
+})
 
-const chapterTemplate = {
+const generateNewChapter = () => ({
+  id: generateRandomId(),
   type: 'infobox',
-  pages: [pageTemplate],
+  pages: [generateNewPage()],
   skin: 'META_GUIDE',
-}
+})
+
+const deepCopy = (obj) => JSON.parse(JSON.stringify(obj))
+
+// ToDo: naive deep compare
+const isDeepEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b)
 
 const configTemplate = {
   action: true,
 }
 
-const { accountId } = context
+const { accountId: loggedInAccountId } = context
 const { linkDb, context: appContext } = props
+
 const [guideConfig, setGuideConfig] = useState(null)
 const [editingConfig, setEditingConfig] = useState(configTemplate)
 const [showApp, setShowApp] = useState(true)
@@ -135,21 +202,25 @@ const mutationId = getMutationId()
 const mutatorId = mutationId?.split('/')[0]
 
 useEffect(() => {
-  linkDb.get(appContext, mutatorId).then((response) => {
-    if (!response) return
-    setGuideConfig(JSON.parse(response[mutatorId]))
-  })
+  linkDb
+    .get(appContext, mutatorId)
+    .then((response) => {
+      if (!response) return
+      setGuideConfig(JSON.parse(response[mutatorId]))
+    })
+    .catch(console.error)
 }, [])
 
 const localConfig = Storage.privateGet(appContext)
 
 useEffect(() => {
   setShowApp(!!guideConfig || !!localConfig)
+
   if (localConfig) {
-    if (localConfig !== JSON.stringify(editingConfig)) {
+    if (!isDeepEqual(localConfig, editingConfig)) {
       setEditingConfig(JSON.parse(localConfig))
     }
-  } else if (guideConfig && JSON.stringify(guideConfig) !== JSON.stringify(editingConfig)) {
+  } else if (guideConfig && !isDeepEqual(guideConfig, editingConfig)) {
     setEditingConfig(guideConfig)
     setChapterCounter(0)
     setPageCounter(0)
@@ -162,19 +233,22 @@ useEffect(() => {
   }
 }, [guideConfig, localConfig])
 
+// If there is no config and the user is not a mutator do not show anything
 if (
-  accountId !== mutatorId &&
+  loggedInAccountId !== mutatorId &&
   (!editingConfig || !editingConfig.chapters?.length || !editingConfig.chapters[0].pages?.length)
-)
+) {
   return <></>
+}
 
-const saveConfigToLocalStorage = (data) =>
+const saveConfigToLocalStorage = (data) => {
   Storage.privateSet(
     appContext,
-    !data || JSON.stringify(data) === JSON.stringify(guideConfig) ? undefined : JSON.stringify(data)
+    !data || isDeepEqual(data, guideConfig) ? undefined : JSON.stringify(data)
   )
+}
 
-const handleAddNewGuide = (guide) => {
+const handleConfigImport = (guide) => {
   setEditingConfig(guide)
 }
 
@@ -183,7 +257,7 @@ const handleClose = () => {
   setEditMode(false)
 }
 
-const handleAction = () => {
+const handleActionClick = () => {
   setShowApp((val) => !val)
   setEditMode(false)
   setChapterCounter(0)
@@ -225,18 +299,24 @@ const handleClickNext = () => {
 }
 
 const handleSave = ({ newTitle, newContent }) => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
-  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
-  const isConfigEdited = JSON.stringify(updatedConfig) !== JSON.stringify(guideConfig)
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedPage = updatedConfig.chapters[chapterCounter].pages[pageCounter]
+
+  updatedPage.title = newTitle
+  updatedPage.content = newContent
+
+  const isConfigEdited = !isDeepEqual(updatedConfig, guideConfig)
   if (isConfigEdited) {
-    linkDb.set(appContext, { [mutatorId]: JSON.stringify(updatedConfig) }).then(() => {
-      setGuideConfig(updatedConfig)
-      setEditMode(false)
-      setChapterCounter(0)
-      setPageCounter(0)
-      saveConfigToLocalStorage(null)
-    })
+    linkDb
+      .set(appContext, { [mutatorId]: JSON.stringify(updatedConfig) })
+      .then(() => {
+        setGuideConfig(updatedConfig)
+        setEditMode(false)
+        setChapterCounter(0)
+        setPageCounter(0)
+        saveConfigToLocalStorage(null)
+      })
+      .catch(console.error)
   } else {
     setGuideConfig(guideConfig)
     setEditMode(false)
@@ -247,148 +327,169 @@ const handleSave = ({ newTitle, newContent }) => {
 }
 
 const handleExportConfig = ({ newTitle, newContent }) => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
-  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
-  const jsonString = JSON.stringify(updatedConfig, null, 2)
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedPage = updatedConfig.chapters[chapterCounter].pages[pageCounter]
+
+  updatedPage.title = newTitle
+  updatedPage.content = newContent
+
+  const jsonString = JSON.stringify(updatedConfig, null, 2) // formatted json
   const blob = new Blob([jsonString], { type: 'application/json' })
   const file = new File([blob], 'webGuideConfig.json')
   return file
 }
 
-const handleClickPageIndicator = ({ index, newTitle, newContent }) => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
-  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
-  setPageCounter((val) => (val = index))
+const handleClickPageIndicator = ({ index: pageIndex, newTitle, newContent }) => {
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedPage = updatedConfig.chapters[chapterCounter].pages[pageCounter]
+
+  updatedPage.title = newTitle
+  updatedPage.content = newContent
+
   setEditingConfig(updatedConfig)
   saveConfigToLocalStorage(updatedConfig)
+
+  setPageCounter(pageIndex)
 }
 
 const handlePageDataChange = ({ newTitle, newContent }) => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
-  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
+  // ToDo: code duplication
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedPage = updatedConfig.chapters[chapterCounter].pages[pageCounter]
+
+  updatedPage.title = newTitle
+  updatedPage.content = newContent
+
   setEditingConfig(updatedConfig)
   saveConfigToLocalStorage(updatedConfig)
 }
 
 const handleTargetSet = (newTarget) => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-  updatedConfig.chapters[chapterCounter].type = 'callout'
-  updatedConfig.chapters[chapterCounter].target = newTarget
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedChapter = updatedConfig.chapters[chapterCounter]
+
+  updatedChapter.type = 'callout'
+  updatedChapter.target = newTarget
+
   setEditingConfig(updatedConfig)
-  setEditTarget(false)
   saveConfigToLocalStorage(updatedConfig)
+
+  setEditTarget(false)
 }
 
 const handleTargetRemove = ({ newTitle, newContent }) => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-  updatedConfig.chapters[chapterCounter].type = 'infobox'
-  updatedConfig.chapters[chapterCounter].target = {}
-  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
-  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedChapter = updatedConfig.chapters[chapterCounter]
+  const updatedPage = updatedChapter.pages[pageCounter]
+
+  updatedChapter.type = 'infobox'
+  updatedChapter.target = {}
+  updatedPage.title = newTitle
+  updatedPage.content = newContent
+
   setEditingConfig(updatedConfig)
-  setEditTarget(false)
   saveConfigToLocalStorage(updatedConfig)
+
+  setEditTarget(false)
 }
 
 const handleChapterAdd = ({ newTitle, newContent }) => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
-  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
-  const newChapter = JSON.parse(JSON.stringify(chapterTemplate))
-  newChapter.id = `${accountId}/chapter/${Math.trunc(Math.random() * 1000000000)}`
-  newChapter.pages[0].id = `${newChapter.id}/page/${Math.trunc(Math.random() * 1000000000)}`
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedChapter = updatedConfig.chapters[chapterCounter]
+  const updatedPage = updatedChapter.pages[pageCounter]
+
+  updatedPage.title = newTitle
+  updatedPage.content = newContent
+
+  const newChapter = generateNewChapter()
   updatedConfig.chapters.splice(chapterCounter + 1, 0, newChapter)
+
   setEditingConfig(updatedConfig)
-  handleChapterIncrement('force')
   saveConfigToLocalStorage(updatedConfig)
+
+  handleChapterIncrement('force')
 }
 
 const handlePageAdd = ({ newTitle, newContent }) => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-  updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
-  updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
-  const newPage = JSON.parse(JSON.stringify(pageTemplate))
-  newPage.id = `${updatedConfig.chapters[chapterCounter].id}/page/${Math.trunc(Math.random() * 1000000000)}`
-  updatedConfig.chapters[chapterCounter].pages.splice(pageCounter + 1, 0, newPage)
-  setPageCounter((val) => val + 1)
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedChapter = updatedConfig.chapters[chapterCounter]
+  const updatedPage = updatedChapter.pages[pageCounter]
+
+  updatedPage.title = newTitle
+  updatedPage.content = newContent
+
+  const newPage = generateNewPage()
+  updatedChapter.pages.splice(pageCounter + 1, 0, newPage)
+
   setEditingConfig(updatedConfig)
   saveConfigToLocalStorage(updatedConfig)
+
+  setPageCounter((val) => val + 1)
 }
 
-const handleCreateTheFirstChapter = () => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-  const newChapter = JSON.parse(JSON.stringify(chapterTemplate))
-  newChapter.id = `${accountId}/chapter/${Math.trunc(Math.random() * 1000000000)}`
-  newChapter.pages[0].id = `${newChapter.id}/page/${Math.trunc(Math.random() * 1000000000)}`
+const handleStartCreation = () => {
+  const updatedConfig = deepCopy(editingConfig)
+  const newChapter = generateNewChapter()
   updatedConfig.chapters = [newChapter]
   setEditingConfig(updatedConfig)
   setEditMode(true)
 }
 
 const handlePageRemove = () => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedChapter = updatedConfig.chapters[chapterCounter]
 
-  if (
-    updatedConfig.chapters[chapterCounter] &&
-    updatedConfig.chapters[chapterCounter].pages[pageCounter]
-  ) {
-    updatedConfig.chapters[chapterCounter].pages.splice(pageCounter, 1)
-
-    if (updatedConfig.chapters[chapterCounter].pages.length === 0) {
-      updatedConfig.chapters.splice(chapterCounter, 1)
-
-      if (chapterCounter >= updatedConfig.chapters.length) {
-        setChapterCounter((prev) => (prev > 0 ? prev - 1 : 0))
-      }
-    } else {
-      const newPageCounter =
-        pageCounter >= updatedConfig.chapters[chapterCounter].pages.length
-          ? updatedConfig.chapters[chapterCounter].pages.length - 1
-          : pageCounter
-      setPageCounter(newPageCounter)
-    }
-
-    setEditingConfig(updatedConfig)
-    saveConfigToLocalStorage(updatedConfig)
-  } else {
+  if (!updatedChapter || !updatedChapter.pages[pageCounter]) {
     console.error('Chapter or page not found at the specified index:', chapterCounter, pageCounter)
+    return
   }
+
+  // remove page
+  updatedChapter.pages.splice(pageCounter, 1)
+
+  // last page was removed
+  if (updatedChapter.pages.length === 0) {
+    updatedConfig.chapters.splice(chapterCounter, 1)
+
+    if (chapterCounter >= updatedConfig.chapters.length) {
+      setChapterCounter((prev) => (prev > 0 ? prev - 1 : 0))
+    }
+  } else {
+    const newPageCounter =
+      pageCounter >= updatedChapter.pages.length ? updatedChapter.pages.length - 1 : pageCounter
+    setPageCounter(newPageCounter)
+  }
+
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
 }
 
+/**
+ * Reverts the changes made to the current page
+ */
 const handleRevertChanges = () => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
+  const originalChapter = guideConfig.chapters.find((chapter) => chapter.id === chapter.id)
+  const originalPage = originalChapter.pages.find((page) => page.id === page.id)
 
-  if (
-    !guideConfig ||
-    !guideConfig.chapters.find(
-      (chapter) => chapter.id === updatedConfig.chapters[chapterCounter].id
-    )
-  ) {
-    updatedConfig.chapters[chapterCounter].type = 'infobox'
-    updatedConfig.chapters[chapterCounter].target = undefined
-    updatedConfig.chapters[chapterCounter].pages[pageCounter].title = ''
-    updatedConfig.chapters[chapterCounter].pages[pageCounter].content = ''
-  } else if (
-    !guideConfig.chapters[chapterCounter].pages.find(
-      (page) => page.id === updatedConfig.chapters[chapterCounter].pages[pageCounter].id
-    )
-  ) {
-    updatedConfig.chapters[chapterCounter].type = guideConfig.chapters[chapterCounter].type
-    updatedConfig.chapters[chapterCounter].target =
-      guideConfig.chapters[chapterCounter].target ?? undefined
-    updatedConfig.chapters[chapterCounter].pages[pageCounter].title = ''
-    updatedConfig.chapters[chapterCounter].pages[pageCounter].content = ''
+  const updatedConfig = deepCopy(editingConfig)
+  const chapter = updatedConfig.chapters[chapterCounter]
+  const page = chapter.pages[pageCounter]
+
+  if (!guideConfig || !originalChapter) {
+    chapter.type = 'infobox'
+    chapter.target = undefined
+    page.title = ''
+    page.content = ''
+  } else if (!originalPage) {
+    chapter.type = originalChapter.type
+    chapter.target = originalChapter.target ?? undefined
+    page.title = ''
+    page.content = ''
   } else {
-    updatedConfig.chapters[chapterCounter].type = guideConfig.chapters[chapterCounter].type
-    updatedConfig.chapters[chapterCounter].target =
-      guideConfig.chapters[chapterCounter].target ?? undefined
-    updatedConfig.chapters[chapterCounter].pages[pageCounter].title =
-      guideConfig.chapters[chapterCounter].pages[pageCounter].title
-    updatedConfig.chapters[chapterCounter].pages[pageCounter].content =
-      guideConfig.chapters[chapterCounter].pages[pageCounter].content
+    chapter.type = originalChapter.type
+    chapter.target = originalChapter.target ?? undefined
+    page.title = originalPage.title
+    page.content = originalPage.content
   }
 
   setEditingConfig(updatedConfig)
@@ -401,11 +502,12 @@ const handleRemoveAllChanges = () => {
 }
 
 const openSaveChangesPopup = ({ newTitle, newContent }) => {
-  const updatedConfig = JSON.parse(JSON.stringify(editingConfig))
-  if (updatedConfig.chapters[chapterCounter].pages[pageCounter].title !== newTitle)
-    updatedConfig.chapters[chapterCounter].pages[pageCounter].title = newTitle
-  if (updatedConfig.chapters[chapterCounter].pages[pageCounter].content !== newContent)
-    updatedConfig.chapters[chapterCounter].pages[pageCounter].content = newContent
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedPage = updatedConfig.chapters[chapterCounter].pages[pageCounter]
+
+  if (updatedPage.title !== newTitle) updatedPage.title = newTitle
+  if (updatedPage.content !== newContent) updatedPage.content = newContent
+
   setEditingConfig(updatedConfig)
   saveConfigToLocalStorage(updatedConfig)
 }
@@ -454,10 +556,11 @@ const ChapterWrapper = (props) => {
       props={{
         guideTitle: editingConfig.title,
         guideDescription: editingConfig.description,
-        isConfigEdited: JSON.stringify(editingConfig) !== JSON.stringify(guideConfig),
-        isPageEdited:
-          JSON.stringify(currentPage) !==
-          JSON.stringify(guideConfig.chapters[chapterCounter].pages[pageCounter]),
+        isConfigEdited: !isDeepEqual(editingConfig, guideConfig),
+        isPageEdited: !isDeepEqual(
+          currentPage,
+          guideConfig.chapters[chapterCounter].pages[pageCounter]
+        ),
         id: currentChapter.id,
         type: currentChapter.type,
         contextType: currentChapter.target
@@ -527,10 +630,11 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
         $width={contextDimensions.width}
         onClick={() => handleTargetSet(context)}
       >
-        {iconTimelineLatch('white')}
+        <TimelineLatchIcon color="white" />
       </TimelineLatch>
     )
   }
+
   if (
     (context.type === 'notch' && context.id !== 'mutate-button') ||
     context.type === 'mweb-gateway'
@@ -543,10 +647,11 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
         onClick={() => handleTargetSet(context)}
         $position={'right'}
       >
-        {iconNotchLatch}
+        <NotchLatchIcon />
       </NotchLatch>
     )
   }
+
   if (context.type === 'mweb-overlay' || context.type === 'mweb-overlay-action') {
     return (
       <NotchLatch
@@ -556,45 +661,24 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
         onClick={() => handleTargetSet(context)}
         $position={'left'}
       >
-        {iconNotchLatch}
+        <NotchLatchIcon />
       </NotchLatch>
     )
   }
   return null
 }
 
-const filterParents = (target) => {
-  const result = {}
-  let current = result
-  let parent = target.parent
-  while (parent && parent.type !== 'shadow-dom' && parent.type !== 'root') {
-    current.parent = { ...parent, parent: undefined }
-    current = current.parent
-    parent = parent.parent
-  }
-  return result.parent
-}
-
 return (
   <>
     {editingConfig.action ? (
       <DappletPortal
-        target={{
-          namespace: 'mweb',
-          contextType: 'mweb-overlay',
-          injectTo: 'mweb-actions-panel',
-          if: { id: { eq: 'mweb-overlay' } },
-          arrowTo: 'context',
-        }}
+        target={MiniOverlayTarget}
         component={() => (
           <Widget
             src="${REPL_ACCOUNT}/widget/WebGuideTest.Action"
             props={{
-              appId: 'web-guide-test',
-              tooltip: showApp ? 'Stop Web Guide' : 'Run Web Guide',
               isActive: showApp,
-              handleAction,
-              children: iconQuestionMark(showApp),
+              onClick: handleActionClick,
             }}
           />
         )}
@@ -604,63 +688,7 @@ return (
     {showApp ? (
       isEditTarget ? (
         <DappletContextPicker
-          target={[
-            {
-              namespace: NAMESPACE,
-              contextType: 'timeline',
-              if: {},
-            },
-            {
-              namespace: NAMESPACE,
-              contextType: 'post',
-              if: {},
-            },
-            {
-              namespace: NAMESPACE,
-              contextType: 'postSouthButton',
-              if: {},
-            },
-            {
-              namespace: NAMESPACE,
-              contextType: 'profile',
-              if: {},
-            },
-            {
-              namespace: '${REPL_ACCOUNT}/parser/github',
-              contextType: 'profile',
-              if: {},
-            },
-            {
-              namespace: '${REPL_ACCOUNT}/parser/github',
-              contextType: 'post',
-              if: {},
-            },
-            {
-              namespace: 'mweb',
-              contextType: 'mweb-overlay',
-              if: { id: { eq: 'mutation-button' } },
-            },
-            {
-              namespace: 'mweb',
-              contextType: 'mweb-overlay',
-              if: { id: { eq: 'open-apps-button' } },
-            },
-            {
-              namespace: 'mweb',
-              contextType: 'mweb-overlay-action',
-              if: {},
-            },
-            {
-              namespace: 'mweb',
-              contextType: 'injected-widget',
-              if: {},
-            },
-            {
-              namespace: 'mweb',
-              contextType: 'notch',
-              if: {},
-            },
-          ]}
+          target={AllowedContextsToPick}
           onClick={handleTargetSet}
           LatchComponent={ContextTypeLatch}
         />
@@ -670,17 +698,18 @@ return (
           target={{
             namespace: 'mweb',
             contextType: 'mweb-overlay-action',
-            if: { id: { eq: 'web-guide-action-web-guide-test' } },
+            if: { id: { eq: 'web-guide-action' } },
           }}
           component={(props) => (
             <Widget
               src="${REPL_ACCOUNT}/widget/WebGuideTest.FirstScreenEdit"
               props={{
                 skin: 'META_GUIDE',
-                handleCreateTheFirstChapter,
-                handleAddNewGuide,
+                onStart: handleStartCreation,
+                onConfigImport: handleConfigImport,
                 onClose: handleClose,
                 children: ({ ref }) => {
+                  // ToDo: move to the engine
                   props.attachContextRef(ref)
                   return props.children
                 },
@@ -694,57 +723,18 @@ return (
             <ChapterWrapper />
           </DappletOverlay>
         </OverlayTriggerWrapper>
-      ) : (
+      ) : currentChapter.target ? (
         <>
-          <DappletPortal
-            inMemory
-            target={
-              currentChapter?.target
-                ? {
-                    id: currentChapter.target.id,
-                    namespace: currentChapter.target.namespace,
-                    parsed: currentChapter.target.parsed,
-                    type: currentChapter.target.type,
-                    parent: filterParents(currentChapter.target),
-                  }
-                : {
-                    namespace: currentChapter?.namespace,
-                    contextType: currentChapter?.contextType,
-                    injectTo: currentChapter?.injectTo,
-                    if: currentChapter?.if,
-                    insteadOf: currentChapter?.insteadOf,
-                  }
-            }
-            component={ChapterWrapper}
-          />
+          <DappletPortal inMemory target={currentChapter.target} component={ChapterWrapper} />
           <Highlighter
-            target={
-              currentChapter?.target
-                ? {
-                    id: currentChapter.target.id,
-                    namespace: currentChapter.target.namespace,
-                    parsed: currentChapter.target.parsed,
-                    type: currentChapter.target.type,
-                    parent: filterParents(currentChapter.target),
-                  }
-                : {
-                    namespace: currentChapter?.namespace,
-                    contextType: currentChapter?.contextType,
-                    if: currentChapter?.if,
-                  }
-            }
+            target={currentChapter.target}
             styles={{
               borderColor: '#14AE5C',
               backgroundColor: 'rgb(56 255 63 / 10%)',
-              // borderStyle: 'dashed',
             }}
-            // filled
-            // icon={iconTimelineLatch('#14AE5C')}
-            // icon={() => <></>}
-            // action={() => console.log('Highlighter action')}
           />
         </>
-      )
+      ) : null
     ) : null}
   </>
 )

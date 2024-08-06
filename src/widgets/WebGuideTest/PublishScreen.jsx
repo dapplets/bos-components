@@ -1,3 +1,5 @@
+// ToDo: remove this component?
+
 const Background = styled.div`
   box-sizing: content-box;
   position: absolute;
@@ -57,7 +59,7 @@ const Wrapper = styled.div`
   font-size: 12px;
 `
 
-const iconExport = (
+const ExportIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 17 18" fill="none">
     <path
       fill-rule="evenodd"
@@ -335,9 +337,7 @@ const Loader = styled.div`
   }
 `
 
-const { isConfigEdited, onSave, onCancel, oldTitle, oldDescription } = props
-oldTitle = oldTitle ?? ''
-oldDescription = oldDescription ?? ''
+const { isConfigEdited, onSave, onCancel, oldTitle = '', oldDescription = '' } = props
 
 const [title, onTitleChange] = useState(oldTitle)
 const [description, onDescriptionChange] = useState(oldDescription)
@@ -403,7 +403,10 @@ return (
         </SaveButton>
       </StyledButtonsBottom>
 
-      <ExportButton>{iconExport}Export</ExportButton>
+      <ExportButton>
+        <ExportIcon />
+        Export
+      </ExportButton>
 
       {savingStarted && (
         <LoaderBackground>
