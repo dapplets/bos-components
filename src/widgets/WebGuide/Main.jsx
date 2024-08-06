@@ -602,10 +602,10 @@ const handleAction = () => {
 
 const handleChapterDecrement = () => {
   // Skips chapters that doesn't have visible contexts
-  for (let i = chapterCounter - 1; i > 0; i--) {
+  for (let i = chapterCounter - 1; i >= 0; i--) {
     const prevChapter = guideConfig.chapters[i]
-
     if (
+      prevChapter.type === 'infobox' ||
       props.query({
         namespace: prevChapter.namespace,
         contextType: prevChapter.contextType,
@@ -614,7 +614,6 @@ const handleChapterDecrement = () => {
     ) {
       setChapterCounter(i)
       setPageCounter(prevChapter.pages?.length ? prevChapter.pages?.length - 1 : 0)
-
       return
     }
   }
@@ -624,8 +623,8 @@ const handleChapterIncrement = () => {
   // Skips chapters that doesn't have visible contexts
   for (let i = chapterCounter + 1; i < guideConfig.chapters.length; i++) {
     const nextChapter = guideConfig.chapters[i]
-
     if (
+      nextChapter.type === 'infobox' ||
       props.query({
         namespace: nextChapter.namespace,
         contextType: nextChapter.contextType,
@@ -634,7 +633,6 @@ const handleChapterIncrement = () => {
     ) {
       setChapterCounter(i)
       setPageCounter(0)
-
       return
     }
   }
