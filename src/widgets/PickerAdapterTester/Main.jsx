@@ -53,13 +53,13 @@ return (
       }}
       component={() => (
         <Widget
-          src="bos.dapplets.near/widget/WebGuide.Action"
+          src="bos.dapplets.near/widget/ActionButton"
           props={{
             appId: 'picker-adapter-tester',
             tooltip: isRunnigApp ? 'Stop Picker Adapter Tester' : 'Run Picker Adapter Tester',
             isActive: isRunnigApp,
             children: <p>PAT</p>,
-            handleAction: () => {
+            onClick: () => {
               if (isRunnigApp) {
                 setPreviousAdapter(selectedAdapter)
                 setSelectedAdapter('')

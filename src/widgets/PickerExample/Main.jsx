@@ -253,13 +253,13 @@ return (
       }}
       component={() => (
         <Widget
-          src="${REPL_ACCOUNT}/widget/WebGuide.Action"
+          src="${REPL_ACCOUNT}/widget/ActionButton"
           props={{
             appId: 'picker-example',
             tooltip: isRunnigApp ? 'Stop Picker' : 'Run Picker',
             isActive: isRunnigApp,
             children: iconQuestionMark(isRunnigApp),
-            handleAction: () => {
+            onClick: () => {
               if (isRunnigApp) {
                 handleClose()
               } else {
