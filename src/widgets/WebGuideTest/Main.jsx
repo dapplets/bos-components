@@ -468,12 +468,12 @@ const handlePageRemove = () => {
  * Reverts the changes made to the current page
  */
 const handleRevertChanges = () => {
-  const originalChapter = guideConfig.chapters.find((chapter) => chapter.id === chapter.id)
-  const originalPage = originalChapter.pages.find((page) => page.id === page.id)
-
   const updatedConfig = deepCopy(editingConfig)
   const chapter = updatedConfig.chapters[chapterCounter]
   const page = chapter.pages[pageCounter]
+
+  const originalChapter = guideConfig.chapters.find((x) => x.id === chapter.id)
+  const originalPage = originalChapter.pages.find((x) => x.id === page.id)
 
   if (!guideConfig || !originalChapter) {
     chapter.type = 'infobox'
