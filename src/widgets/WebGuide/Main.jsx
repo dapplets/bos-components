@@ -601,19 +601,41 @@ const handleAction = () => {
 }
 
 const handleChapterDecrement = () => {
-  if (chapterCounter !== 0) {
-    setChapterCounter((val) => val - 1)
-    setPageCounter(
-      guideConfig.chapters[chapterCounter - 1]?.pages?.length
-        ? guideConfig.chapters[chapterCounter - 1]?.pages?.length - 1
-        : 0
-    )
+  // Skips chapters that doesn't have visible contexts
+  for (let i = chapterCounter - 1; i >= 0; i--) {
+    const prevChapter = guideConfig.chapters[i]
+    if (
+      prevChapter.type === 'infobox' ||
+      props.query({
+        namespace: prevChapter.namespace,
+        contextType: prevChapter.contextType,
+        if: prevChapter.if,
+      })
+    ) {
+      setChapterCounter(i)
+      setPageCounter(prevChapter.pages?.length ? prevChapter.pages?.length - 1 : 0)
+      return
+    }
   }
 }
 
 const handleChapterIncrement = () => {
-  setChapterCounter((val) => Math.min(val + 1, guideConfig.chapters.length - 1))
-  setPageCounter(0)
+  // Skips chapters that doesn't have visible contexts
+  for (let i = chapterCounter + 1; i < guideConfig.chapters.length; i++) {
+    const nextChapter = guideConfig.chapters[i]
+    if (
+      nextChapter.type === 'infobox' ||
+      props.query({
+        namespace: nextChapter.namespace,
+        contextType: nextChapter.contextType,
+        if: nextChapter.if,
+      })
+    ) {
+      setChapterCounter(i)
+      setPageCounter(0)
+      return
+    }
+  }
 }
 
 const handleClickPrev = () => {
