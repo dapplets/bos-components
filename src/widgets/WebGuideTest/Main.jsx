@@ -205,8 +205,8 @@ useEffect(() => {
   linkDb
     .get(appContext, mutatorId)
     .then((response) => {
-      if (!response) return
-      setGuideConfig(JSON.parse(response[mutatorId]))
+      if (!response?.[mutatorId]) return
+      setGuideConfig(response[mutatorId])
     })
     .catch(console.error)
 }, [])
@@ -308,7 +308,7 @@ const handleSave = ({ newTitle, newContent }) => {
   const isConfigEdited = !isDeepEqual(updatedConfig, guideConfig)
   if (isConfigEdited) {
     linkDb
-      .set(appContext, { [mutatorId]: JSON.stringify(updatedConfig) })
+      .set(appContext, { [mutatorId]: updatedConfig })
       .then(() => {
         setGuideConfig(updatedConfig)
         setEditMode(false)
