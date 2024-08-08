@@ -185,6 +185,7 @@ const [chapterCounter, setChapterCounter] = useState(0)
 const [pageCounter, setPageCounter] = useState(0)
 const [isEditMode, setEditMode] = useState(false)
 const [isEditTarget, setEditTarget] = useState(false)
+const [noTargets, setNoTargets] = useState(false) // ToDo: temporary!!! DAP-4705
 
 const findParentContext = (context, type) => {
   if (!context) return null
@@ -233,6 +234,33 @@ useEffect(() => {
   }
 }, [guideConfig, localConfig])
 
+// If there is no target on the page, find the chapter to show or show the first screen to the mutator
+useEffect(() => {
+  if (
+    !editingConfig.chapters?.length ||
+    editingConfig.chapters[chapterCounter].type === 'infobox' ||
+    props.query(editingConfig.chapters[chapterCounter].target)
+  ) {
+    setNoTargets(false)
+    return
+  }
+
+  let i = chapterCounter === 0 ? editingConfig.chapters.length - 1 : chapterCounter - 1
+  while (true) {
+    if (i === chapterCounter) {
+      setNoTargets(true)
+      return
+    }
+    const prevChapter = editingConfig.chapters[i]
+    if (prevChapter.type === 'infobox' || props.query(prevChapter.target)) {
+      setChapterCounter(i)
+      setPageCounter(prevChapter.pages?.length ? prevChapter.pages?.length - 1 : 0)
+      return
+    }
+    i = i === 0 ? editingConfig.chapters.length - 1 : i - 1
+  }
+}, [editingConfig, chapterCounter])
+
 // If there is no config and the user is not a mutator do not show anything
 if (
   loggedInAccountId !== mutatorId &&
@@ -265,21 +293,28 @@ const handleActionClick = () => {
 }
 
 const handleChapterDecrement = () => {
-  if (chapterCounter !== 0) {
-    setChapterCounter((val) => val - 1)
-    setPageCounter(
-      editingConfig.chapters[chapterCounter - 1]?.pages?.length
-        ? editingConfig.chapters[chapterCounter - 1]?.pages?.length - 1
-        : 0
-    )
+  // Skips chapters that doesn't have visible contexts
+  for (let i = chapterCounter - 1; i >= 0; i--) {
+    const prevChapter = editingConfig.chapters[i]
+    if (prevChapter.type === 'infobox' || props.query(prevChapter.target)) {
+      setChapterCounter(i)
+      setPageCounter(prevChapter.pages?.length ? prevChapter.pages?.length - 1 : 0)
+      return
+    }
   }
 }
 
-const handleChapterIncrement = (flag) => {
-  setChapterCounter((val) =>
-    Math.min(val + 1, editingConfig.chapters.length - (flag === 'force' ? 0 : 1))
-  )
-  setPageCounter(0)
+const handleChapterIncrement = (updatedConfig) => {
+  // Skips chapters that doesn't have visible contexts
+  const currentConfig = updatedConfig ?? editingConfig
+  for (let i = chapterCounter + 1; i < currentConfig.chapters.length; i++) {
+    const nextChapter = currentConfig.chapters[i]
+    if (nextChapter.type === 'infobox' || props.query(nextChapter.target)) {
+      setChapterCounter(i)
+      setPageCounter(0)
+      return
+    }
+  }
 }
 
 const handleClickPrev = () => {
@@ -407,7 +442,7 @@ const handleChapterAdd = ({ newTitle, newContent }) => {
   setEditingConfig(updatedConfig)
   saveConfigToLocalStorage(updatedConfig)
 
-  handleChapterIncrement('force')
+  handleChapterIncrement(updatedConfig)
 }
 
 const handlePageAdd = ({ newTitle, newContent }) => {
@@ -430,7 +465,11 @@ const handlePageAdd = ({ newTitle, newContent }) => {
 const handleStartCreation = () => {
   const updatedConfig = deepCopy(editingConfig)
   const newChapter = generateNewChapter()
-  updatedConfig.chapters = [newChapter]
+  if (updatedConfig.chapters) {
+    updatedConfig.chapters.push(newChapter)
+  } else {
+    updatedConfig.chapters = [newChapter]
+  }
   setEditingConfig(updatedConfig)
   setEditMode(true)
 }
@@ -438,11 +477,6 @@ const handleStartCreation = () => {
 const handlePageRemove = () => {
   const updatedConfig = deepCopy(editingConfig)
   const updatedChapter = updatedConfig.chapters[chapterCounter]
-
-  if (!updatedChapter || !updatedChapter.pages[pageCounter]) {
-    console.error('Chapter or page not found at the specified index:', chapterCounter, pageCounter)
-    return
-  }
 
   // remove page
   updatedChapter.pages.splice(pageCounter, 1)
@@ -499,6 +533,8 @@ const handleRevertChanges = () => {
 const handleRemoveAllChanges = () => {
   setEditingConfig(guideConfig || configTemplate)
   saveConfigToLocalStorage(null)
+  setChapterCounter(0)
+  setPageCounter(0)
 }
 
 const openSaveChangesPopup = ({ newTitle, newContent }) => {
@@ -692,13 +728,13 @@ return (
           onClick={handleTargetSet}
           LatchComponent={ContextTypeLatch}
         />
-      ) : !editingConfig?.chapters?.length ? (
+      ) : !editingConfig?.chapters?.length || noTargets ? (
         <DappletPortal
           inMemory
           target={{
             namespace: 'mweb',
             contextType: 'mweb-overlay-action',
-            if: { id: { eq: 'web-guide-action' } },
+            if: { id: { eq: 'action-button-web-guide-test' } },
           }}
           component={(props) => (
             <Widget

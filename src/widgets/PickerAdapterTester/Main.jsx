@@ -79,7 +79,7 @@ return (
         target={{
           namespace: 'mweb',
           contextType: 'mweb-overlay-action',
-          if: { id: { eq: 'web-guide-action-picker-adapter-tester' } },
+          if: { id: { eq: 'action-button-picker-adapter-tester' } },
         }}
         inMemory
         component={(props) => (

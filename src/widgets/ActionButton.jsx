@@ -48,8 +48,8 @@ return (
     onClick={onClick}
     data-mweb-context-type="mweb-overlay-action"
     data-mweb-context-parsed={JSON.stringify({
-      id: `web-guide-action-${appId}`, // ToDo: rule of SID (semantic context id) should be applied
-      type: 'web-guide-action',
+      id: `action-button-${appId}`, // ToDo: rule of SID (semantic context id) should be applied
+      type: 'action-button',
       appId,
     })}
   >
