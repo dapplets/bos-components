@@ -6,7 +6,7 @@
     }
   },
   "$": {
-    "controller": "${REPL_ACCOUNT}/widget/WebGuideTest.Main",
+    "controller": "${REPL_ACCOUNT}/widget/WebGuide.Main",
     "targets": [
       {
         "namespace": "${REPL_ACCOUNT}/parser/common-body-test",

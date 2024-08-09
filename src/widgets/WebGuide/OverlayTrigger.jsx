@@ -72,7 +72,7 @@ return props.type === 'callout' ? (
     overlay={
       <CustomTooltip bsPrefix={`wg-tooltip-${props.skin}`}>
         <Widget
-          src="${REPL_ACCOUNT}/widget/WebGuideTest.Page"
+          src="${REPL_ACCOUNT}/widget/WebGuide.Page"
           loading={props?.children}
           props={{ ...props, children: undefined }}
         />
@@ -83,7 +83,7 @@ return props.type === 'callout' ? (
   </DappletOverlayTrigger>
 ) : props.type === 'infobox' ? (
   <Widget
-    src="${REPL_ACCOUNT}/widget/WebGuideTest.Page"
+    src="${REPL_ACCOUNT}/widget/WebGuide.Page"
     loading={props?.children}
     props={{ ...props, children: undefined }}
   />
