@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "name": "Web Guide (testing branch)",
+    "name": "Web Guide",
     "image": {
       "ipfs_cid": "bafkreihwu5plfrt7ndwsodrnjsjlkqbx3lqfua7sbfpcdfagz5kjpwj55y"
     }
@@ -9,16 +9,60 @@
     "controller": "${REPL_ACCOUNT}/widget/WebGuide.Main",
     "targets": [
       {
-        "namespace": "${REPL_ACCOUNT}/parser/common-body-test",
-        "contextType": "body"
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "url": { "contains": "https://twitter.com/MrConCreator" } }
       },
       {
-        "namespace": "${REPL_ACCOUNT}/parser/common-body",
-        "contextType": "body"
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "url": { "contains": "https://x.com/MrConCreator" } }
       },
       {
-        "namespace": "${REPL_ACCOUNT}/parser/github-onboarding",
-        "contextType": "body"
+        "namespace": "engine",
+        "contextType": "website",
+        "if": {
+          "url": {
+            "contains": "https://social.dapplets.org/mob.near/widget/ProfilePage?accountId=dappletsproject.near"
+          }
+        }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": {
+          "url": {
+            "contains": "http://localhost:3000/mob.near/widget/ProfilePage?accountId=dappletsproject.near"
+          }
+        }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": {
+          "url": {
+            "contains": "social.testnet.dapplets.org/mob.dapplets.testnet/widget/ProfilePage?accountId=bos.dapplets.testnet"
+          }
+        }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": {
+          "url": {
+            "contains": "http://127.0.0.1:3000/mob.dapplets.testnet/widget/ProfilePage?accountId=bos.dapplets.testnet"
+          }
+        }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "github.com" } }
+      },
+      {
+        "namespace": "engine",
+        "contextType": "website",
+        "if": { "id": { "eq": "www.github.com" } }
       }
     ],
     "parsers": "any"
