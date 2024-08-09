@@ -1279,6 +1279,7 @@ const {
   onClickPageIndicator,
   handleExportConfig,
   handleSave,
+  noTarget,
 } = props
 
 const [newTitle, setNewTitle] = useState(title ?? '')
@@ -1534,18 +1535,17 @@ const editPage = (
     </AddedBlock>
 
     <EditButtonsBlock>
-      {isEditMode ? (
-        <SuccessButton
-          onClick={() => {
-            setEditMode(false)
-            handleRemoveAllChanges()
-          }}
-        >
-          {isConfigEdited || newTitle !== (title ?? '') || newContent !== (content ?? '')
-            ? 'Delete all local changes'
-            : 'Cancel'}
-        </SuccessButton>
-      ) : null}
+      <SuccessButton
+        onClick={() => {
+          setEditMode(false)
+          handleRemoveAllChanges()
+        }}
+      >
+        {isConfigEdited || newTitle !== (title ?? '') || newContent !== (content ?? '')
+          ? 'Delete all local changes'
+          : 'Cancel'}
+      </SuccessButton>
+
       <DropdownWrapper>
         <ButtonGroup>
           <LeftButton

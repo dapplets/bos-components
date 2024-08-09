@@ -185,7 +185,7 @@ const [chapterCounter, setChapterCounter] = useState(0)
 const [pageCounter, setPageCounter] = useState(0)
 const [isEditMode, setEditMode] = useState(false)
 const [isEditTarget, setEditTarget] = useState(false)
-const [noTargets, setNoTargets] = useState(false) // ToDo: temporary!!! DAP-4705
+const [noTarget, setNoTarget] = useState(false)
 
 const findParentContext = (context, type) => {
   if (!context) return null
@@ -241,23 +241,15 @@ useEffect(() => {
     editingConfig.chapters[chapterCounter].type === 'infobox' ||
     props.query(editingConfig.chapters[chapterCounter].target)
   ) {
-    setNoTargets(false)
+    setNoTarget(false)
     return
   }
 
-  let i = chapterCounter === 0 ? editingConfig.chapters.length - 1 : chapterCounter - 1
-  while (true) {
-    if (i === chapterCounter) {
-      setNoTargets(true)
-      return
-    }
-    const prevChapter = editingConfig.chapters[i]
-    if (prevChapter.type === 'infobox' || props.query(prevChapter.target)) {
-      setChapterCounter(i)
-      setPageCounter(prevChapter.pages?.length ? prevChapter.pages?.length - 1 : 0)
-      return
-    }
-    i = i === 0 ? editingConfig.chapters.length - 1 : i - 1
+  // Here is the callout chapter with no taret in the DOM
+  // ToDo: it is assumed that there is only one config for the context
+  if (isEditMode || (localConfig && loggedInAccountId === mutatorId)) {
+    setNoTarget(true)
+    setEditMode(true)
   }
 }, [editingConfig, chapterCounter])
 
@@ -293,26 +285,39 @@ const handleActionClick = () => {
 }
 
 const handleChapterDecrement = () => {
-  // Skips chapters that doesn't have visible contexts
-  for (let i = chapterCounter - 1; i >= 0; i--) {
-    const prevChapter = editingConfig.chapters[i]
-    if (prevChapter.type === 'infobox' || props.query(prevChapter.target)) {
-      setChapterCounter(i)
-      setPageCounter(prevChapter.pages?.length ? prevChapter.pages?.length - 1 : 0)
-      return
+  if (isEditMode) {
+    if (chapterCounter !== 0) {
+      setChapterCounter((val) => val - 1)
+      const prevChapterPagesNumber = editingConfig.chapters[chapterCounter - 1]?.pages?.length
+      setPageCounter(prevChapterPagesNumber ? prevChapterPagesNumber - 1 : 0)
+    }
+  } else {
+    // Skips chapters that doesn't have visible contexts
+    for (let i = chapterCounter - 1; i >= 0; i--) {
+      const prevChapter = editingConfig.chapters[i]
+      if (prevChapter.type === 'infobox' || props.query(prevChapter.target)) {
+        setChapterCounter(i)
+        setPageCounter(prevChapter.pages?.length ? prevChapter.pages?.length - 1 : 0)
+        return
+      }
     }
   }
 }
 
 const handleChapterIncrement = (updatedConfig) => {
-  // Skips chapters that doesn't have visible contexts
   const currentConfig = updatedConfig ?? editingConfig
-  for (let i = chapterCounter + 1; i < currentConfig.chapters.length; i++) {
-    const nextChapter = currentConfig.chapters[i]
-    if (nextChapter.type === 'infobox' || props.query(nextChapter.target)) {
-      setChapterCounter(i)
-      setPageCounter(0)
-      return
+  if (isEditMode) {
+    setChapterCounter((val) => Math.min(val + 1, currentConfig.chapters.length - 1))
+    setPageCounter(0)
+  } else {
+    // Skips chapters that doesn't have visible contexts
+    for (let i = chapterCounter + 1; i < currentConfig.chapters.length; i++) {
+      const nextChapter = currentConfig.chapters[i]
+      if (nextChapter.type === 'infobox' || props.query(nextChapter.target)) {
+        setChapterCounter(i)
+        setPageCounter(0)
+        return
+      }
     }
   }
 }
@@ -626,7 +631,7 @@ const ChapterWrapper = (props) => {
         showChecked: currentChapter.showChecked,
         mutatorId,
         children:
-          currentChapter.type === 'callout'
+          currentChapter.type === 'callout' && !noTarget
             ? ({ ref }) => {
                 props.attachContextRef(ref)
                 return props.children
@@ -653,6 +658,7 @@ const ChapterWrapper = (props) => {
         handleRemoveAllChanges,
         handleExportConfig,
         handleSave,
+        noTarget,
       }}
     />
   )
@@ -728,7 +734,7 @@ return (
           onClick={handleTargetSet}
           LatchComponent={ContextTypeLatch}
         />
-      ) : !editingConfig?.chapters?.length || noTargets ? (
+      ) : !editingConfig?.chapters?.length ? (
         <DappletPortal
           inMemory
           target={{
@@ -753,7 +759,7 @@ return (
             />
           )}
         />
-      ) : currentChapter?.type === 'infobox' ? (
+      ) : currentChapter?.type === 'infobox' || noTarget ? (
         <OverlayTriggerWrapper>
           <DappletOverlay>
             <ChapterWrapper />

@@ -63,7 +63,7 @@ const CustomTooltip = styled('DappletTooltip')`
   }
 `
 
-return props.type === 'callout' ? (
+return props.type === 'callout' && !props.noTarget ? (
   <DappletOverlayTrigger
     show={true}
     popperConfig={{ strategy: props.strategy ?? 'absolute' }}
@@ -81,12 +81,10 @@ return props.type === 'callout' ? (
   >
     {typeof props.children === 'function' ? props.children : <span>{props.children}</span>}
   </DappletOverlayTrigger>
-) : props.type === 'infobox' ? (
+) : (
   <Widget
     src="${REPL_ACCOUNT}/widget/WebGuideTest.Page"
     loading={props?.children}
     props={{ ...props, children: undefined }}
   />
-) : (
-  <></>
 )
