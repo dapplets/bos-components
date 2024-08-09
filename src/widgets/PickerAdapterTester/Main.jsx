@@ -53,13 +53,13 @@ return (
       }}
       component={() => (
         <Widget
-          src="bos.dapplets.near/widget/WebGuide.Action"
+          src="bos.dapplets.near/widget/ActionButton"
           props={{
             appId: 'picker-adapter-tester',
             tooltip: isRunnigApp ? 'Stop Picker Adapter Tester' : 'Run Picker Adapter Tester',
             isActive: isRunnigApp,
             children: <p>PAT</p>,
-            handleAction: () => {
+            onClick: () => {
               if (isRunnigApp) {
                 setPreviousAdapter(selectedAdapter)
                 setSelectedAdapter('')
@@ -79,7 +79,7 @@ return (
         target={{
           namespace: 'mweb',
           contextType: 'mweb-overlay-action',
-          if: { id: { eq: 'web-guide-action-picker-adapter-tester' } },
+          if: { id: { eq: 'action-button-picker-adapter-tester' } },
         }}
         inMemory
         component={(props) => (

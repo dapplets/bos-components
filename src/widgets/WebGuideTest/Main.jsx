@@ -1,513 +1,3 @@
-const twitterConfig = {
-  action: true,
-  chapters: [
-    {
-      id: "${REPL_ACCOUNT}/gateway/MutableWebExtension",
-      type: 'infobox',
-      if: { id: "1694995344461894022" }, // ToDo: should be another trigger
-      // showChecked: true,
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/gateway/MutableWebExtension/Welcome",
-          title: "You’re entering Mutable Web",
-          status: [],
-          content: "\nMutable Web is a new web3 paradigm that allows anyone to add custom functionality to existing websites and share it with your community— no matter who owns the website.\n\nBecome a co-owner of any website you are use!\n\n### Mutation switch\n\n![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-video-001.webp)\n\nYou can switch between website mutations created by different communities.",
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-    {
-      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionNotch",
-      type: 'callout',
-      placement: 'right',
-      strategy: 'fixed',
-      namespace: "mweb",
-      contextType: "notch",
-      injectTo: "hidden",
-      if: { id: { eq: "notch" } },
-      arrowTo: "context",
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionNotch/Notch",
-          title: "Mutation switch",
-          status: [{ info: 'Click on the dropdown box' }],
-          content: "Mutation switch allows user to choose between application sets.",
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-    {
-      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionDropdown/1",
-      type: 'callout',
-      placement: 'right',
-      strategy: 'fixed',
-      namespace: "mweb",
-      contextType: "notch",
-      injectTo: "recently-used-mutations",
-      if: { id: { eq: "recently-used-mutations" } },
-      arrowTo: "context",
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionDropdown/1/1",
-          title: "The list of recently used mutations (1/2)",
-          status: [],
-          content: "The current mutation is highlighted with a star. To add a “favorite” status to a mutation on the current page, simply click on the star. his mutation will become active when you open the website in a new tab.",
-        },
-        {
-          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionDropdown/1/2",
-          title: "The list of recently used mutations (2/2)",
-          status: [{ info: 'Click on the dropdown box below' }],
-          content: "The “Trash” removes the mutation from the “Recentt” list.",
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-    {
-      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionDropdown/2",
-      type: 'callout',
-      strategy: 'fixed',
-      placement: 'right',
-      namespace: "mweb",
-      contextType: "notch",
-      injectTo: "hidden",
-      if: { id: { eq: "unused-mutations-title" } },
-      arrowTo: "context",
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionDropdown/2/1",
-          title: "All mutations",
-          status: [],
-          content: "This is the list of all available, previously unused mutations.",
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-    {
-      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionDropdown/3",
-      type: 'callout',
-      strategy: 'fixed',
-      namespace: "mweb",
-      contextType: "notch",
-      injectTo: "hidden",
-      if: { id: { eq: "mutate-button" } },
-      arrowTo: "context",
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionDropdown/3/1",
-          title: '"Mutate" button',
-          status: [],
-          content: 'The "Mutate" button allows users to create, fork, and edit mutations.',
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-    {
-      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/1",
-      type: 'callout',
-      placement: 'left',
-      strategy: 'fixed',
-      namespace: "mweb",
-      contextType: "mweb-overlay",
-      injectTo: "mweb-overlay",
-      if: { id: { eq: "mweb-overlay" } },
-      arrowTo: "context",
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/1/MutationButton",
-          title: "Application panel",
-          status: [],
-          content: "Here are the available application settings for the current mutation.",
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-    {
-      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/2",
-      type: 'callout',
-      placement: 'bottom',
-      strategy: 'fixed',
-      namespace: "mweb",
-      contextType: "mweb-overlay",
-      injectTo: "mutation-icon",
-      if: { id: { eq: "mutation-button" } },
-      arrowTo: "context",
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/2/MutationButton",
-          title: "Mutation button",
-          status: [],
-          content: "![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/webguide-006.png)\n\nThis is the current mutation icon. Click on it to open the Wallet panel. There you can connect your NEAR wallet.",
-        },
-        {
-          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/2/MutationButton",
-          title: "Mutation button",
-          status: [],
-          content: "![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/webguide-007.png)\n\n Once your wallet is connected, you can see information about it and disconnect whenever you want.",
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-    {
-      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/3",
-      type: 'callout',
-      placement: 'bottom',
-      strategy: 'fixed',
-      namespace: "mweb",
-      contextType: "mweb-overlay-action",
-      injectTo: "mweb-overlay-action",
-      if: { id: { eq: "web-guide-action-web-guide-test" } },
-      arrowTo: "context",
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/3/Action",
-          title: "Action button",
-          status: [],
-          content: "![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/webguide-005.png)\n\nYou can always call up this guide again on this page by clicking on this button. It is inserted by the Web Guide application. Other applications can also insert their own quick action buttons nearby.",
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-    {
-      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/4",
-      type: 'callout',
-      placement: 'left',
-      strategy: 'fixed',
-      namespace: "mweb",
-      contextType: "mweb-overlay",
-      injectTo: "open-apps-button",
-      if: { id: { eq: "open-apps-button" } },
-      arrowTo: "context",
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/4/Applications",
-          title: "Applications",
-          status: [],
-          content: "![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/webguide-008.png)\n\nClick on the button to view the applications of the current mutation. Here you can turn them off and on.",
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-    {
-      id: "${REPL_ACCOUNT}/app/Tipping/1",
-      type: 'callout',
-      namespace: "${REPL_ACCOUNT}/parser/twitter",
-      contextType: "post",
-      injectTo: "avatar",
-      if: { id: { eq: "1694995344461894022" } },
-      arrowTo: "insPoint",
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/app/Tipping/1/1",
-          status: [],
-          title: "Tipping app",
-          content: "If you want to thank the author of the tweet you like...",
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-    {
-      id: "${REPL_ACCOUNT}/app/Tipping/2",
-      type: "callout",
-      namespace: "mweb",
-      contextType: "injected-widget",
-      injectTo: "hidden",
-      if: {
-        parentContextId: { eq: "1694995344461894022" },
-        widgetSrc: { eq: "${REPL_ACCOUNT}/widget/Tipping.Main" },
-      },
-      arrowTo: "context",
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/app/Tipping/2/1",
-          status: [],
-          title: "Tipping app",
-          content: "... you can send them a tip through our application.",
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-    {
-      id: "${REPL_ACCOUNT}/mutation/EarTrigger",
-      type: 'callout',
-      namespace: "mweb",
-      contextType: "ear-trigger",
-      injectTo: "hidden",
-      if: { id: { eq: "1694995344461894022" } },
-      arrowTo: "context",
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/mutation/EarTrigger/1",
-          status: [],
-          title: "Apps control panel",
-          content: 'We add the app control panel to each post. You can add widgets to the post or panel to extend the functionality of the site.',
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-    {
-      id: "${REPL_ACCOUNT}/mutation/EarTrigger/copy",
-      type: 'callout',
-      namespace: "mweb",
-      contextType: "ear-trigger",
-      injectTo: "hidden",
-      if: { id: { eq: "1694995344461894022" } },
-      arrowTo: "context",
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/mutation/EarTrigger/copy/1",
-          status: [],
-          title: "Apps control panel",
-          content: '[See other Mutable Web facilities on NEAR Social](https://social.dapplets.org/mob.near/widget/ProfilePage?accountId=dappletsproject.near)',
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-  ],
-}
-
-const nearSocialConfig = {
-  action: true,
-  chapters: [
-    {
-      id: "${REPL_ACCOUNT}/gateway/MutableWeb",
-      type: 'infobox',
-      if: { id: "1694995344461894022" }, // ToDo: should be another trigger
-      // showChecked: true,
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/gateway/MutableWeb/Welcome",
-          title: "You’re entering Mutable Web",
-          status: [],
-          content: "[Mutable Web also runs on Legacy Web2.](https://augm.link/mutate/?t=https%3A%2F%2Ftwitter.com%2FMrConCreator&m=${REPL_ACCOUNT}%2Fmutation%2FSandbox) Check its’ Web Guide there!\n\nMutable Web is a new web3 paradigm that allows anyone to add custom functionality to existing websites and share them within your community — no matter who owns the website.\n\nBecome the co-owner of any website you are using!\n\n### Mutation switch\n\n![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/onboarding-008.png)\n\nYou can switch between website mutations created by different communities.",
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-    {
-      id: "${REPL_ACCOUNT}/gateway/MutableWebDropdown/1",
-      type: 'callout',
-      placement: 'right',
-      strategy: 'fixed',
-      namespace: "mweb",
-      contextType: "mweb-gateway",
-      injectTo: "mutation-wrapper",
-      if: { id: { eq: "mutation-wrapper" } },
-      arrowTo: "context",
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/gateway/MutableWebDropdown/1/1",
-          title: "Mutation switch",
-          status: [{ info: 'Click on the dropdown box' }],
-          content: "This is a mutation switcher to select the desired set of applications.",
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-    // {
-    //   id: "${REPL_ACCOUNT}/gateway/MutableWebDropdown/2",
-    //   type: 'callout',
-    //   strategy: 'fixed',
-    //   placement: 'right',
-    //   namespace: "mweb",
-    //   contextType: "mweb-gateway",
-    //   injectTo: "mutations-list",
-    //   if: { id: { eq: "mutations-list" } },
-    //   arrowTo: "context",
-    //   pages: [
-    //     {
-    //       id: "${REPL_ACCOUNT}/gateway/MutableWebDropdown/2/1",
-    //       title: "All mutations",
-    //       status: [],
-    //       content: "Each mutation defines the set of applications. Select it from the list.",
-    //     },
-    //   ],
-    //   skin: 'META_GUIDE',
-    // },
-    {
-      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/1",
-      type: 'callout',
-      placement: 'left',
-      strategy: 'fixed',
-      namespace: "mweb",
-      contextType: "mweb-overlay",
-      injectTo: "mweb-overlay",
-      if: { id: { eq: "mweb-overlay" } },
-      arrowTo: "context",
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/1/MutationButton",
-          title: "Application panel",
-          status: [],
-          content: "Here are the available application settings for the current mutation.",
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-    {
-      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/3",
-      type: 'callout',
-      placement: 'bottom',
-      strategy: 'fixed',
-      namespace: "mweb",
-      contextType: "mweb-overlay-action",
-      injectTo: "mweb-overlay-action",
-      if: { id: { eq: "web-guide-action-web-guide-test" } },
-      arrowTo: "context",
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/3/Action",
-          title: "Action button",
-          status: [],
-          content: "![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/webguide-005.png)\n\nYou can always call up this guide again on this page by clicking on this button. It is inserted by the Web Guide application. Other applications can also insert their own quick action buttons nearby.",
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-    {
-      id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/4",
-      type: 'callout',
-      placement: 'left',
-      strategy: 'fixed',
-      namespace: "mweb",
-      contextType: "mweb-overlay",
-      injectTo: "open-apps-button",
-      if: { id: { eq: "open-apps-button" } },
-      arrowTo: "context",
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/gateway/MutableWebExtensionOverlay/4/Applications",
-          title: "Applications",
-          status: [],
-          content: "![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/webguide-008.png)\n\nClick on the button to view the applications of the current mutation. Here you can turn them off and on.",
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-    // {
-    //   id: "${REPL_ACCOUNT}/app/Tipping/1",
-    //   type: 'callout',
-    //   namespace: "${REPL_ACCOUNT}/parser/near-social-json",
-    //   contextType: "post",
-    //   injectTo: "avatar",
-    //   if: { id: { eq: "dappletsproject.near/119034910" } },
-    //   arrowTo: "insPoint",
-    //   pages: [
-    //     {
-    //       id: "${REPL_ACCOUNT}/app/Tipping/1/1",
-    //       status: [],
-    //       title: "Tipping app",
-    //       content: "If you want to thank the author of the post you like...",
-    //     },
-    //   ],
-    //   skin: 'META_GUIDE',
-    // },
-    {
-      id: "${REPL_ACCOUNT}/app/Tipping/2",
-      type: "callout",
-      namespace: "mweb",
-      contextType: "injected-widget",
-      injectTo: "hidden",
-      if: {
-        parentContextId: { eq: "dappletsproject.near/119034910" },
-        widgetSrc: { eq: "${REPL_ACCOUNT}/widget/Tipping.Main" },
-      },
-      arrowTo: "context",
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/app/Tipping/2/1",
-          status: [],
-          title: "Tipping app",
-          content: "If you want to thank the author of the post you like, you can send them a tip through our application.",
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-    {
-      id: "${REPL_ACCOUNT}/mutation/EarTrigger",
-      type: 'callout',
-      namespace: "mweb",
-      contextType: "ear-trigger",
-      injectTo: "hidden",
-      if: { id: { eq: "dappletsproject.near/119034910" } },
-      arrowTo: "context",
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/mutation/EarTrigger/1",
-          status: [],
-          title: "Apps control panel",
-          content: 'We’ve added a special container to all posts. This allows users to attach widgets that extend the possibilities of Near Social.',
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-    {
-      id: "${REPL_ACCOUNT}/mutation/EarTrigger/copy",
-      type: 'callout',
-      namespace: "mweb",
-      contextType: "ear-trigger",
-      injectTo: "hidden",
-      if: { id: { eq: "dappletsproject.near/119034910" } },
-      arrowTo: "context",
-      pages: [
-        {
-          id: "${REPL_ACCOUNT}/mutation/EarTrigger/copy/1",
-          status: [],
-          title: "Apps control panel",
-          content: '[See other Mutable Web facilities on X](https://augm.link/mutate/?t=https%3A%2F%2Ftwitter.com%2FMrConCreator&m=${REPL_ACCOUNT}%2Fmutation%2FSandbox)',
-        },
-      ],
-      skin: 'META_GUIDE',
-    },
-  ],
-}
-
-const nestedCalloutConfig = {
-  chapters: [{
-    id: "CalloutInCallout",
-    type: 'callout',
-    namespace: "mweb",
-    contextType: "wg-chapter",
-    injectTo: "hidden",
-    if: { id: { eq: "${REPL_ACCOUNT}/mutation/EarTrigger/copy" } }, // ID of the last chapter
-    arrowTo: "context",
-    pages: [
-      {
-        id: "CalloutInCallout/1",
-        status: [],
-        title: "Web Guides 1/3",
-        content: 'The WebGuide is also an application. Any user can create a guide to explain a workflow to other users. The WebGuide consists of callouts pointing to UI elements (original or embedded by other applications).',
-      },
-      {
-        id: "CalloutInCallout/2",
-        status: [],
-        title: "Web Guides 2/3",
-        content: '![](https://raw.githubusercontent.com/dapplets/bos-components/main/assets/webguide-004.png)\n\nWeb Guides can consist of several chapters.',
-      },
-      {
-        id: "CalloutInCallout/3",
-        status: [],
-        title: "Web Guides 3/3",
-        content: 'Use the buttons to navigate through the Web Guide.',
-      },
-    ],
-  }]
-}
-
-// ToDo: move to a smart contract
-const guideConfigByLinkId = {
-  // production (${REPL_ACCOUNT}/mutation/sandbox)
-  '9a6537b6efbb98ad4c12ef747c7e29e9': twitterConfig,
-  '8a1ca0a9eb03ce2725db7a553a9bcab7': nearSocialConfig,
-  "5c105a6a05975423d39a1e0d9447a22d": nestedCalloutConfig,
-  '84998d899f0b75b6ca47197c66baf3ca': nestedCalloutConfig, // twitter
-  '34c7858a683729949d5b4db9bcf1df2c': twitterConfig, // Multiversity
-  
-  // testing (${REPL_ACCOUNT}/mutation/testing2)
-  'b3777e928bd7ce9ad30eb636857a1853': twitterConfig,
-  '114a78557d9044ff8c6e0177bcbe690a': nearSocialConfig,
-  '0b492fd62c72d7ad87c7658e2b3a4f1e': nestedCalloutConfig,
-}
-
 const OverlayTriggerWrapper = styled.div`
   display: flex;
   z-index: 500;
@@ -530,42 +20,301 @@ const OverlayTriggerWrapper = styled.div`
   }
 `
 
-const guideConfig = guideConfigByLinkId[props.link.id]
+const TimelineLatchIcon = ({ color }) => (
+  <svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M0 18.6H0.39L7.27 8.42C7.36 8.24 7.31 8.15 7.12 8.15H4.28L7.27 2.7C7.36 2.52 7.29 2.43 7.07 2.43H3.26C3.15 2.43 3.06 2.49 2.97 2.61L0.19 10.01C0.17 10.19 0.23 10.28 0.38 10.28H3.13L0 18.6ZM8.5 12.27H8.77L13.99 4.6C14.04 4.52 14.05 4.45 14.03 4.4C14.01 4.35 13.95 4.33 13.86 4.33H11.76L13.94 0.3C14.06 0.1 14 0 13.76 0H11.02C10.89 0 10.79 0.0600001 10.72 0.19L8.64 5.67C8.61 5.76 8.61 5.83 8.65 5.88C8.69 5.93 8.75 5.95 8.84 5.95H10.88L8.5 12.27Z"
+      fill={color}
+    />
+  </svg>
+)
 
+const NotchLatchIcon = () => (
+  <svg width="28" height="29" viewBox="0 0 28 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M22.168 9.8335V2.8335"
+      stroke="#14AE5C"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M24.1865 11.9384C24.5763 13.4873 24.6075 15.1047 24.2778 16.6676C23.9482 18.2304 23.2663 19.6974 22.2842 20.9569C21.3021 22.2165 20.0456 23.2354 18.6103 23.9361C17.175 24.6367 15.5987 25.0008 14.0015 25.0004H8.75155C7.12055 25.0004 6.30504 25.0004 5.66221 24.7344C5.23744 24.5585 4.85148 24.3007 4.52639 23.9756C4.2013 23.6505 3.94344 23.2645 3.76755 22.8397C3.50155 22.1969 3.50155 21.3814 3.50155 19.7504V14.5004C3.50119 12.9032 3.86521 11.327 4.5659 9.89169C5.26659 8.45639 6.28549 7.19986 7.54504 6.21774C8.80459 5.23561 10.2716 4.55378 11.8344 4.22412C13.3972 3.89447 15.0146 3.92569 16.5635 4.31541C16.168 4.728 15.9025 5.2477 15.7998 5.80994C15.6972 6.37219 15.762 6.9522 15.9862 7.47792C16.2104 8.00365 16.5841 8.45191 17.061 8.76703C17.5378 9.08215 18.0967 9.25024 18.6682 9.25041H19.2515V9.83374C19.2517 10.4053 19.4198 10.9642 19.7349 11.441C20.05 11.9178 20.4983 12.2915 21.024 12.5157C21.5498 12.74 22.1298 12.8048 22.692 12.7021C23.2543 12.5995 23.774 12.3339 24.1865 11.9384ZM17.5015 12.1671C17.811 12.1671 18.1077 12.29 18.3265 12.5088C18.5453 12.7276 18.6682 13.0243 18.6682 13.3337C18.6682 13.6432 18.5453 13.9399 18.3265 14.1587C18.1077 14.3775 17.811 14.5004 17.5015 14.5004H10.5015C10.1921 14.5004 9.89538 14.3775 9.67659 14.1587C9.4578 13.9399 9.33488 13.6432 9.33488 13.3337C9.33488 13.0243 9.4578 12.7276 9.67659 12.5088C9.89538 12.29 10.1921 12.1671 10.5015 12.1671H17.5015ZM14.0015 16.8337C14.311 16.8337 14.6077 16.9567 14.8265 17.1754C15.0453 17.3942 15.1682 17.691 15.1682 18.0004C15.1682 18.3098 15.0453 18.6066 14.8265 18.8254C14.6077 19.0442 14.311 19.1671 14.0015 19.1671H10.5015C10.1921 19.1671 9.89538 19.0442 9.67659 18.8254C9.4578 18.6066 9.33488 18.3098 9.33488 18.0004C9.33488 17.691 9.4578 17.3942 9.67659 17.1754C9.89538 16.9567 10.1921 16.8337 10.5015 16.8337H14.0015Z"
+      fill="#14AE5C"
+    />
+    <path
+      d="M25.668 6.3335H18.668"
+      stroke="#14AE5C"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+// ToDo: Styled components cause unnecessary re-rendering in BOS
+const TimelineLatch = styled.button`
+  background-color: ${(props) => (props.$variant === 'current' ? '#384bff' : '#384BFF4D')};
+  height: 20px;
+  width: ${(props) => `${props.$width + 6}px`};
+  border-radius: 6px;
+  border: none;
+  color: #fff;
+  text-align: center;
+  position: relative;
+  top: -20px;
+  left: -6px;
+  cursor: pointer;
+`
+
+// ToDo: Styled components cause unnecessary re-rendering in BOS
+const NotchLatch = styled.button`
+  display: flex;
+  position: absolute;
+  top: ${(props) => `${props.$height / 2 - 14}px`};
+  left: ${(props) => `${props.$position === 'right' ? props.$width : '-35'}px`};
+  width: ${(props) => `${props.$position === 'right' ? '28' : '32'}px`};
+  height: 29px;
+  padding: 0;
+  padding-right: ${(props) => `${props.$position === 'right' ? '0' : '4px'}`};
+  background: none;
+  border: none;
+  opacity: ${(props) => (props.$variant === 'current' ? '1' : '.5')};
+  cursor: pointer;
+`
+
+// ToDo: move to the engine?
+const MiniOverlayTarget = {
+  namespace: 'mweb',
+  contextType: 'mweb-overlay',
+  injectTo: 'mweb-actions-panel',
+  if: { id: { eq: 'mweb-overlay' } },
+  arrowTo: 'context',
+}
+
+const AllowedContextsToPick = [
+  {
+    namespace: '${REPL_ACCOUNT}/parser/twitter',
+    type: 'timeline',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/twitter',
+    type: 'post',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/twitter',
+    type: 'postSouthButton',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/twitter',
+    type: 'profile',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/twitter',
+    type: 'postAvatar',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/github',
+    type: 'profile',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/github',
+    type: 'post',
+  },
+  {
+    namespace: 'mweb',
+    type: 'mweb-overlay',
+    id: 'mutation-button',
+  },
+  {
+    namespace: 'mweb',
+    type: 'mweb-overlay',
+    id: 'open-apps-button',
+  },
+  {
+    namespace: 'mweb',
+    type: 'mweb-overlay-action',
+  },
+  {
+    namespace: 'mweb',
+    type: 'injected-widget',
+  },
+  {
+    namespace: 'mweb',
+    type: 'notch',
+  },
+]
+
+// Random ID used in chapters and pages for a unique context ID to create nested callouts in the future.
+const generateRandomId = () => {
+  return Math.random().toString(16).substring(2, 10)
+}
+
+const generateNewPage = () => ({
+  id: generateRandomId(),
+  title: '',
+  status: [],
+  content: '',
+})
+
+const generateNewChapter = () => ({
+  id: generateRandomId(),
+  type: 'infobox',
+  pages: [generateNewPage()],
+  skin: 'META_GUIDE',
+})
+
+const deepCopy = (obj) => JSON.parse(JSON.stringify(obj))
+
+// ToDo: naive deep compare
+const isDeepEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b)
+
+const configTemplate = {
+  action: true,
+}
+
+const { accountId: loggedInAccountId } = context
+const { linkDb, context: appContext } = props
+
+const [guideConfig, setGuideConfig] = useState(null)
+const [editingConfig, setEditingConfig] = useState(configTemplate)
 const [showApp, setShowApp] = useState(true)
 const [chapterCounter, setChapterCounter] = useState(0)
 const [pageCounter, setPageCounter] = useState(0)
+const [isEditMode, setEditMode] = useState(false)
+const [isEditTarget, setEditTarget] = useState(false)
+const [noTargets, setNoTargets] = useState(false) // ToDo: temporary!!! DAP-4705
 
+const findParentContext = (context, type) => {
+  if (!context) return null
+  if (context.type === type) return context
+  return findParentContext(context.parent, type)
+}
+
+const getMutationId = () => {
+  const websiteContext = findParentContext(appContext, 'website')
+  if (!websiteContext) return null
+  return websiteContext.parsed.mutationId
+}
+
+const mutationId = getMutationId()
+const mutatorId = mutationId?.split('/')[0]
+
+useEffect(() => {
+  linkDb
+    .get(appContext, mutatorId)
+    .then((response) => {
+      if (!response?.[mutatorId]) return
+      setGuideConfig(response[mutatorId])
+    })
+    .catch(console.error)
+}, [])
+
+const localConfig = Storage.privateGet(appContext)
+
+useEffect(() => {
+  setShowApp(!!guideConfig || !!localConfig)
+
+  if (localConfig) {
+    if (!isDeepEqual(localConfig, editingConfig)) {
+      setEditingConfig(JSON.parse(localConfig))
+    }
+  } else if (guideConfig && !isDeepEqual(guideConfig, editingConfig)) {
+    setEditingConfig(guideConfig)
+    setChapterCounter(0)
+    setPageCounter(0)
+    setEditMode(false)
+  } else {
+    setEditingConfig(editingConfig)
+    setChapterCounter(chapterCounter)
+    setPageCounter(pageCounter)
+    setEditMode(isEditMode)
+  }
+}, [guideConfig, localConfig])
+
+// If there is no target on the page, find the chapter to show or show the first screen to the mutator
+useEffect(() => {
+  if (
+    !editingConfig.chapters?.length ||
+    editingConfig.chapters[chapterCounter].type === 'infobox' ||
+    props.query(editingConfig.chapters[chapterCounter].target)
+  ) {
+    setNoTargets(false)
+    return
+  }
+
+  let i = chapterCounter === 0 ? editingConfig.chapters.length - 1 : chapterCounter - 1
+  while (true) {
+    if (i === chapterCounter) {
+      setNoTargets(true)
+      return
+    }
+    const prevChapter = editingConfig.chapters[i]
+    if (prevChapter.type === 'infobox' || props.query(prevChapter.target)) {
+      setChapterCounter(i)
+      setPageCounter(prevChapter.pages?.length ? prevChapter.pages?.length - 1 : 0)
+      return
+    }
+    i = i === 0 ? editingConfig.chapters.length - 1 : i - 1
+  }
+}, [editingConfig, chapterCounter])
+
+// If there is no config and the user is not a mutator do not show anything
 if (
-  !guideConfig
-  || !guideConfig.chapters?.length
-  || !guideConfig.chapters[0].pages?.length
-) return <></>
+  loggedInAccountId !== mutatorId &&
+  (!editingConfig || !editingConfig.chapters?.length || !editingConfig.chapters[0].pages?.length)
+) {
+  return <></>
+}
+
+const saveConfigToLocalStorage = (data) => {
+  Storage.privateSet(
+    appContext,
+    !data || isDeepEqual(data, guideConfig) ? undefined : JSON.stringify(data)
+  )
+}
+
+const handleConfigImport = (guide) => {
+  setEditingConfig(guide)
+}
 
 const handleClose = () => {
   setShowApp(false)
+  setEditMode(false)
 }
 
-const handleAction = () => {
+const handleActionClick = () => {
   setShowApp((val) => !val)
+  setEditMode(false)
   setChapterCounter(0)
   setPageCounter(0)
 }
 
 const handleChapterDecrement = () => {
-  if (chapterCounter !== 0) {
-    setChapterCounter((val) => val - 1)
-    setPageCounter(
-      guideConfig.chapters[chapterCounter - 1]?.pages?.length
-        ? guideConfig.chapters[chapterCounter - 1]?.pages?.length - 1
-        : 0
-    )
+  // Skips chapters that doesn't have visible contexts
+  for (let i = chapterCounter - 1; i >= 0; i--) {
+    const prevChapter = editingConfig.chapters[i]
+    if (prevChapter.type === 'infobox' || props.query(prevChapter.target)) {
+      setChapterCounter(i)
+      setPageCounter(prevChapter.pages?.length ? prevChapter.pages?.length - 1 : 0)
+      return
+    }
   }
 }
 
-const handleChapterIncrement = () => {
-  setChapterCounter((val) => Math.min(val + 1, guideConfig.chapters.length - 1))
-  setPageCounter(0)
+const handleChapterIncrement = (updatedConfig) => {
+  // Skips chapters that doesn't have visible contexts
+  const currentConfig = updatedConfig ?? editingConfig
+  for (let i = chapterCounter + 1; i < currentConfig.chapters.length; i++) {
+    const nextChapter = currentConfig.chapters[i]
+    if (nextChapter.type === 'infobox' || props.query(nextChapter.target)) {
+      setChapterCounter(i)
+      setPageCounter(0)
+      return
+    }
+  }
 }
 
 const handleClickPrev = () => {
@@ -577,15 +326,231 @@ const handleClickPrev = () => {
 }
 
 const handleClickNext = () => {
-  if (pageCounter === guideConfig.chapters[chapterCounter]?.pages?.length - 1) {
+  if (pageCounter === editingConfig.chapters[chapterCounter]?.pages?.length - 1) {
     handleChapterIncrement()
   } else {
     setPageCounter((val) => val + 1)
   }
 }
 
+const handleSave = ({ newTitle, newContent }) => {
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedPage = updatedConfig.chapters[chapterCounter].pages[pageCounter]
+
+  updatedPage.title = newTitle
+  updatedPage.content = newContent
+
+  const isConfigEdited = !isDeepEqual(updatedConfig, guideConfig)
+  if (isConfigEdited) {
+    linkDb
+      .set(appContext, { [mutatorId]: updatedConfig })
+      .then(() => {
+        setGuideConfig(updatedConfig)
+        setEditMode(false)
+        setChapterCounter(0)
+        setPageCounter(0)
+        saveConfigToLocalStorage(null)
+      })
+      .catch(console.error)
+  } else {
+    setGuideConfig(guideConfig)
+    setEditMode(false)
+    setChapterCounter(0)
+    setPageCounter(0)
+    saveConfigToLocalStorage(null)
+  }
+}
+
+const handleExportConfig = ({ newTitle, newContent }) => {
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedPage = updatedConfig.chapters[chapterCounter].pages[pageCounter]
+
+  updatedPage.title = newTitle
+  updatedPage.content = newContent
+
+  const jsonString = JSON.stringify(updatedConfig, null, 2) // formatted json
+  const blob = new Blob([jsonString], { type: 'application/json' })
+  const file = new File([blob], 'webGuideConfig.json')
+  return file
+}
+
+const handleClickPageIndicator = ({ index: pageIndex, newTitle, newContent }) => {
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedPage = updatedConfig.chapters[chapterCounter].pages[pageCounter]
+
+  updatedPage.title = newTitle
+  updatedPage.content = newContent
+
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
+
+  setPageCounter(pageIndex)
+}
+
+const handlePageDataChange = ({ newTitle, newContent }) => {
+  // ToDo: code duplication
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedPage = updatedConfig.chapters[chapterCounter].pages[pageCounter]
+
+  updatedPage.title = newTitle
+  updatedPage.content = newContent
+
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
+}
+
+const handleTargetSet = (newTarget) => {
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedChapter = updatedConfig.chapters[chapterCounter]
+
+  updatedChapter.type = 'callout'
+  updatedChapter.target = newTarget
+
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
+
+  setEditTarget(false)
+}
+
+const handleTargetRemove = ({ newTitle, newContent }) => {
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedChapter = updatedConfig.chapters[chapterCounter]
+  const updatedPage = updatedChapter.pages[pageCounter]
+
+  updatedChapter.type = 'infobox'
+  updatedChapter.target = {}
+  updatedPage.title = newTitle
+  updatedPage.content = newContent
+
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
+
+  setEditTarget(false)
+}
+
+const handleChapterAdd = ({ newTitle, newContent }) => {
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedChapter = updatedConfig.chapters[chapterCounter]
+  const updatedPage = updatedChapter.pages[pageCounter]
+
+  updatedPage.title = newTitle
+  updatedPage.content = newContent
+
+  const newChapter = generateNewChapter()
+  updatedConfig.chapters.splice(chapterCounter + 1, 0, newChapter)
+
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
+
+  handleChapterIncrement(updatedConfig)
+}
+
+const handlePageAdd = ({ newTitle, newContent }) => {
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedChapter = updatedConfig.chapters[chapterCounter]
+  const updatedPage = updatedChapter.pages[pageCounter]
+
+  updatedPage.title = newTitle
+  updatedPage.content = newContent
+
+  const newPage = generateNewPage()
+  updatedChapter.pages.splice(pageCounter + 1, 0, newPage)
+
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
+
+  setPageCounter((val) => val + 1)
+}
+
+const handleStartCreation = () => {
+  const updatedConfig = deepCopy(editingConfig)
+  const newChapter = generateNewChapter()
+  if (updatedConfig.chapters) {
+    updatedConfig.chapters.push(newChapter)
+  } else {
+    updatedConfig.chapters = [newChapter]
+  }
+  setEditingConfig(updatedConfig)
+  setEditMode(true)
+}
+
+const handlePageRemove = () => {
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedChapter = updatedConfig.chapters[chapterCounter]
+
+  // remove page
+  updatedChapter.pages.splice(pageCounter, 1)
+
+  // last page was removed
+  if (updatedChapter.pages.length === 0) {
+    updatedConfig.chapters.splice(chapterCounter, 1)
+
+    if (chapterCounter >= updatedConfig.chapters.length) {
+      setChapterCounter((prev) => (prev > 0 ? prev - 1 : 0))
+    }
+  } else {
+    const newPageCounter =
+      pageCounter >= updatedChapter.pages.length ? updatedChapter.pages.length - 1 : pageCounter
+    setPageCounter(newPageCounter)
+  }
+
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
+}
+
+/**
+ * Reverts the changes made to the current page
+ */
+const handleRevertChanges = () => {
+  const updatedConfig = deepCopy(editingConfig)
+  const chapter = updatedConfig.chapters[chapterCounter]
+  const page = chapter.pages[pageCounter]
+
+  const originalChapter = guideConfig.chapters.find((x) => x.id === chapter.id)
+  const originalPage = originalChapter.pages.find((x) => x.id === page.id)
+
+  if (!guideConfig || !originalChapter) {
+    chapter.type = 'infobox'
+    chapter.target = undefined
+    page.title = ''
+    page.content = ''
+  } else if (!originalPage) {
+    chapter.type = originalChapter.type
+    chapter.target = originalChapter.target ?? undefined
+    page.title = ''
+    page.content = ''
+  } else {
+    chapter.type = originalChapter.type
+    chapter.target = originalChapter.target ?? undefined
+    page.title = originalPage.title
+    page.content = originalPage.content
+  }
+
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
+}
+
+const handleRemoveAllChanges = () => {
+  setEditingConfig(guideConfig || configTemplate)
+  saveConfigToLocalStorage(null)
+  setChapterCounter(0)
+  setPageCounter(0)
+}
+
+const openSaveChangesPopup = ({ newTitle, newContent }) => {
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedPage = updatedConfig.chapters[chapterCounter].pages[pageCounter]
+
+  if (updatedPage.title !== newTitle) updatedPage.title = newTitle
+  if (updatedPage.content !== newContent) updatedPage.content = newContent
+
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
+}
+
+const currentChapter = editingConfig.chapters[chapterCounter]
+
 const ChapterWrapper = (props) => {
-  const currentChapter = guideConfig.chapters[chapterCounter]
   if (!currentChapter) return <></>
   const pages = currentChapter.pages
   if (!pages) return <></>
@@ -597,40 +562,56 @@ const ChapterWrapper = (props) => {
   const buttons = []
   if (chapterCounter || pageCounter) {
     buttons.push({
-      variant: "secondary",
+      variant: 'secondary',
       disabled: false,
       onClick: handleClickPrev,
-      label: "Prev",
+      label: 'Previous',
     })
   }
-  if (chapterCounter === guideConfig.chapters.length - 1 && pageCounter === pages.length - 1) {
+  if (chapterCounter === editingConfig.chapters.length - 1 && pageCounter === pages.length - 1) {
+    if (!isEditMode) {
+      buttons.push({
+        variant: 'primary',
+        disabled: false,
+        onClick: handleClose,
+        label: 'Finish',
+      })
+    }
+  } else
     buttons.push({
-      variant: "primary",
-      disabled: false,
-      onClick: handleClose,
-      label: "Finish",
-    })
-  } else (
-    buttons.push({
-      variant: "primary",
+      variant: 'primary',
       disabled: false,
       onClick: handleClickNext,
-      label: "Next",
+      label: 'Next',
     })
-  )
 
-  return  (
+  return (
     <Widget
-      src='${REPL_ACCOUNT}/widget/WebGuideTest.OverlayTrigger'
+      src="${REPL_ACCOUNT}/widget/WebGuideTest.OverlayTrigger"
       loading={props?.children}
       props={{
+        guideTitle: editingConfig.title,
+        guideDescription: editingConfig.description,
+        isConfigEdited: !isDeepEqual(editingConfig, guideConfig),
+        isPageEdited: !isDeepEqual(
+          currentPage,
+          guideConfig.chapters[chapterCounter].pages[pageCounter]
+        ),
         id: currentChapter.id,
         type: currentChapter.type,
-        placement: currentChapter.placement,
-        strategy: currentChapter.strategy,
+        contextType: currentChapter.target
+          ? currentChapter.target.type
+          : currentChapter.contextType,
+        contextId: currentChapter.target ? currentChapter.target.id : currentChapter.if?.id?.eq,
+        placement: currentChapter.target ? undefined : currentChapter.placement, // ToDo: cannot define placement for target
+        strategy: currentChapter.target
+          ? currentChapter.namespace === 'mweb'
+            ? 'fixed'
+            : undefined
+          : currentChapter.strategy, // ToDo: cannot define strategy for target
         navi: {
           currentChapterIndex: chapterCounter,
-          totalChapters: guideConfig.chapters.length,
+          totalChapters: editingConfig.chapters.length,
           currentPageIndex: pageCounter,
           totalPages: pages.length,
         },
@@ -643,113 +624,153 @@ const ChapterWrapper = (props) => {
         title: currentPage.title,
         content: currentPage.content,
         showChecked: currentChapter.showChecked,
-        children: currentChapter.type === 'callout'
-          && currentChapter.arrowTo === "context"
+        mutatorId,
+        children:
+          currentChapter.type === 'callout'
             ? ({ ref }) => {
-                props.attachContextRef(ref);
-                return props.children;
+                props.attachContextRef(ref)
+                return props.children
               }
-            : currentChapter.arrowTo === "insPoint"
-            ? ({ ref }) => {
-                props.attachInsPointRef(ref);
-                return props.children;
-              }
-            : props.children,
+            : currentChapter.arrowTo === 'insPoint'
+              ? ({ ref }) => {
+                  props.attachInsPointRef(ref)
+                  return props.children
+                }
+              : props.children,
         skin: currentChapter.skin ?? 'DEFAULT',
+        isEditMode,
+        setEditMode,
+        startEditTarget: () => setEditTarget(true),
+        handleTargetRemove,
+        buttonRemoveDisabled:
+          currentChapterIndex + 1 === totalChapters && totalChapters === 1 && totalPages === 1,
+        onPageDataChange: handlePageDataChange,
+        onChapterAdd: handleChapterAdd,
+        onPageAdd: handlePageAdd,
+        onPageRemove: handlePageRemove,
+        onRevertChanges: handleRevertChanges,
+        onClickPageIndicator: handleClickPageIndicator,
+        handleRemoveAllChanges,
+        handleExportConfig,
+        handleSave,
       }}
     />
   )
 }
 
-const iconQuestionMark = (isActive) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="18"
-    height="18"
-    viewBox="0 0 18 18"
-    fill="none"
-  >
-    <rect width="18" height="18" rx="9" fill={isActive ? "white" : "#02193A"} />
-    <path
-      d="M7.84446 12.85H9.60281V14.5H7.84446V12.85ZM9.01669 3.5C12.1524 3.621 13.5181 6.591 11.6542 8.8185C11.1677 9.3685 10.3823 9.7315 9.9955 10.1935C9.60281 10.65 9.60281 11.2 9.60281 11.75H7.84446C7.84446 10.8315 7.84446 10.056 8.23716 9.506C8.62399 8.956 9.40939 8.6315 9.89586 8.2685C11.3143 7.0365 10.9626 5.293 9.01669 5.15C8.55035 5.15 8.10311 5.32384 7.77335 5.63327C7.4436 5.94271 7.25835 6.36239 7.25835 6.8H5.5C5.5 5.92479 5.87051 5.08542 6.53001 4.46655C7.18952 3.84768 8.08401 3.5 9.01669 3.5Z"
-      fill={isActive ? "#384BFF" : "white"}
-    />
-  </svg>
-)
+const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
+  if (context.type === 'timeline') {
+    return (
+      <TimelineLatch
+        $variant={variant}
+        $width={contextDimensions.width}
+        onClick={() => handleTargetSet(context)}
+      >
+        <TimelineLatchIcon color="white" />
+      </TimelineLatch>
+    )
+  }
 
-const iconTimelineLatch = (color) => (
-  <svg
-    width="15"
-    height="19"
-    viewBox="0 0 15 19"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M0 18.6H0.39L7.27 8.42C7.36 8.24 7.31 8.15 7.12 8.15H4.28L7.27 2.7C7.36 2.52 7.29 2.43 7.07 2.43H3.26C3.15 2.43 3.06 2.49 2.97 2.61L0.19 10.01C0.17 10.19 0.23 10.28 0.38 10.28H3.13L0 18.6ZM8.5 12.27H8.77L13.99 4.6C14.04 4.52 14.05 4.45 14.03 4.4C14.01 4.35 13.95 4.33 13.86 4.33H11.76L13.94 0.3C14.06 0.1 14 0 13.76 0H11.02C10.89 0 10.79 0.0600001 10.72 0.19L8.64 5.67C8.61 5.76 8.61 5.83 8.65 5.88C8.69 5.93 8.75 5.95 8.84 5.95H10.88L8.5 12.27Z"
-      fill={color}
-    />
-  </svg>
-)
+  if (
+    (context.type === 'notch' && context.id !== 'mutate-button') ||
+    context.type === 'mweb-gateway'
+  ) {
+    return (
+      <NotchLatch
+        $variant={variant}
+        $width={contextDimensions.width}
+        $height={contextDimensions.height}
+        onClick={() => handleTargetSet(context)}
+        $position={'right'}
+      >
+        <NotchLatchIcon />
+      </NotchLatch>
+    )
+  }
+
+  if (context.type === 'mweb-overlay' || context.type === 'mweb-overlay-action') {
+    return (
+      <NotchLatch
+        $variant={variant}
+        $width={contextDimensions.width}
+        $height={contextDimensions.height}
+        onClick={() => handleTargetSet(context)}
+        $position={'left'}
+      >
+        <NotchLatchIcon />
+      </NotchLatch>
+    )
+  }
+  return null
+}
 
 return (
   <>
-    {guideConfig.action ? (
+    {editingConfig.action ? (
       <DappletPortal
-        target={{
-          namespace: "mweb",
-          contextType: "mweb-overlay",
-          injectTo: "mweb-actions-panel",
-          if: { id: { eq: "mweb-overlay" } },
-          arrowTo: "context",
-        }}
-        component={() => <Widget
-          src='${REPL_ACCOUNT}/widget/WebGuideTest.Action'
-          props={{
-            appId: 'web-guide-test',
-            tooltip: showApp ? 'Stop Web Guide' : 'Run Web Guide',
-            isActive: showApp,
-            handleAction,
-            children: iconQuestionMark(showApp),
-          }}
-        />}
+        target={MiniOverlayTarget}
+        component={() => (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/WebGuideTest.Action"
+            props={{
+              isActive: showApp,
+              onClick: handleActionClick,
+            }}
+          />
+        )}
       />
     ) : null}
-    {showApp ? (guideConfig.chapters[chapterCounter]?.type === 'infobox' ? (
-      <OverlayTriggerWrapper>
-        <DappletOverlay>
-          <ChapterWrapper/>
-        </DappletOverlay>
-      </OverlayTriggerWrapper>
-    ) : (
-      <>
+
+    {showApp ? (
+      isEditTarget ? (
+        <DappletContextPicker
+          target={AllowedContextsToPick}
+          onClick={handleTargetSet}
+          LatchComponent={ContextTypeLatch}
+        />
+      ) : !editingConfig?.chapters?.length || noTargets ? (
         <DappletPortal
+          inMemory
           target={{
-            namespace: guideConfig.chapters[chapterCounter]?.namespace,
-            contextType: guideConfig.chapters[chapterCounter]?.contextType,
-            injectTo: guideConfig.chapters[chapterCounter]?.injectTo,
-            if: guideConfig.chapters[chapterCounter]?.if,
-            insteadOf: guideConfig.chapters[chapterCounter]?.insteadOf,
+            namespace: 'mweb',
+            contextType: 'mweb-overlay-action',
+            if: { id: { eq: 'action-button-web-guide-test' } },
           }}
-          component={ChapterWrapper}
+          component={(props) => (
+            <Widget
+              src="${REPL_ACCOUNT}/widget/WebGuideTest.FirstScreenEdit"
+              props={{
+                skin: 'META_GUIDE',
+                onStart: handleStartCreation,
+                onConfigImport: handleConfigImport,
+                onClose: handleClose,
+                children: ({ ref }) => {
+                  // ToDo: move to the engine
+                  props.attachContextRef(ref)
+                  return props.children
+                },
+              }}
+            />
+          )}
         />
-        <Highlighter
-          target={{ 
-            namespace: guideConfig.chapters[chapterCounter]?.namespace,
-            contextType: guideConfig.chapters[chapterCounter]?.contextType,
-            if: guideConfig.chapters[chapterCounter]?.if,
-          }}
-          styles={{
-            borderColor: '#14AE5C',
-            backgroundColor: 'rgb(56 255 63 / 10%)',
-            // borderStyle: 'dashed',
-          }}
-          // filled
-          // icon={iconTimelineLatch('#14AE5C')}
-          // icon={() => <></>}
-          // action={() => console.log('Highlighter action')}
-        />
-      </>
-    )) : null}
+      ) : currentChapter?.type === 'infobox' ? (
+        <OverlayTriggerWrapper>
+          <DappletOverlay>
+            <ChapterWrapper />
+          </DappletOverlay>
+        </OverlayTriggerWrapper>
+      ) : currentChapter.target ? (
+        <>
+          <DappletPortal inMemory target={currentChapter.target} component={ChapterWrapper} />
+          <Highlighter
+            target={currentChapter.target}
+            styles={{
+              borderColor: '#14AE5C',
+              backgroundColor: 'rgb(56 255 63 / 10%)',
+            }}
+          />
+        </>
+      ) : null
+    ) : null}
   </>
 )
