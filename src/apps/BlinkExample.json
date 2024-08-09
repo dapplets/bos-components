@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "name": "Blink Example"
+  },
+  "$": {
+    "targets": [
+      {
+        "namespace": "engine",
+        "contextType": "blink",
+        "if": { "id": { "not": null } },
+        "componentId": "${REPL_ACCOUNT}/widget/BlinkExample.Main",
+        "static": true
+      }
+    ]
+  }
+}
