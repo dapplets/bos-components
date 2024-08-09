@@ -10,34 +10,17 @@
     "targets": [
       {
         "namespace": "${REPL_ACCOUNT}/parser/common-body-test",
-        "contextType": "body",
-        "if": {
-          "id": {
-            "not": null,
-            "index": true
-          }
-        }
+        "contextType": "body"
       },
       {
         "namespace": "${REPL_ACCOUNT}/parser/common-body",
-        "contextType": "body",
-        "if": {
-          "id": {
-            "not": null,
-            "index": true
-          }
-        }
+        "contextType": "body"
       },
       {
         "namespace": "${REPL_ACCOUNT}/parser/github-onboarding",
-        "contextType": "body",
-        "if": {
-          "id": {
-            "not": null,
-            "index": true
-          }
-        }
+        "contextType": "body"
       }
-    ]
+    ],
+    "parsers": "any"
   }
 }

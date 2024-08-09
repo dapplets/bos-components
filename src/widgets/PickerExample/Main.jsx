@@ -1,5 +1,65 @@
-const NAMESPACE = '${REPL_ACCOUNT}/parser/twitter'
-const CONTEXT_TYPE = 'post'
+const AllowedContextsToPick = [
+  {
+    namespace: '${REPL_ACCOUNT}/parser/twitter',
+    type: 'timeline',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/twitter',
+    type: 'post',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/twitter',
+    type: 'postSouthButton',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/twitter',
+    type: 'profile',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/twitter',
+    type: 'postAvatar',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/github',
+    type: 'profile',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/github',
+    type: 'post',
+  },
+  {
+    namespace: 'mweb',
+    type: 'mweb-overlay',
+    id: 'mutation-button',
+  },
+  {
+    namespace: 'mweb',
+    type: 'mweb-overlay',
+    id: 'open-apps-button',
+  },
+  {
+    namespace: 'mweb',
+    type: 'mweb-overlay-action',
+  },
+  {
+    namespace: 'mweb',
+    type: 'injected-widget',
+  },
+  {
+    namespace: 'mweb',
+    type: 'notch',
+  },
+  {
+    namespace: 'mweb',
+    type: 'mweb-gateway',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/near-social',
+  },
+  {
+    namespace: '${REPL_ACCOUNT}/parser/near-social-json',
+  },
+]
 
 const SKIN = 'META_GUIDE'
 
@@ -177,66 +237,7 @@ return (
   <>
     {isRunnigApp ? (
       <DappletContextPicker
-        target={[
-          {
-            namespace: NAMESPACE,
-            contextType: 'timeline',
-            if: {},
-          },
-          {
-            namespace: NAMESPACE,
-            contextType: 'post',
-            if: {},
-          },
-          {
-            namespace: NAMESPACE,
-            contextType: 'postSouthButton',
-            if: {},
-          },
-          {
-            namespace: NAMESPACE,
-            contextType: 'profile',
-            if: {},
-          },
-          {
-            namespace: '${REPL_ACCOUNT}/parser/near-social',
-            if: {},
-          },
-          {
-            namespace: '${REPL_ACCOUNT}/parser/near-social-json',
-            if: {},
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'mweb-overlay',
-            if: { id: { eq: 'mutation-button' } },
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'mweb-overlay',
-            if: { id: { eq: 'open-apps-button' } },
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'mweb-overlay-action',
-            if: {},
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'injected-widget',
-            if: {},
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'notch',
-            if: {},
-          },
-          {
-            namespace: 'mweb',
-            contextType: 'mweb-gateway',
-            if: {},
-          },
-        ]}
+        target={AllowedContextsToPick}
         onClick={setSelectedContext}
         LatchComponent={ContextTypeLatch}
       />
@@ -252,13 +253,13 @@ return (
       }}
       component={() => (
         <Widget
-          src="${REPL_ACCOUNT}/widget/WebGuide.Action"
+          src="${REPL_ACCOUNT}/widget/ActionButton"
           props={{
             appId: 'picker-example',
             tooltip: isRunnigApp ? 'Stop Picker' : 'Run Picker',
             isActive: isRunnigApp,
             children: iconQuestionMark(isRunnigApp),
-            handleAction: () => {
+            onClick: () => {
               if (isRunnigApp) {
                 handleClose()
               } else {

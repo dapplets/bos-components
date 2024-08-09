@@ -49,10 +49,7 @@
           "img": "string(//*[@aria-label='Account menu']//img/@src)",
           "url": "string(//html/head/meta[@property='og:url']/@content)"
         },
-        "children": [
-          "timeline",
-          "profile"
-        ]
+        "children": ["timeline", "profile"]
       },
       "timeline": {
         "selector": "main div.css-175oi2r.r-1ua6aaf.r-th6na.r-1phboty.r-16y2uox.r-184en5c.r-1c4cdxw.r-1t251xo.r-f8sm7e.r-13qz1uu.r-1ye8kvj div.css-175oi2r.r-f8sm7e.r-13qz1uu.r-1ye8kvj > section > div",
@@ -60,9 +57,7 @@
           "id": "string('timeline')",
           "title": "string(./@aria-label)"
         },
-        "children": [
-          "post"
-        ]
+        "children": ["post"]
       },
       "post": {
         "selector": "div[data-testid=cellInnerDiv]",
@@ -95,9 +90,7 @@
             "insertionType": "end"
           }
         },
-        "children": [
-          "postSouthButton"
-        ]
+        "children": ["postSouthButton", "postAvatar"]
       },
       "postSouthButton": {
         "selector": "div[role='group'] > div.css-175oi2r",
@@ -123,6 +116,12 @@
             "selector": "div.r-1ifxtd0.r-ymttw5.r-ttdzmv div.r-ggadg3.r-u8s1d.r-8jfcpp",
             "insertionType": "begin"
           }
+        }
+      },
+      "postAvatar": {
+        "selector": "[data-testid='Tweet-User-Avatar']",
+        "props": {
+          "id": "string('avatar')"
         }
       }
     }

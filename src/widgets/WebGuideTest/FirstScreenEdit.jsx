@@ -62,7 +62,7 @@ const TopLine = styled.div`
   padding: 0;
 `
 
-const EditSpanIcon = styled.div`
+const LogoWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -80,7 +80,7 @@ const EditSpanIcon = styled.div`
   margin-bottom: 10px;
 `
 
-const iconWebGuide = (
+const WebGuideIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="512"
@@ -96,7 +96,7 @@ const iconWebGuide = (
   </svg>
 )
 
-const Close = styled.button`
+const CloseButton = styled.button`
   display: flex;
   flex-direction: row-reverse;
   background: inherit;
@@ -146,18 +146,18 @@ const ActionButton = styled.div`
   }
 `
 
-const iconClose = (color) => (
+const CloseIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
     <path
       d="M18 6L6 18"
-      stroke={color}
+      stroke="#838891"
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M6 6.5L18 18.5"
-      stroke={color}
+      stroke="#838891"
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -165,7 +165,7 @@ const iconClose = (color) => (
   </svg>
 )
 
-const iconImport = (
+const ImportIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" viewBox="0 0 16 18" fill="none">
     <path
       fill-rule="evenodd"
@@ -208,25 +208,17 @@ const ImportButton = styled.button`
   }
 `
 
-const { children, onClose, skin, handleCreateTheFirstChapter, handleAddNewGuide } = props
-
-State.init({
-  json: null,
-  isUpload: false,
-  amount: 1,
-})
-
-const [isEditTarget, setEditTarget] = useState(false)
+const { skin, onClose, onStart, onConfigImport } = props
 
 const filesOnChange = (files) => {
+  if (!files?.length) return
+
   const [file] = files
-  console.log(files)
   file
     .text()
     .then((json) => {
       const webGuideConfig = JSON.parse(json)
-      console.log(webGuideConfig, 'webGuideConfig')
-      handleAddNewGuide(webGuideConfig)
+      onConfigImport(webGuideConfig)
     })
     .catch((err) => {
       console.error(err)
@@ -234,19 +226,21 @@ const filesOnChange = (files) => {
 }
 
 const callout = (
-  <Callout
-    data-mweb-context-type="wg-chapter"
-    data-mweb-context-parsed={JSON.stringify({ id: props.id })}
-  >
+  <Callout>
     <Header>
       <TopLine>
-        <Close onClick={onClose}>{iconClose('#838891')}</Close>
+        <CloseButton onClick={onClose}>
+          <CloseIcon />
+        </CloseButton>
       </TopLine>
     </Header>
 
-    <EditSpanIcon>{iconWebGuide}</EditSpanIcon>
+    <LogoWrapper>
+      <WebGuideIcon />
+    </LogoWrapper>
+
     <Title>Create a web guide for your mutation</Title>
-    <ActionButton onClick={handleCreateTheFirstChapter}>Start</ActionButton>
+    <ActionButton onClick={onStart}>Start</ActionButton>
 
     <Files
       multiple={false}
@@ -256,18 +250,16 @@ const callout = (
       clickable
     >
       <ImportButton>
-        {iconImport}
-        {state.json.cid ? state.json.cid : 'Import'}
+        <ImportIcon />
+        Import
       </ImportButton>
     </Files>
-
-    <div data-mweb-insertion-point="hidden" style={{ display: 'none' }} />
   </Callout>
 )
 
 const calloutTooltip = {
-  DEFAULT: <CustomTooltipDefault bsPrefix="wg-tooltip">{callout}</CustomTooltipDefault>,
-  META_GUIDE: <CustomTooltipMeta bsPrefix="wg-tooltip">{callout}</CustomTooltipMeta>,
+  DEFAULT: () => <CustomTooltipDefault bsPrefix="wg-tooltip">{callout}</CustomTooltipDefault>,
+  META_GUIDE: () => <CustomTooltipMeta bsPrefix="wg-tooltip">{callout}</CustomTooltipMeta>,
 }
 
 return (
@@ -276,7 +268,7 @@ return (
     popperConfig="fixed"
     placement="left"
     offset={[0, 45]}
-    overlay={calloutTooltip[skin]}
+    overlay={calloutTooltip[skin]()}
   >
     {typeof props.children === 'function' ? props.children : <span>{props.children}</span>}
   </DappletOverlayTrigger>
