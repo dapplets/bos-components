@@ -1459,6 +1459,15 @@ const editPage = (
   <>
     {navButtonsEdit}
 
+    {noTarget ? (
+      <div style={{ width: '100%', marginTop: -10 }}>
+        {statuses({
+          type: 'warning',
+          text: 'There is no target for this chapter on the web page',
+        })}
+      </div>
+    ) : null}
+
     {props.status?.text ? statuses(props.status) : null}
 
     <EditInputsBlock>
@@ -1544,15 +1553,6 @@ const editPage = (
         {iconPlus}Add new chapter
       </AddedChapterButton>
     </AddedBlock>
-
-    {noTarget ? (
-      <div style={{ padding: '0 10px', width: '100%' }}>
-        {statuses({
-          type: 'warning',
-          text: 'There is currently no target for this chapter on the web page',
-        })}
-      </div>
-    ) : null}
 
     {publishStatusMessage?.text ? (
       <div style={{ padding: '0 10px', width: '100%' }}>{statuses(publishStatusMessage)}</div>
