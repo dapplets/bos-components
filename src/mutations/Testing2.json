@@ -44,7 +44,6 @@
     "${REPL_ACCOUNT}/app/OnboardingTest",
     "${REPL_ACCOUNT}/app/Tipping",
     "${REPL_ACCOUNT}/app/Paywall",
-    "${REPL_ACCOUNT}/app/WebGuideTest",
     "${REPL_ACCOUNT}/app/Capybara",
     "${REPL_ACCOUNT}/app/CapybaraTestMWeb",
     "${REPL_ACCOUNT}/app/picker-example",
@@ -53,6 +52,7 @@
     "${REPL_ACCOUNT}/app/StaticLinkExample",
     "${REPL_ACCOUNT}/app/LinkDbExample",
     "${REPL_ACCOUNT}/app/ControllerExample",
-    "${REPL_ACCOUNT}/app/ContextQueryExample"
+    "${REPL_ACCOUNT}/app/ContextQueryExample",
+    "${REPL_ACCOUNT}/app/WebGuideTest"
   ]
 }
