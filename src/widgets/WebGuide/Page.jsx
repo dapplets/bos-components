@@ -1113,11 +1113,6 @@ const Loader = styled.div`
   }
 `
 
-const editActions = [
-  { value: 'publish', title: 'Publish' },
-  { value: 'export', title: 'Export guide' },
-]
-
 const {
   guideTitle,
   guideDescription,
@@ -1155,8 +1150,6 @@ const {
 
 const [newTitle, setNewTitle] = useState(title ?? '')
 const [newContent, setNewContent] = useState(content ?? '')
-const [isSaveOrExportDropdownOpened, setIsSaveOrExportDropdownOpened] = useState(false)
-const [currentEditAction, setCurrentEditAction] = useState(editActions[0])
 const [savingStarted, setSavingStarted] = useState(false)
 const [statusMessage, setStatusMessage] = useState(null)
 
@@ -1168,11 +1161,6 @@ useEffect(() => {
 useEffect(() => {
   setSavingStarted(false)
 }, [isEditMode])
-
-const handleButtonItemClick = (item) => {
-  setCurrentEditAction(item)
-  setIsSaveOrExportDropdownOpened(false)
-}
 
 const handleMainButtonClick = (editActionValue) => {
   switch (editActionValue) {
@@ -1436,15 +1424,12 @@ const editPage = (
         src="${REPL_ACCOUNT}/widget/WebGuide.PublishDropdown"
         loading={props?.children}
         props={{
-          disabled:
-            !(isConfigEdited || newTitle !== (title ?? '') || newContent !== (content ?? '')) &&
-            currentEditAction.value === 'publish',
-          onMainButtonClick: handleMainButtonClick(currentEditAction.value),
-          title: currentEditAction.title,
-          setOpened: setIsSaveOrExportDropdownOpened(!isSaveOrExportDropdownOpened),
-          isOpened: isSaveOrExportDropdownOpened,
-          editActions: editActions,
-          onButtonItemClick: handleButtonItemClick,
+          disabled: !(
+            isConfigEdited ||
+            newTitle !== (title ?? '') ||
+            newContent !== (content ?? '')
+          ),
+          onMainButtonClick: handleMainButtonClick,
         }}
       />
     </EditButtonsBlock>

@@ -10,14 +10,13 @@ const ButtonGroup = styled.div`
 `
 
 const LeftButton = styled('DappletFileDownloader')`
-  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
   background: var(--primBtnBg);
   color: var(--primBtnCol);
-  width: 104px;
+  width: 125px;
   padding: 10px 12px !important;
 
   font-size: 14px;
@@ -85,7 +84,7 @@ const ItemGroup = styled.div`
   flex-direction: column;
   right: 0;
   top: -100px;
-  width: 125px;
+  width: 146px;
   padding: 10px 16px;
   gap: 5px;
   border-radius: 10px;
@@ -124,24 +123,39 @@ const arrowIcon = (
     />
   </svg>
 )
+const editActions = [
+  { value: 'publish', title: 'Publish' },
+  { value: 'export', title: 'Export guide' },
+]
 
-const { disabled, onMainButtonClick, title, setOpened, isOpened, editActions, onButtonItemClick } =
-  props
+const { disabled, onMainButtonClick } = props
+const [currentEditAction, setCurrentEditAction] = useState(editActions[0])
+const [isSaveOrExportDropdownOpened, setIsSaveOrExportDropdownOpened] = useState(false)
+
+const handleButtonItemClick = (item) => {
+  setCurrentEditAction(item)
+  setIsSaveOrExportDropdownOpened(false)
+}
 
 return (
   <DropdownWrapper>
     <ButtonGroup>
-      <LeftButton disabled={disabled} onClick={onMainButtonClick}>
-        <TextSave>{title}</TextSave>
+      <LeftButton disabled={disabled} onClick={() => onMainButtonClick(currentEditAction.value)}>
+        <TextSave>{currentEditAction.title}</TextSave>
       </LeftButton>
 
-      <RightButton onClick={setOpened}>{arrowIcon}</RightButton>
+      <RightButton onClick={() => setIsSaveOrExportDropdownOpened(!isSaveOrExportDropdownOpened)}>
+        {arrowIcon}
+      </RightButton>
     </ButtonGroup>
 
-    {isOpened ? (
+    {isSaveOrExportDropdownOpened ? (
       <ItemGroup>
         {editActions.map((editAction) => (
-          <DropdownButtonItem key={editAction.value} onClick={() => onButtonItemClick(editAction)}>
+          <DropdownButtonItem
+            key={editAction.value}
+            onClick={() => handleButtonItemClick(editAction)}
+          >
             {editAction.title}
           </DropdownButtonItem>
         ))}
