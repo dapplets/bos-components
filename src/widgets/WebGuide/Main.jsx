@@ -754,7 +754,7 @@ return (
           target={{
             namespace: 'mweb',
             contextType: 'mweb-overlay-action',
-            if: { id: { eq: 'action-button-web-guide-test' } },
+            if: { id: { eq: 'action-button-web-guide' } },
           }}
           component={(props) => (
             <Widget
