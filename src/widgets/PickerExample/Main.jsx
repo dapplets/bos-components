@@ -99,7 +99,7 @@ ${JSON.stringify(selectedContext.parsed, null, 2)}
   console.log('selectedContext', selectedContext)
   return (
     <Widget
-      src="${REPL_ACCOUNT}/widget/WebGuideTest.OverlayTrigger"
+      src="${REPL_ACCOUNT}/widget/WebGuide.OverlayTrigger"
       loading={props?.children}
       props={widgetProps}
     />

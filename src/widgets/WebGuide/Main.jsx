@@ -606,7 +606,7 @@ const ChapterWrapper = (props) => {
 
   return (
     <Widget
-      src="${REPL_ACCOUNT}/widget/WebGuideTest.OverlayTrigger"
+      src="${REPL_ACCOUNT}/widget/WebGuide.OverlayTrigger"
       loading={props?.children}
       props={{
         guideTitle: editingConfig.title,
@@ -731,7 +731,7 @@ return (
         target={MiniOverlayTarget}
         component={() => (
           <Widget
-            src="${REPL_ACCOUNT}/widget/WebGuideTest.Action"
+            src="${REPL_ACCOUNT}/widget/WebGuide.Action"
             props={{
               isActive: showApp,
               onClick: handleActionClick,
@@ -758,7 +758,7 @@ return (
           }}
           component={(props) => (
             <Widget
-              src="${REPL_ACCOUNT}/widget/WebGuideTest.FirstScreenEdit"
+              src="${REPL_ACCOUNT}/widget/WebGuide.FirstScreenEdit"
               props={{
                 skin: 'META_GUIDE',
                 onStart: handleStartCreation,
