@@ -338,6 +338,16 @@ const handleClickNext = () => {
   }
 }
 
+const getEmptyPages = (config) =>
+  config.chapters
+    .map((chapter, i) =>
+      chapter.pages
+        .map((page, j) => (!page.title.trim() && !page.content.trim() ? `${i + 1}-${j + 1}` : null))
+        .filter((page) => page)
+    )
+    .filter((val) => val?.length)
+    .flat()
+
 const handleSave = ({ newTitle, newContent }) => {
   const updatedConfig = deepCopy(editingConfig)
   const updatedPage = updatedConfig.chapters[chapterCounter].pages[pageCounter]
@@ -345,7 +355,11 @@ const handleSave = ({ newTitle, newContent }) => {
   updatedPage.title = newTitle
   updatedPage.content = newContent
 
+  const emptyPages = getEmptyPages(updatedConfig)
+  if (emptyPages?.length) return emptyPages
+
   const isConfigEdited = !isDeepEqual(updatedConfig, guideConfig)
+
   if (isConfigEdited) {
     linkDb
       .set(appContext, { [mutatorId]: updatedConfig })

@@ -40,7 +40,7 @@ const MetaGuideTheme = styled.div`
 
   --statusInfoCol: white;
   --statusWarningCol: white;
-  --statusErrorCol: white;
+  --statusErrorCol: #db504a;
   --statusInfoBg: rgba(255, 255, 255, 0.2);
   --statusWarningBg: rgba(255, 255, 255, 0.2);
   --statusErrorBg: rgba(255, 255, 255, 0.2);
@@ -260,7 +260,7 @@ const WrapperAlert = styled.div`
   }
 
   &.error {
-    background: var(--statusErrorBg);
+    background: var(--primBtnBg);
     color: var(--statusErrorCol);
   }
 
@@ -1287,6 +1287,7 @@ const [newContent, setNewContent] = useState(content ?? '')
 const [isSaveOrExportDropdownOpened, setIsSaveOrExportDropdownOpened] = useState(false)
 const [currentEditAction, setCurrentEditAction] = useState(editActions[0])
 const [savingStarted, setSavingStarted] = useState(false)
+const [statusMessage, setStatusMessage] = useState(null)
 
 useEffect(() => {
   setNewTitle(title)
@@ -1306,10 +1307,17 @@ const handleMainButtonClick = (editActionValue) => {
   switch (editActionValue) {
     case 'publish':
       setSavingStarted(true)
-      handleSave({
+      const emptyPages = handleSave({
         newTitle,
         newContent,
       })
+      if (emptyPages) {
+        setSavingStarted(false)
+        setStatusMessage({
+          type: 'error',
+          text: `There ${emptyPages.length === 1 ? `is ${emptyPages[0]} empty page` : `are ${emptyPages.join(', ')} empty pages`} in this guide. Please, fill or remove ${emptyPages.length === 1 ? `it` : `them`} before publishing.`,
+        })
+      }
       break
     case 'export':
       return handleExportConfig({
@@ -1368,18 +1376,18 @@ const header = (
   </Header>
 )
 
-const statuses = (
-  <WrapperAlert className={props.status.type}>
+const statuses = (status) => (
+  <WrapperAlert className={status.type}>
     <IconAlert>
-      {props.status.type === 'warning' ? (
+      {status.type === 'warning' ? (
         <WarningIcon />
-      ) : props.status.type === 'error' ? (
+      ) : status.type === 'error' ? (
         <ErrorIcon />
       ) : (
         <InfoIcon />
       )}
     </IconAlert>
-    <TextAlert>{props.status.text}</TextAlert>
+    <TextAlert>{status.text}</TextAlert>
   </WrapperAlert>
 )
 
@@ -1449,6 +1457,8 @@ const navButtonsEdit = !buttons?.length ? null : buttons?.length > 1 ? (
 const editPage = (
   <>
     {navButtonsEdit}
+
+    {props.status?.text ? statuses(props.status) : null}
 
     <EditInputsBlock>
       <OptionsBlock>
@@ -1534,18 +1544,23 @@ const editPage = (
       </AddedChapterButton>
     </AddedBlock>
 
-    <EditButtonsBlock>
-      <SuccessButton
-        onClick={() => {
-          setEditMode(false)
-          handleRemoveAllChanges()
-        }}
-      >
-        {isConfigEdited || newTitle !== (title ?? '') || newContent !== (content ?? '')
-          ? 'Delete all local changes'
-          : 'Cancel'}
-      </SuccessButton>
+    {statusMessage?.text ? (
+      <div style={{ padding: '0 10px', width: '100%' }}>{statuses(statusMessage)}</div>
+    ) : null}
 
+    <EditButtonsBlock>
+      {isEditMode ? (
+        <SuccessButton
+          onClick={() => {
+            setEditMode(false)
+            handleRemoveAllChanges()
+          }}
+        >
+          {isConfigEdited || newTitle !== (title ?? '') || newContent !== (content ?? '')
+            ? 'Delete all local changes'
+            : 'Cancel'}
+        </SuccessButton>
+      ) : null}
       <DropdownWrapper>
         <ButtonGroup>
           <LeftButton
@@ -1595,7 +1610,7 @@ return (
           editPage
         ) : (
           <>
-            {props.status?.text ? statuses : null}
+            {props.status?.text ? statuses(props.status) : null}
             {title ? <Title className={props.type}>{title}</Title> : null}
             <MarkdownWrapper>
               <Markdown text={content} />
@@ -1620,7 +1635,7 @@ return (
           <>
             {title ? <Title className={props.type}>{title}</Title> : null}
             <Card>
-              {props.status?.text ? statuses : null}
+              {props.status?.text ? statuses(props.status) : null}
               <MarkdownWrapper>
                 <Markdown text={content} />
               </MarkdownWrapper>
