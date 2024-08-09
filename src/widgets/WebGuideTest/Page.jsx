@@ -39,7 +39,7 @@ const MetaGuideTheme = styled.div`
   --navInactiveBorder: white;
 
   --statusInfoCol: white;
-  --statusWarningCol: white;
+  --statusWarningCol: #d0911a;
   --statusErrorCol: #db504a;
   --statusInfoBg: rgba(255, 255, 255, 0.2);
   --statusWarningBg: rgba(255, 255, 255, 0.2);
@@ -255,7 +255,7 @@ const WrapperAlert = styled.div`
   outline: none;
 
   &.warning {
-    background: var(--statusWarningBg);
+    background: var(--primBtnBg);
     color: var(--statusWarningCol);
   }
 
@@ -1287,11 +1287,12 @@ const [newContent, setNewContent] = useState(content ?? '')
 const [isSaveOrExportDropdownOpened, setIsSaveOrExportDropdownOpened] = useState(false)
 const [currentEditAction, setCurrentEditAction] = useState(editActions[0])
 const [savingStarted, setSavingStarted] = useState(false)
-const [statusMessage, setStatusMessage] = useState(null)
+const [publishStatusMessage, setPublishStatusMessage] = useState(null)
 
 useEffect(() => {
   setNewTitle(title)
   setNewContent(content)
+  setPublishStatusMessage(null)
 }, [navi, title, content])
 
 useEffect(() => {
@@ -1313,7 +1314,7 @@ const handleMainButtonClick = (editActionValue) => {
       })
       if (emptyPages) {
         setSavingStarted(false)
-        setStatusMessage({
+        setPublishStatusMessage({
           type: 'error',
           text: `There ${emptyPages.length === 1 ? `is ${emptyPages[0]} empty page` : `are ${emptyPages.join(', ')} empty pages`} in this guide. Please, fill or remove ${emptyPages.length === 1 ? `it` : `them`} before publishing.`,
         })
@@ -1544,8 +1545,17 @@ const editPage = (
       </AddedChapterButton>
     </AddedBlock>
 
-    {statusMessage?.text ? (
-      <div style={{ padding: '0 10px', width: '100%' }}>{statuses(statusMessage)}</div>
+    {noTarget ? (
+      <div style={{ padding: '0 10px', width: '100%' }}>
+        {statuses({
+          type: 'warning',
+          text: 'There is currently no target for this chapter on the web page',
+        })}
+      </div>
+    ) : null}
+
+    {publishStatusMessage?.text ? (
+      <div style={{ padding: '0 10px', width: '100%' }}>{statuses(publishStatusMessage)}</div>
     ) : null}
 
     <EditButtonsBlock>
