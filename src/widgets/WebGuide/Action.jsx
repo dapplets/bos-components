@@ -14,7 +14,7 @@ return (
   <Widget
     src="${REPL_ACCOUNT}/widget/ActionButton"
     props={{
-      appId: 'web-guide-test',
+      appId: 'web-guide',
       tooltip: isActive ? 'Stop Web Guide' : 'Run Web Guide',
       isActive,
       children: <IconQuestionMark />,
