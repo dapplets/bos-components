@@ -1284,6 +1284,9 @@ const {
 
 const [newTitle, setNewTitle] = useState(title ?? '')
 const [newContent, setNewContent] = useState(content ?? '')
+const [newTarget, setNewTarget] = useState(
+  contextType && contextId ? `${contextType}/${contextId}` : 'No target'
+)
 const [isSaveOrExportDropdownOpened, setIsSaveOrExportDropdownOpened] = useState(false)
 const [currentEditAction, setCurrentEditAction] = useState(editActions[0])
 const [savingStarted, setSavingStarted] = useState(false)
@@ -1292,8 +1295,9 @@ const [publishStatusMessage, setPublishStatusMessage] = useState(null)
 useEffect(() => {
   setNewTitle(title)
   setNewContent(content)
+  setNewTarget(`${contextType}/${contextId}`)
   setPublishStatusMessage(null)
-}, [navi, title, content])
+}, [navi, title, content, contextType, contextId])
 
 useEffect(() => {
   setSavingStarted(false)
@@ -1480,6 +1484,7 @@ const editPage = (
           onClick={() => {
             setNewTitle(title ?? '')
             setNewContent(content ?? '')
+            setNewTarget(`${contextType}/${contextId}` ?? 'No target')
             onRevertChanges()
           }}
         >
@@ -1488,13 +1493,7 @@ const editPage = (
       </OptionsBlock>
 
       <FloatingLabelContainer>
-        <StyledInput
-          id={'target'}
-          type={'text'}
-          readonly
-          disabled
-          value={contextType && contextId ? `${contextType}/${contextId}` : 'No target'}
-        />
+        <StyledInput id={'target'} type={'text'} readonly disabled value={newTarget} />
         <StyledLabel htmlFor={'target'}>Target</StyledLabel>
         <InputButtons>
           {props.type === 'callout' && (
