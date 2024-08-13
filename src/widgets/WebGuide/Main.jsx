@@ -197,7 +197,21 @@ useEffect(() => {
   if (isEditMode || (localConfig && loggedInAccountId === mutatorId)) {
     setNoTarget(true)
     setEditMode(true)
+    return
   }
+
+  // User starts the app and there is no target for the first chapter
+  for (let i = chapterCounter + 1; i < editingConfig.chapters.length; i++) {
+    const nextChapter = editingConfig.chapters[i]
+    if (nextChapter.type === 'infobox' || props.query(nextChapter.target)) {
+      setChapterCounter(i)
+      setPageCounter(0)
+      return
+    }
+  }
+  setShowApp(false)
+  setChapterCounter(0)
+  setPageCounter(0)
 }, [editingConfig, chapterCounter])
 
 // If there is no config and the user is not a mutator do not show anything
@@ -266,6 +280,9 @@ const handleChapterIncrement = (updatedConfig) => {
         return
       }
     }
+    setShowApp(false)
+    setChapterCounter(0)
+    setPageCounter(0)
   }
 }
 
