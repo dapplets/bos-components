@@ -306,7 +306,7 @@ const getEmptyPages = (config) =>
   config.chapters
     .map((chapter, i) =>
       chapter.pages
-        .map((page, j) => (!page.title.trim() && !page.content.trim() ? `${i + 1}-${j + 1}` : null))
+        .map((page, j) => (!page.title.trim() && !page.content.trim() ? `${i + 1}.${j + 1}` : null))
         .filter((page) => page)
     )
     .filter((val) => val?.length)
