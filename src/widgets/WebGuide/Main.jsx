@@ -94,59 +94,6 @@ const MiniOverlayTarget = {
   arrowTo: 'context',
 }
 
-const AllowedContextsToPick = [
-  {
-    namespace: '${REPL_ACCOUNT}/parser/twitter',
-    type: 'timeline',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/twitter',
-    type: 'post',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/twitter',
-    type: 'postSouthButton',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/twitter',
-    type: 'profile',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/twitter',
-    type: 'postAvatar',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/github',
-    type: 'profile',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/github',
-    type: 'post',
-  },
-  {
-    namespace: 'mweb',
-    type: 'mweb-overlay',
-    id: 'mutation-button',
-  },
-  {
-    namespace: 'mweb',
-    type: 'mweb-overlay',
-    id: 'open-apps-button',
-  },
-  {
-    namespace: 'mweb',
-    type: 'mweb-overlay-action',
-  },
-  {
-    namespace: 'mweb',
-    type: 'injected-widget',
-  },
-  {
-    namespace: 'mweb',
-    type: 'notch',
-  },
-]
-
 // Random ID used in chapters and pages for a unique context ID to create nested callouts in the future.
 const generateRandomId = () => {
   return Math.random().toString(16).substring(2, 10)
@@ -743,11 +690,7 @@ return (
 
     {showApp ? (
       isEditTarget ? (
-        <DappletContextPicker
-          target={AllowedContextsToPick}
-          onClick={handleTargetSet}
-          LatchComponent={ContextTypeLatch}
-        />
+        <DappletContextPicker onClick={handleTargetSet} LatchComponent={ContextTypeLatch} />
       ) : !editingConfig?.chapters?.length ? (
         <DappletPortal
           inMemory
