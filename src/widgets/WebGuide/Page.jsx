@@ -1284,9 +1284,7 @@ const {
 
 const [newTitle, setNewTitle] = useState(title ?? '')
 const [newContent, setNewContent] = useState(content ?? '')
-const [newTarget, setNewTarget] = useState(
-  contextType && contextId ? `${contextType}/${contextId}` : 'No target'
-)
+const [newTarget, setNewTarget] = useState('')
 const [isSaveOrExportDropdownOpened, setIsSaveOrExportDropdownOpened] = useState(false)
 const [currentEditAction, setCurrentEditAction] = useState(editActions[0])
 const [savingStarted, setSavingStarted] = useState(false)
@@ -1295,7 +1293,7 @@ const [publishStatusMessage, setPublishStatusMessage] = useState(null)
 useEffect(() => {
   setNewTitle(title)
   setNewContent(content)
-  setNewTarget(`${contextType}/${contextId}`)
+  setNewTarget(contextType && contextId ? `${contextType}/${contextId}` : 'No target')
   setPublishStatusMessage(null)
 }, [navi, title, content, contextType, contextId])
 
@@ -1484,7 +1482,7 @@ const editPage = (
           onClick={() => {
             setNewTitle(title ?? '')
             setNewContent(content ?? '')
-            setNewTarget(`${contextType}/${contextId}` ?? 'No target')
+            setNewTarget(contextType && contextId ? `${contextType}/${contextId}` : 'No target')
             onRevertChanges()
           }}
         >
