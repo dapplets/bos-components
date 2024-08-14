@@ -94,59 +94,6 @@ const MiniOverlayTarget = {
   arrowTo: 'context',
 }
 
-const AllowedContextsToPick = [
-  {
-    namespace: '${REPL_ACCOUNT}/parser/twitter',
-    type: 'timeline',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/twitter',
-    type: 'post',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/twitter',
-    type: 'postSouthButton',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/twitter',
-    type: 'profile',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/twitter',
-    type: 'postAvatar',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/github',
-    type: 'profile',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/github',
-    type: 'post',
-  },
-  {
-    namespace: 'mweb',
-    type: 'mweb-overlay',
-    id: 'mutation-button',
-  },
-  {
-    namespace: 'mweb',
-    type: 'mweb-overlay',
-    id: 'open-apps-button',
-  },
-  {
-    namespace: 'mweb',
-    type: 'mweb-overlay-action',
-  },
-  {
-    namespace: 'mweb',
-    type: 'injected-widget',
-  },
-  {
-    namespace: 'mweb',
-    type: 'notch',
-  },
-]
-
 // Random ID used in chapters and pages for a unique context ID to create nested callouts in the future.
 const generateRandomId = () => {
   return Math.random().toString(16).substring(2, 10)
@@ -250,7 +197,21 @@ useEffect(() => {
   if (isEditMode || (localConfig && loggedInAccountId === mutatorId)) {
     setNoTarget(true)
     setEditMode(true)
+    return
   }
+
+  // User starts the app and there is no target for the first chapter
+  for (let i = chapterCounter + 1; i < editingConfig.chapters.length; i++) {
+    const nextChapter = editingConfig.chapters[i]
+    if (nextChapter.type === 'infobox' || props.query(nextChapter.target)) {
+      setChapterCounter(i)
+      setPageCounter(0)
+      return
+    }
+  }
+  setShowApp(false)
+  setChapterCounter(0)
+  setPageCounter(0)
 }, [editingConfig, chapterCounter])
 
 // If there is no config and the user is not a mutator do not show anything
@@ -319,6 +280,9 @@ const handleChapterIncrement = (updatedConfig) => {
         return
       }
     }
+    setShowApp(false)
+    setChapterCounter(0)
+    setPageCounter(0)
   }
 }
 
@@ -342,7 +306,7 @@ const getEmptyPages = (config) =>
   config.chapters
     .map((chapter, i) =>
       chapter.pages
-        .map((page, j) => (!page.title.trim() && !page.content.trim() ? `${i + 1}-${j + 1}` : null))
+        .map((page, j) => (!page.title.trim() && !page.content.trim() ? `${i + 1}.${j + 1}` : null))
         .filter((page) => page)
     )
     .filter((val) => val?.length)
@@ -743,11 +707,7 @@ return (
 
     {showApp ? (
       isEditTarget ? (
-        <DappletContextPicker
-          target={AllowedContextsToPick}
-          onClick={handleTargetSet}
-          LatchComponent={ContextTypeLatch}
-        />
+        <DappletContextPicker onClick={handleTargetSet} LatchComponent={ContextTypeLatch} />
       ) : !editingConfig?.chapters?.length ? (
         <DappletPortal
           inMemory

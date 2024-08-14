@@ -1,66 +1,3 @@
-const AllowedContextsToPick = [
-  {
-    namespace: '${REPL_ACCOUNT}/parser/twitter',
-    type: 'timeline',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/twitter',
-    type: 'post',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/twitter',
-    type: 'postSouthButton',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/twitter',
-    type: 'profile',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/twitter',
-    type: 'postAvatar',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/github',
-    type: 'profile',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/github',
-    type: 'post',
-  },
-  {
-    namespace: 'mweb',
-    type: 'mweb-overlay',
-    id: 'mutation-button',
-  },
-  {
-    namespace: 'mweb',
-    type: 'mweb-overlay',
-    id: 'open-apps-button',
-  },
-  {
-    namespace: 'mweb',
-    type: 'mweb-overlay-action',
-  },
-  {
-    namespace: 'mweb',
-    type: 'injected-widget',
-  },
-  {
-    namespace: 'mweb',
-    type: 'notch',
-  },
-  {
-    namespace: 'mweb',
-    type: 'mweb-gateway',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/near-social',
-  },
-  {
-    namespace: '${REPL_ACCOUNT}/parser/near-social-json',
-  },
-]
-
 const SKIN = 'META_GUIDE'
 
 const [isRunnigApp, toggleIsRunningApp] = useState(false)
@@ -236,11 +173,7 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
 return (
   <>
     {isRunnigApp ? (
-      <DappletContextPicker
-        target={AllowedContextsToPick}
-        onClick={setSelectedContext}
-        LatchComponent={ContextTypeLatch}
-      />
+      <DappletContextPicker onClick={setSelectedContext} LatchComponent={ContextTypeLatch} />
     ) : null}
 
     <DappletPortal

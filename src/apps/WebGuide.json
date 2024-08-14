@@ -10,59 +10,7 @@
     "targets": [
       {
         "namespace": "engine",
-        "contextType": "website",
-        "if": { "url": { "contains": "https://twitter.com/MrConCreator" } }
-      },
-      {
-        "namespace": "engine",
-        "contextType": "website",
-        "if": { "url": { "contains": "https://x.com/MrConCreator" } }
-      },
-      {
-        "namespace": "engine",
-        "contextType": "website",
-        "if": {
-          "url": {
-            "contains": "https://social.dapplets.org/mob.near/widget/ProfilePage?accountId=dappletsproject.near"
-          }
-        }
-      },
-      {
-        "namespace": "engine",
-        "contextType": "website",
-        "if": {
-          "url": {
-            "contains": "http://localhost:3000/mob.near/widget/ProfilePage?accountId=dappletsproject.near"
-          }
-        }
-      },
-      {
-        "namespace": "engine",
-        "contextType": "website",
-        "if": {
-          "url": {
-            "contains": "social.testnet.dapplets.org/mob.dapplets.testnet/widget/ProfilePage?accountId=bos.dapplets.testnet"
-          }
-        }
-      },
-      {
-        "namespace": "engine",
-        "contextType": "website",
-        "if": {
-          "url": {
-            "contains": "http://127.0.0.1:3000/mob.dapplets.testnet/widget/ProfilePage?accountId=bos.dapplets.testnet"
-          }
-        }
-      },
-      {
-        "namespace": "engine",
-        "contextType": "website",
-        "if": { "id": { "eq": "github.com" } }
-      },
-      {
-        "namespace": "engine",
-        "contextType": "website",
-        "if": { "id": { "eq": "www.github.com" } }
+        "contextType": "website"
       }
     ],
     "parsers": "any"
