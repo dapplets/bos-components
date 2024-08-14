@@ -26,15 +26,14 @@ ${JSON.stringify(selectedContext.parsed, null, 2)}
 \`\`\`
 `,
     skin: 'META_GUIDE',
-    children: ({ ref }) => {
+    onRefAttach: ({ ref }) => {
       props.attachContextRef(ref)
-      return props.children
     },
   }
   return (
     <Widget
       src="bos.dapplets.near/widget/WebGuide.OverlayTrigger"
-      loading={props?.children}
+      loading={<></>}
       props={widgetProps}
     />
   )
@@ -85,7 +84,7 @@ return (
         component={(props) => (
           <Widget
             src="bos.dapplets.near/widget/PickerAdapterTester.OverlayTrigger"
-            loading={props?.children}
+            loading={<></>}
             props={{
               handleClose: () => {
                 setSelectedContext(null)
@@ -94,9 +93,8 @@ return (
               setSelectedAdapter,
               toggleIsRunningApp,
               previousData: previousAdapter,
-              children: ({ ref }) => {
+              onRefAttach: ({ ref }) => {
                 props.attachContextRef(ref)
-                return props.children
               },
             }}
           />

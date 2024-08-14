@@ -256,6 +256,6 @@ return (
     offset={[0, 45]}
     overlay={<CustomTooltip bsPrefix="wg-tooltip">{callout}</CustomTooltip>}
   >
-    {typeof props.children === 'function' ? props.children : <span>{props.children}</span>}
+    {props.onRefAttach}
   </DappletOverlayTrigger>
 )

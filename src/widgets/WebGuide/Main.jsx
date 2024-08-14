@@ -571,7 +571,7 @@ const ChapterWrapper = (props) => {
   return (
     <Widget
       src="${REPL_ACCOUNT}/widget/WebGuide.OverlayTrigger"
-      loading={props?.children}
+      loading={<></>}
       props={{
         guideTitle: editingConfig.title,
         guideDescription: editingConfig.description,
@@ -608,16 +608,14 @@ const ChapterWrapper = (props) => {
         content: currentPage.content,
         showChecked: currentChapter.showChecked,
         mutatorId,
-        children:
+        onRefAttach:
           currentChapter.type === 'callout' && !noTarget
             ? ({ ref }) => {
                 props.attachContextRef(ref)
-                return props.children
               }
             : currentChapter.arrowTo === 'insPoint'
               ? ({ ref }) => {
                   props.attachInsPointRef(ref)
-                  return props.children
                 }
               : props.children,
         skin: currentChapter.skin ?? 'DEFAULT',
@@ -724,10 +722,9 @@ return (
                 onStart: handleStartCreation,
                 onConfigImport: handleConfigImport,
                 onClose: handleClose,
-                children: ({ ref }) => {
+                onRefAttach: ({ ref }) => {
                   // ToDo: move to the engine
                   props.attachContextRef(ref)
-                  return props.children
                 },
               }}
             />
