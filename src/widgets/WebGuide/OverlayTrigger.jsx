@@ -71,11 +71,14 @@ return props.type === 'callout' && !props.noTarget ? (
     offset={[0, 20]}
     overlay={
       <CustomTooltip bsPrefix={`wg-tooltip-${props.skin}`}>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/WebGuide.Page"
-          loading={props?.children}
-          props={{ ...props, children: undefined }}
-        />
+        {/* Don't remove div-wrapper. It fixes the React error: Functions are not valid as a React child */}
+        <div>
+          <Widget
+            src="${REPL_ACCOUNT}/widget/WebGuide.Page"
+            loading={props?.children}
+            props={{ ...props, children: undefined }}
+          />
+        </div>
       </CustomTooltip>
     }
   >

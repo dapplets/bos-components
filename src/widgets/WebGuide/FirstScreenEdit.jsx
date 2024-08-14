@@ -1,13 +1,4 @@
-const CustomTooltipDefault = styled('DappletTooltip')`
-  z-index: 99999999; // over the notch
-
-  &[data-popper-reference-hidden='true'] {
-    visibility: hidden;
-    pointer-events: none;
-  }
-`
-
-const CustomTooltipMeta = styled('DappletTooltip')`
+const CustomTooltip = styled('DappletTooltip')`
   z-index: 99999999; // over the notch
 
   &[data-popper-reference-hidden='true'] {
@@ -257,18 +248,13 @@ const callout = (
   </Callout>
 )
 
-const calloutTooltip = {
-  DEFAULT: () => <CustomTooltipDefault bsPrefix="wg-tooltip">{callout}</CustomTooltipDefault>,
-  META_GUIDE: () => <CustomTooltipMeta bsPrefix="wg-tooltip">{callout}</CustomTooltipMeta>,
-}
-
 return (
   <DappletOverlayTrigger
     show={true}
     popperConfig="fixed"
     placement="left"
     offset={[0, 45]}
-    overlay={calloutTooltip[skin]()}
+    overlay={<CustomTooltip bsPrefix="wg-tooltip">{callout}</CustomTooltip>}
   >
     {typeof props.children === 'function' ? props.children : <span>{props.children}</span>}
   </DappletOverlayTrigger>
