@@ -71,20 +71,12 @@ return props.type === 'callout' && !props.noTarget ? (
     offset={[0, 20]}
     overlay={
       <CustomTooltip bsPrefix={`wg-tooltip-${props.skin}`}>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/WebGuide.Page"
-          loading={props?.children}
-          props={{ ...props, children: undefined }}
-        />
+        <Widget src="${REPL_ACCOUNT}/widget/WebGuide.Page" props={props} loading={<></>} />
       </CustomTooltip>
     }
   >
-    {typeof props.children === 'function' ? props.children : <span>{props.children}</span>}
+    {props.onRefAttach}
   </DappletOverlayTrigger>
 ) : (
-  <Widget
-    src="${REPL_ACCOUNT}/widget/WebGuide.Page"
-    loading={props?.children}
-    props={{ ...props, children: undefined }}
-  />
+  <Widget src="${REPL_ACCOUNT}/widget/WebGuide.Page" loading={<></>} props={props} />
 )

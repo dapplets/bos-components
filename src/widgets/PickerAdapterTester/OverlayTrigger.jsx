@@ -1,4 +1,4 @@
-const { handleClose, setSelectedAdapter, toggleIsRunningApp, previousData } = props
+const { handleClose, setSelectedAdapter, toggleIsRunningApp, previousData, onRefAttach } = props
 
 return (
   <DappletOverlayTrigger
@@ -10,7 +10,7 @@ return (
       <div>
         <Widget
           src="bos.dapplets.near/widget/PickerAdapterTester.Input"
-          loading={props?.children}
+          loading={<></>}
           props={{
             handleClose,
             setSelectedAdapter,
@@ -21,6 +21,6 @@ return (
       </div>
     }
   >
-    {typeof props.children === 'function' ? props.children : <span>{props.children}</span>}
+    {onRefAttach}
   </DappletOverlayTrigger>
 )
