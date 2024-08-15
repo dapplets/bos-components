@@ -27,9 +27,8 @@ ${JSON.stringify(selectedContext.parsed, null, 2)}
 \`\`\`
 `,
     skin: SKIN,
-    children: ({ ref }) => {
+    onRefAttach: ({ ref }) => {
       props.attachContextRef(ref)
-      return props.children
     },
   }
 
@@ -37,7 +36,7 @@ ${JSON.stringify(selectedContext.parsed, null, 2)}
   return (
     <Widget
       src="${REPL_ACCOUNT}/widget/WebGuide.OverlayTrigger"
-      loading={props?.children}
+      loading={<></>}
       props={widgetProps}
     />
   )
