@@ -72,9 +72,10 @@ const TimelineLatch = styled.button`
 // ToDo: Styled components cause unnecessary re-rendering in BOS
 const NotchLatch = styled.button`
   display: flex;
-  position: absolute;
-  top: ${(props) => `${props.$height / 2 - 14}px`};
-  left: ${(props) => `${props.$position === 'right' ? props.$width : '-35'}px`};
+  position: fixed;
+  top: ${(props) => `${props.$top}px`};
+  margin-top: ${(props) => `${props.$height / 2 - 14}px`};
+  margin-left: ${(props) => `${props.$position === 'right' ? props.$width : '-35'}px`};
   width: ${(props) => `${props.$position === 'right' ? '28' : '32'}px`};
   height: 29px;
   padding: 0;
@@ -637,6 +638,7 @@ const ChapterWrapper = (props) => {
         handleExportConfig,
         handleSave,
         noTarget,
+        contextLevel: props.context?.level,
       }}
     />
   )
@@ -664,6 +666,7 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
         $variant={variant}
         $width={contextDimensions.width}
         $height={contextDimensions.height}
+        $top={contextDimensions.top}
         onClick={() => handleTargetSet(context)}
         $position={'right'}
       >
@@ -678,6 +681,7 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
         $variant={variant}
         $width={contextDimensions.width}
         $height={contextDimensions.height}
+        $top={contextDimensions.top}
         onClick={() => handleTargetSet(context)}
         $position={'left'}
       >

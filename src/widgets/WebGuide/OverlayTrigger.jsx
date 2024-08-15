@@ -1,7 +1,15 @@
 const CustomTooltip = styled('DappletTooltip')`
-  z-index: 99999999; // over the notch
+  z-index: 2000;
   min-height: 140px;
   width: 320px;
+
+  &[data-context-level='system'] {
+    z-index: 7000;
+  }
+
+  &[data-context-level='callout'] {
+    z-index: 10000;
+  }
 
   &[data-popper-reference-hidden='true'] {
     position: fixed !important;
@@ -70,7 +78,7 @@ return props.type === 'callout' && !props.noTarget ? (
     placement={props.placement ?? 'auto'}
     offset={[0, 20]}
     overlay={
-      <CustomTooltip bsPrefix={`wg-tooltip-${props.skin}`}>
+      <CustomTooltip bsPrefix={`wg-tooltip-${props.skin}`} data-context-level={props.contextLevel}>
         {/* Don't remove div-wrapper. It fixes the React error: Functions are not valid as a React child */}
         <div>
           <Widget

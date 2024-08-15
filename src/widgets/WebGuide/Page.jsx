@@ -84,7 +84,6 @@ const InfoBox = styled.div`
   border-radius: 20px;
   padding: 20px;
   gap: 20px;
-  z-index: 1000;
   box-shadow: none;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -124,7 +123,6 @@ const Callout = styled.div`
   &.edit-mode {
     width: 360px;
   }
-  z-index: 99999999;
 `
 
 const Header = styled.div`
@@ -1610,7 +1608,8 @@ return (
     {props.type === 'callout' ? (
       <Callout
         data-mweb-context-type="wg-chapter"
-        data-mweb-context-parsed={JSON.stringify({ id: props.id })}
+        data-mweb-context-parsed={JSON.stringify({ id: props.id + '-callout' })}
+        data-mweb-context-level="callout"
         className={isEditMode ? 'edit-mode' : ''}
       >
         {header}
