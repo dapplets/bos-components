@@ -17,7 +17,7 @@ const Callout = styled.div`
   gap: 10px;
   border-radius: 10px;
 
-  background: #f8f9ff;
+  background: #fff;
   box-shadow:
     0px 3px 6px 0px #4741fc0d,
     0px 11px 11px 0px #4741fc0a,
@@ -35,68 +35,70 @@ const Header = styled.div`
   color: #02193a;
   position: relative;
   display: flex;
-  flex-direction: column;
+
   width: 100%;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 `
-
-const TopLine = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 24px;
-  margin: 0;
-  padding: 0;
-`
-
-const LogoWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 70px;
-  height: 70px;
-  background: #ffffff;
-  border-radius: 50%;
-  box-shadow:
-    3px 2px 8px 0px #0000000d,
-    12px 8px 14px 0px #0000000a,
-    27px 18px 19px 0px #00000008,
-    47px 32px 23px 0px #00000003,
-    74px 50px 25px 0px #00000000;
-  margin-top: -20px;
-  margin-bottom: 10px;
-`
-
-const WebGuideIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="512"
-    height="512"
-    viewBox="0 0 512 512"
-    fill="none"
-  >
-    <circle cx="256" cy="256" r="256" fill="#384BFF" />
-    <path
-      d="M277.091 233.162V214.675C282.891 212.137 288.824 210.234 294.892 208.966C300.959 207.697 307.328 207.062 314 207.062C318.57 207.062 323.051 207.425 327.445 208.15C331.839 208.875 336.145 209.781 340.364 210.869V228.269C336.145 226.637 331.882 225.416 327.572 224.604C323.262 223.792 318.738 223.382 314 223.375C307.321 223.375 300.906 224.238 294.755 225.963C288.603 227.689 282.715 230.088 277.091 233.162ZM277.091 292.975V274.487C282.891 271.95 288.824 270.047 294.892 268.778C300.959 267.509 307.328 266.875 314 266.875C318.57 266.875 323.051 267.238 327.445 267.963C331.839 268.688 336.145 269.594 340.364 270.681V288.081C336.145 286.45 331.882 285.225 327.572 284.406C323.262 283.586 318.738 283.18 314 283.188C307.321 283.188 300.906 284.003 294.755 285.634C288.603 287.266 282.715 289.712 277.091 292.975ZM277.091 263.069V244.581C282.891 242.044 288.824 240.141 294.892 238.872C300.959 237.603 307.328 236.969 314 236.969C318.57 236.969 323.051 237.331 327.445 238.056C331.839 238.781 336.145 239.688 340.364 240.775V258.175C336.145 256.544 331.882 255.319 327.572 254.499C323.262 253.68 318.738 253.274 314 253.281C307.321 253.281 300.906 254.144 294.755 255.869C288.603 257.595 282.715 259.995 277.091 263.069ZM198 299.5C206.261 299.5 214.303 300.453 222.128 302.36C229.953 304.267 237.728 307.12 245.455 310.919V203.8C238.248 199.45 230.603 196.188 222.518 194.013C214.433 191.838 206.261 190.75 198 190.75C191.673 190.75 185.388 191.384 179.145 192.653C172.902 193.922 166.884 195.825 161.091 198.362V306.025C167.242 303.85 173.352 302.219 179.419 301.131C185.486 300.044 191.68 299.5 198 299.5ZM266.545 310.919C274.279 307.112 282.058 304.26 289.883 302.36C297.707 300.461 305.746 299.507 314 299.5C320.327 299.5 326.524 300.044 332.592 301.131C338.659 302.219 344.765 303.85 350.909 306.025V198.362C345.109 195.825 339.088 193.922 332.845 192.653C326.602 191.384 320.32 190.75 314 190.75C305.739 190.75 297.567 191.838 289.482 194.013C281.397 196.188 273.751 199.45 266.545 203.8V310.919ZM256 343C247.564 336.113 238.424 330.766 228.582 326.959C218.739 323.153 208.545 321.25 198 321.25C190.618 321.25 183.37 322.247 176.255 324.241C169.141 326.234 162.328 329.044 155.818 332.669C152.127 334.662 148.57 334.572 145.146 332.397C141.722 330.222 140.007 327.05 140 322.881V191.837C140 189.844 140.485 187.941 141.455 186.128C142.425 184.316 143.874 182.956 145.8 182.05C153.885 177.7 162.321 174.438 171.109 172.263C179.897 170.088 188.861 169 198 169C208.194 169 218.17 170.359 227.928 173.078C237.686 175.797 247.043 179.875 256 185.312C264.964 179.875 274.324 175.797 284.083 173.078C293.841 170.359 303.813 169 314 169C323.139 169 332.103 170.088 340.891 172.263C349.679 174.438 358.115 177.7 366.2 182.05C368.133 182.956 369.585 184.316 370.555 186.128C371.525 187.941 372.007 189.844 372 191.837V322.881C372 327.05 370.288 330.222 366.864 332.397C363.441 334.572 359.88 334.662 356.182 332.669C349.679 329.044 342.87 326.234 335.755 324.241C328.641 322.247 321.389 321.25 314 321.25C303.454 321.25 293.261 323.153 283.418 326.959C273.576 330.766 264.436 336.113 256 343Z"
-      fill="white"
-    />
-  </svg>
-)
 
 const CloseButton = styled.button`
-  display: flex;
-  flex-direction: row-reverse;
+  position: absolute;
+  right: 0;
   background: inherit;
   outline: none;
   border: none;
   padding: 0;
   cursor: pointer;
-  flex: 1;
 `
+
+const AddedChapterButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #4e77e1;
+  width: 50%;
+  font-size: 12px;
+  cursor: pointer;
+
+  svg {
+    margin-right: 5px;
+  }
+
+  &:hover&:not(:disabled) {
+    opacity: 0.5;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+  }
+`
+const iconPlus = (
+  <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
+    <path
+      d="M8.49967 14.6668C12.1816 14.6668 15.1663 11.6821 15.1663 8.00016C15.1663 4.31826 12.1816 1.3335 8.49967 1.3335C4.81778 1.3335 1.83301 4.31826 1.83301 8.00016C1.83301 11.6821 4.81778 14.6668 8.49967 14.6668Z"
+      stroke="#4E77E1"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M8.5 5.3335V10.6668"
+      stroke="#4E77E1"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M5.83301 8H11.1663"
+      stroke="#4E77E1"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
 
 const Title = styled.div`
   padding: 0;
@@ -175,12 +177,12 @@ const ImportButton = styled.button`
   display: flex;
   box-sizing: border-box;
   width: 100%;
-  padding: 12px 20px 6px;
+  padding: 0 20px;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
   cursor: pointer;
   background: transparent;
   border: none;
@@ -197,6 +199,160 @@ const ImportButton = styled.button`
   &:hover {
     opacity: 0.5;
   }
+`
+
+const ButtonsCreateBlock = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+`
+
+const EditInputsBlock = styled.div`
+  width: 100%;
+  padding: 10px;
+  padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+`
+
+const FloatingLabelContainer = styled.div`
+  border-radius: 10px;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  position: relative;
+  display: flex;
+  background: #f8f9ff;
+`
+
+const FloatingLabelContainerArea = styled.div`
+  background: #f8f9ff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  border-radius: 10px;
+`
+
+const StyledInput = styled.input`
+  padding: 20px 10px 5px;
+  background: inherit;
+  color: #02193a;
+  line-height: 100%;
+  font-size: 14px;
+  border-radius: 10px;
+  border: none;
+  width: 100%;
+  outline: none;
+
+  &:focus + label,
+  &:not(:placeholder-shown) + label {
+    top: 0.2rem;
+    font-size: 12px;
+    color: #bbccd0;
+    left: 10px;
+  }
+`
+
+const StyledInputOwner = styled.input`
+  padding: 20px 10px 5px;
+  background: #fff;
+  color: #02193a;
+  line-height: 100%;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid #f8f9ff;
+  width: 100%;
+  outline: none;
+
+  &:focus + label,
+  &:not(:placeholder-shown) + label {
+    top: 0.2rem;
+    font-size: 12px;
+    color: #bbccd0;
+    left: 10px;
+  }
+`
+
+const StyledLabel = styled.label`
+  position: absolute;
+  top: 25px;
+  left: 10px;
+  font-size: 1rem;
+  color: #bbccd0;
+  pointer-events: none;
+  transition: all 0.2s ease 0s;
+`
+
+const StyledTextarea = styled.textarea`
+  padding: 25px 10px 10px;
+  background: inherit;
+  color: #02193a;
+  line-height: 100%;
+  font-size: 13px;
+  border-radius: 10px;
+  width: 100%;
+  outline: none;
+  min-height: 150px;
+  position: relative;
+  border: none;
+
+  &::-webkit-resizer {
+    display: none;
+  }
+
+  &:focus + label,
+  &:not(:placeholder-shown) + label {
+    height: 25px;
+    width: 99%;
+    background: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    top: 0;
+    left: 10px;
+    font-size: 12px;
+  }
+`
+
+const ImageBlock = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  div:last-child {
+    width: 100%;
+  }
+`
+
+const InputContainer = styled.div`
+  display: flex;
+`
+const CustomFileUpload = styled.label`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 10%;
+  border: 1px solid #f8f9ff;
+  background: #fff;
+  cursor: pointer;
+  box-sizing: border-box;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+`
+
+const UploadInput = styled.input`
+  display: none;
 `
 
 const { skin, onClose, onStart, onConfigImport } = props
@@ -219,32 +375,90 @@ const filesOnChange = (files) => {
 const callout = (
   <Callout>
     <Header>
-      <TopLine>
-        <CloseButton onClick={onClose}>
-          <CloseIcon />
-        </CloseButton>
-      </TopLine>
+      <Title>
+        There's nothing here.
+        <br /> Be the first to create a guide.
+      </Title>
+
+      <CloseButton onClick={onClose}>
+        <CloseIcon />
+      </CloseButton>
     </Header>
 
-    <LogoWrapper>
-      <WebGuideIcon />
-    </LogoWrapper>
+    <EditInputsBlock>
+      <FloatingLabelContainer>
+        <StyledInputOwner
+          id={'Owner'}
+          type={'text'}
+          value={'Owner'}
+          onChange={(e) => {
+            //  todo: onChange
+          }}
+        />
+        <StyledLabel htmlFor={'Owner'}>Owner</StyledLabel>
+      </FloatingLabelContainer>
+      <ImageBlock>
+        <InputContainer>
+          <CustomFileUpload>
+            <UploadInput
+              value={''}
+              onChange={handleImageChange}
+              type="file"
+              accept=".png, .jpeg, .jpg, .svg"
+            />
+            {image?.ipfs_cid ? <Image image={image} /> : null}
+          </CustomFileUpload>
+        </InputContainer>
+        <FloatingLabelContainer>
+          <StyledInput
+            id={'Webguide_Icon'}
+            type={'text'}
+            value={'Webguide_Icon'}
+            onChange={(e) => {
+              //  todo: onChange
+            }}
+          />
+          <StyledLabel htmlFor={'Webguide_Icon'}>Webguide Icon</StyledLabel>
+        </FloatingLabelContainer>
+      </ImageBlock>
+      <FloatingLabelContainer>
+        <StyledInput
+          id={'Guide title'}
+          type={'text'}
+          value={'Guide title'}
+          onChange={(e) => {
+            //  todo: onChange
+          }}
+        />
+        <StyledLabel htmlFor={'Guide title'}>Guide title</StyledLabel>
+      </FloatingLabelContainer>
 
-    <Title>Create a web guide for your mutation</Title>
-    <ActionButton onClick={onStart}>Start</ActionButton>
-
-    <Files
-      multiple={false}
-      accepts={['application/json']}
-      minFileSize={1}
-      onChange={filesOnChange}
-      clickable
-    >
-      <ImportButton>
-        <ImportIcon />
-        Import
-      </ImportButton>
-    </Files>
+      <FloatingLabelContainerArea>
+        <StyledTextarea
+          id={'Description'}
+          value={'Description'}
+          onChange={(e) => {
+            //  todo: onChange
+          }}
+        ></StyledTextarea>
+        <StyledLabel htmlFor={'contDescriptionent'}>Description</StyledLabel>
+      </FloatingLabelContainerArea>
+    </EditInputsBlock>
+    <ButtonsCreateBlock>
+      <AddedChapterButton onClick={onStart}>{iconPlus}Add chapter</AddedChapterButton>
+      <Files
+        multiple={false}
+        accepts={['application/json']}
+        minFileSize={1}
+        onChange={filesOnChange}
+        clickable
+      >
+        <ImportButton>
+          <ImportIcon />
+          Import
+        </ImportButton>
+      </Files>
+    </ButtonsCreateBlock>
   </Callout>
 )
 
