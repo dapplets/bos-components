@@ -30,6 +30,7 @@ ${JSON.stringify(selectedContext.parsed, null, 2)}
     onRefAttach: ({ ref }) => {
       props.attachContextRef(ref)
     },
+    contextLevel: props.context?.level,
   }
 
   console.log('selectedContext', selectedContext)
