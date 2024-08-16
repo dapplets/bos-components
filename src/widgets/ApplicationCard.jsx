@@ -111,21 +111,21 @@ const plus = (
       height="16.5"
       rx="3.25"
       stroke="#7A818B"
-      stroke-width="1.5"
+      strokeWidth="1.5"
     />
     <path
       d="M12 8V16"
       stroke="#7A818B"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M8 12H16"
       stroke="#7A818B"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 )

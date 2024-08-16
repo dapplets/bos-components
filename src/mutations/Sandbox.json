@@ -9,7 +9,8 @@
   "$apps": [
     "${REPL_ACCOUNT}/app/Paywall",
     "${REPL_ACCOUNT}/app/Tipping",
-    "${REPL_ACCOUNT}/app/WebGuide"
+    "${REPL_ACCOUNT}/app/WebGuide",
+    "${REPL_ACCOUNT}/app/picker-example"
   ],
   "$targets": [
     {
@@ -23,6 +24,8 @@
             "github.com",
             "linkedin.com",
             "www.linkedin.com",
+            "youtube.com",
+            "www.youtube.com",
             "social.dapplets.org",
             "localhost",
             "127.0.0.1",

@@ -633,8 +633,8 @@ const iconEditTarget = (
       fill="white"
     />
     <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
+      fillRule="evenodd"
+      clipRule="evenodd"
       d="M7.95301 4.72754L2.76767 9.91354C2.47506 10.206 2.28031 10.582 2.21023 10.9897C2.14014 11.3974 2.19818 11.8168 2.37634 12.1902L1.33301 13.2335L2.27567 14.1769L3.31901 13.1329C3.69232 13.3111 4.1117 13.3693 4.51942 13.2993C4.92714 13.2293 5.30315 13.0347 5.59567 12.7422L10.781 7.55687L7.95301 4.72754ZM8.89567 7.55621L7.95301 6.61354L3.71034 10.8562C3.5889 10.9819 3.52171 11.1503 3.52323 11.3251C3.52474 11.4999 3.59486 11.6671 3.71846 11.7908C3.84207 11.9144 4.00928 11.9845 4.18407 11.986C4.35887 11.9875 4.52727 11.9203 4.65301 11.7989L8.89567 7.55621Z"
       fill="white"
     />
@@ -682,16 +682,16 @@ const iconPrevEdit = (
     <path
       d="M11.0837 7H2.91699"
       stroke="white"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M7.00033 11.0832L2.91699 6.99984L7.00033 2.9165"
       stroke="white"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 )
@@ -701,16 +701,16 @@ const iconNextEdit = (
     <path
       d="M2.91699 7H11.0837"
       stroke="white"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M7 2.9165L11.0833 6.99984L7 11.0832"
       stroke="white"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 )
@@ -720,23 +720,23 @@ const iconPlus = (
     <path
       d="M8.49967 14.6668C12.1816 14.6668 15.1663 11.6821 15.1663 8.00016C15.1663 4.31826 12.1816 1.3335 8.49967 1.3335C4.81778 1.3335 1.83301 4.31826 1.83301 8.00016C1.83301 11.6821 4.81778 14.6668 8.49967 14.6668Z"
       stroke="white"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M8.5 5.3335V10.6668"
       stroke="white"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M5.83301 8H11.1663"
       stroke="white"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 )
@@ -746,30 +746,30 @@ const iconRemove = (
     <path
       d="M2.5 4H3.83333H14.5"
       stroke="white"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M13.1663 4.00016V13.3335C13.1663 13.6871 13.0259 14.0263 12.7758 14.2763C12.5258 14.5264 12.1866 14.6668 11.833 14.6668H5.16634C4.81272 14.6668 4.47358 14.5264 4.22353 14.2763C3.97348 14.0263 3.83301 13.6871 3.83301 13.3335V4.00016M5.83301 4.00016V2.66683C5.83301 2.31321 5.97348 1.97407 6.22353 1.72402C6.47358 1.47397 6.81272 1.3335 7.16634 1.3335H9.83301C10.1866 1.3335 10.5258 1.47397 10.7758 1.72402C11.0259 1.97407 11.1663 2.31321 11.1663 2.66683V4.00016"
       stroke="white"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M7.16699 7.3335V11.3335"
       stroke="white"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M9.83301 7.3335V11.3335"
       stroke="white"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 )
@@ -779,7 +779,7 @@ const iconRevert = (
     <path
       d="M5.33333 2L2 5.33333L5.33333 8.66667M8 13.3333H10C10.5253 13.3333 11.0454 13.2299 11.5307 13.0289C12.016 12.8278 12.457 12.5332 12.8284 12.1618C13.1999 11.7903 13.4945 11.3494 13.6955 10.8641C13.8965 10.3788 14 9.85862 14 9.33333C14 8.80805 13.8965 8.2879 13.6955 7.8026C13.4945 7.3173 13.1999 6.87634 12.8284 6.50491C12.457 6.13347 12.016 5.83883 11.5307 5.63782C11.0454 5.4368 10.5253 5.33333 10 5.33333H2.66667"
       stroke="white"
-      stroke-width="1.5"
+      strokeWidth="1.5"
     />
   </svg>
 )

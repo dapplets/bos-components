@@ -38,7 +38,7 @@ return (
   >
     {widget.linkAuthorId === context.accountId && !widget.static ? (
       isWaiting ? (
-        <span role="status" aria-hidden="true" class="spinner-grow spinner-grow-sm" />
+        <span role="status" aria-hidden="true" className="spinner-grow spinner-grow-sm" />
       ) : (
         <Widget
           loading={<></>}
