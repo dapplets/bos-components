@@ -117,25 +117,29 @@ const Title = styled.div`
 const ActionButton = styled.div`
   display: flex;
   box-sizing: border-box;
-  width: 160px;
-  height: 42px;
-  padding: 0px 20px;
-  justify-content: center;
+  width: auto;
+  height: 30px;
   align-items: center;
-  border-radius: 10px;
   text-align: center;
-  font-size: 14px;
   cursor: pointer;
-
-  background: #3848ff;
-  color: #fff;
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE/Edge */
   user-select: none;
+  background: inherit;
+  border: none;
+  border-radius: none;
+  justify-content: flex-start;
+  padding: 0;
+  font-size: 12px;
+  color: #384bff;
 
-  &:hover {
+  &:hover&:not(:disabled) {
     opacity: 0.5;
+  }
+
+  &:disabled {
+    opacity: 0.3;
   }
 `
 
@@ -169,6 +173,25 @@ const ImportIcon = () => (
     <path
       d="M12.7902 9C12.4168 9 12.0902 9.2329 11.826 9.50235L9.326 12.0523C9.15189 12.2299 8.94519 12.3708 8.7177 12.4669C8.49021 12.563 8.24639 12.6125 8.00016 12.6125C7.75393 12.6125 7.51011 12.563 7.28263 12.4669C7.05514 12.3708 6.84844 12.2299 6.67433 12.0523L4.17433 9.50235C3.91016 9.2329 3.5835 9 3.21016 9H1.3335C1.3335 10.8035 2.03588 12.5331 3.28612 13.8083C4.53636 15.0836 6.23205 15.8 8.00016 15.8C9.76827 15.8 11.464 15.0836 12.7142 13.8083C13.9645 12.5331 14.6668 10.8035 14.6668 9H12.7902Z"
       fill="#4E77E1"
+    />
+  </svg>
+)
+
+const iconNextEdit = (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <path
+      d="M2.91699 7H11.0837"
+      stroke="#384BFF"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M7 2.9165L11.0833 6.99984L7 11.0832"
+      stroke="#384BFF"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 )
@@ -355,6 +378,34 @@ const UploadInput = styled.input`
   display: none;
 `
 
+const CancelButton = styled.button`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 12px !important;
+  width: 135px;
+  background: transparent;
+  border-radius: 10px;
+  border: 1px solid #e2e2e5;
+  cursor: pointer;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 149%;
+  text-align: center;
+  color: #e2e2e5;
+  transition-duration: 0.2s;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+`
+
 const { skin, onClose, onStart, onConfigImport } = props
 
 const filesOnChange = (files) => {
@@ -384,6 +435,19 @@ const callout = (
         <CloseIcon />
       </CloseButton>
     </Header>
+    {btn && (
+      <ButtonsCreateBlock>
+        <ActionButton
+          key={btn.label}
+          onClick={() => {
+            btn.onClick()
+          }}
+          disabled={btn.disabled}
+        >
+          {btn.label.toLowerCase().includes('next') ? iconNextEdit : null}
+        </ActionButton>
+      </ButtonsCreateBlock>
+    )}
 
     <EditInputsBlock>
       <FloatingLabelContainer>
@@ -458,6 +522,17 @@ const callout = (
           Import
         </ImportButton>
       </Files>
+    </ButtonsCreateBlock>
+    <ButtonsCreateBlock>
+      <CancelButton
+        onClick={() => {
+          // todo: cancel
+        }}
+      >
+        Cancel
+      </CancelButton>
+
+      {/* todo: need merge 4707 */}
     </ButtonsCreateBlock>
   </Callout>
 )
