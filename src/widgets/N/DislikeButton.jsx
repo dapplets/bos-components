@@ -36,7 +36,6 @@ const hasDislike = context.accountId && !!dislikesByUsers[context.accountId]
 const heartSvg = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    class="icon icon-tabler icon-tabler-thumb-down"
     width="24"
     height="24"
     viewBox="0 0 24 24"
@@ -54,7 +53,7 @@ const heartSvg = (
 const heartFillSvg = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    class="icon icon-tabler icon-tabler-thumb-down-filled"
+    className="icon icon-tabler icon-tabler-thumb-down-filled"
     width="24"
     height="24"
     viewBox="0 0 24 24"

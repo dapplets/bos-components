@@ -71,7 +71,7 @@ return (
             >
               {widget.linkAuthorId === context.accountId && !widget.static ? (
                 waitingAppIdsSet.has(widget.linkId) ? (
-                  <span role="status" aria-hidden="true" class="spinner-grow spinner-grow-sm" />
+                  <span role="status" aria-hidden="true" className="spinner-grow spinner-grow-sm" />
                 ) : (
                   <Widget
                     src="${REPL_ACCOUNT}/widget/LayoutManager.DeleteWidgetButton"

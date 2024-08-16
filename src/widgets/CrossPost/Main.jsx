@@ -92,7 +92,7 @@ if (isLoading) {
   return (
     <Button disabled>
       <div>
-        <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+        <span className="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
       </div>
       <div>Sending...</div>
     </Button>
