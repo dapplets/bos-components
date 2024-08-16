@@ -123,12 +123,13 @@ const arrowIcon = (
     />
   </svg>
 )
-const editActions = [
+
+const { disabled, onMainButtonClick, customActions } = props
+
+const editActions = customActions ?? [
   { value: 'publish', title: 'Publish' },
   { value: 'export', title: 'Export guide' },
 ]
-
-const { disabled, onMainButtonClick } = props
 const [currentEditAction, setCurrentEditAction] = useState(editActions[0])
 const [isSaveOrExportDropdownOpened, setIsSaveOrExportDropdownOpened] = useState(false)
 
