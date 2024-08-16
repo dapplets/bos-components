@@ -7,13 +7,7 @@
     "targets": [
       {
         "namespace": "${REPL_ACCOUNT}/parser/twitter",
-        "contextType": "post",
-        "isVisible": true,
-        "if": { "id": { "not": null } },
-        "limit": 1,
-        "injectTo": "southPanel",
-        "componentId": "${REPL_ACCOUNT}/widget/ContextVisibilityExample.Main",
-        "static": true
+        "contextType": "root"
       }
     ]
   }
