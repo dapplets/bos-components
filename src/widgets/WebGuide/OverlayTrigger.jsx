@@ -63,7 +63,7 @@ const CustomTooltip = styled('DappletTooltip')`
   }
 `
 
-return props.type === 'callout' ? (
+return props.type === 'callout' && !props.noTarget ? (
   <DappletOverlayTrigger
     show={true}
     popperConfig={{ strategy: props.strategy ?? 'absolute' }}
@@ -71,22 +71,12 @@ return props.type === 'callout' ? (
     offset={[0, 20]}
     overlay={
       <CustomTooltip bsPrefix={`wg-tooltip-${props.skin}`}>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/WebGuide.Page"
-          loading={props?.children}
-          props={{ ...props, children: undefined }}
-        />
+        <Widget src="${REPL_ACCOUNT}/widget/WebGuide.Page" props={props} loading={<></>} />
       </CustomTooltip>
     }
   >
-    {typeof props.children === 'function' ? props.children : <span>{props.children}</span>}
+    {props.onRefAttach}
   </DappletOverlayTrigger>
-) : props.type === 'infobox' ? (
-  <Widget
-    src="${REPL_ACCOUNT}/widget/WebGuide.Page"
-    loading={props?.children}
-    props={{ ...props, children: undefined }}
-  />
 ) : (
-  <></>
+  <Widget src="${REPL_ACCOUNT}/widget/WebGuide.Page" loading={<></>} props={props} />
 )
