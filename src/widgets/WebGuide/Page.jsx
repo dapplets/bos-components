@@ -1606,12 +1606,7 @@ const editPage = (
 return (
   <Theme skin={skin}>
     {props.type === 'callout' ? (
-      <Callout
-        data-mweb-context-type="wg-chapter"
-        data-mweb-context-parsed={JSON.stringify({ id: props.id + '-callout' })}
-        data-mweb-context-level="callout"
-        className={isEditMode ? 'edit-mode' : ''}
-      >
+      <Callout className={isEditMode ? 'edit-mode' : ''}>
         {header}
         {isEditMode ? (
           editPage

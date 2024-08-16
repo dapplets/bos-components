@@ -8,7 +8,7 @@ const CustomTooltip = styled('DappletTooltip')`
   }
 
   &[data-context-level='callout'] {
-    z-index: 10000;
+    z-index: 9000;
   }
 
   &[data-popper-reference-hidden='true'] {
@@ -78,7 +78,13 @@ return props.type === 'callout' && !props.noTarget ? (
     placement={props.placement ?? 'auto'}
     offset={[0, 20]}
     overlay={
-      <CustomTooltip bsPrefix={`wg-tooltip-${props.skin}`} data-context-level={props.contextLevel}>
+      <CustomTooltip
+        bsPrefix={`wg-tooltip-${props.skin}`}
+        data-context-level={props.contextLevel}
+        data-mweb-context-type="wg-chapter"
+        data-mweb-context-parsed={JSON.stringify({ id: props.id + '-callout' })}
+        data-mweb-context-level="callout"
+      >
         <Widget src="${REPL_ACCOUNT}/widget/WebGuide.Page" props={props} loading={<></>} />
       </CustomTooltip>
     }

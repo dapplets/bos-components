@@ -208,7 +208,16 @@ return (
     />
 
     {isRunnigApp && selectedContext ? (
-      <DappletPortal inMemory target={selectedContext} component={ChapterWrapper} />
+      <>
+        <DappletPortal inMemory target={selectedContext} component={ChapterWrapper} />
+        <Highlighter
+          target={selectedContext}
+          styles={{
+            borderColor: 'rgb(255 47 104)',
+            backgroundColor: 'rgb(255 47 104 / 10%)',
+          }}
+        />
+      </>
     ) : null}
   </>
 )
