@@ -8,8 +8,9 @@
       {
         "namespace": "${REPL_ACCOUNT}/parser/twitter",
         "contextType": "post",
-        "if": { "id": { "not": null } },
         "isVisible": true,
+        "if": { "id": { "not": null } },
+        "limit": 1,
         "injectTo": "southPanel",
         "componentId": "${REPL_ACCOUNT}/widget/ContextVisibilityExample.Main",
         "static": true
