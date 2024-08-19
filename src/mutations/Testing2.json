@@ -54,6 +54,7 @@
     "${REPL_ACCOUNT}/app/ControllerExample",
     "${REPL_ACCOUNT}/app/ContextQueryExample",
     "${REPL_ACCOUNT}/app/ContextVisibilityExample",
-    "${REPL_ACCOUNT}/app/WebGuideTest"
+    "${REPL_ACCOUNT}/app/WebGuideTest",
+    "${REPL_ACCOUNT}/app/BlinkExample"
   ]
 }
