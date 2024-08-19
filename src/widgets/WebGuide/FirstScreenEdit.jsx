@@ -74,6 +74,7 @@ const AddedChapterButton = styled.button`
     opacity: 0.3;
   }
 `
+
 const iconPlus = (
   <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
     <path
@@ -356,6 +357,7 @@ const ImageBlock = styled.div`
 const InputContainer = styled.div`
   display: flex;
 `
+
 const CustomFileUpload = styled.label`
   display: flex;
   justify-content: center;
