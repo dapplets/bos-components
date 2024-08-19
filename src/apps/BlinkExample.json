@@ -6,8 +6,10 @@
     "targets": [
       {
         "namespace": "engine",
-        "contextType": "blink",
-        "if": { "id": { "not": null } },
+        "contextType": "link",
+        "if": {
+          "innerText": { "contains": "https://augm.link" }
+        },
         "componentId": "${REPL_ACCOUNT}/widget/BlinkExample.Main",
         "static": true
       }
