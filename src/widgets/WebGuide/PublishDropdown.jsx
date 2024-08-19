@@ -126,12 +126,12 @@ const arrowIcon = (
 
 const { disabled, onMainButtonClick, customActions } = props
 
-const [currentEditAction, setCurrentEditAction] = useState(editActions[0])
-const [isSaveOrExportDropdownOpened, setIsSaveOrExportDropdownOpened] = useState(false)
+const [currentEditAction, setCurrentEditAction] = useState(customActions[0])
+const [isOpen, setOpen] = useState(false)
 
 const handleButtonItemClick = (item) => {
   setCurrentEditAction(item)
-  setIsSaveOrExportDropdownOpened(false)
+  setOpen(false)
 }
 
 return (
@@ -141,12 +141,10 @@ return (
         <TextSave>{currentEditAction.title}</TextSave>
       </LeftButton>
 
-      <RightButton onClick={() => setIsSaveOrExportDropdownOpened(!isSaveOrExportDropdownOpened)}>
-        {arrowIcon}
-      </RightButton>
+      <RightButton onClick={() => setOpen(!isOpen)}>{arrowIcon}</RightButton>
     </ButtonGroup>
 
-    {isSaveOrExportDropdownOpened ? (
+    {isOpen ? (
       <ItemGroup>
         {customActions.map((customAction) => (
           <DropdownButtonItem
