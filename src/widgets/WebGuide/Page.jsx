@@ -1441,6 +1441,10 @@ const editPage = (
             newContent !== (content ?? '')
           ),
           onMainButtonClick: handleMainButtonClick,
+          customActions: [
+            { value: 'publish', title: 'Publish' },
+            { value: 'export', title: 'Export guide' },
+          ],
         }}
       />
     </EditButtonsBlock>

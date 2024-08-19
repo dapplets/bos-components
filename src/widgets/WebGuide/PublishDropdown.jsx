@@ -126,10 +126,6 @@ const arrowIcon = (
 
 const { disabled, onMainButtonClick, customActions } = props
 
-const editActions = customActions ?? [
-  { value: 'publish', title: 'Publish' },
-  { value: 'export', title: 'Export guide' },
-]
 const [currentEditAction, setCurrentEditAction] = useState(editActions[0])
 const [isSaveOrExportDropdownOpened, setIsSaveOrExportDropdownOpened] = useState(false)
 
@@ -152,12 +148,12 @@ return (
 
     {isSaveOrExportDropdownOpened ? (
       <ItemGroup>
-        {editActions.map((editAction) => (
+        {customActions.map((customAction) => (
           <DropdownButtonItem
-            key={editAction.value}
-            onClick={() => handleButtonItemClick(editAction)}
+            key={customAction.value}
+            onClick={() => handleButtonItemClick(customAction)}
           >
-            {editAction.title}
+            {customAction.title}
           </DropdownButtonItem>
         ))}
       </ItemGroup>
