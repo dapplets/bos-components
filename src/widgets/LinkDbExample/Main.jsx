@@ -26,8 +26,8 @@ const handleClick = () => {
 
 if (isLoading) {
   return (
-    <button class="btn btn-primary btn-sm" type="button" disabled>
-      <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+    <button className="btn btn-primary btn-sm" type="button" disabled>
+      <span className="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
     </button>
   )
 }
