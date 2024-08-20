@@ -10,34 +10,32 @@ const ButtonGroup = styled.div`
 `
 
 const LeftButton = styled('DappletFileDownloader')`
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
   background: var(--primBtnBg);
   color: var(--primBtnCol);
-  width: 125px;
+  max-width: 125px;
   padding: 10px 12px !important;
-
   font-size: 14px;
   font-weight: 400;
   line-height: 20.86px;
   text-align: center;
   cursor: pointer;
-
   &:disabled {
     opacity: 0.5;
     cursor: auto;
   }
-
   &:hover:not(:disabled) {
     opacity: 0.75;
   }
-
   &:active:not(:disabled) {
     opacity: 0.5;
   }
 `
+
 const TextSave = styled.div`
   display: inline-block;
   overflow: hidden;
@@ -56,20 +54,16 @@ const RightButton = styled.button`
   border-left: 1px solid rgba(226, 226, 229, 0.6);
   background: var(--primBtnBg);
   cursor: pointer;
-
   &:disabled {
     opacity: 0.5;
     cursor: auto;
   }
-
   &:hover:not(:disabled) {
     opacity: 0.75;
   }
-
   &:active:not(:disabled) {
     opacity: 0.5;
   }
-
   svg {
     width: 10px;
     transform: rotate(180deg);
@@ -84,7 +78,7 @@ const ItemGroup = styled.div`
   flex-direction: column;
   right: 0;
   top: -100px;
-  width: 146px;
+  width: 125px;
   padding: 10px 16px;
   gap: 5px;
   border-radius: 10px;
@@ -93,23 +87,6 @@ const ItemGroup = styled.div`
   font-weight: 400;
   text-align: center;
   color: #222222;
-`
-
-const DropdownButtonItem = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 31px;
-  border-radius: 4px;
-  cursor: pointer;
-  border: none;
-  background: inherit;
-
-  &:hover {
-    background: #e2e2e5;
-    color: var(--primBtnCol);
-  }
 `
 
 const arrowIcon = (
@@ -124,6 +101,22 @@ const arrowIcon = (
   </svg>
 )
 
+const DropdownButtonItem = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 31px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  background: inherit;
+  &:hover {
+    background: #e2e2e5;
+    color: var(--primBtnCol);
+  }
+`
+
 const { disabled, onMainButtonClick, customActions } = props
 
 const [currentEditAction, setCurrentEditAction] = useState(customActions[0])
@@ -137,7 +130,10 @@ const handleButtonItemClick = (item) => {
 return (
   <DropdownWrapper>
     <ButtonGroup>
-      <LeftButton disabled={disabled} onClick={() => onMainButtonClick(currentEditAction.value)}>
+      <LeftButton
+        disabled={disabled && currentEditAction.value === 'publish'}
+        onClick={() => onMainButtonClick(currentEditAction.value)}
+      >
         <TextSave>{currentEditAction.title}</TextSave>
       </LeftButton>
 

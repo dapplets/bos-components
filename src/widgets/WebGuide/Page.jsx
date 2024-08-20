@@ -1419,18 +1419,17 @@ const editPage = (
     ) : null}
 
     <EditButtonsBlock>
-      {isEditMode ? (
-        <SuccessButton
-          onClick={() => {
-            setEditMode(false)
-            handleRemoveAllChanges()
-          }}
-        >
-          {isConfigEdited || newTitle !== (title ?? '') || newContent !== (content ?? '')
-            ? 'Delete all local changes'
-            : 'Cancel'}
-        </SuccessButton>
-      ) : null}
+      <SuccessButton
+        onClick={() => {
+          setEditMode(false)
+          handleRemoveAllChanges()
+        }}
+      >
+        {isConfigEdited || newTitle !== (title ?? '') || newContent !== (content ?? '')
+          ? 'Delete all local changes'
+          : 'Cancel'}
+      </SuccessButton>
+
       <Widget
         src="${REPL_ACCOUNT}/widget/WebGuide.PublishDropdown"
         loading={props?.children}
