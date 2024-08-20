@@ -573,6 +573,7 @@ const ChapterWrapper = (props) => {
       src="${REPL_ACCOUNT}/widget/WebGuide.OverlayTrigger"
       loading={<></>}
       props={{
+        widgetId: '${REPL_ACCOUNT}/widget/WebGuide.Page',
         guideTitle: editingConfig.title,
         guideDescription: editingConfig.description,
         isConfigEdited: !isDeepEqual(editingConfig, guideConfig),
@@ -592,6 +593,7 @@ const ChapterWrapper = (props) => {
             ? 'fixed'
             : undefined
           : currentChapter.strategy, // ToDo: cannot define strategy for target
+        offset: [0, 20],
         navi: {
           currentChapterIndex: chapterCounter,
           totalChapters: editingConfig.chapters.length,
@@ -716,8 +718,14 @@ return (
           }}
           component={(props) => (
             <Widget
-              src="${REPL_ACCOUNT}/widget/WebGuide.FirstScreenEdit"
+              src="${REPL_ACCOUNT}/widget/WebGuide.OverlayTrigger"
               props={{
+                widgetId: '${REPL_ACCOUNT}/widget/WebGuide.FirstScreenEdit',
+                type: 'callout',
+                strategy: 'fixed',
+                placement: 'left',
+                offset: [0, 45],
+                noArrow: true,
                 skin: 'META_GUIDE',
                 onStart: handleStartCreation,
                 onConfigImport: handleConfigImport,

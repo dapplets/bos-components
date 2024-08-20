@@ -1,29 +1,20 @@
-const CustomTooltip = styled('DappletTooltip')`
-  z-index: 99999999; // over the notch
-
-  &[data-popper-reference-hidden='true'] {
-    visibility: hidden;
-    pointer-events: none;
-  }
-`
-
-const Callout = styled.div`
+const Container = styled.div`
   display: flex;
   width: 320px;
   padding: 12px 14px 14px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
   border-radius: 10px;
 
   background: #fff;
   box-shadow:
-    0px 3px 6px 0px #4741fc0d,
-    0px 11px 11px 0px #4741fc0a,
-    0px 25px 15px 0px #4741fc08,
-    0px 44px 17px 0px #4741fc03,
-    0px 68px 19px 0px #4741fc00;
+    0px 68px 19px rgba(34, 34, 34, 0.01),
+    0px 44px 17px rgba(34, 34, 34, 0.01),
+    0px 25px 15px rgba(34, 34, 34, 0.03),
+    0px 11px 11px rgba(34, 34, 34, 0.04),
+    0px 3px 6px rgba(34, 34, 34, 0.05);
 
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -239,13 +230,13 @@ const EditInputsBlock = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
+  gap: 10px;
 `
 
 const FloatingLabelContainer = styled.div`
   border-radius: 10px;
   overflow: hidden;
   box-sizing: border-box;
-  margin-bottom: 10px;
   position: relative;
   display: flex;
   background: #f8f9ff;
@@ -256,7 +247,6 @@ const FloatingLabelContainerArea = styled.div`
   border-radius: 10px;
   overflow: hidden;
   box-sizing: border-box;
-  margin-bottom: 10px;
   position: relative;
   flex: 1 1 auto;
   display: flex;
@@ -345,20 +335,51 @@ const StyledTextarea = styled.textarea`
 `
 
 const ImageBlock = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 
-  div:last-child {
-    width: 100%;
+  & > .d-inline-block {
+    width: ${(props) => (props.$hasImage ? '100%' : '')};
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+
+    & > div:has(img) {
+      width: 42px !important;
+      height: 42px !important;
+    }
+
+    img {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 10%;
+      border: 1px solid #f8f9ff;
+      background: #fff;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    & > div:last-child {
+      height: fit-content;
+      color: #4e77e1 !important;
+      border-color: #4e77e1 !important;
+      font-size: 14px;
+
+      &:hover,
+      &:active {
+        color: #fff !important;
+        background: #4e77e1 !important;
+      }
+    }
   }
 `
 
-const InputContainer = styled.div`
-  display: flex;
-`
-
-const CustomFileUpload = styled.label`
+const ImageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -367,17 +388,8 @@ const CustomFileUpload = styled.label`
   border-radius: 10%;
   border: 1px solid #f8f9ff;
   background: #fff;
-  cursor: pointer;
   box-sizing: border-box;
   overflow: hidden;
-  img {
-    width: 100%;
-    height: 100%;
-  }
-`
-
-const UploadInput = styled.input`
-  display: none;
 `
 
 const CancelButton = styled.button`
@@ -408,7 +420,20 @@ const CancelButton = styled.button`
   }
 `
 
+const ImagePlaceholder = () => (
+  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M1.33333 12C0.966667 12 0.652889 11.8696 0.392 11.6087C0.131111 11.3478 0.000444444 11.0338 0 10.6667V1.33333C0 0.966667 0.130667 0.652889 0.392 0.392C0.653333 0.131111 0.967111 0.000444444 1.33333 0H10.6667C11.0333 0 11.3473 0.130667 11.6087 0.392C11.87 0.653333 12.0004 0.967111 12 1.33333V10.6667C12 11.0333 11.8696 11.3473 11.6087 11.6087C11.3478 11.87 11.0338 12.0004 10.6667 12H1.33333ZM2 9.33333H10L7.5 6L5.5 8.66667L4 6.66667L2 9.33333Z"
+      fill="#7A818B"
+    />
+  </svg>
+)
+
 const { skin, onClose, onStart, onConfigImport } = props
+
+State.init({ image: {} })
+const [title, setTitle] = useState('')
+const [description, setDescription] = useState('')
 
 const filesOnChange = (files) => {
   if (!files?.length) return
@@ -425,8 +450,8 @@ const filesOnChange = (files) => {
     })
 }
 
-const callout = (
-  <Callout>
+return (
+  <Container>
     <Header>
       <Title>
         There's nothing here.
@@ -453,61 +478,34 @@ const callout = (
 
     <EditInputsBlock>
       <FloatingLabelContainer>
-        <StyledInputOwner
-          id={'Owner'}
-          type={'text'}
-          value={'Owner'}
-          onChange={(e) => {
-            //  todo: onChange
-          }}
-        />
-        <StyledLabel htmlFor={'Owner'}>Owner</StyledLabel>
+        <StyledInputOwner id={'owner'} type={'text'} value={context.accountId} readOnly />
+        <StyledLabel htmlFor={'owner'}>Owner</StyledLabel>
       </FloatingLabelContainer>
-      <ImageBlock>
-        <InputContainer>
-          <CustomFileUpload>
-            <UploadInput
-              value={''}
-              onChange={handleImageChange}
-              type="file"
-              accept=".png, .jpeg, .jpg, .svg"
-            />
-            {image?.ipfs_cid ? <Image image={image} /> : null}
-          </CustomFileUpload>
-        </InputContainer>
-        <FloatingLabelContainer>
-          <StyledInput
-            id={'Webguide_Icon'}
-            type={'text'}
-            value={'Webguide_Icon'}
-            onChange={(e) => {
-              //  todo: onChange
-            }}
-          />
-          <StyledLabel htmlFor={'Webguide_Icon'}>Webguide Icon</StyledLabel>
-        </FloatingLabelContainer>
+      <ImageBlock $hasImage={!!state.image.cid}>
+        {state.image.cid ? null : (
+          <ImageWrapper>
+            <ImagePlaceholder />
+          </ImageWrapper>
+        )}
+        <IpfsImageUpload image={state.image} />
       </ImageBlock>
       <FloatingLabelContainer>
         <StyledInput
-          id={'Guide title'}
+          id={'title'}
           type={'text'}
-          value={'Guide title'}
-          onChange={(e) => {
-            //  todo: onChange
-          }}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
-        <StyledLabel htmlFor={'Guide title'}>Guide title</StyledLabel>
+        <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
       </FloatingLabelContainer>
 
       <FloatingLabelContainerArea>
         <StyledTextarea
-          id={'Description'}
-          value={'Description'}
-          onChange={(e) => {
-            //  todo: onChange
-          }}
+          id={'description'}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
         ></StyledTextarea>
-        <StyledLabel htmlFor={'contDescriptionent'}>Description</StyledLabel>
+        <StyledLabel htmlFor={'description'}>Description</StyledLabel>
       </FloatingLabelContainerArea>
     </EditInputsBlock>
     <ButtonsCreateBlock>
@@ -536,17 +534,5 @@ const callout = (
 
       {/* todo: need merge 4707 */}
     </ButtonsCreateBlock>
-  </Callout>
-)
-
-return (
-  <DappletOverlayTrigger
-    show={true}
-    popperConfig="fixed"
-    placement="left"
-    offset={[0, 45]}
-    overlay={<CustomTooltip bsPrefix="wg-tooltip">{callout}</CustomTooltip>}
-  >
-    {props.onRefAttach}
-  </DappletOverlayTrigger>
+  </Container>
 )
