@@ -118,6 +118,13 @@ const deepCopy = (obj) => JSON.parse(JSON.stringify(obj))
 // ToDo: naive deep compare
 const isDeepEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b)
 
+const clearTreeBranch = (node) => ({
+  namespace: node.namespace,
+  type: node.namespace,
+  id: node.id,
+  parent: node.parent ? clearTreeBranch(node.parent) : undefined,
+})
+
 const configTemplate = {
   action: true,
 }
@@ -387,7 +394,7 @@ const handleTargetSet = (newTarget) => {
   const updatedChapter = updatedConfig.chapters[chapterCounter]
 
   updatedChapter.type = 'callout'
-  updatedChapter.target = newTarget
+  updatedChapter.target = newTarget ? clearTreeBranch(newTarget) : null
 
   setEditingConfig(updatedConfig)
   saveConfigToLocalStorage(updatedConfig)
