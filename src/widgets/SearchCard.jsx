@@ -135,7 +135,7 @@ return (
       {!props.hideButtons && (
         <ButtonLink onClick={props.onComponentSelect} primary disabled={props.isWaiting}>
           {props.isWaiting ? (
-            <span role="status" aria-hidden="true" class="spinner-grow spinner-grow-sm" />
+            <span role="status" aria-hidden="true" className="spinner-grow spinner-grow-sm" />
           ) : (
             plus
           )}

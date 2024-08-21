@@ -65,7 +65,7 @@ const handleSaveClick = () => {
 }
 
 return (
-  <div class="container">
+  <div className="container">
     <div style={{ marginBottom: '1rem' }}>
       <label for="query">Path</label>
       <input
@@ -88,7 +88,7 @@ return (
       ></textarea>
     </div>
     <div style={{ marginBottom: '1rem' }}>
-      <button type="button" class="btn btn-primary" onClick={handleSaveClick}>
+      <button type="button" className="btn btn-primary" onClick={handleSaveClick}>
         Save
       </button>
     </div>
