@@ -738,9 +738,15 @@ return (
         </OverlayTriggerWrapper>
       ) : currentChapter.target ? (
         <>
-          <DappletPortal inMemory target={currentChapter.target} component={ChapterWrapper} />
+          <DappletPortal
+            inMemory
+            target={currentChapter.target}
+            component={ChapterWrapper}
+            isFirstTargetOnly={currentChapter.isFirstTargetOnly}
+          />
           <Highlighter
             target={currentChapter.target}
+            isFirstTargetOnly={currentChapter.isFirstTargetOnly}
             styles={{
               borderColor: '#14AE5C',
               backgroundColor: 'rgb(56 255 63 / 10%)',
