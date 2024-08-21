@@ -10,7 +10,8 @@
     "${REPL_ACCOUNT}/app/Paywall",
     "${REPL_ACCOUNT}/app/Tipping",
     "${REPL_ACCOUNT}/app/WebGuide",
-    "${REPL_ACCOUNT}/app/picker-example"
+    "${REPL_ACCOUNT}/app/picker-example",
+    "${REPL_ACCOUNT}/app/BlinkExample"
   ],
   "$targets": [
     {
