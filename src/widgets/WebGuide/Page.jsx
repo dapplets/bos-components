@@ -1336,7 +1336,7 @@ const editPage = (
           {iconRemove} Remove page
         </ButtonRemove>
         <ButtonRevert
-          disabled={!isPageEdited && newTitle === (title ?? '') && newContent === (content ?? '')}
+          disabled={!isPageEdited && newTitle === title && newContent === content}
           onClick={() => {
             setNewTitle(title ?? '')
             setNewContent(content ?? '')
