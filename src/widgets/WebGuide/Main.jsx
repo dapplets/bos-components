@@ -120,7 +120,7 @@ const isDeepEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b)
 
 const clearTreeBranch = (node) => ({
   namespace: node.namespace,
-  type: node.namespace,
+  type: node.type,
   id: node.id,
   parent: node.parent ? clearTreeBranch(node.parent) : undefined,
 })
