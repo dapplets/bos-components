@@ -1059,8 +1059,8 @@ const LoaderBackground = styled.div`
 `
 
 const Loader = styled.div`
-  width: 48px;
-  height: 48px;
+  width: ${(props) => (props.$halfSize ? '24px' : '48px')};
+  height: ${(props) => (props.$halfSize ? '24px' : '48px')};
   border-radius: 50%;
   display: inline-block;
   position: relative;
@@ -1081,16 +1081,16 @@ const Loader = styled.div`
     margin: auto;
     border: 3px solid;
     border-color: transparent transparent #4e77e1 #4e77e1;
-    width: 40px;
-    height: 40px;
+    width: ${(props) => (props.$halfSize ? '20px' : '40px')};
+    height: ${(props) => (props.$halfSize ? '20px' : '40px')};
     border-radius: 50%;
     box-sizing: border-box;
     animation: rotationBack 0.5s linear infinite;
     transform-origin: center center;
   }
   &::before {
-    width: 32px;
-    height: 32px;
+    width: ${(props) => (props.$halfSize ? '16px' : '32px')};
+    height: ${(props) => (props.$halfSize ? '16px' : '32px')};
     border-color: #282828 #282828 transparent transparent;
     animation: rotation 1.5s linear infinite;
   }
@@ -1111,6 +1111,17 @@ const Loader = styled.div`
       transform: rotate(-360deg);
     }
   }
+`
+
+const ButtonPlaceholder = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 125px;
+  height: 40px;
+  border: 1px solid #ffffff99;
+  border-radius: 10px;
+  background: #ffffff55;
 `
 
 const {
@@ -1432,7 +1443,11 @@ const editPage = (
 
       <Widget
         src="${REPL_ACCOUNT}/widget/WebGuide.PublishDropdown"
-        loading={props?.children}
+        loading={
+          <ButtonPlaceholder>
+            <Loader $halfSize />
+          </ButtonPlaceholder>
+        }
         props={{
           disabled: !(
             isConfigEdited ||

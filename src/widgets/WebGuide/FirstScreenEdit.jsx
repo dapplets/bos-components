@@ -554,134 +554,6 @@ const SuccessButton = styled.button`
   }
 `
 
-const DropdownWrapper = styled.div`
-  position: relative;
-`
-
-const ButtonGroup = styled.div`
-  display: flex;
-  flex-direction: row;
-  border-radius: 10px;
-  overflow: hidden;
-`
-
-const LeftButton = styled('DappletFileDownloader')`
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  background: var(--primBtnBg);
-  color: var(--primBtnCol);
-  width: 104px;
-  padding: 10px 12px !important;
-
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20.86px;
-  text-align: center;
-  cursor: pointer;
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: auto;
-  }
-
-  &:hover:not(:disabled) {
-    opacity: 0.75;
-  }
-
-  &:active:not(:disabled) {
-    opacity: 0.5;
-  }
-`
-
-const TextSave = styled.div`
-  display: inline-block;
-  overflow: hidden;
-  word-wrap: no-wrap;
-  text-overflow: ellipsis;
-  width: 100%;
-  text-align: center;
-`
-
-const RightButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5px !important;
-  border: none;
-  border-left: 1px solid rgba(226, 226, 229, 0.6);
-  background: var(--primBtnBg);
-  cursor: pointer;
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: auto;
-  }
-
-  &:hover:not(:disabled) {
-    opacity: 0.75;
-  }
-
-  &:active:not(:disabled) {
-    opacity: 0.5;
-  }
-
-  svg {
-    width: 10px;
-    transform: rotate(180deg);
-  }
-`
-
-const ItemGroup = styled.div`
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  right: 0;
-  top: -100px;
-  width: 125px;
-  padding: 10px 16px;
-  gap: 5px;
-  border-radius: 10px;
-  background: var(--primBtnBg);
-  font-size: 14px;
-  font-weight: 400;
-  text-align: center;
-  color: #222222;
-`
-
-const arrowIcon = (
-  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="8" viewBox="0 0 14 8" fill="none">
-    <path
-      d="M1 1L7 7L13 1"
-      stroke="#4E77E1"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-)
-
-const DropdownButtonItem = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 31px;
-  border-radius: 4px;
-  cursor: pointer;
-  border: none;
-  background: inherit;
-
-  &:hover {
-    background: #e2e2e5;
-    color: var(--primBtnCol);
-  }
-`
-
 const ImagePlaceholder = () => (
   <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
@@ -704,8 +576,8 @@ const LoaderBackground = styled.div`
 `
 
 const Loader = styled.div`
-  width: 48px;
-  height: 48px;
+  width: ${(props) => (props.$halfSize ? '24px' : '48px')};
+  height: ${(props) => (props.$halfSize ? '24px' : '48px')};
   border-radius: 50%;
   display: inline-block;
   position: relative;
@@ -726,16 +598,16 @@ const Loader = styled.div`
     margin: auto;
     border: 3px solid;
     border-color: transparent transparent #4e77e1 #4e77e1;
-    width: 40px;
-    height: 40px;
+    width: ${(props) => (props.$halfSize ? '20px' : '40px')};
+    height: ${(props) => (props.$halfSize ? '20px' : '40px')};
     border-radius: 50%;
     box-sizing: border-box;
     animation: rotationBack 0.5s linear infinite;
     transform-origin: center center;
   }
   &::before {
-    width: 32px;
-    height: 32px;
+    width: ${(props) => (props.$halfSize ? '16px' : '32px')};
+    height: ${(props) => (props.$halfSize ? '16px' : '32px')};
     border-color: #282828 #282828 transparent transparent;
     animation: rotation 1.5s linear infinite;
   }
@@ -756,6 +628,17 @@ const Loader = styled.div`
       transform: rotate(-360deg);
     }
   }
+`
+
+const ButtonPlaceholder = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 125px;
+  height: 40px;
+  border: 1px solid #ffffff99;
+  border-radius: 10px;
+  background: #ffffff55;
 `
 
 const editActions = [
@@ -923,41 +806,26 @@ return (
             ? 'Delete all local changes'
             : 'Cancel'}
         </SuccessButton>
-        <DropdownWrapper>
-          <ButtonGroup>
-            <LeftButton
-              disabled={
-                !(
-                  isConfigEdited ||
-                  newTitle !== (title ?? '') ||
-                  newDescription !== (description ?? '')
-                ) && currentEditAction.value === 'publish'
-              }
-              onClick={() => handleMainButtonClick(currentEditAction.value)}
-            >
-              <TextSave>{currentEditAction.title}</TextSave>
-            </LeftButton>
-
-            <RightButton
-              onClick={() => setIsSaveOrExportDropdownOpened(!isSaveOrExportDropdownOpened)}
-            >
-              {arrowIcon}
-            </RightButton>
-          </ButtonGroup>
-
-          {isSaveOrExportDropdownOpened ? (
-            <ItemGroup>
-              {editActions.map((editAction) => (
-                <DropdownButtonItem
-                  key={editAction.value}
-                  onClick={() => handleButtonItemClick(editAction)}
-                >
-                  {editAction.title}
-                </DropdownButtonItem>
-              ))}
-            </ItemGroup>
-          ) : null}
-        </DropdownWrapper>
+        <Widget
+          src="${REPL_ACCOUNT}/widget/WebGuide.PublishDropdown"
+          loading={
+            <ButtonPlaceholder>
+              <Loader $halfSize />
+            </ButtonPlaceholder>
+          }
+          props={{
+            disabled: !(
+              isConfigEdited ||
+              newTitle !== (title ?? '') ||
+              newContent !== (content ?? '')
+            ),
+            onMainButtonClick: handleMainButtonClick,
+            customActions: [
+              { value: 'publish', title: 'Publish' },
+              { value: 'export', title: 'Export guide' },
+            ],
+          }}
+        />
       </EditButtonsBlock>
 
       {savingStarted && (
