@@ -1282,7 +1282,7 @@ const {
   noTarget,
 } = props
 
-const [newTitle, setNewTitle] = useState(title ?? '')
+const [newTitle, setNewTitle] = useState(newTitle ?? '')
 const [newContent, setNewContent] = useState(content ?? '')
 const [isSaveOrExportDropdownOpened, setIsSaveOrExportDropdownOpened] = useState(false)
 const [currentEditAction, setCurrentEditAction] = useState(editActions[0])
@@ -1419,9 +1419,9 @@ const actionButtonEdit = (btn) => (
     }}
     disabled={btn.disabled}
   >
-    {btn.label.toLowerCase().includes('previous') ? iconPrevEdit : null}
+    {btn.variant === 'secondary' ? iconPrevEdit : null}
     {btn.label}
-    {btn.label.toLowerCase().includes('next') ? iconNextEdit : null}
+    {btn.variant === 'primary' ? iconNextEdit : null}
   </ActionButtonEdit>
 )
 
@@ -1619,7 +1619,7 @@ return (
         ) : (
           <>
             {props.status?.text ? statuses(props.status) : null}
-            {title ? <Title className={props.type}>{title}</Title> : null}
+            {newTitle ? <Title className={props.type}>{newTitle}</Title> : null}
             <MarkdownWrapper>
               <Markdown text={content} />
             </MarkdownWrapper>
@@ -1641,7 +1641,7 @@ return (
           editPage
         ) : (
           <>
-            {title ? <Title className={props.type}>{title}</Title> : null}
+            {newTitle ? <Title className={props.type}>{newTitle}</Title> : null}
             <Card>
               {props.status?.text ? statuses(props.status) : null}
               <MarkdownWrapper>

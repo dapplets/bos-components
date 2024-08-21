@@ -1,3 +1,72 @@
+const DefaultTheme = styled.div`
+  --bgMain: #fffffe;
+  --colorMain: #02193a;
+  --colorP: #777777;
+  --border: #02193a;
+  --cardBg: rgba(248, 249, 255, 1);
+
+  --navActive: #384bff;
+  --navInactiveBg: #e3e3e3;
+  --navInactiveBorder: none;
+
+  --statusInfoCol: #246efd;
+  --statusWarningCol: #d0911a;
+  --statusErrorCol: #db504a;
+  --statusInfoBg: rgba(234, 241, 255, 1);
+  --statusWarningBg: rgba(255, 248, 235, 1);
+  --statusErrorBg: rgba(246, 240, 246, 1);
+
+  --primBtnCol: white;
+  --primBtnBg: #02193a;
+  --primBtnBg01: #02193a1a;
+  --primBtnBgH: #1c3559;
+  --primBtnBgA: #020c19;
+  --secBtnCol: #02193a;
+  --secBtnBorderCol: #e2e2e5;
+  --secBtnBgH: #eee;
+  --secBtnBgA: #ddd;
+`
+
+const MetaGuideTheme = styled.div`
+  --bgMain: #4e77e1;
+  --colorMain: white;
+  --colorP: rgba(248, 249, 255, 1);
+  --border: #4e77e1;
+  --cardBg: rgba(255, 255, 255, 0.1);
+
+  --navActive: white;
+  --navInactiveBg: #4e77e1;
+  --navInactiveBorder: white;
+
+  --statusInfoCol: white;
+  --statusWarningCol: #d0911a;
+  --statusErrorCol: #db504a;
+  --statusInfoBg: rgba(255, 255, 255, 0.2);
+  --statusWarningBg: rgba(255, 255, 255, 0.2);
+  --statusErrorBg: rgba(255, 255, 255, 0.2);
+
+  --primBtnCol: #4e77e1;
+  --primBtnBg: white;
+  --primBtnBg01: #ffffff1a;
+  --primBtnBgH: rgb(242 243 255);
+  --primBtnBgA: rgb(222 225 255);
+  --secBtnCol: white;
+  --secBtnBorderCol: white;
+  --secBtnBgH: #5f84e4;
+  --secBtnBgA: #6c8ee5;
+`
+
+const Theme = ({ skin, children }) => {
+  switch (skin) {
+    case 'DEFAULT':
+      return <DefaultTheme children={children} />
+    case 'META_GUIDE':
+      return <MetaGuideTheme children={children} />
+    default:
+      return <></>
+  }
+}
+
 const Container = styled.div`
   display: flex;
   width: 320px;
@@ -94,7 +163,7 @@ const iconPlus = (
 
 const Title = styled.div`
   padding: 0;
-  margin: 0 0 -10px;
+  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   color: #02193a;
@@ -103,14 +172,40 @@ const Title = styled.div`
   font-weight: 600;
   line-height: 26.82px;
   text-align: center;
-  margin-bottom: 10px;
+`
+
+const ActionsGroup = styled.div`
+  box-sizing: content-box;
+  width: 100%;
+  padding: 0 10px;
+  border: none;
+  border-radius: none;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  text-align: center;
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+  user-select: none;
+  font-size: 12px;
+  color: #fff;
+  background: inherit;
+  cursor: pointer;
+
+  &:hover&:not(:disabled) {
+    opacity: 0.5;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+  }
 `
 
 const ActionButton = styled.div`
   display: flex;
   box-sizing: border-box;
   width: auto;
-  height: 30px;
   align-items: center;
   text-align: center;
   cursor: pointer;
@@ -225,8 +320,7 @@ const ButtonsCreateBlock = styled.div`
 
 const EditInputsBlock = styled.div`
   width: 100%;
-  padding: 10px;
-  padding-bottom: 0;
+  padding: 0 10px;
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
@@ -420,6 +514,174 @@ const CancelButton = styled.button`
   }
 `
 
+const EditButtonsBlock = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  justify-content: space-between;
+  padding: 0 10px;
+`
+
+const SuccessButton = styled.button`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 12px !important;
+  min-width: 110px;
+  background: var(--primBtnCol);
+  border-radius: 10px;
+  border: 1px solid var(--primBtnBg);
+  cursor: pointer;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 149%;
+  text-align: center;
+  color: var(--primBtnBg);
+  transition-duration: 0.2s;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  &:hover:not(:disabled) {
+    background: var(--primBtnBg01);
+  }
+`
+
+const DropdownWrapper = styled.div`
+  position: relative;
+`
+
+const ButtonGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  border-radius: 10px;
+  overflow: hidden;
+`
+
+const LeftButton = styled('DappletFileDownloader')`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background: var(--primBtnBg);
+  color: var(--primBtnCol);
+  width: 104px;
+  padding: 10px 12px !important;
+
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20.86px;
+  text-align: center;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: auto;
+  }
+
+  &:hover:not(:disabled) {
+    opacity: 0.75;
+  }
+
+  &:active:not(:disabled) {
+    opacity: 0.5;
+  }
+`
+
+const TextSave = styled.div`
+  display: inline-block;
+  overflow: hidden;
+  word-wrap: no-wrap;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-align: center;
+`
+
+const RightButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px !important;
+  border: none;
+  border-left: 1px solid rgba(226, 226, 229, 0.6);
+  background: var(--primBtnBg);
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: auto;
+  }
+
+  &:hover:not(:disabled) {
+    opacity: 0.75;
+  }
+
+  &:active:not(:disabled) {
+    opacity: 0.5;
+  }
+
+  svg {
+    width: 10px;
+    transform: rotate(180deg);
+  }
+`
+
+const ItemGroup = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  right: 0;
+  top: -100px;
+  width: 125px;
+  padding: 10px 16px;
+  gap: 5px;
+  border-radius: 10px;
+  background: var(--primBtnBg);
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+  color: #222222;
+`
+
+const arrowIcon = (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="8" viewBox="0 0 14 8" fill="none">
+    <path
+      d="M1 1L7 7L13 1"
+      stroke="#4E77E1"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+const DropdownButtonItem = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 31px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  background: inherit;
+
+  &:hover {
+    background: #e2e2e5;
+    color: var(--primBtnCol);
+  }
+`
+
 const ImagePlaceholder = () => (
   <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
@@ -429,11 +691,109 @@ const ImagePlaceholder = () => (
   </svg>
 )
 
-const { skin, onClose, onStart, onConfigImport } = props
+const LoaderBackground = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+`
 
-State.init({ image: {} })
-const [title, setTitle] = useState('')
-const [description, setDescription] = useState('')
+const Loader = styled.div`
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  border: 3px solid;
+  border-color: #282828 #282828 transparent transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+
+  &::after,
+  &::before {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    border: 3px solid;
+    border-color: transparent transparent #4e77e1 #4e77e1;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: rotationBack 0.5s linear infinite;
+    transform-origin: center center;
+  }
+  &::before {
+    width: 32px;
+    height: 32px;
+    border-color: #282828 #282828 transparent transparent;
+    animation: rotation 1.5s linear infinite;
+  }
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes rotationBack {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(-360deg);
+    }
+  }
+`
+
+const editActions = [
+  { value: 'publish', title: 'Publish' },
+  { value: 'export', title: 'Export guide' },
+]
+
+const {
+  skin,
+  onClose,
+  onStart,
+  onConfigImport,
+  setEditMode,
+  handleRemoveAllChanges,
+  isConfigEdited,
+  title,
+  description,
+  icon,
+  handleExportConfig,
+  handleSave,
+  hasChapters,
+  openChapters,
+  onChapterAdd,
+} = props
+
+State.init({ image: icon ?? {} })
+const [newTitle, setNewTitle] = useState(title ?? '')
+const [newDescription, setNewDescription] = useState(description ?? '')
+const [currentEditAction, setCurrentEditAction] = useState(editActions[0])
+const [savingStarted, setSavingStarted] = useState(false)
+const [publishStatusMessage, setPublishStatusMessage] = useState(null)
+const [isSaveOrExportDropdownOpened, setIsSaveOrExportDropdownOpened] = useState(false)
+
+useEffect(() => {
+  setNewTitle(title)
+  setNewDescription(description)
+  setPublishStatusMessage(null)
+}, [title, description])
 
 const filesOnChange = (files) => {
   if (!files?.length) return
@@ -450,89 +810,161 @@ const filesOnChange = (files) => {
     })
 }
 
+const handleMainButtonClick = (editActionValue) => {
+  switch (editActionValue) {
+    case 'publish':
+      setSavingStarted(true)
+      const emptyPages = handleSave({
+        newTitle,
+        newDescription,
+      })
+      if (emptyPages) {
+        setSavingStarted(false)
+        setPublishStatusMessage({
+          type: 'error',
+          text: `There ${emptyPages.length === 1 ? `is ${emptyPages[0]} empty page` : `are ${emptyPages.join(', ')} empty pages`} in this guide. Please, fill or remove ${emptyPages.length === 1 ? `it` : `them`} before publishing.`,
+        })
+      }
+      break
+    case 'export':
+      return handleExportConfig({
+        newTitle,
+        newDescription,
+      })
+    default:
+      console.error('No such an edit action')
+  }
+}
+
+const handleButtonItemClick = (item) => {
+  setCurrentEditAction(item)
+  setIsSaveOrExportDropdownOpened(false)
+}
+
 return (
-  <Container>
-    <Header>
-      <Title>
-        There's nothing here.
-        <br /> Be the first to create a guide.
-      </Title>
+  <Theme skin={skin}>
+    <Container>
+      <Header>
+        <Title>
+          There's nothing here.
+          <br /> Be the first to create a guide.
+        </Title>
 
-      <CloseButton onClick={onClose}>
-        <CloseIcon />
-      </CloseButton>
-    </Header>
-    {btn && (
+        <CloseButton onClick={onClose}>
+          <CloseIcon />
+        </CloseButton>
+      </Header>
+      {hasChapters && (
+        <ActionsGroup>
+          <ActionButton onClick={openChapters}>
+            Chapters
+            {iconNextEdit}
+          </ActionButton>
+        </ActionsGroup>
+      )}
+
+      <EditInputsBlock>
+        <FloatingLabelContainer>
+          <StyledInputOwner id={'owner'} type={'text'} value={context.accountId} readOnly />
+          <StyledLabel htmlFor={'owner'}>Owner</StyledLabel>
+        </FloatingLabelContainer>
+        <ImageBlock $hasImage={!!state.image.cid}>
+          {state.image.cid ? null : (
+            <ImageWrapper>
+              <ImagePlaceholder />
+            </ImageWrapper>
+          )}
+          <IpfsImageUpload image={state.image} />
+        </ImageBlock>
+        <FloatingLabelContainer>
+          <StyledInput
+            id={'title'}
+            type={'text'}
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
+          />
+          <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
+        </FloatingLabelContainer>
+
+        <FloatingLabelContainerArea>
+          <StyledTextarea
+            id={'description'}
+            value={newDescription}
+            onChange={(e) => setNewDescription(e.target.value)}
+          ></StyledTextarea>
+          <StyledLabel htmlFor={'description'}>Description</StyledLabel>
+        </FloatingLabelContainerArea>
+      </EditInputsBlock>
       <ButtonsCreateBlock>
-        <ActionButton
-          key={btn.label}
-          onClick={() => {
-            btn.onClick()
-          }}
-          disabled={btn.disabled}
+        <AddedChapterButton onClick={hasChapters ? onChapterAdd : onStart}>
+          {iconPlus}Add chapter
+        </AddedChapterButton>
+        <Files
+          multiple={false}
+          accepts={['application/json']}
+          minFileSize={1}
+          onChange={filesOnChange}
+          clickable
         >
-          {btn.label.toLowerCase().includes('next') ? iconNextEdit : null}
-        </ActionButton>
+          <ImportButton>
+            <ImportIcon />
+            Import
+          </ImportButton>
+        </Files>
       </ButtonsCreateBlock>
-    )}
+      <EditButtonsBlock>
+        <SuccessButton
+          onClick={() => {
+            setEditMode(false)
+            handleRemoveAllChanges()
+          }}
+        >
+          {isConfigEdited || newTitle !== (title ?? '') || newDescription !== (description ?? '')
+            ? 'Delete all local changes'
+            : 'Cancel'}
+        </SuccessButton>
+        <DropdownWrapper>
+          <ButtonGroup>
+            <LeftButton
+              disabled={
+                !(
+                  isConfigEdited ||
+                  newTitle !== (title ?? '') ||
+                  newDescription !== (description ?? '')
+                ) && currentEditAction.value === 'publish'
+              }
+              onClick={() => handleMainButtonClick(currentEditAction.value)}
+            >
+              <TextSave>{currentEditAction.title}</TextSave>
+            </LeftButton>
 
-    <EditInputsBlock>
-      <FloatingLabelContainer>
-        <StyledInputOwner id={'owner'} type={'text'} value={context.accountId} readOnly />
-        <StyledLabel htmlFor={'owner'}>Owner</StyledLabel>
-      </FloatingLabelContainer>
-      <ImageBlock $hasImage={!!state.image.cid}>
-        {state.image.cid ? null : (
-          <ImageWrapper>
-            <ImagePlaceholder />
-          </ImageWrapper>
-        )}
-        <IpfsImageUpload image={state.image} />
-      </ImageBlock>
-      <FloatingLabelContainer>
-        <StyledInput
-          id={'title'}
-          type={'text'}
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
-      </FloatingLabelContainer>
+            <RightButton
+              onClick={() => setIsSaveOrExportDropdownOpened(!isSaveOrExportDropdownOpened)}
+            >
+              {arrowIcon}
+            </RightButton>
+          </ButtonGroup>
 
-      <FloatingLabelContainerArea>
-        <StyledTextarea
-          id={'description'}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        ></StyledTextarea>
-        <StyledLabel htmlFor={'description'}>Description</StyledLabel>
-      </FloatingLabelContainerArea>
-    </EditInputsBlock>
-    <ButtonsCreateBlock>
-      <AddedChapterButton onClick={onStart}>{iconPlus}Add chapter</AddedChapterButton>
-      <Files
-        multiple={false}
-        accepts={['application/json']}
-        minFileSize={1}
-        onChange={filesOnChange}
-        clickable
-      >
-        <ImportButton>
-          <ImportIcon />
-          Import
-        </ImportButton>
-      </Files>
-    </ButtonsCreateBlock>
-    <ButtonsCreateBlock>
-      <CancelButton
-        onClick={() => {
-          // todo: cancel
-        }}
-      >
-        Cancel
-      </CancelButton>
+          {isSaveOrExportDropdownOpened ? (
+            <ItemGroup>
+              {editActions.map((editAction) => (
+                <DropdownButtonItem
+                  key={editAction.value}
+                  onClick={() => handleButtonItemClick(editAction)}
+                >
+                  {editAction.title}
+                </DropdownButtonItem>
+              ))}
+            </ItemGroup>
+          ) : null}
+        </DropdownWrapper>
+      </EditButtonsBlock>
 
-      {/* todo: need merge 4707 */}
-    </ButtonsCreateBlock>
-  </Container>
+      {savingStarted && (
+        <LoaderBackground>
+          <Loader />
+        </LoaderBackground>
+      )}
+    </Container>
+  </Theme>
 )

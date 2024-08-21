@@ -133,6 +133,7 @@ const [pageCounter, setPageCounter] = useState(0)
 const [isEditMode, setEditMode] = useState(false)
 const [isEditTarget, setEditTarget] = useState(false)
 const [noTarget, setNoTarget] = useState(false)
+const [showFirstScreen, setShowFirstScreen] = useState(false)
 
 const findParentContext = (context, type) => {
   if (!context) return null
@@ -163,6 +164,7 @@ const localConfig = Storage.privateGet(appContext)
 
 useEffect(() => {
   setShowApp(!!guideConfig || !!localConfig)
+  setShowFirstScreen(!guideConfig && !localConfig)
 
   if (localConfig) {
     if (!isDeepEqual(localConfig, editingConfig)) {
@@ -173,11 +175,6 @@ useEffect(() => {
     setChapterCounter(0)
     setPageCounter(0)
     setEditMode(false)
-  } else {
-    setEditingConfig(editingConfig)
-    setChapterCounter(chapterCounter)
-    setPageCounter(pageCounter)
-    setEditMode(isEditMode)
   }
 }, [guideConfig, localConfig])
 
@@ -312,23 +309,15 @@ const getEmptyPages = (config) =>
     .filter((val) => val?.length)
     .flat()
 
-const handleSave = ({ newTitle, newContent }) => {
-  const updatedConfig = deepCopy(editingConfig)
-  const updatedPage = updatedConfig.chapters[chapterCounter].pages[pageCounter]
-
-  updatedPage.title = newTitle
-  updatedPage.content = newContent
-
-  const emptyPages = getEmptyPages(updatedConfig)
+const saveConfig = (config) => {
+  const emptyPages = getEmptyPages(config)
   if (emptyPages?.length) return emptyPages
-
-  const isConfigEdited = !isDeepEqual(updatedConfig, guideConfig)
-
+  const isConfigEdited = !isDeepEqual(config, guideConfig)
   if (isConfigEdited) {
     linkDb
-      .set(appContext, { [mutatorId]: updatedConfig })
+      .set(appContext, { [mutatorId]: config })
       .then(() => {
-        setGuideConfig(updatedConfig)
+        setGuideConfig(config)
         setEditMode(false)
         setChapterCounter(0)
         setPageCounter(0)
@@ -344,17 +333,41 @@ const handleSave = ({ newTitle, newContent }) => {
   }
 }
 
-const handleExportConfig = ({ newTitle, newContent }) => {
+const handleSave = ({ newTitle, newContent }) => {
   const updatedConfig = deepCopy(editingConfig)
   const updatedPage = updatedConfig.chapters[chapterCounter].pages[pageCounter]
-
   updatedPage.title = newTitle
   updatedPage.content = newContent
+  return saveConfig(updatedConfig)
+}
 
-  const jsonString = JSON.stringify(updatedConfig, null, 2) // formatted json
+const handleSaveFromFirstScreen = ({ newTitle, newDescription }) => {
+  const updatedConfig = deepCopy(editingConfig)
+  updatedConfig.title = newTitle
+  updatedConfig.description = newDescription
+  return saveConfig(updatedConfig)
+}
+
+const exportConfig = (config) => {
+  const jsonString = JSON.stringify(config, null, 2) // formatted json
   const blob = new Blob([jsonString], { type: 'application/json' })
   const file = new File([blob], 'webGuideConfig.json')
   return file
+}
+
+const handleExportConfig = ({ newTitle, newContent }) => {
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedPage = updatedConfig.chapters[chapterCounter].pages[pageCounter]
+  updatedPage.title = newTitle
+  updatedPage.content = newContent
+  return exportConfig(updatedConfig)
+}
+
+const handleExportConfigFromFirstScreen = ({ newTitle, newDescription }) => {
+  const updatedConfig = deepCopy(editingConfig)
+  updatedConfig.title = newTitle
+  updatedConfig.description = newDescription
+  return exportConfig(updatedConfig)
 }
 
 const handleClickPageIndicator = ({ index: pageIndex, newTitle, newContent }) => {
@@ -411,21 +424,32 @@ const handleTargetRemove = ({ newTitle, newContent }) => {
   setEditTarget(false)
 }
 
+const addChapter = (config, addFirst) => {
+  const newChapter = generateNewChapter()
+  if (addFirst) {
+    config.chapters.unshift(newChapter)
+  } else {
+    config.chapters.splice(chapterCounter + 1, 0, newChapter)
+  }
+  setEditingConfig(config)
+  saveConfigToLocalStorage(config)
+}
+
 const handleChapterAdd = ({ newTitle, newContent }) => {
   const updatedConfig = deepCopy(editingConfig)
   const updatedChapter = updatedConfig.chapters[chapterCounter]
   const updatedPage = updatedChapter.pages[pageCounter]
-
   updatedPage.title = newTitle
   updatedPage.content = newContent
+  addChapter(updatedConfig, false)
+  handleChapterIncrement(config)
+}
 
-  const newChapter = generateNewChapter()
-  updatedConfig.chapters.splice(chapterCounter + 1, 0, newChapter)
-
-  setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
-
-  handleChapterIncrement(updatedConfig)
+const handleAddChapterFromFirstScreen = ({ newTitle, newDescription }) => {
+  const updatedConfig = deepCopy(editingConfig)
+  updatedConfig.title = newTitle
+  updatedConfig.description = newDescription
+  addChapter(updatedConfig, true)
 }
 
 const handlePageAdd = ({ newTitle, newContent }) => {
@@ -455,6 +479,7 @@ const handleStartCreation = () => {
   }
   setEditingConfig(updatedConfig)
   setEditMode(true)
+  setShowFirstScreen(false)
 }
 
 const handlePageRemove = () => {
@@ -531,6 +556,10 @@ const openSaveChangesPopup = ({ newTitle, newContent }) => {
   saveConfigToLocalStorage(updatedConfig)
 }
 
+const openFirstScreen = () => setShowFirstScreen(true)
+
+const openChapters = () => setShowFirstScreen(false)
+
 const currentChapter = editingConfig.chapters[chapterCounter]
 
 const ChapterWrapper = (props) => {
@@ -549,6 +578,14 @@ const ChapterWrapper = (props) => {
       disabled: false,
       onClick: handleClickPrev,
       label: 'Previous',
+    })
+  }
+  if (isEditMode && chapterCounter === 0 && pageCounter === 0) {
+    buttons.push({
+      variant: 'secondary',
+      disabled: false,
+      onClick: openFirstScreen,
+      label: 'Guide config',
     })
   }
   if (chapterCounter === editingConfig.chapters.length - 1 && pageCounter === pages.length - 1) {
@@ -708,7 +745,7 @@ return (
     {showApp ? (
       isEditTarget ? (
         <DappletContextPicker onClick={handleTargetSet} LatchComponent={ContextTypeLatch} />
-      ) : !editingConfig?.chapters?.length ? (
+      ) : showFirstScreen ? (
         <DappletPortal
           inMemory
           target={{
@@ -726,14 +763,26 @@ return (
                 placement: 'left',
                 offset: [0, 45],
                 noArrow: true,
-                skin: 'META_GUIDE',
-                onStart: handleStartCreation,
-                onConfigImport: handleConfigImport,
-                onClose: handleClose,
                 onRefAttach: ({ ref }) => {
                   // ToDo: move to the engine
                   props.attachContextRef(ref)
                 },
+
+                skin: 'DEFAULT',
+                onClose: handleClose,
+                onStart: handleStartCreation,
+                onConfigImport: handleConfigImport,
+                setEditMode,
+                handleRemoveAllChanges,
+                isConfigEdited: !isDeepEqual(editingConfig, guideConfig),
+                title: editingConfig.title,
+                description: editingConfig.description,
+                icon: editingConfig.icon,
+                handleExportConfig: handleExportConfigFromFirstScreen,
+                handleSave: handleSaveFromFirstScreen,
+                hasChapters: !!editingConfig.chapters?.length,
+                openChapters,
+                onChapterAdd: handleAddChapterFromFirstScreen,
               }}
             />
           )}
