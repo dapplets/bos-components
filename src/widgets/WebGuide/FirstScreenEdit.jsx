@@ -38,8 +38,8 @@ const Theme = ({ skin, children }) => {
 
 const Container = styled.div`
   display: flex;
-  width: 320px;
-  padding: 12px 14px 14px;
+  width: 350px;
+  padding: 20px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -82,6 +82,8 @@ const CloseButton = styled.button`
 
 const AddedChapterButton = styled.button`
   display: flex;
+  flex: 1;
+  padding: 0;
   align-items: center;
   justify-content: center;
   border: none;
@@ -104,7 +106,8 @@ const AddedChapterButton = styled.button`
   }
 `
 
-const Title = styled.div`
+const Title = styled.h1`
+  width: 100%;
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
@@ -114,13 +117,12 @@ const Title = styled.div`
   font-style: normal;
   font-weight: 600;
   line-height: 26.82px;
-  text-align: center;
+  text-align: ${(props) => (props.$didTheGuidePublished ? 'left' : 'center')};
 `
 
 const ActionsGroup = styled.div`
   box-sizing: content-box;
   width: 100%;
-  padding: 0 10px;
   border: none;
   border-radius: none;
   display: flex;
@@ -206,11 +208,15 @@ const ButtonsCreateBlock = styled.div`
   align-items: center;
   width: 100%;
   justify-content: space-between;
+  gap: 20px;
+
+  & > div {
+    flex: 1;
+  }
 `
 
 const EditInputsBlock = styled.div`
   width: 100%;
-  padding: 0 10px;
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
@@ -260,7 +266,7 @@ const StyledInput = styled.input`
 const StyledInputOwner = styled.input`
   padding: 20px 10px 5px;
   background: #fff;
-  color: #02193a;
+  color: #7a818b;
   line-height: 100%;
   font-size: 14px;
   border-radius: 10px;
@@ -296,7 +302,7 @@ const StyledTextarea = styled.textarea`
   border-radius: 10px;
   width: 100%;
   outline: none;
-  min-height: 150px;
+  height: 110px;
   position: relative;
   border: none;
 
@@ -413,7 +419,6 @@ const EditButtonsBlock = styled.div`
   width: 100%;
   gap: 10px;
   justify-content: space-between;
-  padding: 0 10px;
 `
 
 const SuccessButton = styled.button`
@@ -422,7 +427,7 @@ const SuccessButton = styled.button`
   justify-content: center;
   align-items: center;
   padding: 10px 12px !important;
-  min-width: 110px;
+  min-width: 125px;
   background: var(--primBtnCol);
   border-radius: 10px;
   border: 1px solid var(--primBtnBg);
@@ -641,6 +646,7 @@ const {
   hasChapters,
   openChapters,
   onChapterAdd,
+  didTheGuidePublished,
 } = props
 
 State.init({ image: icon ?? {} })
@@ -707,9 +713,16 @@ return (
   <Theme skin={skin}>
     <Container>
       <Header>
-        <Title>
-          There's nothing here.
-          <br /> Be the first to create a guide.
+        <Title $didTheGuidePublished={didTheGuidePublished}>
+          {didTheGuidePublished ? (
+            "You're editing an existing guide"
+          ) : (
+            <>
+              There's nothing here.
+              <br />
+              Be the first to create a guide.
+            </>
+          )}
         </Title>
 
         <CloseButton onClick={onClose}>
@@ -758,10 +771,6 @@ return (
         </FloatingLabelContainerArea>
       </EditInputsBlock>
       <ButtonsCreateBlock>
-        <AddedChapterButton onClick={hasChapters ? onChapterAdd : onStart}>
-          <IconPlus />
-          Add chapter
-        </AddedChapterButton>
         <Files
           multiple={false}
           accepts={['application/json']}
@@ -774,40 +783,47 @@ return (
             Import
           </ImportButton>
         </Files>
+        <AddedChapterButton onClick={hasChapters ? onChapterAdd : onStart}>
+          <IconPlus />
+          Add chapter
+        </AddedChapterButton>
       </ButtonsCreateBlock>
-      <EditButtonsBlock>
-        <SuccessButton
-          onClick={() => {
-            setEditMode(false)
-            handleRemoveAllChanges()
-          }}
-        >
-          {isConfigEdited || newTitle !== (title ?? '') || newDescription !== (description ?? '')
-            ? 'Delete all local changes'
-            : 'Cancel'}
-        </SuccessButton>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/WebGuide.PublishDropdown"
-          loading={
-            <ButtonPlaceholder>
-              <Loader $halfSize />
-            </ButtonPlaceholder>
-          }
-          props={{
-            disabled: !(
-              isConfigEdited ||
-              newTitle !== (title ?? '') ||
-              newContent !== (content ?? '')
-            ),
-            onMainButtonClick: handleMainButtonClick,
-            customActions: [
-              { value: 'publish', title: 'Publish' },
-              { value: 'export', title: 'Export guide' },
-            ],
-            skin,
-          }}
-        />
-      </EditButtonsBlock>
+
+      {hasChapters ? (
+        <EditButtonsBlock>
+          <SuccessButton
+            onClick={() => {
+              setEditMode(false)
+              handleRemoveAllChanges()
+            }}
+          >
+            {isConfigEdited || newTitle !== (title ?? '') || newDescription !== (description ?? '')
+              ? 'Delete all local changes'
+              : 'Cancel'}
+          </SuccessButton>
+          <Widget
+            src="${REPL_ACCOUNT}/widget/WebGuide.PublishDropdown"
+            loading={
+              <ButtonPlaceholder>
+                <Loader $halfSize />
+              </ButtonPlaceholder>
+            }
+            props={{
+              disabled: !(
+                isConfigEdited ||
+                newTitle !== (title ?? '') ||
+                newContent !== (content ?? '')
+              ),
+              onMainButtonClick: handleMainButtonClick,
+              customActions: [
+                { value: 'publish', title: 'Publish' },
+                { value: 'export', title: 'Export guide' },
+              ],
+              skin,
+            }}
+          />
+        </EditButtonsBlock>
+      ) : null}
 
       {savingStarted && (
         <LoaderBackground>

@@ -221,7 +221,7 @@ const EditButton = styled.button`
   cursor: pointer;
 `
 
-const Title = styled.div`
+const Title = styled.h1`
   padding: 0;
   margin: 0 0 -10px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
@@ -788,7 +788,7 @@ const SuccessButton = styled.button`
   justify-content: center;
   align-items: center;
   padding: 10px 12px !important;
-  min-width: 110px;
+  min-width: 125px;
   background: var(--primBtnCol);
   border-radius: 10px;
   border: 1px solid var(--primBtnBg);

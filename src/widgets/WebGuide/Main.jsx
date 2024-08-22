@@ -783,6 +783,7 @@ return (
                 hasChapters: !!editingConfig.chapters?.length,
                 openChapters,
                 onChapterAdd: handleAddChapterFromFirstScreen,
+                didTheGuidePublished: !!guideConfig,
               }}
             />
           )}
