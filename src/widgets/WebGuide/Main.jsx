@@ -768,7 +768,7 @@ return (
                   props.attachContextRef(ref)
                 },
 
-                skin: 'DEFAULT',
+                skin: 'FIRST_SCREEN',
                 onClose: handleClose,
                 onStart: handleStartCreation,
                 onConfigImport: handleConfigImport,

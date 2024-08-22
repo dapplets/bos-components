@@ -69,7 +69,6 @@ const Theme = ({ skin, children }) => {
 
 const InfoBox = styled.div`
   position: relative;
-  overflow: hidden;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -106,7 +105,6 @@ const InfoBox = styled.div`
 
 const Callout = styled.div`
   box-sizing: border-box;
-  overflow: hidden;
   position: relative;
   display: flex;
   width: 320px;
@@ -1459,6 +1457,7 @@ const editPage = (
             { value: 'publish', title: 'Publish' },
             { value: 'export', title: 'Export guide' },
           ],
+          skin,
         }}
       />
     </EditButtonsBlock>
