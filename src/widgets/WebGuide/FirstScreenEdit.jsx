@@ -658,10 +658,11 @@ const [publishStatusMessage, setPublishStatusMessage] = useState(null)
 const [isSaveOrExportDropdownOpened, setIsSaveOrExportDropdownOpened] = useState(false)
 
 useEffect(() => {
-  setNewTitle(title)
-  setNewDescription(description)
+  setNewTitle(title ?? '')
+  setNewDescription(description ?? '')
   setPublishStatusMessage(null)
-}, [title, description])
+  State.update({ image: icon ?? {} })
+}, [title, description, icon])
 
 const filesOnChange = (files) => {
   if (!files?.length) return
@@ -685,6 +686,7 @@ const handleMainButtonClick = (editActionValue) => {
       const emptyPages = handleSave({
         newTitle,
         newDescription,
+        newIcon: state.image,
       })
       if (emptyPages) {
         setSavingStarted(false)
@@ -698,6 +700,7 @@ const handleMainButtonClick = (editActionValue) => {
       return handleExportConfig({
         newTitle,
         newDescription,
+        newIcon: state.image,
       })
     default:
       console.error('No such an edit action')
@@ -731,7 +734,15 @@ return (
       </Header>
       {hasChapters && (
         <ActionsGroup>
-          <ActionButton onClick={openChapters}>
+          <ActionButton
+            onClick={() =>
+              openChapters({
+                newTitle,
+                newDescription,
+                newIcon: state.image,
+              })
+            }
+          >
             Chapters
             <IconNextEdit />
           </ActionButton>
@@ -743,6 +754,7 @@ return (
           <StyledInputOwner id={'owner'} type={'text'} value={context.accountId} readOnly />
           <StyledLabel htmlFor={'owner'}>Owner</StyledLabel>
         </FloatingLabelContainer>
+
         <ImageBlock $hasImage={!!state.image.cid}>
           {state.image.cid ? null : (
             <ImageWrapper>
@@ -751,6 +763,7 @@ return (
           )}
           <IpfsImageUpload image={state.image} />
         </ImageBlock>
+
         <FloatingLabelContainer>
           <StyledInput
             id={'title'}
@@ -764,12 +777,14 @@ return (
         <FloatingLabelContainerArea>
           <StyledTextarea
             id={'description'}
+            type={'text'}
             value={newDescription}
             onChange={(e) => setNewDescription(e.target.value)}
-          ></StyledTextarea>
+          />
           <StyledLabel htmlFor={'description'}>Description</StyledLabel>
         </FloatingLabelContainerArea>
       </EditInputsBlock>
+
       <ButtonsCreateBlock>
         <Files
           multiple={false}
@@ -783,7 +798,21 @@ return (
             Import
           </ImportButton>
         </Files>
-        <AddedChapterButton onClick={hasChapters ? onChapterAdd : onStart}>
+        <AddedChapterButton
+          onClick={() =>
+            hasChapters
+              ? onChapterAdd({
+                  newTitle,
+                  newDescription,
+                  newIcon: state.image,
+                })
+              : onStart({
+                  newTitle,
+                  newDescription,
+                  newIcon: state.image,
+                })
+          }
+        >
           <IconPlus />
           Add chapter
         </AddedChapterButton>
@@ -797,7 +826,10 @@ return (
               handleRemoveAllChanges()
             }}
           >
-            {isConfigEdited || newTitle !== (title ?? '') || newDescription !== (description ?? '')
+            {isConfigEdited ||
+            newTitle !== (title ?? '') ||
+            newDescription !== (description ?? '') ||
+            state.image?.cid !== icon?.cid
               ? 'Delete all local changes'
               : 'Cancel'}
           </SuccessButton>

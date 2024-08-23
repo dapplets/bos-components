@@ -63,13 +63,6 @@ const CustomTooltip = styled('DappletTooltip')`
   }
 `
 
-const CustomTooltipWithOrWithoutArrow = ({ children, noArrow, skin }) =>
-  noArrow ? (
-    <div>{children}</div>
-  ) : (
-    <CustomTooltip bsPrefix={`wg-tooltip-${skin}`}>{children}</CustomTooltip>
-  )
-
 return props.type === 'callout' && !props.noTarget ? (
   <DappletOverlayTrigger
     show={true}
@@ -77,9 +70,9 @@ return props.type === 'callout' && !props.noTarget ? (
     placement={props.placement ?? 'auto'}
     offset={props.offset}
     overlay={
-      <CustomTooltipWithOrWithoutArrow noArrow={props.noArrow} skin={props.skin}>
+      <CustomTooltip bsPrefix={`wg-tooltip-${skin}`}>
         <Widget src={props.widgetId} props={props} loading={<></>} />
-      </CustomTooltipWithOrWithoutArrow>
+      </CustomTooltip>
     }
   >
     {props.onRefAttach}

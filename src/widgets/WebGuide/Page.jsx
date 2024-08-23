@@ -1158,7 +1158,7 @@ const {
   noTarget,
 } = props
 
-const [newTitle, setNewTitle] = useState(newTitle ?? '')
+const [newTitle, setNewTitle] = useState(title ?? '')
 const [newContent, setNewContent] = useState(content ?? '')
 const [savingStarted, setSavingStarted] = useState(false)
 const [publishStatusMessage, setPublishStatusMessage] = useState(null)
@@ -1401,11 +1401,12 @@ const editPage = (
       <FloatingLabelContainerArea>
         <StyledTextarea
           id={'content'}
+          type={'text'}
           value={newContent}
           onChange={(e) => {
             setNewContent(e.target.value)
           }}
-        ></StyledTextarea>
+        />
         <StyledLabel htmlFor={'content'}>Description</StyledLabel>
       </FloatingLabelContainerArea>
     </EditInputsBlock>
@@ -1478,10 +1479,12 @@ return (
         ) : (
           <>
             {props.status?.text ? statuses(props.status) : null}
-            {newTitle ? <Title className={props.type}>{newTitle}</Title> : null}
-            <MarkdownWrapper>
-              <Markdown text={content} />
-            </MarkdownWrapper>
+            {title ? <Title className={props.type}>{title}</Title> : null}
+            {content ? (
+              <MarkdownWrapper>
+                <Markdown text={content} />
+              </MarkdownWrapper>
+            ) : null}
             {showChecked ? checkbox : null}
             {navButtons}
           </>
@@ -1500,12 +1503,14 @@ return (
           editPage
         ) : (
           <>
-            {newTitle ? <Title className={props.type}>{newTitle}</Title> : null}
+            {title ? <Title className={props.type}>{title}</Title> : null}
             <Card>
               {props.status?.text ? statuses(props.status) : null}
-              <MarkdownWrapper>
-                <Markdown text={content} />
-              </MarkdownWrapper>
+              {content ? (
+                <MarkdownWrapper>
+                  <Markdown text={content} />
+                </MarkdownWrapper>
+              ) : null}
             </Card>
             <Footer>
               {showChecked ? checkbox : null}

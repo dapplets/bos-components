@@ -160,15 +160,16 @@ useEffect(() => {
     .catch(console.error)
 }, [])
 
-const localConfig = Storage.privateGet(appContext)
+const localConfigResponse = Storage.privateGet(appContext)
+const localConfig = localConfigResponse && JSON.parse(localConfigResponse)
 
 useEffect(() => {
-  setShowApp(!!guideConfig || !!localConfig)
+  setShowApp(!!guideConfig || (!!localConfig && !!localConfig.chapters.length))
   setShowFirstScreen(!guideConfig && !localConfig)
 
   if (localConfig) {
     if (!isDeepEqual(localConfig, editingConfig)) {
-      setEditingConfig(JSON.parse(localConfig))
+      setEditingConfig(localConfig)
     }
   } else if (guideConfig && !isDeepEqual(guideConfig, editingConfig)) {
     setEditingConfig(guideConfig)
@@ -220,10 +221,7 @@ if (
 }
 
 const saveConfigToLocalStorage = (data) => {
-  Storage.privateSet(
-    appContext,
-    !data || isDeepEqual(data, guideConfig) ? undefined : JSON.stringify(data)
-  )
+  Storage.privateSet(appContext, !data || isDeepEqual(data, guideConfig) ? undefined : data)
 }
 
 const handleConfigImport = (guide) => {
@@ -237,6 +235,7 @@ const handleClose = () => {
 
 const handleActionClick = () => {
   setShowApp((val) => !val)
+  setShowFirstScreen(!guideConfig && (!localConfig || !localConfig.chapters.length))
   setEditMode(false)
   setChapterCounter(0)
   setPageCounter(0)
@@ -341,10 +340,11 @@ const handleSave = ({ newTitle, newContent }) => {
   return saveConfig(updatedConfig)
 }
 
-const handleSaveFromFirstScreen = ({ newTitle, newDescription }) => {
+const handleSaveFromFirstScreen = ({ newTitle, newDescription, newIcon }) => {
   const updatedConfig = deepCopy(editingConfig)
   updatedConfig.title = newTitle
   updatedConfig.description = newDescription
+  updatedConfig.icon = newIcon
   return saveConfig(updatedConfig)
 }
 
@@ -363,10 +363,11 @@ const handleExportConfig = ({ newTitle, newContent }) => {
   return exportConfig(updatedConfig)
 }
 
-const handleExportConfigFromFirstScreen = ({ newTitle, newDescription }) => {
+const handleExportConfigFromFirstScreen = ({ newTitle, newDescription, newIcon }) => {
   const updatedConfig = deepCopy(editingConfig)
   updatedConfig.title = newTitle
   updatedConfig.description = newDescription
+  updatedConfig.icon = newIcon
   return exportConfig(updatedConfig)
 }
 
@@ -391,6 +392,15 @@ const handlePageDataChange = ({ newTitle, newContent }) => {
   updatedPage.title = newTitle
   updatedPage.content = newContent
 
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
+}
+
+const handleFirstScreenDataChange = ({ newTitle, newDescription, newIcon }) => {
+  const updatedConfig = deepCopy(editingConfig)
+  updatedConfig.title = newTitle
+  updatedConfig.description = newDescription
+  updatedConfig.icon = newIcon
   setEditingConfig(updatedConfig)
   saveConfigToLocalStorage(updatedConfig)
 }
@@ -445,10 +455,11 @@ const handleChapterAdd = ({ newTitle, newContent }) => {
   handleChapterIncrement(config)
 }
 
-const handleAddChapterFromFirstScreen = ({ newTitle, newDescription }) => {
+const handleAddChapterFromFirstScreen = ({ newTitle, newDescription, newIcon }) => {
   const updatedConfig = deepCopy(editingConfig)
   updatedConfig.title = newTitle
   updatedConfig.description = newDescription
+  updatedConfig.icon = newIcon
   addChapter(updatedConfig, true)
 }
 
@@ -469,8 +480,11 @@ const handlePageAdd = ({ newTitle, newContent }) => {
   setPageCounter((val) => val + 1)
 }
 
-const handleStartCreation = () => {
+const handleStartCreation = ({ newTitle, newDescription, newIcon }) => {
   const updatedConfig = deepCopy(editingConfig)
+  updatedConfig.title = newTitle
+  updatedConfig.description = newDescription
+  updatedConfig.icon = newIcon
   const newChapter = generateNewChapter()
   if (updatedConfig.chapters) {
     updatedConfig.chapters.push(newChapter)
@@ -478,6 +492,7 @@ const handleStartCreation = () => {
     updatedConfig.chapters = [newChapter]
   }
   setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
   setEditMode(true)
   setShowFirstScreen(false)
 }
@@ -558,7 +573,10 @@ const openSaveChangesPopup = ({ newTitle, newContent }) => {
 
 const openFirstScreen = () => setShowFirstScreen(true)
 
-const openChapters = () => setShowFirstScreen(false)
+const openChapters = (payload) => {
+  handleFirstScreenDataChange(payload)
+  setShowFirstScreen(false)
+}
 
 const currentChapter = editingConfig.chapters[chapterCounter]
 
@@ -757,6 +775,7 @@ return (
             <Widget
               src="${REPL_ACCOUNT}/widget/WebGuide.OverlayTrigger"
               props={{
+                // for OverlayTrigger
                 widgetId: '${REPL_ACCOUNT}/widget/WebGuide.FirstScreenEdit',
                 type: 'callout',
                 strategy: 'fixed',
@@ -768,9 +787,12 @@ return (
                   props.attachContextRef(ref)
                 },
 
+                // for FirstScreenEdit
                 skin: 'FIRST_SCREEN',
-                onClose: handleClose,
-                onStart: handleStartCreation,
+                onClose: () => {
+                  setShowFirstScreen(false)
+                  handleClose()
+                },
                 onConfigImport: handleConfigImport,
                 setEditMode,
                 handleRemoveAllChanges,
@@ -782,6 +804,7 @@ return (
                 handleSave: handleSaveFromFirstScreen,
                 hasChapters: !!editingConfig.chapters?.length,
                 openChapters,
+                onStart: handleStartCreation,
                 onChapterAdd: handleAddChapterFromFirstScreen,
                 didTheGuidePublished: !!guideConfig,
               }}
