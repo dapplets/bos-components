@@ -161,7 +161,9 @@ useEffect(() => {
 }, [])
 
 const localConfigResponse = Storage.privateGet(appContext)
-const localConfig = localConfigResponse && JSON.parse(localConfigResponse)
+const localConfig =
+  localConfigResponse &&
+  (typeof localConfigResponse === 'string' ? JSON.parse(localConfigResponse) : localConfigResponse)
 
 useEffect(() => {
   setShowApp(!!guideConfig || (!!localConfig && !!localConfig.chapters.length))
