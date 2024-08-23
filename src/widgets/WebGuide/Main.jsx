@@ -159,14 +159,17 @@ useEffect(() => {
     .catch(console.error)
 }, [])
 
-const localConfig = Storage.privateGet(appContext)
+const localConfigResponse = Storage.privateGet(appContext)
+const localConfig =
+  localConfigResponse &&
+  (typeof localConfigResponse === 'string' ? JSON.parse(localConfigResponse) : localConfigResponse)
 
 useEffect(() => {
   setShowApp(!!guideConfig || !!localConfig)
 
   if (localConfig) {
     if (!isDeepEqual(localConfig, editingConfig)) {
-      setEditingConfig(JSON.parse(localConfig))
+      setEditingConfig(localConfig)
     }
   } else if (guideConfig && !isDeepEqual(guideConfig, editingConfig)) {
     setEditingConfig(guideConfig)
@@ -223,10 +226,7 @@ if (
 }
 
 const saveConfigToLocalStorage = (data) => {
-  Storage.privateSet(
-    appContext,
-    !data || isDeepEqual(data, guideConfig) ? undefined : JSON.stringify(data)
-  )
+  Storage.privateSet(appContext, !data || isDeepEqual(data, guideConfig) ? undefined : data)
 }
 
 const handleConfigImport = (guide) => {
