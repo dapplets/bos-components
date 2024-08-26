@@ -826,7 +826,11 @@ const EditInputsBlock = styled.div`
   flex-direction: column;
   flex: 1 1 auto;
 `
-
+const TargetBlock = styled.div`
+  display: flex;
+  width: 100%;
+  column-gap: 10px;
+`
 const FloatingLabelContainer = styled.div`
   background: #4e77e1;
   border-radius: 10px;
@@ -834,7 +838,7 @@ const FloatingLabelContainer = styled.div`
   box-sizing: border-box;
   margin-bottom: 10px;
   position: relative;
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   display: flex;
 `
 
@@ -1113,6 +1117,134 @@ const Loader = styled.div`
   }
 `
 
+const AutoIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
+    <mask id="path-1-inside-1_2231_331" fill="white">
+      <path d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z" />
+    </mask>
+    <path
+      d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z"
+      fill="white"
+      fillOpacity="0.15"
+    />
+    <path
+      d="M0.333984 0H18.334H0.333984ZM18.334 18H0.333984H18.334ZM2.33398 18C0.124845 18 -1.66602 16.2091 -1.66602 14V4C-1.66602 1.79086 0.124845 0 2.33398 0C2.33398 0 2.33398 0.895431 2.33398 2V16C2.33398 17.1046 2.33398 18 2.33398 18ZM16.334 0C18.5431 0 20.334 1.79086 20.334 4V14C20.334 16.2091 18.5431 18 16.334 18C16.334 18 16.334 17.1046 16.334 16V2C16.334 0.895431 16.334 0 16.334 0Z"
+      fill="white"
+      mask="url(#path-1-inside-1_2231_331)"
+    />
+    <rect x="7.33398" y="7" width="4" height="4" rx="1" fill="white" />
+  </svg>
+)
+
+const LeftIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
+    <mask id="path-1-inside-1_2231_333" fill="white">
+      <path d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z" />
+    </mask>
+    <path
+      d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z"
+      fill="#4E77E1"
+      fillOpacity="0.15"
+    />
+    <path
+      d="M0.333984 0H18.334H0.333984ZM18.334 18H0.333984H18.334ZM0.333984 18V0V18ZM16.334 0C18.5431 0 20.334 1.79086 20.334 4V14C20.334 16.2091 18.5431 18 16.334 18C16.334 18 16.334 17.1046 16.334 16V2C16.334 0.895431 16.334 0 16.334 0Z"
+      fill="#4E77E1"
+      mask="url(#path-1-inside-1_2231_333)"
+    />
+    <path
+      d="M7.83398 12L10.834 9L7.83398 6"
+      stroke="#4E77E1"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+const RightIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
+    <mask id="path-1-inside-1_2231_316" fill="white">
+      <path d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z" />
+    </mask>
+    <path
+      d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z"
+      fill="#4E77E1"
+      fillOpacity="0.15"
+    />
+    <path
+      d="M0.333984 0H18.334H0.333984ZM18.334 18H0.333984H18.334ZM2.33398 18C0.124845 18 -1.66602 16.2091 -1.66602 14V4C-1.66602 1.79086 0.124845 0 2.33398 0C2.33398 0 2.33398 0.895431 2.33398 2V16C2.33398 17.1046 2.33398 18 2.33398 18ZM18.334 0V18V0Z"
+      fill="#4E77E1"
+      mask="url(#path-1-inside-1_2231_316)"
+    />
+    <path
+      d="M10.834 12L7.83398 9L10.834 6"
+      stroke="#4E77E1"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+const TopIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
+    <mask id="path-1-inside-1_2231_329" fill="white">
+      <path d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z" />
+    </mask>
+    <path
+      d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z"
+      fill="#4E77E1"
+      fillOpacity="0.15"
+    />
+    <path
+      d="M0.333984 0H18.334H0.333984ZM18.334 16C18.334 18.2091 16.5431 20 14.334 20H4.33398C2.12485 20 0.333984 18.2091 0.333984 16C0.333984 16 1.22941 16 2.33398 16H16.334C17.4386 16 18.334 16 18.334 16ZM0.333984 18V0V18ZM18.334 0V18V0Z"
+      fill="#4E77E1"
+      mask="url(#path-1-inside-1_2231_329)"
+    />
+    <path
+      d="M6.33398 7.5L9.33398 10.5L12.334 7.5"
+      stroke="#4E77E1"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+const BottomIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
+    <mask id="path-1-inside-1_2231_327" fill="white">
+      <path d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z" />
+    </mask>
+    <path
+      d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z"
+      fill="#4E77E1"
+      fillOpacity="0.15"
+    />
+    <path
+      d="M0.333984 2C0.333984 -0.209139 2.12485 -2 4.33398 -2H14.334C16.5431 -2 18.334 -0.209139 18.334 2C18.334 2 17.4386 2 16.334 2H2.33398C1.22941 2 0.333984 2 0.333984 2ZM18.334 18H0.333984H18.334ZM0.333984 18V0V18ZM18.334 0V18V0Z"
+      fill="#4E77E1"
+      mask="url(#path-1-inside-1_2231_327)"
+    />
+    <path
+      d="M12.334 10.5L9.33398 7.5L6.33398 10.5"
+      stroke="#4E77E1"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+const SwitchThemesIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <path
+      d="M19.1144 12.672C18.7253 12.2824 18.2219 12.0274 17.6776 11.944L18.1888 11.432C18.4288 11.1888 18.6184 10.9008 18.7472 10.584C18.8792 10.2699 18.9472 9.93268 18.9472 9.592C18.9472 9.25132 18.8792 8.91406 18.7472 8.6C18.6196 8.28289 18.4297 7.99455 18.1888 7.752L16.1376 5.704C15.9136 5.46187 15.6421 5.26851 15.34 5.136C15.025 5.00528 14.6874 4.938 14.3464 4.938C14.0054 4.938 13.6678 5.00528 13.3528 5.136C13.0522 5.26799 12.7808 5.45833 12.5544 5.696L12.044 6.208C11.9525 5.5949 11.6442 5.03492 11.1752 4.6296C10.7071 4.22475 10.1093 4.00134 9.4904 4H6.5936C5.90593 4.00237 5.2472 4.27708 4.7616 4.764C4.27532 5.25147 4.00155 5.91146 4 6.6V17.4C4 18.0896 4.2736 18.7512 4.76 19.2384C5.2464 19.7264 5.9056 20 6.5936 20H17.3664C17.7101 19.9946 18.0494 19.9212 18.3645 19.7839C18.6797 19.6466 18.9645 19.4481 19.2024 19.2C19.4509 18.9617 19.6494 18.6762 19.7864 18.3603C19.9233 18.0443 19.9959 17.7043 20 17.36V14.496C19.9821 14.1481 19.8945 13.8074 19.7423 13.4941C19.5902 13.1808 19.3767 12.9012 19.1144 12.672ZM7.9424 17.88C7.57109 17.8803 7.20808 17.7702 6.89953 17.5636C6.59098 17.3571 6.35082 17.0634 6.2096 16.72C6.06806 16.3763 6.03112 15.9985 6.10341 15.6339C6.17571 15.2692 6.35402 14.9341 6.616 14.6704C6.87799 14.4066 7.21258 14.2267 7.57714 14.1537C7.9417 14.0808 8.31974 14.1179 8.66311 14.2605C9.00647 14.4031 9.29963 14.6447 9.50522 14.9545C9.71082 15.2642 9.81957 15.6282 9.8176 16C9.8176 16.4984 9.62 16.9768 9.268 17.3296C8.916 17.6824 8.4392 17.88 7.9424 17.88ZM11.988 7.864L13.3048 6.544C13.4344 6.4136 13.5896 6.3096 13.76 6.24C14.1008 6.104 14.48 6.104 14.8208 6.24C14.9899 6.31467 15.1416 6.416 15.276 6.544L17.3264 8.6C17.4532 8.73339 17.556 8.88765 17.6304 9.056C17.7684 9.40002 17.7684 9.78398 17.6304 10.128C17.5584 10.296 17.4552 10.448 17.3264 10.576L11.988 15.936V7.864Z"
+      fill="white"
+    />
+  </svg>
+)
+
 const {
   guideTitle,
   guideDescription,
@@ -1201,6 +1333,16 @@ const header = (
   <Header>
     <TopLine>
       <HeaderButtonGroup>
+        {isEditMode ? (
+          <EditButton
+            onClick={() => {
+              //  todo: need switch themes functiob
+            }}
+          >
+            <SwitchThemesIcon />
+          </EditButton>
+        ) : null}
+
         {context.accountId === mutatorId ? (
           <EditButton
             onClick={() => {
@@ -1346,37 +1488,58 @@ const editPage = (
           {iconRevert}Delete page changes
         </ButtonRevert>
       </OptionsBlock>
-
-      <FloatingLabelContainer>
-        <StyledInput
-          id={'target'}
-          type={'text'}
-          readonly
-          disabled
-          value={contextType && contextId ? `${contextType}/${contextId}` : 'No target'}
-        />
-        <StyledLabel htmlFor={'target'}>Target</StyledLabel>
-        <InputButtons>
-          {props.type === 'callout' && (
+      <TargetBlock>
+        <FloatingLabelContainer>
+          <StyledInput
+            id={'target'}
+            type={'text'}
+            readonly
+            disabled
+            value={contextType && contextId ? `${contextType}/${contextId}` : 'No target'}
+          />
+          <StyledLabel htmlFor={'target'}>Target</StyledLabel>
+          <InputButtons>
+            {props.type === 'callout' && (
+              <EditTargetButton
+                title="Delete target"
+                onClick={() => handleTargetRemove({ newTitle, newContent })}
+              >
+                <CloseIcon />
+              </EditTargetButton>
+            )}
             <EditTargetButton
-              title="Delete target"
-              onClick={() => handleTargetRemove({ newTitle, newContent })}
+              title="Pick target"
+              onClick={() => {
+                handleSavePageChanges()
+                startEditTarget()
+              }}
             >
-              <CloseIcon />
+              {iconEditTarget}
             </EditTargetButton>
-          )}
-          <EditTargetButton
-            title="Pick target"
-            onClick={() => {
-              handleSavePageChanges()
-              startEditTarget()
+          </InputButtons>
+        </FloatingLabelContainer>
+        {contextType && contextId ? (
+          <Widget
+            src="${REPL_ACCOUNT}/widget/WebGuide.TargetDropdown"
+            loading={props?.children}
+            props={{
+              disabled: !(
+                isConfigEdited ||
+                newTitle !== (title ?? '') ||
+                newContent !== (content ?? '')
+              ),
+              onMainButtonClick: handleMainButtonClick,
+              customActions: [
+                { value: 'auto', title: 'Auto', icon: AutoIcon },
+                { value: 'left', title: 'Left', icon: LeftIcon },
+                { value: 'right', title: 'Right', icon: RightIcon },
+                { value: 'top', title: 'Top', icon: TopIcon },
+                { value: 'bottom', title: 'Bottom', icon: BottomIcon },
+              ],
             }}
-          >
-            {iconEditTarget}
-          </EditTargetButton>
-        </InputButtons>
-      </FloatingLabelContainer>
-
+          />
+        ) : null}
+      </TargetBlock>
       <FloatingLabelContainer>
         <StyledInput
           id={'title'}
