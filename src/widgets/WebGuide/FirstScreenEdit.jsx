@@ -844,7 +844,8 @@ return (
               disabled: !(
                 isConfigEdited ||
                 newTitle !== (title ?? '') ||
-                newContent !== (content ?? '')
+                newDescription !== (description ?? '') ||
+                state.image?.cid !== icon?.cid
               ),
               onMainButtonClick: handleMainButtonClick,
               customActions: [
