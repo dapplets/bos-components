@@ -125,7 +125,7 @@ const configTemplate = {
 const { accountId: loggedInAccountId } = context
 const { linkDb, context: appContext } = props
 
-const [guideConfig, setGuideConfig] = useState(null)
+const [guideConfig, setGuideConfig] = useState(undefined) // null will be used if not found in DB
 const [editingConfig, setEditingConfig] = useState(configTemplate)
 const [showApp, setShowApp] = useState(true)
 const [chapterCounter, setChapterCounter] = useState(0)
@@ -166,8 +166,8 @@ const localConfig =
   (typeof localConfigResponse === 'string' ? JSON.parse(localConfigResponse) : localConfigResponse)
 
 useEffect(() => {
-  setShowApp(!!guideConfig || (!!localConfig && !!localConfig.chapters.length))
-  setShowFirstScreen(!guideConfig && !localConfig)
+  setShowApp(!!guideConfig || (!!localConfig && !!localConfig.chapters.length) || showFirstScreen)
+  setShowFirstScreen((guideConfig === null && !localConfig) || showFirstScreen)
 
   if (localConfig) {
     if (!isDeepEqual(localConfig, editingConfig)) {
@@ -445,6 +445,7 @@ const addChapter = (config, addFirst) => {
   }
   setEditingConfig(config)
   saveConfigToLocalStorage(config)
+  if (!addFirst) handleChapterIncrement(config)
 }
 
 const handleChapterAdd = ({ newTitle, newContent }) => {
@@ -454,7 +455,6 @@ const handleChapterAdd = ({ newTitle, newContent }) => {
   updatedPage.title = newTitle
   updatedPage.content = newContent
   addChapter(updatedConfig, false)
-  handleChapterIncrement(config)
 }
 
 const handleAddChapterFromFirstScreen = ({ newTitle, newDescription, newIcon }) => {
@@ -521,6 +521,7 @@ const handlePageRemove = () => {
 
   setEditingConfig(updatedConfig)
   saveConfigToLocalStorage(updatedConfig)
+  if (updatedConfig.chapters.length === 0) setShowFirstScreen(true)
 }
 
 /**
@@ -560,6 +561,7 @@ const handleRemoveAllChanges = () => {
   saveConfigToLocalStorage(null)
   setChapterCounter(0)
   setPageCounter(0)
+  if (!guideConfig) setShowFirstScreen(true)
 }
 
 const openSaveChangesPopup = ({ newTitle, newContent }) => {
