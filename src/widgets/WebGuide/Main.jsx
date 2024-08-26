@@ -330,6 +330,7 @@ const saveConfig = (config) => {
         setChapterCounter(0)
         setPageCounter(0)
         saveConfigToLocalStorage(null)
+        setShowFirstScreen(false)
       })
       .catch(console.error)
   } else {

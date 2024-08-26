@@ -37,6 +37,7 @@ const Theme = ({ skin, children }) => {
 }
 
 const Container = styled.div`
+  position: relative;
   display: flex;
   width: 350px;
   padding: 20px;
