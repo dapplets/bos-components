@@ -70,7 +70,7 @@ return props.type === 'callout' && !props.noTarget ? (
     placement={props.placement ?? 'auto'}
     offset={props.offset}
     overlay={
-      <CustomTooltip bsPrefix={`wg-tooltip-${skin}`}>
+      <CustomTooltip bsPrefix={`wg-tooltip-${props.skin}`}>
         <Widget src={props.widgetId} props={props} loading={<></>} />
       </CustomTooltip>
     }
