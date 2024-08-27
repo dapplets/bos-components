@@ -385,8 +385,8 @@ const handleClickPageIndicator = ({ index: pageIndex, newTitle, newContent }) =>
   const updatedConfig = deepCopy(editingConfig)
   const updatedPage = updatedConfig.chapters[chapterCounter].pages[pageCounter]
 
-  updatedPage.title = newTitle
-  updatedPage.content = newContent
+  if (newTitle !== undefined) updatedPage.title = newTitle
+  if (newContent !== undefined) updatedPage.content = newContent
 
   setEditingConfig(updatedConfig)
   saveConfigToLocalStorage(updatedConfig)

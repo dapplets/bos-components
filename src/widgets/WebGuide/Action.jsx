@@ -13,6 +13,7 @@ const IconQuestionMark = () => (
 return (
   <Widget
     src="${REPL_ACCOUNT}/widget/ActionButton"
+    loading={<></>}
     props={{
       appId: 'web-guide',
       tooltip: isActive ? 'Stop Web Guide' : 'Run Web Guide',

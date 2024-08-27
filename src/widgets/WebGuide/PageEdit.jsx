@@ -531,6 +531,7 @@ const {
   contextId,
   contextType,
   navi,
+  onClickPageIndicator,
   buttons,
   skin,
   title,
@@ -545,6 +546,7 @@ const {
   buttonRemoveDisabled,
   onRevertChanges,
   handleRemoveAllChanges,
+
   handleExportConfig,
   handleSave,
   noTarget,
@@ -626,8 +628,24 @@ const navButtonsEdit = !buttons?.length ? null : buttons?.length > 1 ? (
   </ActionsGroupEdit>
 )
 
+const Header = () => (
+  <Widget
+    src="${REPL_ACCOUNT}/widget/WebGuide.Header"
+    loading={<></>}
+    props={{
+      navi,
+      onClose,
+      mutatorId,
+      isEditMode,
+      setEditMode,
+      onClickPageIndicator: (index) => onClickPageIndicator({ index, newTitle, newContent }),
+    }}
+  />
+)
+
 return (
   <>
+    <Header />
     {navButtonsEdit}
 
     {noTarget ? (
