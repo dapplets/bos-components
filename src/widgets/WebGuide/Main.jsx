@@ -125,6 +125,36 @@ const clearTreeBranch = (node) => ({
   parent: node.parent ? clearTreeBranch(node.parent) : undefined,
 })
 
+const findTargets = (obj) => {
+  const stack = [obj]
+  const targets = []
+
+  while (stack.length > 0) {
+    const current = stack.pop()
+
+    if (current && typeof current === 'object') {
+      if (current.target) {
+        if (!targets.some((target) => isEqual(target, current.target))) {
+          targets.push(current.target)
+        }
+      }
+
+      for (const key in current) {
+        if (current.hasOwnProperty(key) && typeof current[key] === 'object') {
+          stack.push(current[key])
+        }
+      }
+    }
+  }
+
+  return targets
+}
+
+// Функция для сравнения объектов (простая глубокая проверка равенства)
+const isEqual = (obj1, obj2) => {
+  return JSON.stringify(obj1) === JSON.stringify(obj2)
+}
+
 const configTemplate = {
   action: true,
 }
@@ -140,6 +170,13 @@ const [pageCounter, setPageCounter] = useState(0)
 const [isEditMode, setEditMode] = useState(false)
 const [isEditTarget, setEditTarget] = useState(false)
 const [noTarget, setNoTarget] = useState(false)
+const skins = [editingConfig.chapters[chapterCounter].skin, 'DEFAULT']
+const [currentIndexSkins, setCurrentIndexSkins] = useState(0)
+const [uniqueTargets, setUniqueTargets] = useState([])
+
+const handleChangeSkin = () => {
+  setCurrentIndexSkins((prevIndex) => (prevIndex + 1) % skins.length)
+}
 
 const findParentContext = (context, type) => {
   if (!context) return null
@@ -230,6 +267,44 @@ if (
   (!editingConfig || !editingConfig.chapters?.length || !editingConfig.chapters[0].pages?.length)
 ) {
   return <></>
+}
+
+function findTargetsInChapters(chapters) {
+  const stack = [...chapters]
+  const targets = []
+
+  while (stack.length > 0) {
+    const current = stack.pop()
+
+    if (current && typeof current === 'object') {
+      if (current.target) {
+        if (!targets.some((target) => JSON.stringify(target) === JSON.stringify(current.target))) {
+          targets.push(current.target)
+        }
+      }
+
+      Object.keys(current).forEach((key) => {
+        const value = current[key]
+        if (Array.isArray(value)) {
+          stack.push(...value)
+        } else if (typeof value === 'object' && value !== null) {
+          stack.push(value)
+        }
+      })
+    }
+  }
+
+  return targets
+}
+useEffect(() => {
+  if (editingConfig.chapters) {
+    const targets = findTargetsInChapters(editingConfig.chapters)
+    setUniqueTargets(targets)
+  }
+}, [uniqueTargets, editingConfig.chapters])
+
+const handleNewTarget = (newTarget) => {
+  handleTargetSet(newTarget)
 }
 
 const saveConfigToLocalStorage = (data) => {
@@ -625,7 +700,8 @@ const ChapterWrapper = (props) => {
                   props.attachInsPointRef(ref)
                 }
               : props.children,
-        skin: currentChapter.skin ?? 'DEFAULT',
+        skin: skins[currentIndexSkins] ?? skins[currentIndexSkins + 1],
+        onSkins: () => handleChangeSkin(),
         isEditMode,
         setEditMode,
         startEditTarget: () => setEditTarget(true),
@@ -642,6 +718,8 @@ const ChapterWrapper = (props) => {
         handleExportConfig,
         handleSave,
         noTarget,
+        uniqueTargets,
+        onNewTarget: handleNewTarget,
       }}
     />
   )
@@ -725,7 +803,8 @@ return (
             <Widget
               src="${REPL_ACCOUNT}/widget/WebGuide.FirstScreenEdit"
               props={{
-                skin: 'META_GUIDE',
+                skin: skins[currentIndexSkins],
+                onSkins: () => handleChangeSkin(),
                 onStart: handleStartCreation,
                 onConfigImport: handleConfigImport,
                 onClose: handleClose,

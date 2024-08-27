@@ -1260,6 +1260,7 @@ const {
   checked,
   onDoNotShowChange,
   skin,
+  onSkins,
   title,
   content,
   mutatorId,
@@ -1279,6 +1280,8 @@ const {
   handleExportConfig,
   handleSave,
   noTarget,
+  onNewTarget,
+  uniqueTargets,
 } = props
 
 const [newTitle, setNewTitle] = useState(title ?? '')
@@ -1334,11 +1337,7 @@ const header = (
     <TopLine>
       <HeaderButtonGroup>
         {isEditMode ? (
-          <EditButton
-            onClick={() => {
-              //  todo: need switch themes functiob
-            }}
-          >
+          <EditButton onClick={onSkins}>
             <SwitchThemesIcon />
           </EditButton>
         ) : null}
@@ -1528,14 +1527,8 @@ const editPage = (
                 newTitle !== (title ?? '') ||
                 newContent !== (content ?? '')
               ),
-              onMainButtonClick: handleMainButtonClick,
-              customActions: [
-                { value: 'auto', title: 'Auto', icon: AutoIcon },
-                { value: 'left', title: 'Left', icon: LeftIcon },
-                { value: 'right', title: 'Right', icon: RightIcon },
-                { value: 'top', title: 'Top', icon: TopIcon },
-                { value: 'bottom', title: 'Bottom', icon: BottomIcon },
-              ],
+              onItemClick: onNewTarget,
+              customActions: uniqueTargets,
             }}
           />
         ) : null}

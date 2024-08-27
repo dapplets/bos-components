@@ -49,10 +49,12 @@ const StyledLabel = styled.label`
 const TextSave = styled.div`
   display: inline-block;
   overflow: hidden;
-  word-wrap: no-wrap;
   text-overflow: ellipsis;
   text-align: center;
   text-transform: lowercase;
+  max-width: 72px;
+  white-space: nowrap;
+  font-size: 12px;
 `
 
 const RightButton = styled.button`
@@ -85,14 +87,16 @@ const RightButton = styled.button`
 const ItemGroup = styled.div`
   position: absolute;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: column;
+  overflow-y: auto;
+  max-height: 150px;
   right: 0;
   top: 60px;
   z-index: 2;
-  width: 94px;
-  padding: 10px 10px;
+  width: 150px;
+  padding: 10px;
   gap: 5px;
   border-radius: 10px;
   background: #e7ecef;
@@ -126,6 +130,13 @@ const DropdownButtonItem = styled.div`
   border: none;
   background: var(--primBtnBg);
   padding: 0 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  max-width: 140px;
+  white-space: nowrap;
+  font-size: 12px;
+  flex: 1 0 auto;
 
   &:hover {
     background: #e2e2e5;
@@ -146,13 +157,20 @@ const DropdownButtonItemActive = styled.div`
   background: var(--primBtnCol);
   color: var(--primBtnBg);
   padding: 0 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  max-width: 140px;
+  white-space: nowrap;
+  font-size: 12px;
+  flex: 1 0 auto;
 
   &:hover {
     opacity: 0.5;
   }
 `
 
-const { disabled, onMainButtonClick, customActions } = props
+const { onItemClick, customActions } = props
 
 const [currentEditAction, setCurrentEditAction] = useState(customActions[0])
 const [isOpen, setOpen] = useState(false)
@@ -165,12 +183,11 @@ const handleButtonItemClick = (item) => {
 return (
   <DropdownWrapper>
     <ButtonGroup>
-      <LeftButton
-        disabled={disabled && currentEditAction.value === 'publish'}
-        onClick={() => onMainButtonClick(currentEditAction.value)}
-      >
+      <LeftButton onClick={() => setOpen(!isOpen)}>
         <StyledLabel>Align</StyledLabel>
-        <TextSave>{currentEditAction.title}</TextSave>
+        <TextSave>
+          {currentEditAction.type ?? currentEditAction.contextType}/{currentEditAction.id}
+        </TextSave>
       </LeftButton>
 
       <RightButton onClick={() => setOpen(!isOpen)}>{arrowIcon}</RightButton>
@@ -179,21 +196,18 @@ return (
     {isOpen ? (
       <ItemGroup>
         {customActions.map((customAction) =>
-          customAction.value === currentEditAction.value ? (
+          customAction.id === currentEditAction.id ? (
             <DropdownButtonItemActive
-              key={customAction.value}
+              key={customAction.id}
               onClick={() => handleButtonItemClick(customAction)}
             >
-              <customAction.icon />
-              {customAction.title}
+              {customAction.icon && <customAction.icon />}
+              {customAction.type ?? customAction.contextType}/{customAction.id}
             </DropdownButtonItemActive>
           ) : (
-            <DropdownButtonItem
-              key={customAction.value}
-              onClick={() => handleButtonItemClick(customAction)}
-            >
-              <customAction.icon />
-              {customAction.title}
+            <DropdownButtonItem key={customAction.id} onClick={() => onItemClick(customAction)}>
+              {customAction.icon && <customAction.icon />}
+              {customAction.type ?? customAction.contextType}/{customAction.id}
             </DropdownButtonItem>
           )
         )}
