@@ -641,8 +641,6 @@ const ChapterWrapper = (props) => {
       loading={<></>}
       props={{
         widgetId: '${REPL_ACCOUNT}/widget/WebGuide.Page',
-        guideTitle: editingConfig.title,
-        guideDescription: editingConfig.description,
         isConfigEdited: !isDeepEqual(editingConfig, guideConfig),
         isPageEdited: !isDeepEqual(
           currentPage,
@@ -675,7 +673,6 @@ const ChapterWrapper = (props) => {
         },
         title: currentPage.title,
         content: currentPage.content,
-        showChecked: currentChapter.showChecked,
         mutatorId,
         onRefAttach:
           currentChapter.type === 'callout' && !noTarget
