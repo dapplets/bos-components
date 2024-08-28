@@ -170,13 +170,143 @@ const DropdownButtonItemActive = styled.div`
   }
 `
 
-const { onItemClick, customActions } = props
+const AutoIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
+    <mask id="path-1-inside-1_2231_331" fill="white">
+      <path d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z" />
+    </mask>
+    <path
+      d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z"
+      fill="white"
+      fillOpacity="0.15"
+    />
+    <path
+      d="M0.333984 0H18.334H0.333984ZM18.334 18H0.333984H18.334ZM2.33398 18C0.124845 18 -1.66602 16.2091 -1.66602 14V4C-1.66602 1.79086 0.124845 0 2.33398 0C2.33398 0 2.33398 0.895431 2.33398 2V16C2.33398 17.1046 2.33398 18 2.33398 18ZM16.334 0C18.5431 0 20.334 1.79086 20.334 4V14C20.334 16.2091 18.5431 18 16.334 18C16.334 18 16.334 17.1046 16.334 16V2C16.334 0.895431 16.334 0 16.334 0Z"
+      fill="white"
+      mask="url(#path-1-inside-1_2231_331)"
+    />
+    <rect x="7.33398" y="7" width="4" height="4" rx="1" fill="white" />
+  </svg>
+)
 
-const [currentEditAction, setCurrentEditAction] = useState(customActions[0])
+const LeftIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
+    <mask id="path-1-inside-1_2231_333" fill="white">
+      <path d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z" />
+    </mask>
+    <path
+      d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z"
+      fill="#4E77E1"
+      fillOpacity="0.15"
+    />
+    <path
+      d="M0.333984 0H18.334H0.333984ZM18.334 18H0.333984H18.334ZM0.333984 18V0V18ZM16.334 0C18.5431 0 20.334 1.79086 20.334 4V14C20.334 16.2091 18.5431 18 16.334 18C16.334 18 16.334 17.1046 16.334 16V2C16.334 0.895431 16.334 0 16.334 0Z"
+      fill="#4E77E1"
+      mask="url(#path-1-inside-1_2231_333)"
+    />
+    <path
+      d="M7.83398 12L10.834 9L7.83398 6"
+      stroke="#4E77E1"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+const RightIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
+    <mask id="path-1-inside-1_2231_316" fill="white">
+      <path d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z" />
+    </mask>
+    <path
+      d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z"
+      fill="#4E77E1"
+      fillOpacity="0.15"
+    />
+    <path
+      d="M0.333984 0H18.334H0.333984ZM18.334 18H0.333984H18.334ZM2.33398 18C0.124845 18 -1.66602 16.2091 -1.66602 14V4C-1.66602 1.79086 0.124845 0 2.33398 0C2.33398 0 2.33398 0.895431 2.33398 2V16C2.33398 17.1046 2.33398 18 2.33398 18ZM18.334 0V18V0Z"
+      fill="#4E77E1"
+      mask="url(#path-1-inside-1_2231_316)"
+    />
+    <path
+      d="M10.834 12L7.83398 9L10.834 6"
+      stroke="#4E77E1"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+const TopIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
+    <mask id="path-1-inside-1_2231_329" fill="white">
+      <path d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z" />
+    </mask>
+    <path
+      d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z"
+      fill="#4E77E1"
+      fillOpacity="0.15"
+    />
+    <path
+      d="M0.333984 0H18.334H0.333984ZM18.334 16C18.334 18.2091 16.5431 20 14.334 20H4.33398C2.12485 20 0.333984 18.2091 0.333984 16C0.333984 16 1.22941 16 2.33398 16H16.334C17.4386 16 18.334 16 18.334 16ZM0.333984 18V0V18ZM18.334 0V18V0Z"
+      fill="#4E77E1"
+      mask="url(#path-1-inside-1_2231_329)"
+    />
+    <path
+      d="M6.33398 7.5L9.33398 10.5L12.334 7.5"
+      stroke="#4E77E1"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+const BottomIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
+    <mask id="path-1-inside-1_2231_327" fill="white">
+      <path d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z" />
+    </mask>
+    <path
+      d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z"
+      fill="#4E77E1"
+      fillOpacity="0.15"
+    />
+    <path
+      d="M0.333984 2C0.333984 -0.209139 2.12485 -2 4.33398 -2H14.334C16.5431 -2 18.334 -0.209139 18.334 2C18.334 2 17.4386 2 16.334 2H2.33398C1.22941 2 0.333984 2 0.333984 2ZM18.334 18H0.333984H18.334ZM0.333984 18V0V18ZM18.334 0V18V0Z"
+      fill="#4E77E1"
+      mask="url(#path-1-inside-1_2231_327)"
+    />
+    <path
+      d="M12.334 10.5L9.33398 7.5L6.33398 10.5"
+      stroke="#4E77E1"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+const positionsTarget = [
+  { placement: 'auto', title: 'Auto', icon: AutoIcon },
+  { placement: 'left', title: 'Left', icon: LeftIcon },
+  { placement: 'right', title: 'Right', icon: RightIcon },
+  { placement: 'top', title: 'Top', icon: TopIcon },
+  { placement: 'bottom', title: 'Bottom', icon: BottomIcon },
+]
+
+const { onItemClick, oldPosition } = props
+
+const [currentPosition, setCurrentPosition] = useState(
+  oldPosition ? positionsTarget.filter((p) => p.placement === oldPosition)[0] : positionsTarget[0]
+)
+
 const [isOpen, setOpen] = useState(false)
 
 const handleButtonItemClick = (item) => {
-  setCurrentEditAction(item)
+  setCurrentPosition(item)
   setOpen(false)
 }
 
@@ -185,9 +315,7 @@ return (
     <ButtonGroup>
       <LeftButton onClick={() => setOpen(!isOpen)}>
         <StyledLabel>Align</StyledLabel>
-        <TextSave>
-          {currentEditAction.type ?? currentEditAction.contextType}/{currentEditAction.id}
-        </TextSave>
+        <TextSave>{currentPosition.title}</TextSave>
       </LeftButton>
 
       <RightButton onClick={() => setOpen(!isOpen)}>{arrowIcon}</RightButton>
@@ -195,19 +323,22 @@ return (
 
     {isOpen ? (
       <ItemGroup>
-        {customActions.map((customAction) =>
-          customAction.id === currentEditAction.id ? (
+        {positionsTarget.map((position) =>
+          position.placement === currentPosition.placement ? (
             <DropdownButtonItemActive
-              key={customAction.id}
-              onClick={() => handleButtonItemClick(customAction)}
+              key={customAction.placement}
+              onClick={() => handleButtonItemClick(position)}
             >
-              {customAction.icon && <customAction.icon />}
-              {customAction.type ?? customAction.contextType}/{customAction.id}
+              {position.icon && <position.icon />}
+              {position.title}
             </DropdownButtonItemActive>
           ) : (
-            <DropdownButtonItem key={customAction.id} onClick={() => onItemClick(customAction)}>
-              {customAction.icon && <customAction.icon />}
-              {customAction.type ?? customAction.contextType}/{customAction.id}
+            <DropdownButtonItem
+              key={position.placement}
+              onClick={() => onItemClick(position.placement)}
+            >
+              {position.icon && <position.icon />}
+              {position.title}
             </DropdownButtonItem>
           )
         )}

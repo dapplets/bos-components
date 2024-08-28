@@ -1281,7 +1281,7 @@ const {
   handleSave,
   noTarget,
   onNewTarget,
-  uniqueTargets,
+  placement,
 } = props
 
 const [newTitle, setNewTitle] = useState(title ?? '')
@@ -1528,7 +1528,7 @@ const editPage = (
                 newContent !== (content ?? '')
               ),
               onItemClick: onNewTarget,
-              customActions: uniqueTargets,
+              oldPosition: placement,
             }}
           />
         ) : null}

@@ -123,6 +123,7 @@ const clearTreeBranch = (node) => ({
   type: node.type,
   id: node.id,
   parent: node.parent ? clearTreeBranch(node.parent) : undefined,
+  placement: node.placement,
 })
 
 const findTargets = (obj) => {
@@ -172,7 +173,6 @@ const [isEditTarget, setEditTarget] = useState(false)
 const [noTarget, setNoTarget] = useState(false)
 const skins = [editingConfig.chapters[chapterCounter].skin, 'DEFAULT']
 const [currentIndexSkins, setCurrentIndexSkins] = useState(0)
-const [uniqueTargets, setUniqueTargets] = useState([])
 
 const handleChangeSkin = () => {
   setCurrentIndexSkins((prevIndex) => (prevIndex + 1) % skins.length)
@@ -269,42 +269,8 @@ if (
   return <></>
 }
 
-function findTargetsInChapters(chapters) {
-  const stack = [...chapters]
-  const targets = []
-
-  while (stack.length > 0) {
-    const current = stack.pop()
-
-    if (current && typeof current === 'object') {
-      if (current.target) {
-        if (!targets.some((target) => JSON.stringify(target) === JSON.stringify(current.target))) {
-          targets.push(current.target)
-        }
-      }
-
-      Object.keys(current).forEach((key) => {
-        const value = current[key]
-        if (Array.isArray(value)) {
-          stack.push(...value)
-        } else if (typeof value === 'object' && value !== null) {
-          stack.push(value)
-        }
-      })
-    }
-  }
-
-  return targets
-}
-useEffect(() => {
-  if (editingConfig.chapters) {
-    const targets = findTargetsInChapters(editingConfig.chapters)
-    setUniqueTargets(targets)
-  }
-}, [uniqueTargets, editingConfig.chapters])
-
-const handleNewTarget = (newTarget) => {
-  handleTargetSet(newTarget)
+const handleNewTarget = (newTargetPlacement) => {
+  handleTargetSet(null, newTargetPlacement)
 }
 
 const saveConfigToLocalStorage = (data) => {
@@ -464,17 +430,30 @@ const handlePageDataChange = ({ newTitle, newContent }) => {
   saveConfigToLocalStorage(updatedConfig)
 }
 
-const handleTargetSet = (newTarget) => {
-  const updatedConfig = deepCopy(editingConfig)
-  const updatedChapter = updatedConfig.chapters[chapterCounter]
+const handleTargetSet = (newTarget, newPlacement) => {
+  if (newTarget) {
+    const updatedConfig = deepCopy(editingConfig)
+    const updatedChapter = updatedConfig.chapters[chapterCounter]
 
-  updatedChapter.type = 'callout'
-  updatedChapter.target = newTarget ? clearTreeBranch(newTarget) : null
+    updatedChapter.type = 'callout'
+    updatedChapter.target = newTarget ? clearTreeBranch(newTarget) : null
 
-  setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+    setEditingConfig(updatedConfig)
+    saveConfigToLocalStorage(updatedConfig)
 
-  setEditTarget(false)
+    setEditTarget(false)
+  }
+  if (newPlacement) {
+    const updatedConfig = deepCopy(editingConfig)
+    const updatedChapter = updatedConfig.chapters[chapterCounter]
+
+    updatedChapter.type = 'callout'
+    updatedChapter.target.placement = newPlacement
+    updatedChapter.target = clearTreeBranch(updatedChapter)
+
+    setEditingConfig(updatedConfig)
+    saveConfigToLocalStorage(updatedConfig)
+  }
 }
 
 const handleTargetRemove = ({ newTitle, newContent }) => {
@@ -668,7 +647,7 @@ const ChapterWrapper = (props) => {
           ? currentChapter.target.type
           : currentChapter.contextType,
         contextId: currentChapter.target ? currentChapter.target.id : currentChapter.if?.id?.eq,
-        placement: currentChapter.target ? undefined : currentChapter.placement, // ToDo: cannot define placement for target
+        placement: currentChapter.target ? undefined : currentChapter.target.placement, // ToDo: cannot define placement for target
         strategy: currentChapter.target
           ? currentChapter.namespace === 'mweb'
             ? 'fixed'
@@ -718,7 +697,6 @@ const ChapterWrapper = (props) => {
         handleExportConfig,
         handleSave,
         noTarget,
-        uniqueTargets,
         onNewTarget: handleNewTarget,
       }}
     />
