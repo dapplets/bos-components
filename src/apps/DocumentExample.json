@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "name": "Document App Example"
+  },
+  "$": {
+    "targets": [
+      {
+        "namespace": "${REPL_ACCOUNT}/parser/twitter",
+        "contextType": "post",
+        "if": { "id": { "not": null } },
+        "injectTo": "southPanel",
+        "componentId": "${REPL_ACCOUNT}/widget/DocumentExample.Main",
+        "static": true
+      }
+    ]
+  }
+}
