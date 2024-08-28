@@ -157,6 +157,11 @@ const getMutationId = () => {
 const mutationId = getMutationId()
 const mutatorId = mutationId?.split('/')[0]
 
+const localConfigResponse = Storage.privateGet(appContext)
+const localConfig =
+  localConfigResponse &&
+  (typeof localConfigResponse === 'string' ? JSON.parse(localConfigResponse) : localConfigResponse)
+
 useEffect(() => {
   linkDb
     .get(appContext, mutatorId)
@@ -166,11 +171,6 @@ useEffect(() => {
     })
     .catch(console.error)
 }, [])
-
-const localConfigResponse = Storage.privateGet(appContext)
-const localConfig =
-  localConfigResponse &&
-  (typeof localConfigResponse === 'string' ? JSON.parse(localConfigResponse) : localConfigResponse)
 
 useEffect(() => {
   setShowApp(!!guideConfig || (!!localConfig && !!localConfig.chapters.length) || showFirstScreen)
@@ -453,7 +453,11 @@ const addChapter = (config, addFirst) => {
   }
   setEditingConfig(config)
   saveConfigToLocalStorage(config)
-  if (!addFirst) handleChapterIncrement(config)
+  if (!addFirst) {
+    handleChapterIncrement(config)
+  } else {
+    setShowFirstScreen(false)
+  }
 }
 
 const handleChapterAdd = ({ newTitle, newContent }) => {
