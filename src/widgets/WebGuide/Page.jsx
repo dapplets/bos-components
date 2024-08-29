@@ -1280,7 +1280,7 @@ const {
   handleExportConfig,
   handleSave,
   noTarget,
-  onNewTarget,
+  onPlacementChange,
   placement,
 } = props
 
@@ -1527,7 +1527,7 @@ const editPage = (
                 newTitle !== (title ?? '') ||
                 newContent !== (content ?? '')
               ),
-              onItemClick: onNewTarget,
+              onItemClick: onPlacementChange,
               oldPosition: placement,
             }}
           />

@@ -269,8 +269,14 @@ if (
   return <></>
 }
 
-const handleNewTarget = (newTargetPlacement) => {
-  handleTargetSet(null, newTargetPlacement)
+const handlePlacementChange = (newPlacement) => {
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedChapter = updatedConfig.chapters[chapterCounter]
+
+  updatedChapter.placement = newPlacement
+
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
 }
 
 const saveConfigToLocalStorage = (data) => {
@@ -430,30 +436,17 @@ const handlePageDataChange = ({ newTitle, newContent }) => {
   saveConfigToLocalStorage(updatedConfig)
 }
 
-const handleTargetSet = (newTarget, newPlacement) => {
-  if (newTarget) {
-    const updatedConfig = deepCopy(editingConfig)
-    const updatedChapter = updatedConfig.chapters[chapterCounter]
+const handleTargetSet = (newTarget) => {
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedChapter = updatedConfig.chapters[chapterCounter]
 
-    updatedChapter.type = 'callout'
-    updatedChapter.target = newTarget ? clearTreeBranch(newTarget) : null
+  updatedChapter.type = 'callout'
+  updatedChapter.target = newTarget ? clearTreeBranch(newTarget) : null
 
-    setEditingConfig(updatedConfig)
-    saveConfigToLocalStorage(updatedConfig)
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
 
-    setEditTarget(false)
-  }
-  if (newPlacement) {
-    const updatedConfig = deepCopy(editingConfig)
-    const updatedChapter = updatedConfig.chapters[chapterCounter]
-
-    updatedChapter.type = 'callout'
-    updatedChapter.target.placement = newPlacement
-    updatedChapter.target = clearTreeBranch(updatedChapter)
-
-    setEditingConfig(updatedConfig)
-    saveConfigToLocalStorage(updatedConfig)
-  }
+  setEditTarget(false)
 }
 
 const handleTargetRemove = ({ newTitle, newContent }) => {
@@ -647,7 +640,7 @@ const ChapterWrapper = (props) => {
           ? currentChapter.target.type
           : currentChapter.contextType,
         contextId: currentChapter.target ? currentChapter.target.id : currentChapter.if?.id?.eq,
-        placement: currentChapter.target ? undefined : currentChapter.target.placement, // ToDo: cannot define placement for target
+        placement: currentChapter.target ? currentChapter.placement : undefined,
         strategy: currentChapter.target
           ? currentChapter.namespace === 'mweb'
             ? 'fixed'
@@ -697,7 +690,7 @@ const ChapterWrapper = (props) => {
         handleExportConfig,
         handleSave,
         noTarget,
-        onNewTarget: handleNewTarget,
+        onPlacementChange: handlePlacementChange,
       }}
     />
   )
