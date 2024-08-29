@@ -86,7 +86,7 @@ const ItemGroup = styled.div`
   font-size: 14px;
   font-weight: 400;
   text-align: center;
-  color: #222222;
+  color: var(--dropdownColor);
 `
 
 const arrowIcon = (

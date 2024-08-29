@@ -29,6 +29,7 @@ const LeftButton = styled('DappletFileDownloader')`
   line-height: 20.86px;
   text-align: center;
   cursor: pointer;
+
   &:disabled {
     opacity: 0.5;
     cursor: auto;
@@ -65,6 +66,7 @@ const RightButton = styled.button`
   border: none;
   background: var(--primBtnCol);
   cursor: pointer;
+
   &:disabled {
     opacity: 0.5;
     cursor: auto;
@@ -99,18 +101,18 @@ const ItemGroup = styled.div`
   padding: 10px;
   gap: 5px;
   border-radius: 10px;
-  background: #e7ecef;
+  background: var(--bg-grey);
   font-size: 14px;
   font-weight: 400;
   text-align: center;
-  color: #222222;
+  color: var(--dropdownColor);
 `
 
 const arrowIcon = (
   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="8" viewBox="0 0 14 8" fill="none">
     <path
       d="M1 1L7 7L13 1"
-      stroke="#4E77E1"
+      stroke="var(--bgMain)"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -172,41 +174,41 @@ const DropdownButtonItemActive = styled.div`
 
 const AutoIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
-    <mask id="path-1-inside-1_2231_331" fill="white">
+    <mask id="path-1-inside-1_2231_331" fill="var(--colorMain)">
       <path d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z" />
     </mask>
     <path
       d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z"
-      fill="white"
+      fill="var(--colorMain)"
       fillOpacity="0.15"
     />
     <path
       d="M0.333984 0H18.334H0.333984ZM18.334 18H0.333984H18.334ZM2.33398 18C0.124845 18 -1.66602 16.2091 -1.66602 14V4C-1.66602 1.79086 0.124845 0 2.33398 0C2.33398 0 2.33398 0.895431 2.33398 2V16C2.33398 17.1046 2.33398 18 2.33398 18ZM16.334 0C18.5431 0 20.334 1.79086 20.334 4V14C20.334 16.2091 18.5431 18 16.334 18C16.334 18 16.334 17.1046 16.334 16V2C16.334 0.895431 16.334 0 16.334 0Z"
-      fill="white"
+      fill="var(--colorMain)"
       mask="url(#path-1-inside-1_2231_331)"
     />
-    <rect x="7.33398" y="7" width="4" height="4" rx="1" fill="white" />
+    <rect x="7.33398" y="7" width="4" height="4" rx="1" fill="var(--colorMain)" />
   </svg>
 )
 
 const LeftIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
-    <mask id="path-1-inside-1_2231_333" fill="white">
+    <mask id="path-1-inside-1_2231_333" fill="var(--colorMain)">
       <path d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z" />
     </mask>
     <path
       d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z"
-      fill="#4E77E1"
+      fill="var(--bgMain)"
       fillOpacity="0.15"
     />
     <path
       d="M0.333984 0H18.334H0.333984ZM18.334 18H0.333984H18.334ZM0.333984 18V0V18ZM16.334 0C18.5431 0 20.334 1.79086 20.334 4V14C20.334 16.2091 18.5431 18 16.334 18C16.334 18 16.334 17.1046 16.334 16V2C16.334 0.895431 16.334 0 16.334 0Z"
-      fill="#4E77E1"
+      fill="var(--bgMain)"
       mask="url(#path-1-inside-1_2231_333)"
     />
     <path
       d="M7.83398 12L10.834 9L7.83398 6"
-      stroke="#4E77E1"
+      stroke="var(--bgMain)"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -216,22 +218,22 @@ const LeftIcon = () => (
 
 const RightIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
-    <mask id="path-1-inside-1_2231_316" fill="white">
+    <mask id="path-1-inside-1_2231_316" fill="var(--colorMain)">
       <path d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z" />
     </mask>
     <path
       d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z"
-      fill="#4E77E1"
+      fill="var(--bgMain)"
       fillOpacity="0.15"
     />
     <path
       d="M0.333984 0H18.334H0.333984ZM18.334 18H0.333984H18.334ZM2.33398 18C0.124845 18 -1.66602 16.2091 -1.66602 14V4C-1.66602 1.79086 0.124845 0 2.33398 0C2.33398 0 2.33398 0.895431 2.33398 2V16C2.33398 17.1046 2.33398 18 2.33398 18ZM18.334 0V18V0Z"
-      fill="#4E77E1"
+      fill="var(--bgMain)"
       mask="url(#path-1-inside-1_2231_316)"
     />
     <path
       d="M10.834 12L7.83398 9L10.834 6"
-      stroke="#4E77E1"
+      stroke="var(--bgMain)"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -241,22 +243,22 @@ const RightIcon = () => (
 
 const TopIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
-    <mask id="path-1-inside-1_2231_329" fill="white">
+    <mask id="path-1-inside-1_2231_329" fill="var(--colorMain)">
       <path d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z" />
     </mask>
     <path
       d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z"
-      fill="#4E77E1"
+      fill="var(--bgMain)"
       fillOpacity="0.15"
     />
     <path
       d="M0.333984 0H18.334H0.333984ZM18.334 16C18.334 18.2091 16.5431 20 14.334 20H4.33398C2.12485 20 0.333984 18.2091 0.333984 16C0.333984 16 1.22941 16 2.33398 16H16.334C17.4386 16 18.334 16 18.334 16ZM0.333984 18V0V18ZM18.334 0V18V0Z"
-      fill="#4E77E1"
+      fill="var(--bgMain)"
       mask="url(#path-1-inside-1_2231_329)"
     />
     <path
       d="M6.33398 7.5L9.33398 10.5L12.334 7.5"
-      stroke="#4E77E1"
+      stroke="var(--bgMain)"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -266,22 +268,22 @@ const TopIcon = () => (
 
 const BottomIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
-    <mask id="path-1-inside-1_2231_327" fill="white">
+    <mask id="path-1-inside-1_2231_327" fill="var(--colorMain)">
       <path d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z" />
     </mask>
     <path
       d="M0.333984 2C0.333984 0.89543 1.22941 0 2.33398 0H16.334C17.4386 0 18.334 0.895431 18.334 2V16C18.334 17.1046 17.4386 18 16.334 18H2.33398C1.22941 18 0.333984 17.1046 0.333984 16V2Z"
-      fill="#4E77E1"
+      fill="var(--bgMain)"
       fillOpacity="0.15"
     />
     <path
       d="M0.333984 2C0.333984 -0.209139 2.12485 -2 4.33398 -2H14.334C16.5431 -2 18.334 -0.209139 18.334 2C18.334 2 17.4386 2 16.334 2H2.33398C1.22941 2 0.333984 2 0.333984 2ZM18.334 18H0.333984H18.334ZM0.333984 18V0V18ZM18.334 0V18V0Z"
-      fill="#4E77E1"
+      fill="var(--bgMain)"
       mask="url(#path-1-inside-1_2231_327)"
     />
     <path
       d="M12.334 10.5L9.33398 7.5L6.33398 10.5"
-      stroke="#4E77E1"
+      stroke="var(--bgMain)"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
