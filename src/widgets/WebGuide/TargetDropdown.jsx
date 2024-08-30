@@ -92,8 +92,6 @@ const ItemGroup = styled.div`
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-  overflow-y: auto;
-  max-height: 150px;
   right: 0;
   top: 60px;
   z-index: 2;
