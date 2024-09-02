@@ -1,5 +1,13 @@
 const { accountId } = context // The order is important, because context redeclared
-const { linkDb: LinkDb, context } = props
+const { linkDb: LinkDb, commitDocument, context } = props
+
+const MiniOverlayTarget = {
+  namespace: 'mweb',
+  contextType: 'mweb-overlay',
+  injectTo: 'mweb-actions-panel',
+  if: { id: { eq: 'mweb-overlay' } },
+  arrowTo: 'context',
+}
 
 const DefaultValue = { counter: 0 }
 
@@ -13,7 +21,29 @@ useEffect(() => {
     .finally(() => setIsLoading(false))
 }, [])
 
-const handleClick = () => {
+const handleCreateDocument = () => {
+  const documentId = '${REPL_ACCOUNT}/document/DocumentExample-' + Date.now()
+
+  const documentMetadata = {
+    name: 'Document ' + Date.now(),
+    description: 'Document created by ${REPL_ACCOUNT} at ' + Date.now(),
+    image: {
+      ipfs_cid: 'bafkreie4tum66dxhl4twu6ak3d2vgtxkwc3rkoay2rriqzdwm4m2hflgwy', // cat icon
+    },
+  }
+
+  const newData = { counter: 1 }
+  const counterData = { [accountId]: newData }
+
+  setIsLoading(true)
+
+  commitDocument(documentId, documentMetadata, context, counterData)
+    .then(() => setData(newData))
+    .catch(console.error)
+    .finally(() => setIsLoading(false))
+}
+
+const handleIncrementClick = () => {
   setIsLoading(true)
 
   const newData = { counter: (data.counter ?? 0) + 1 }
@@ -24,16 +54,33 @@ const handleClick = () => {
     .finally(() => setIsLoading(false))
 }
 
-if (isLoading) {
-  return (
-    <button className="btn btn-primary btn-sm" type="button" disabled>
-      <span className="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
-    </button>
-  )
-}
-
 return (
-  <button type="button" className="btn btn-primary btn-sm" onClick={handleClick}>
-    Doc: {data?.counter ?? 0}
-  </button>
+  <>
+    <DappletPortal
+      target={MiniOverlayTarget}
+      component={() => {
+        if (isLoading) {
+          return (
+            <button className="btn btn-primary btn-sm" type="button" disabled>
+              <span className="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+            </button>
+          )
+        }
+
+        if (data?.counter === 0) {
+          return (
+            <button type="button" className="btn btn-primary btn-sm" onClick={handleCreateDocument}>
+              Create
+            </button>
+          )
+        }
+
+        return (
+          <button type="button" className="btn btn-primary btn-sm" onClick={handleIncrementClick}>
+            Doc: {data?.counter ?? 0}
+          </button>
+        )
+      }}
+    />
+  </>
 )

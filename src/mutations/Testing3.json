@@ -43,7 +43,7 @@
   "$apps": [
     {
       "appId": "${REPL_ACCOUNT}/app/DocumentExample",
-      "documentId": "${REPL_ACCOUNT}/document/DocumentExample"
+      "documentId": null
     }
   ]
 }
