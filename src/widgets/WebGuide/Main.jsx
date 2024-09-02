@@ -126,31 +126,6 @@ const clearTreeBranch = (node) => ({
   placement: node.placement,
 })
 
-const findTargets = (obj) => {
-  const stack = [obj]
-  const targets = []
-
-  while (stack.length > 0) {
-    const current = stack.pop()
-
-    if (current && typeof current === 'object') {
-      if (current.target) {
-        if (!targets.some((target) => isEqual(target, current.target))) {
-          targets.push(current.target)
-        }
-      }
-
-      for (const key in current) {
-        if (current.hasOwnProperty(key) && typeof current[key] === 'object') {
-          stack.push(current[key])
-        }
-      }
-    }
-  }
-
-  return targets
-}
-
 // Функция для сравнения объектов (простая глубокая проверка равенства)
 const isEqual = (obj1, obj2) => {
   return JSON.stringify(obj1) === JSON.stringify(obj2)
@@ -161,7 +136,7 @@ const configTemplate = {
 }
 
 const { accountId: loggedInAccountId } = context
-const { linkDb, context: appContext } = props
+const { linkDb, context: appContext, notify } = props
 
 const [guideConfig, setGuideConfig] = useState(null)
 const [editingConfig, setEditingConfig] = useState(configTemplate)
@@ -173,6 +148,55 @@ const [isEditTarget, setEditTarget] = useState(false)
 const [noTarget, setNoTarget] = useState(false)
 const skins = [editingConfig.chapters[chapterCounter].skin, 'DEFAULT']
 const [currentIndexSkins, setCurrentIndexSkins] = useState(0)
+const [timerNotify, setTimerNotify] = useState(30)
+
+// todo: timer dont work
+
+// const handleNotify = (confirm, cancel) => {
+//   const timer = setInterval(() => {
+//     setTimerNotify((prev) => prev - 1)
+//   }, 3000)
+
+//   notify({
+//     type: 'info',
+//     subject: 'Change target',
+//     body: `${timerNotify}`,
+//     actions: [
+//       {
+//         label: 'OK',
+//         onClick: () => {
+//           confirm()
+//           return () => clearInterval(timer)
+//         },
+//       },
+//       {
+//         label: 'Cancel',
+//         onClick: () => {
+//           cancel()
+//           return () => clearInterval(timer)
+//         },
+//       },
+//     ],
+//   })
+// }
+
+const handleNotify = (confirm, cancel) => {
+  notify({
+    type: 'info',
+    subject: 'Change target',
+
+    actions: [
+      {
+        label: 'OK',
+        onClick: () => confirm,
+      },
+      {
+        label: 'Cancel',
+        onClick: () => cancel,
+      },
+    ],
+  })
+}
 
 const handleChangeSkin = () => {
   setCurrentIndexSkins((prevIndex) => (prevIndex + 1) % skins.length)
@@ -273,10 +297,22 @@ const handlePlacementChange = (newPlacement) => {
   const updatedConfig = deepCopy(editingConfig)
   const updatedChapter = updatedConfig.chapters[chapterCounter]
 
-  updatedChapter.placement = newPlacement
+  const update = () => {
+    updatedChapter.placement = newPlacement
+    setEditingConfig(updatedConfig)
+    saveConfigToLocalStorage(updatedConfig)
+  }
 
-  setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  const reset = () => {
+    updatedChapter.placement = updatedChapter.placement
+    setEditingConfig(updatedConfig)
+    saveConfigToLocalStorage(updatedConfig)
+    return
+  }
+
+  if (newPlacement !== 'auto') {
+    handleNotify(update, reset)
+  }
 }
 
 const saveConfigToLocalStorage = (data) => {
