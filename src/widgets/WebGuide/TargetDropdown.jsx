@@ -13,7 +13,7 @@ const ButtonGroup = styled.div`
   border: 1px solid var(--primBtnBg);
 `
 
-const LeftButton = styled('DappletFileDownloader')`
+const LeftButton = styled.button`
   flex: 1;
   display: flex;
   flex-direction: column;
