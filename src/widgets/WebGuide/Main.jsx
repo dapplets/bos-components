@@ -126,11 +126,6 @@ const clearTreeBranch = (node) => ({
   placement: node.placement,
 })
 
-// Функция для сравнения объектов (простая глубокая проверка равенства)
-const isEqual = (obj1, obj2) => {
-  return JSON.stringify(obj1) === JSON.stringify(obj2)
-}
-
 const configTemplate = {
   action: true,
 }
@@ -149,54 +144,6 @@ const [noTarget, setNoTarget] = useState(false)
 const skins = [editingConfig.chapters[chapterCounter].skin, 'DEFAULT']
 const [currentIndexSkins, setCurrentIndexSkins] = useState(0)
 const [timerNotify, setTimerNotify] = useState(30)
-
-// todo: timer dont work
-
-// const handleNotify = (confirm, cancel) => {
-//   const timer = setInterval(() => {
-//     setTimerNotify((prev) => prev - 1)
-//   }, 3000)
-
-//   notify({
-//     type: 'info',
-//     subject: 'Change target',
-//     body: `${timerNotify}`,
-//     actions: [
-//       {
-//         label: 'OK',
-//         onClick: () => {
-//           confirm()
-//           return () => clearInterval(timer)
-//         },
-//       },
-//       {
-//         label: 'Cancel',
-//         onClick: () => {
-//           cancel()
-//           return () => clearInterval(timer)
-//         },
-//       },
-//     ],
-//   })
-// }
-
-const handleNotify = (confirm, cancel) => {
-  notify({
-    type: 'info',
-    subject: 'Change target',
-
-    actions: [
-      {
-        label: 'OK',
-        onClick: () => confirm,
-      },
-      {
-        label: 'Cancel',
-        onClick: () => cancel,
-      },
-    ],
-  })
-}
 
 const handleChangeSkin = () => {
   setCurrentIndexSkins((prevIndex) => (prevIndex + 1) % skins.length)
@@ -297,21 +244,30 @@ const handlePlacementChange = (newPlacement) => {
   const updatedConfig = deepCopy(editingConfig)
   const updatedChapter = updatedConfig.chapters[chapterCounter]
 
-  const update = () => {
-    updatedChapter.placement = newPlacement
-    setEditingConfig(updatedConfig)
-    saveConfigToLocalStorage(updatedConfig)
-  }
-
-  const reset = () => {
-    updatedChapter.placement = updatedChapter.placement
-    setEditingConfig(updatedConfig)
-    saveConfigToLocalStorage(updatedConfig)
-    return
-  }
-
   if (newPlacement !== 'auto') {
-    handleNotify(update, reset)
+    notify({
+      type: 'info',
+      subject: 'Change target',
+      duration: 4,
+      actions: [
+        {
+          label: 'OK',
+          onClick: () => {
+            updatedChapter.placement = newPlacement
+            setEditingConfig(updatedConfig)
+            saveConfigToLocalStorage(updatedConfig)
+          },
+        },
+        {
+          label: 'Cancel',
+          onClick: () => {
+            updatedChapter.placement = updatedChapter.placement
+            setEditingConfig(updatedConfig)
+            saveConfigToLocalStorage(updatedConfig)
+          },
+        },
+      ],
+    })
   }
 }
 
