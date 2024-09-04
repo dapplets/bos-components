@@ -1,5 +1,5 @@
 const { accountId } = context // The order is important, because context redeclared
-const { linkDb: LinkDb, commitDocument, context } = props
+const { linkDb: LinkDb, commitDocument, context, getDocument } = props
 
 const MiniOverlayTarget = {
   namespace: 'mweb',
@@ -11,10 +11,17 @@ const MiniOverlayTarget = {
 
 const DefaultValue = { counter: 0 }
 
+const [document, setDocument] = useState(null)
 const [data, setData] = useState(DefaultValue)
 const [isLoading, setIsLoading] = useState(true)
 
 useEffect(() => {
+  if (getDocument) {
+    getDocument()
+      .then((doc) => setDocument(doc))
+      .catch(console.error)
+  }
+
   LinkDb.get(context, accountId)
     .then((data) => setData(data[accountId] ?? DefaultValue))
     .catch(console.error)
@@ -67,7 +74,7 @@ return (
           )
         }
 
-        if (data?.counter === 0) {
+        if (!document) {
           return (
             <button type="button" className="btn btn-primary btn-sm" onClick={handleCreateDocument}>
               Create
@@ -76,7 +83,12 @@ return (
         }
 
         return (
-          <button type="button" className="btn btn-primary btn-sm" onClick={handleIncrementClick}>
+          <button
+            type="button"
+            className="btn btn-primary btn-sm"
+            onClick={handleIncrementClick}
+            title={document.id}
+          >
             Doc: {data?.counter ?? 0}
           </button>
         )
