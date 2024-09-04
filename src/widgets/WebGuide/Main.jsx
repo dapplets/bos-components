@@ -243,31 +243,34 @@ if (
 const handlePlacementChange = (newPlacement) => {
   const updatedConfig = deepCopy(editingConfig)
   const updatedChapter = updatedConfig.chapters[chapterCounter]
+  const previousPlacement = updatedChapter.placement
+
+  updatedChapter.placement = newPlacement
+  setEditingConfig(updatedConfig)
 
   if (newPlacement !== 'auto') {
     notify({
       type: 'info',
       subject: 'Change target',
-      duration: 4,
+      duration: 30,
       actions: [
         {
           label: 'OK',
           onClick: () => {
-            updatedChapter.placement = newPlacement
-            setEditingConfig(updatedConfig)
             saveConfigToLocalStorage(updatedConfig)
           },
         },
         {
           label: 'Cancel',
           onClick: () => {
-            updatedChapter.placement = updatedChapter.placement
-            setEditingConfig(updatedConfig)
-            saveConfigToLocalStorage(updatedConfig)
+            updatedChapter.placement = previousPlacement
+            setEditingConfig(deepCopy(editingConfig))
           },
         },
       ],
     })
+  } else {
+    saveConfigToLocalStorage(updatedConfig)
   }
 }
 
