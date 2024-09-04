@@ -249,26 +249,50 @@ const handlePlacementChange = (newPlacement) => {
   setEditingConfig(updatedConfig)
 
   if (newPlacement !== 'auto') {
-    notify({
-      type: 'info',
-      subject: 'Change target',
-      duration: 30,
-      actions: [
-        {
-          label: 'OK',
-          onClick: () => {
-            saveConfigToLocalStorage(updatedConfig)
-          },
-        },
-        {
-          label: 'Cancel',
-          onClick: () => {
-            updatedChapter.placement = previousPlacement
-            setEditingConfig(deepCopy(editingConfig))
-          },
-        },
-      ],
-    })
+    let timeLeft = 30
+    let timerInterval
+
+    const revertChanges = () => {
+      updatedChapter.placement = previousPlacement
+      setEditingConfig(deepCopy(editingConfig))
+      saveConfigToLocalStorage(updatedConfig)
+      clearInterval(timerInterval)
+    }
+
+    const timer = setTimeout(() => {
+      revertChanges()
+    }, 30000)
+
+    const startTimer = () => {
+      timerInterval = setInterval(() => {
+        timeLeft -= 1
+        notify({
+          type: 'info',
+          subject: 'Change target',
+          body: `Reverting changes in ${timeLeft} seconds...`,
+          duration: timeLeft,
+          actions: [
+            {
+              label: 'OK',
+              onClick: () => {
+                clearTimeout(timer)
+                clearInterval(timerInterval)
+                saveConfigToLocalStorage(updatedConfig)
+              },
+            },
+            {
+              label: 'Cancel',
+              onClick: () => {
+                clearTimeout(timer)
+                revertChanges()
+              },
+            },
+          ],
+        })
+      }, 1000)
+    }
+
+    startTimer()
   } else {
     saveConfigToLocalStorage(updatedConfig)
   }
