@@ -339,9 +339,7 @@ return (
             <DropdownButtonItem
               key={position.placement}
               onClick={() => {
-                handleButtonItemClick(position)
-                setOpen(!isOpen)
-                onItemClick(position)
+                onItemClick(position.placement)
               }}
             >
               {position.icon && <position.icon />}
