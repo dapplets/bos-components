@@ -130,8 +130,9 @@ const configTemplate = {
 }
 
 const { accountId: loggedInAccountId } = context
-const { linkDb, context: appContext } = props
+const { linkDb: LinkDb, context: appContext, getDocument, commitDocument } = props
 
+const [document, setDocument] = useState(null)
 const [guideConfig, setGuideConfig] = useState(null)
 const [editingConfig, setEditingConfig] = useState(configTemplate)
 const [showApp, setShowApp] = useState(true)
@@ -157,8 +158,13 @@ const mutationId = getMutationId()
 const mutatorId = mutationId?.split('/')[0]
 
 useEffect(() => {
-  linkDb
-    .get(appContext, mutatorId)
+  if (getDocument) {
+    getDocument()
+      .then((doc) => setDocument(doc))
+      .catch(console.error)
+  }
+
+  LinkDb.get(appContext, mutatorId)
     .then((response) => {
       if (!response?.[mutatorId]) return
       setGuideConfig(response[mutatorId])
@@ -230,6 +236,25 @@ if (
   (!editingConfig || !editingConfig.chapters?.length || !editingConfig.chapters[0].pages?.length)
 ) {
   return <></>
+}
+
+const handleCreateDocument = () => {
+  const documentId =
+    '${REPL_ACCOUNT}/document/WebGuide-' +
+    (editingConfig.title
+      ?.split(' ')
+      .filter((x) => x)
+      .join('-') ?? Date.now())
+
+  const documentMetadata = {
+    name: editingConfig.title,
+    description: editingConfig.description,
+    image: editingConfig.icon,
+  }
+
+  commitDocument(documentId, documentMetadata, appContext, editingConfig)
+    .then(() => setData(newData))
+    .catch(console.error)
 }
 
 const saveConfigToLocalStorage = (data) => {
@@ -332,8 +357,7 @@ const handleSave = ({ newTitle, newContent }) => {
   const isConfigEdited = !isDeepEqual(updatedConfig, guideConfig)
 
   if (isConfigEdited) {
-    linkDb
-      .set(appContext, { [mutatorId]: updatedConfig })
+    LinkDb.set(appContext, { [mutatorId]: updatedConfig })
       .then(() => {
         setGuideConfig(updatedConfig)
         setEditMode(false)
