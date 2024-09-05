@@ -68,15 +68,15 @@ return props.type === 'callout' && !props.noTarget ? (
     show={true}
     popperConfig={{ strategy: props.strategy ?? 'absolute' }}
     placement={props.placement ?? 'auto'}
-    offset={[0, 20]}
+    offset={props.offset}
     overlay={
       <CustomTooltip bsPrefix={`wg-tooltip-${props.skin}`}>
-        <Widget src="${REPL_ACCOUNT}/widget/WebGuide.Page" props={props} loading={<></>} />
+        <Widget src={props.widgetId} props={props} loading={<></>} />
       </CustomTooltip>
     }
   >
     {props.onRefAttach}
   </DappletOverlayTrigger>
 ) : (
-  <Widget src="${REPL_ACCOUNT}/widget/WebGuide.Page" loading={<></>} props={props} />
+  <Widget src={props.widgetId} loading={<></>} props={props} />
 )
