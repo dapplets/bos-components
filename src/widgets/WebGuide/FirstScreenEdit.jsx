@@ -314,6 +314,12 @@ const StyledTextarea = styled.textarea`
   position: relative;
   border: none;
 
+  &:disabled {
+    background: #fff;
+    color: #7a818b;
+    border: 1px solid #f8f9ff;
+  }
+
   &::-webkit-resizer {
     display: none;
   }
@@ -322,7 +328,6 @@ const StyledTextarea = styled.textarea`
   &:not(:placeholder-shown) + label {
     height: 25px;
     width: 99%;
-    background: inherit;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -765,26 +770,39 @@ return (
         </FloatingLabelContainer>
 
         {hasDocument ? (
-          <div style={{ display: 'flex' }}>
-            <ImageBlock $fromDocument={hasDocument} $hasImage={!!state.image.cid}>
-              <ImageWrapper>
-                {state.image.cid ? (
-                  <img
-                    src={`https://ipfs.near.social/ipfs/${state.image.cid}`}
-                    alt={state.image.name}
-                    style={{ width: '100%' }}
-                  />
-                ) : (
-                  <ImagePlaceholder />
-                )}
-              </ImageWrapper>
-            </ImageBlock>
+          <>
+            <div style={{ display: 'flex' }}>
+              <ImageBlock $fromDocument={hasDocument} $hasImage={!!state.image.cid}>
+                <ImageWrapper>
+                  {state.image.cid ? (
+                    <img
+                      src={`https://ipfs.near.social/ipfs/${state.image.cid}`}
+                      alt={state.image.name}
+                      style={{ width: '100%' }}
+                    />
+                  ) : (
+                    <ImagePlaceholder />
+                  )}
+                </ImageWrapper>
+              </ImageBlock>
 
-            <FloatingLabelContainer>
-              <StyledInput id={'title'} type={'text'} value={newTitle} readOnly disabled />
-              <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
-            </FloatingLabelContainer>
-          </div>
+              <FloatingLabelContainer>
+                <StyledInput id={'title'} type={'text'} value={newTitle} readOnly disabled />
+                <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
+              </FloatingLabelContainer>
+            </div>
+
+            <FloatingLabelContainerArea>
+              <StyledTextarea
+                id={'description'}
+                type={'text'}
+                value={newDescription}
+                readOnly
+                disabled
+              />
+              <StyledLabel htmlFor={'description'}>Description</StyledLabel>
+            </FloatingLabelContainerArea>
+          </>
         ) : (
           <>
             <ImageBlock $hasImage={!!state.image.cid}>
@@ -805,18 +823,18 @@ return (
               />
               <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
             </FloatingLabelContainer>
+
+            <FloatingLabelContainerArea>
+              <StyledTextarea
+                id={'description'}
+                type={'text'}
+                value={newDescription}
+                onChange={(e) => setNewDescription(e.target.value)}
+              />
+              <StyledLabel htmlFor={'description'}>Description</StyledLabel>
+            </FloatingLabelContainerArea>
           </>
         )}
-
-        <FloatingLabelContainerArea>
-          <StyledTextarea
-            id={'description'}
-            type={'text'}
-            value={newDescription}
-            onChange={(e) => setNewDescription(e.target.value)}
-          />
-          <StyledLabel htmlFor={'description'}>Description</StyledLabel>
-        </FloatingLabelContainerArea>
       </EditInputsBlock>
 
       <ButtonsCreateBlock>
