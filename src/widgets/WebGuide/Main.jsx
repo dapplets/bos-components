@@ -125,14 +125,12 @@ const clearTreeBranch = (node) => ({
   parent: node.parent ? clearTreeBranch(node.parent) : undefined,
 })
 
-const configTemplate = {
-  action: true,
-}
+const configTemplate = { action: true }
 
 const { accountId: loggedInAccountId } = context
 const { linkDb: LinkDb, context: appContext, getDocument, commitDocument } = props
 
-const [document, setDocument] = useState(null)
+const [document, setDocument] = useState(undefined) // null will be used if not found in DB
 const [guideConfig, setGuideConfig] = useState(undefined) // null will be used if not found in DB
 const [editingConfig, setEditingConfig] = useState(configTemplate)
 const [showApp, setShowApp] = useState(true)
@@ -142,6 +140,8 @@ const [isEditMode, setEditMode] = useState(false)
 const [isEditTarget, setEditTarget] = useState(false)
 const [noTarget, setNoTarget] = useState(false)
 const [showFirstScreen, setShowFirstScreen] = useState(false)
+
+console.log('document', document)
 
 const findParentContext = (context, type) => {
   if (!context) return null
@@ -235,23 +235,21 @@ if (
   return <></>
 }
 
-const handleCreateDocument = () => {
+const handleCreateDocument = (config) => {
   const documentId =
     '${REPL_ACCOUNT}/document/WebGuide-' +
-    (editingConfig.title
+    (config.title
       ?.split(' ')
       .filter((x) => x)
       .join('-') ?? Date.now())
 
   const documentMetadata = {
-    name: editingConfig.title,
-    description: editingConfig.description,
-    image: editingConfig.icon,
+    name: config.title,
+    description: config.description,
+    image: config.icon,
   }
 
-  commitDocument(documentId, documentMetadata, appContext, editingConfig)
-    .then(() => setData(newData))
-    .catch(console.error)
+  return commitDocument(documentId, documentMetadata, appContext, { [loggedInAccountId]: config })
 }
 
 const saveConfigToLocalStorage = (data) => {
@@ -347,8 +345,9 @@ const saveConfig = (config) => {
   if (emptyPages?.length) return emptyPages
   const isConfigEdited = !isDeepEqual(config, guideConfig)
   if (isConfigEdited) {
-    LinkDb.set(appContext, { [mutatorId]: config })
-      .then(() => {
+    ;(document ? LinkDb.set(appContext, { [mutatorId]: config }) : handleCreateDocument(config))
+      ?.then(() => {
+        console.log('Saved')
         setGuideConfig(config)
         setEditMode(false)
         setChapterCounter(0)
@@ -358,6 +357,7 @@ const saveConfig = (config) => {
       })
       .catch(console.error)
   } else {
+    console.log('Not saved')
     setGuideConfig(guideConfig)
     setEditMode(false)
     setChapterCounter(0)
@@ -837,9 +837,10 @@ return (
                 setEditMode,
                 handleRemoveAllChanges,
                 isConfigEdited: !isDeepEqual(editingConfig, guideConfig),
-                title: editingConfig.title,
-                description: editingConfig.description,
-                icon: editingConfig.icon,
+                title: document?.metadata.title ?? editingConfig.title,
+                description: document?.metadata.description ?? editingConfig.description,
+                icon: document?.metadata.image ?? editingConfig.icon,
+                hasDocument: !!document,
                 handleExportConfig: handleExportConfigFromFirstScreen,
                 handleSave: handleSaveFromFirstScreen,
                 hasChapters: !!editingConfig.chapters?.length,

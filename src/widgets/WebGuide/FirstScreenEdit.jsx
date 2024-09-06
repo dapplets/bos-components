@@ -231,6 +231,7 @@ const FloatingLabelContainer = styled.div`
   position: relative;
   display: flex;
   background: #f8f9ff;
+  flex-grow: 1;
 `
 
 const FloatingLabelContainerArea = styled.div`
@@ -254,6 +255,12 @@ const StyledInput = styled.input`
   border: none;
   width: 100%;
   outline: none;
+
+  &:disabled {
+    background: #fff;
+    color: #7a818b;
+    border: 1px solid #f8f9ff;
+  }
 
   &:focus + label,
   &:not(:placeholder-shown) + label {
@@ -329,7 +336,7 @@ const ImageBlock = styled.div`
   display: flex !important;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: ${(props) => (props.$fromDocument ? '' : '100%')};
 
   & > .d-inline-block {
     width: ${(props) => (props.$hasImage ? '100%' : '')};
@@ -642,6 +649,7 @@ const {
   title,
   description,
   icon,
+  hasDocument,
   handleExportConfig,
   handleSave,
   hasChapters,
@@ -756,24 +764,49 @@ return (
           <StyledLabel htmlFor={'owner'}>Owner</StyledLabel>
         </FloatingLabelContainer>
 
-        <ImageBlock $hasImage={!!state.image.cid}>
-          {state.image.cid ? null : (
-            <ImageWrapper>
-              <ImagePlaceholder />
-            </ImageWrapper>
-          )}
-          <IpfsImageUpload image={state.image} />
-        </ImageBlock>
+        {hasDocument ? (
+          <div style={{ display: 'flex' }}>
+            <ImageBlock $fromDocument={hasDocument} $hasImage={!!state.image.cid}>
+              <ImageWrapper>
+                {state.image.cid ? (
+                  <img
+                    src={`https://ipfs.near.social/ipfs/${state.image.cid}`}
+                    alt={state.image.name}
+                    style={{ width: '100%' }}
+                  />
+                ) : (
+                  <ImagePlaceholder />
+                )}
+              </ImageWrapper>
+            </ImageBlock>
 
-        <FloatingLabelContainer>
-          <StyledInput
-            id={'title'}
-            type={'text'}
-            value={newTitle}
-            onChange={(e) => setNewTitle(e.target.value)}
-          />
-          <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
-        </FloatingLabelContainer>
+            <FloatingLabelContainer>
+              <StyledInput id={'title'} type={'text'} value={newTitle} readOnly disabled />
+              <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
+            </FloatingLabelContainer>
+          </div>
+        ) : (
+          <>
+            <ImageBlock $hasImage={!!state.image.cid}>
+              {state.image.cid ? null : (
+                <ImageWrapper>
+                  <ImagePlaceholder />
+                </ImageWrapper>
+              )}
+              <IpfsImageUpload image={state.image} />
+            </ImageBlock>
+
+            <FloatingLabelContainer>
+              <StyledInput
+                id={'title'}
+                type={'text'}
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+              />
+              <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
+            </FloatingLabelContainer>
+          </>
+        )}
 
         <FloatingLabelContainerArea>
           <StyledTextarea
