@@ -792,6 +792,7 @@ return (
           <Widget
             src="${REPL_ACCOUNT}/widget/WebGuide.Action"
             props={{
+              docId: document?.id,
               isActive: showApp,
               onClick: handleActionClick,
             }}
@@ -809,7 +810,7 @@ return (
           target={{
             namespace: 'mweb',
             contextType: 'mweb-overlay-action',
-            if: { id: { eq: 'action-button-web-guide' } },
+            if: { id: { eq: `action-button-web-guide${document ? '-' + document.id : ''}` } },
           }}
           component={(props) => (
             <Widget
