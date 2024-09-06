@@ -240,6 +240,8 @@ if (
   return <></>
 }
 
+let notificationInstance = null
+
 const handlePlacementChange = (newPlacement) => {
   const updatedConfig = deepCopy(editingConfig)
   const updatedChapter = updatedConfig.chapters[chapterCounter]
@@ -249,29 +251,67 @@ const handlePlacementChange = (newPlacement) => {
   setEditingConfig(updatedConfig)
 
   if (newPlacement !== 'auto') {
-    notify({
-      type: 'info',
-      subject: 'Change target',
-      body: 'Click to confirm while the notification is visible',
-      duration: 8,
-      showProgress: true,
-      pauseOnHover: false,
-      actions: [
-        {
-          label: 'OK',
-          onClick: () => {
-            saveConfigToLocalStorage(updatedConfig)
+    let timeLeft = 9
+    let timerInterval
+
+    const revertChanges = () => {
+      updatedChapter.placement = previousPlacement
+      setEditingConfig(deepCopy(editingConfig))
+      saveConfigToLocalStorage(updatedConfig)
+      clearInterval(timerInterval)
+      notificationInstance = null
+    }
+
+    const timer = setTimeout(() => {
+      revertChanges()
+    }, 9000)
+
+    const startTimer = () => {
+      timerInterval = setInterval(() => {
+        timeLeft -= 1
+
+        if (notificationInstance) {
+          notificationInstance.update({
+            body: `Reverting changes in ${timeLeft} seconds...`,
+          })
+        }
+
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval)
+        }
+      }, 1000)
+    }
+
+    if (!notificationInstance) {
+      notificationInstance = notify({
+        type: 'info',
+        subject: 'Change target',
+        body: `Reverting changes in ${timeLeft} seconds...`,
+        duration: 9,
+        showProgress: true,
+        pauseOnHover: false,
+        actions: [
+          {
+            label: 'OK',
+            onClick: () => {
+              clearTimeout(timer)
+              clearInterval(timerInterval)
+              saveConfigToLocalStorage(updatedConfig)
+              notificationInstance = null
+            },
           },
-        },
-        {
-          label: 'Cancel',
-          onClick: () => {
-            updatedChapter.placement = previousPlacement
-            setEditingConfig(deepCopy(editingConfig))
+          {
+            label: 'Cancel',
+            onClick: () => {
+              clearTimeout(timer)
+              revertChanges()
+            },
           },
-        },
-      ],
-    })
+        ],
+      })
+    }
+
+    startTimer()
   } else {
     saveConfigToLocalStorage(updatedConfig)
   }
