@@ -231,6 +231,36 @@ if (
   return <></>
 }
 
+const notifyWithCountdown = ({ type, subject, body, duration, onOk, onCancelOrTimeout }) => {
+  let timer
+
+  const handleOk = () => {
+    clearTimeout(timer)
+    onOk()
+  }
+
+  const handleCancel = () => {
+    clearTimeout(timer)
+    onCancelOrTimeout()
+  }
+
+  timer = setTimeout(() => {
+    onCancelOrTimeout()
+  }, duration * 1000)
+
+  notify({
+    type,
+    subject,
+    body,
+    duration,
+    showProgress: true,
+    actions: [
+      { label: 'OK', onClick: handleOk },
+      { label: 'Cancel', onClick: handleCancel },
+    ],
+  })
+}
+
 const handlePlacementChange = (newPlacement) => {
   const updatedConfig = deepCopy(editingConfig)
   const updatedChapter = updatedConfig.chapters[chapterCounter]
@@ -244,37 +274,27 @@ const handlePlacementChange = (newPlacement) => {
     return
   }
 
-  let timer
+  const commitChanges = () => {
+    saveConfigToLocalStorage(updatedConfig)
+  }
 
   const revertChanges = () => {
-    clearTimeout(timer)
-
     const updatedConfig = deepCopy(editingConfig)
     const updatedChapter = updatedConfig.chapters[chapterCounter]
+
     updatedChapter.placement = previousPlacement
+
     setEditingConfig(updatedConfig)
     saveConfigToLocalStorage(updatedConfig)
   }
 
-  const commitChanges = () => {
-    clearTimeout(timer)
-    saveConfigToLocalStorage(updatedConfig)
-  }
-
-  timer = setTimeout(() => {
-    revertChanges()
-  }, 9000)
-
-  notify({
+  notifyWithCountdown({
     type: 'info',
     subject: 'Change target',
     body: `Reverting changes in 9 seconds...`,
     duration: 9,
-    showProgress: true,
-    actions: [
-      { label: 'OK', onClick: commitChanges },
-      { label: 'Cancel', onClick: revertChanges },
-    ],
+    onOk: commitChanges,
+    onCancelOrTimeout: revertChanges,
   })
 }
 
