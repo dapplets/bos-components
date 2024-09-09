@@ -163,17 +163,27 @@ const localConfig =
 
 useEffect(() => {
   if (getDocument) {
+    //ToDo: remove it in the future
     getDocument()
-      .then((doc) => setDocument(doc))
+      .then((doc) => {
+        setDocument(doc)
+        if (doc)
+          LinkDb.get(appContext, mutatorId)
+            .then((response) => {
+              if (!response?.[mutatorId]) return
+              setGuideConfig(response[mutatorId])
+            })
+            .catch(console.error)
+      })
+      .catch(console.error)
+  } else {
+    LinkDb.get(appContext, mutatorId)
+      .then((response) => {
+        if (!response?.[mutatorId]) return
+        setGuideConfig(response[mutatorId])
+      })
       .catch(console.error)
   }
-
-  LinkDb.get(appContext, mutatorId)
-    .then((response) => {
-      if (!response?.[mutatorId]) return
-      setGuideConfig(response[mutatorId])
-    })
-    .catch(console.error)
 }, [])
 
 useEffect(() => {
