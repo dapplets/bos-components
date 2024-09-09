@@ -131,7 +131,7 @@ const configTemplate = {
 }
 
 const { accountId: loggedInAccountId } = context
-const { linkDb, context: appContext } = props
+const { linkDb, context: appContext, notify } = props
 
 const [guideConfig, setGuideConfig] = useState(undefined) // null will be used if not found in DB
 const [editingConfig, setEditingConfig] = useState(configTemplate)
@@ -230,14 +230,71 @@ if (
   return <></>
 }
 
+const notifyWithCountdown = ({ type, subject, body, duration, onOk, onCancelOrTimeout }) => {
+  let timer
+
+  const handleOk = () => {
+    clearTimeout(timer)
+    onOk()
+  }
+
+  const handleCancel = () => {
+    clearTimeout(timer)
+    onCancelOrTimeout()
+  }
+
+  timer = setTimeout(() => {
+    onCancelOrTimeout()
+  }, duration * 1000)
+
+  notify({
+    type,
+    subject,
+    body,
+    duration,
+    showProgress: true,
+    actions: [
+      { label: 'OK', onClick: handleOk },
+      { label: 'Cancel', onClick: handleCancel },
+    ],
+  })
+}
+
 const handlePlacementChange = (newPlacement) => {
   const updatedConfig = deepCopy(editingConfig)
   const updatedChapter = updatedConfig.chapters[chapterCounter]
+  const previousPlacement = updatedChapter.placement
 
   updatedChapter.placement = newPlacement
-
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+
+  if (newPlacement === 'auto') {
+    saveConfigToLocalStorage(updatedConfig)
+    return
+  }
+
+  const commitChanges = () => {
+    saveConfigToLocalStorage(updatedConfig)
+  }
+
+  const revertChanges = () => {
+    const updatedConfig = deepCopy(editingConfig)
+    const updatedChapter = updatedConfig.chapters[chapterCounter]
+
+    updatedChapter.placement = previousPlacement
+
+    setEditingConfig(updatedConfig)
+    saveConfigToLocalStorage(updatedConfig)
+  }
+
+  notifyWithCountdown({
+    type: 'info',
+    subject: 'Change target',
+    body: `Reverting changes in 9 seconds...`,
+    duration: 9,
+    onOk: commitChanges,
+    onCancelOrTimeout: revertChanges,
+  })
 }
 
 const handleSkinToggle = () => {
