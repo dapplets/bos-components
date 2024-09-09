@@ -91,7 +91,6 @@ const InfoBox = styled.div`
   border-radius: 20px;
   padding: 20px;
   gap: 20px;
-  z-index: 1000;
   box-shadow: none;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -131,7 +130,6 @@ const Callout = styled.div`
   &.edit-mode {
     width: 360px;
   }
-  z-index: 99999999;
 `
 
 const Header = styled.div`
@@ -1293,14 +1291,16 @@ const {
 
 const [newTitle, setNewTitle] = useState(title ?? '')
 const [newContent, setNewContent] = useState(content ?? '')
+const [newTarget, setNewTarget] = useState('')
 const [savingStarted, setSavingStarted] = useState(false)
 const [publishStatusMessage, setPublishStatusMessage] = useState(null)
 
 useEffect(() => {
   setNewTitle(title)
   setNewContent(content)
+  setNewTarget(contextType && contextId ? `${contextType}/${contextId}` : 'No target') // ToDo: why have a separate state for this?
   setPublishStatusMessage(null)
-}, [navi, title, content])
+}, [navi, title, content, contextType, contextId])
 
 useEffect(() => {
   setSavingStarted(false)
@@ -1484,10 +1484,11 @@ const editPage = (
           {iconRemove} Remove page
         </ButtonRemove>
         <ButtonRevert
-          disabled={!isPageEdited && newTitle === (title ?? '') && newContent === (content ?? '')}
+          disabled={!isPageEdited || (newTitle === (title ?? '') && newContent === (content ?? ''))}
           onClick={() => {
             setNewTitle(title ?? '')
             setNewContent(content ?? '')
+            setNewTarget(contextType && contextId ? `${contextType}/${contextId}` : 'No target')
             onRevertChanges()
           }}
         >
@@ -1496,13 +1497,7 @@ const editPage = (
       </OptionsBlock>
       <TargetBlock>
         <FloatingLabelContainer>
-          <StyledInput
-            id={'target'}
-            type={'text'}
-            readonly
-            disabled
-            value={contextType && contextId ? `${contextType}/${contextId}` : 'No target'}
-          />
+          <StyledInput id={'target'} type={'text'} readonly disabled value={newTarget} />
           <StyledLabel htmlFor={'target'}>Target</StyledLabel>
           <InputButtons>
             {props.type === 'callout' && (
@@ -1616,11 +1611,7 @@ const editPage = (
 return (
   <Theme skin={skin}>
     {props.type === 'callout' ? (
-      <Callout
-        data-mweb-context-type="wg-chapter"
-        data-mweb-context-parsed={JSON.stringify({ id: props.id })}
-        className={isEditMode ? 'edit-mode' : ''}
-      >
+      <Callout className={isEditMode ? 'edit-mode' : ''}>
         {header}
         {isEditMode ? (
           editPage
