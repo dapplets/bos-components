@@ -1,7 +1,15 @@
 const CustomTooltip = styled('DappletTooltip')`
-  z-index: 99999999; // over the notch
+  z-index: 2000;
   min-height: 140px;
   width: 320px;
+
+  &[data-context-level='system'] {
+    z-index: 7000;
+  }
+
+  &[data-context-level='callout'] {
+    z-index: 9000;
+  }
 
   &[data-popper-reference-hidden='true'] {
     position: fixed !important;
@@ -70,7 +78,13 @@ return props.type === 'callout' && !props.noTarget ? (
     placement={props.placement ?? 'auto'}
     offset={props.offset}
     overlay={
-      <CustomTooltip bsPrefix={`wg-tooltip-${props.skin}`}>
+      <CustomTooltip
+        bsPrefix={`wg-tooltip-${props.skin}`}
+        data-context-level={props.contextLevel}
+        data-mweb-context-type="wg-chapter"
+        data-mweb-context-parsed={JSON.stringify({ id: props.id + '-callout' })}
+        data-mweb-context-level="callout"
+      >
         <Widget src={props.widgetId} props={props} loading={<></>} />
       </CustomTooltip>
     }

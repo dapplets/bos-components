@@ -72,9 +72,10 @@ const TimelineLatch = styled.button`
 // ToDo: Styled components cause unnecessary re-rendering in BOS
 const NotchLatch = styled.button`
   display: flex;
-  position: absolute;
-  top: ${(props) => `${props.$height / 2 - 14}px`};
-  left: ${(props) => `${props.$position === 'right' ? props.$width : '-35'}px`};
+  position: fixed;
+  top: ${(props) => `${props.$top}px`};
+  margin-top: ${(props) => `${props.$height / 2 - 14}px`};
+  margin-left: ${(props) => `${props.$position === 'right' ? props.$width : '-35'}px`};
   width: ${(props) => `${props.$position === 'right' ? '28' : '32'}px`};
   height: 29px;
   padding: 0;
@@ -128,7 +129,7 @@ const clearTreeBranch = (node) => ({
 const configTemplate = { action: true }
 
 const { accountId: loggedInAccountId } = context
-const { linkDb: LinkDb, context: appContext, getDocument, commitDocument } = props
+const { linkDb: LinkDb, context: appContext, getDocument, commitDocument, notify } = props
 
 const [document, setDocument] = useState(undefined) // null will be used if not found in DB
 const [guideConfig, setGuideConfig] = useState(undefined) // null will be used if not found in DB
@@ -262,6 +263,82 @@ const handleCreateDocument = (config) => {
   }
 
   return commitDocument(documentId, documentMetadata, appContext, { [loggedInAccountId]: config })
+}
+
+const notifyWithCountdown = ({ type, subject, body, duration, onOk, onCancelOrTimeout }) => {
+  let timer
+
+  const handleOk = () => {
+    clearTimeout(timer)
+    onOk()
+  }
+
+  const handleCancel = () => {
+    clearTimeout(timer)
+    onCancelOrTimeout()
+  }
+
+  timer = setTimeout(() => {
+    onCancelOrTimeout()
+  }, duration * 1000)
+
+  notify({
+    type,
+    subject,
+    body,
+    duration,
+    showProgress: true,
+    actions: [
+      { label: 'OK', onClick: handleOk },
+      { label: 'Cancel', onClick: handleCancel },
+    ],
+  })
+}
+
+const handlePlacementChange = (newPlacement) => {
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedChapter = updatedConfig.chapters[chapterCounter]
+  const previousPlacement = updatedChapter.placement
+
+  updatedChapter.placement = newPlacement
+  setEditingConfig(updatedConfig)
+
+  if (newPlacement === 'auto') {
+    saveConfigToLocalStorage(updatedConfig)
+    return
+  }
+
+  const commitChanges = () => {
+    saveConfigToLocalStorage(updatedConfig)
+  }
+
+  const revertChanges = () => {
+    const updatedConfig = deepCopy(editingConfig)
+    const updatedChapter = updatedConfig.chapters[chapterCounter]
+
+    updatedChapter.placement = previousPlacement
+
+    setEditingConfig(updatedConfig)
+    saveConfigToLocalStorage(updatedConfig)
+  }
+
+  notifyWithCountdown({
+    type: 'info',
+    subject: 'Change target',
+    body: `Reverting changes in 9 seconds...`,
+    duration: 9,
+    onOk: commitChanges,
+    onCancelOrTimeout: revertChanges,
+  })
+}
+
+const handleSkinToggle = () => {
+  const updatedConfig = deepCopy(editingConfig)
+
+  updatedConfig.skin = updatedConfig.skin === 'META_GUIDE' ? 'DEFAULT' : 'META_GUIDE'
+
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
 }
 
 const saveConfigToLocalStorage = (data) => {
@@ -699,7 +776,7 @@ const ChapterWrapper = (props) => {
           ? currentChapter.target.type
           : currentChapter.contextType,
         contextId: currentChapter.target ? currentChapter.target.id : currentChapter.if?.id?.eq,
-        placement: currentChapter.target ? undefined : currentChapter.placement, // ToDo: cannot define placement for target
+        placement: currentChapter.target ? currentChapter.placement : undefined,
         strategy: currentChapter.target
           ? currentChapter.namespace === 'mweb'
             ? 'fixed'
@@ -732,7 +809,8 @@ const ChapterWrapper = (props) => {
                   props.attachInsPointRef(ref)
                 }
               : props.children,
-        skin: currentChapter.skin ?? 'DEFAULT',
+        skin: editingConfig.skin ?? 'META_GUIDE',
+        onSkinToggle: handleSkinToggle,
         isEditMode,
         setEditMode,
         startEditTarget: () => setEditTarget(true),
@@ -749,6 +827,8 @@ const ChapterWrapper = (props) => {
         handleExportConfig,
         handleSave,
         noTarget,
+        onPlacementChange: handlePlacementChange,
+        contextLevel: props.context?.level,
       }}
     />
   )
@@ -776,6 +856,7 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
         $variant={variant}
         $width={contextDimensions.width}
         $height={contextDimensions.height}
+        $top={contextDimensions.top}
         onClick={() => handleTargetSet(context)}
         $position={'right'}
       >
@@ -790,6 +871,7 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
         $variant={variant}
         $width={contextDimensions.width}
         $height={contextDimensions.height}
+        $top={contextDimensions.top}
         onClick={() => handleTargetSet(context)}
         $position={'left'}
       >

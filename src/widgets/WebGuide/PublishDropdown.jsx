@@ -83,7 +83,7 @@ const ItemGroup = styled.div`
   font-size: 14px;
   font-weight: 400;
   text-align: center;
-  color: #222222;
+  color: var(--dropdownColor);
   box-shadow:
     0px 97px 39px rgba(0, 0, 0, 0.01),
     0px 54px 33px rgba(0, 0, 0, 0.05),
@@ -115,11 +115,11 @@ const DropdownButtonItem = styled.button`
   }
 `
 
-const ArrowIcon = ({ primBtnCol }) => (
+const ArrowIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="8" viewBox="0 0 14 8" fill="none">
     <path
       d="M1 1L7 7L13 1"
-      stroke={primBtnCol}
+      stroke="var(--bgMain)"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -148,7 +148,7 @@ return (
       </LeftButton>
 
       <RightButton onClick={() => setOpen(!isOpen)}>
-        <ArrowIcon primBtnCol={skin === 'META_GUIDE' ? '#4e77e1' : 'white'} />
+        <ArrowIcon />
       </RightButton>
     </ButtonGroup>
 
