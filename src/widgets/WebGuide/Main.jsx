@@ -335,7 +335,7 @@ const handlePlacementChange = (newPlacement) => {
 const handleSkinToggle = () => {
   const updatedConfig = deepCopy(editingConfig)
 
-  updatedConfig.skin = updatedConfig.skin === 'META_GUIDE' ? 'DEFAULT' : 'META_GUIDE'
+  updatedConfig.skin = updatedConfig.skin === 'DEFAULT' ? 'META_GUIDE' : 'DEFAULT'
 
   setEditingConfig(updatedConfig)
   saveConfigToLocalStorage(updatedConfig)
