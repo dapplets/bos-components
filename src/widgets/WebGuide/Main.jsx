@@ -711,7 +711,7 @@ const ChapterWrapper = (props) => {
                   props.attachInsPointRef(ref)
                 }
               : props.children,
-        skin: editingConfig.skin ?? 'DEFAULT',
+        skin: editingConfig.skin ?? 'META_GUIDE',
         onSkinToggle: handleSkinToggle,
         isEditMode,
         setEditMode,
