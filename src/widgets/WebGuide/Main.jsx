@@ -141,12 +141,6 @@ const [pageCounter, setPageCounter] = useState(0)
 const [isEditMode, setEditMode] = useState(false)
 const [isEditTarget, setEditTarget] = useState(false)
 const [noTarget, setNoTarget] = useState(false)
-const skins = [editingConfig.chapters[chapterCounter].skin, 'DEFAULT']
-const [currentIndexSkins, setCurrentIndexSkins] = useState(0)
-
-const handleSkinToggle = () => {
-  setCurrentIndexSkins((prevIndex) => (prevIndex + 1) % skins.length)
-}
 
 const findParentContext = (context, type) => {
   if (!context) return null
@@ -244,6 +238,15 @@ const handlePlacementChange = (newPlacement) => {
   const updatedChapter = updatedConfig.chapters[chapterCounter]
 
   updatedChapter.placement = newPlacement
+
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
+}
+
+const handleSkinToggle = () => {
+  const updatedConfig = deepCopy(editingConfig)
+
+  updatedConfig.skin = updatedConfig.skin === 'META_GUIDE' ? 'DEFAULT' : 'META_GUIDE'
 
   setEditingConfig(updatedConfig)
   saveConfigToLocalStorage(updatedConfig)
@@ -642,7 +645,7 @@ const ChapterWrapper = (props) => {
                   props.attachInsPointRef(ref)
                 }
               : props.children,
-        skin: skins[currentIndexSkins] ?? skins[currentIndexSkins + 1],
+        skin: editingConfig.skin ?? 'DEFAULT',
         onSkinToggle: handleSkinToggle,
         isEditMode,
         setEditMode,
@@ -747,7 +750,7 @@ return (
             <Widget
               src="${REPL_ACCOUNT}/widget/WebGuide.FirstScreenEdit"
               props={{
-                skin: skins[currentIndexSkins],
+                skin: editingConfig.skin ?? 'DEFAULT',
                 onStart: handleStartCreation,
                 onConfigImport: handleConfigImport,
                 onClose: handleClose,
