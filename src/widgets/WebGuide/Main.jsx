@@ -124,7 +124,6 @@ const clearTreeBranch = (node) => ({
   type: node.type,
   id: node.id,
   parent: node.parent ? clearTreeBranch(node.parent) : undefined,
-  placement: node.placement,
 })
 
 const configTemplate = {
