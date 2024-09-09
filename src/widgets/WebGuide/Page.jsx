@@ -1265,7 +1265,7 @@ const {
   checked,
   onDoNotShowChange,
   skin,
-  onSkins,
+  onSkinToggle,
   title,
   content,
   mutatorId,
@@ -1344,7 +1344,7 @@ const header = (
     <TopLine>
       <HeaderButtonGroup>
         {isEditMode ? (
-          <EditButton onClick={onSkins}>
+          <EditButton onClick={onSkinToggle}>
             <SwitchThemesIcon />
           </EditButton>
         ) : null}

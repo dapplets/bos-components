@@ -199,7 +199,7 @@ const ImportButton = styled.button`
   }
 `
 
-const { skin, onClose, onStart, onConfigImport, onSkins } = props
+const { skin, onClose, onStart, onConfigImport } = props
 
 const filesOnChange = (files) => {
   if (!files?.length) return

@@ -144,7 +144,7 @@ const [noTarget, setNoTarget] = useState(false)
 const skins = [editingConfig.chapters[chapterCounter].skin, 'DEFAULT']
 const [currentIndexSkins, setCurrentIndexSkins] = useState(0)
 
-const handleChangeSkin = () => {
+const handleSkinToggle = () => {
   setCurrentIndexSkins((prevIndex) => (prevIndex + 1) % skins.length)
 }
 
@@ -643,7 +643,7 @@ const ChapterWrapper = (props) => {
                 }
               : props.children,
         skin: skins[currentIndexSkins] ?? skins[currentIndexSkins + 1],
-        onSkins: handleChangeSkin,
+        onSkinToggle: handleSkinToggle,
         isEditMode,
         setEditMode,
         startEditTarget: () => setEditTarget(true),
@@ -748,7 +748,6 @@ return (
               src="${REPL_ACCOUNT}/widget/WebGuide.FirstScreenEdit"
               props={{
                 skin: skins[currentIndexSkins],
-                onSkins: handleChangeSkin,
                 onStart: handleStartCreation,
                 onConfigImport: handleConfigImport,
                 onClose: handleClose,
