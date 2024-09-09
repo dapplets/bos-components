@@ -748,7 +748,7 @@ return (
               src="${REPL_ACCOUNT}/widget/WebGuide.FirstScreenEdit"
               props={{
                 skin: skins[currentIndexSkins],
-                onSkins: () => handleChangeSkin(),
+                onSkins: handleChangeSkin,
                 onStart: handleStartCreation,
                 onConfigImport: handleConfigImport,
                 onClose: handleClose,
