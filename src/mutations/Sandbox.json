@@ -9,9 +9,12 @@
   "$apps": [
     "${REPL_ACCOUNT}/app/Paywall",
     "${REPL_ACCOUNT}/app/Tipping",
-    "${REPL_ACCOUNT}/app/WebGuide",
     "${REPL_ACCOUNT}/app/picker-example",
-    "${REPL_ACCOUNT}/app/BlinkExample"
+    "${REPL_ACCOUNT}/app/BlinkExample",
+    {
+      "appId": "${REPL_ACCOUNT}/app/WebGuide",
+      "documentId": "${REPL_ACCOUNT}/document/WebGuide-Test-Guide"
+    }
   ],
   "$targets": [
     {
