@@ -76,7 +76,6 @@ const Theme = ({ skin, children }) => {
 
 const InfoBox = styled.div`
   position: relative;
-  overflow: hidden;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -91,7 +90,6 @@ const InfoBox = styled.div`
   border-radius: 20px;
   padding: 20px;
   gap: 20px;
-  z-index: 1000;
   box-shadow: none;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -113,7 +111,6 @@ const InfoBox = styled.div`
 
 const Callout = styled.div`
   box-sizing: border-box;
-  overflow: hidden;
   position: relative;
   display: flex;
   width: 320px;
@@ -131,7 +128,6 @@ const Callout = styled.div`
   &.edit-mode {
     width: 360px;
   }
-  z-index: 99999999;
 `
 
 const Header = styled.div`
@@ -230,7 +226,7 @@ const EditButton = styled.button`
   cursor: pointer;
 `
 
-const Title = styled.div`
+const Title = styled.h1`
   padding: 0;
   margin: 0 0 -10px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
@@ -797,7 +793,7 @@ const SuccessButton = styled.button`
   justify-content: center;
   align-items: center;
   padding: 10px 12px !important;
-  min-width: 110px;
+  min-width: 125px;
   background: var(--primBtnCol);
   border-radius: 10px;
   border: 1px solid var(--primBtnBg);
@@ -1070,8 +1066,8 @@ const LoaderBackground = styled.div`
 `
 
 const Loader = styled.div`
-  width: 48px;
-  height: 48px;
+  width: ${(props) => (props.$halfSize ? '24px' : '48px')};
+  height: ${(props) => (props.$halfSize ? '24px' : '48px')};
   border-radius: 50%;
   display: inline-block;
   position: relative;
@@ -1092,16 +1088,16 @@ const Loader = styled.div`
     margin: auto;
     border: 3px solid;
     border-color: transparent transparent #4e77e1 #4e77e1;
-    width: 40px;
-    height: 40px;
+    width: ${(props) => (props.$halfSize ? '20px' : '40px')};
+    height: ${(props) => (props.$halfSize ? '20px' : '40px')};
     border-radius: 50%;
     box-sizing: border-box;
     animation: rotationBack 0.5s linear infinite;
     transform-origin: center center;
   }
   &::before {
-    width: 32px;
-    height: 32px;
+    width: ${(props) => (props.$halfSize ? '16px' : '32px')};
+    height: ${(props) => (props.$halfSize ? '16px' : '32px')};
     border-color: #282828 #282828 transparent transparent;
     animation: rotation 1.5s linear infinite;
   }
@@ -1252,6 +1248,17 @@ const SwitchThemesIcon = () => (
   </svg>
 )
 
+const ButtonPlaceholder = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 125px;
+  height: 40px;
+  border: 1px solid #ffffff99;
+  border-radius: 10px;
+  background: #ffffff55;
+`
+
 const {
   guideTitle,
   guideDescription,
@@ -1267,7 +1274,7 @@ const {
   checked,
   onDoNotShowChange,
   skin,
-  onSkins,
+  onSkinToggle,
   title,
   content,
   mutatorId,
@@ -1293,14 +1300,16 @@ const {
 
 const [newTitle, setNewTitle] = useState(title ?? '')
 const [newContent, setNewContent] = useState(content ?? '')
+const [newTarget, setNewTarget] = useState('')
 const [savingStarted, setSavingStarted] = useState(false)
 const [publishStatusMessage, setPublishStatusMessage] = useState(null)
 
 useEffect(() => {
   setNewTitle(title)
   setNewContent(content)
+  setNewTarget(contextType && contextId ? `${contextType}/${contextId}` : 'No target') // ToDo: why have a separate state for this?
   setPublishStatusMessage(null)
-}, [navi, title, content])
+}, [navi, title, content, contextType, contextId])
 
 useEffect(() => {
   setSavingStarted(false)
@@ -1344,7 +1353,7 @@ const header = (
     <TopLine>
       <HeaderButtonGroup>
         {isEditMode ? (
-          <EditButton onClick={onSkins}>
+          <EditButton onClick={onSkinToggle}>
             <SwitchThemesIcon />
           </EditButton>
         ) : null}
@@ -1427,9 +1436,9 @@ const actionButtonEdit = (btn) => (
     }}
     disabled={btn.disabled}
   >
-    {btn.label.toLowerCase().includes('previous') ? iconPrevEdit : null}
+    {btn.variant === 'secondary' ? iconPrevEdit : null}
     {btn.label}
-    {btn.label.toLowerCase().includes('next') ? iconNextEdit : null}
+    {btn.variant === 'primary' ? iconNextEdit : null}
   </ActionButtonEdit>
 )
 
@@ -1484,10 +1493,11 @@ const editPage = (
           {iconRemove} Remove page
         </ButtonRemove>
         <ButtonRevert
-          disabled={!isPageEdited && newTitle === (title ?? '') && newContent === (content ?? '')}
+          disabled={!isPageEdited || (newTitle === (title ?? '') && newContent === (content ?? ''))}
           onClick={() => {
             setNewTitle(title ?? '')
             setNewContent(content ?? '')
+            setNewTarget(contextType && contextId ? `${contextType}/${contextId}` : 'No target')
             onRevertChanges()
           }}
         >
@@ -1496,13 +1506,7 @@ const editPage = (
       </OptionsBlock>
       <TargetBlock>
         <FloatingLabelContainer>
-          <StyledInput
-            id={'target'}
-            type={'text'}
-            readonly
-            disabled
-            value={contextType && contextId ? `${contextType}/${contextId}` : 'No target'}
-          />
+          <StyledInput id={'target'} type={'text'} readonly disabled value={newTarget} />
           <StyledLabel htmlFor={'target'}>Target</StyledLabel>
           <InputButtons>
             {props.type === 'callout' && (
@@ -1555,11 +1559,12 @@ const editPage = (
       <FloatingLabelContainerArea>
         <StyledTextarea
           id={'content'}
+          type={'text'}
           value={newContent}
           onChange={(e) => {
             setNewContent(e.target.value)
           }}
-        ></StyledTextarea>
+        />
         <StyledLabel htmlFor={'content'}>Description</StyledLabel>
       </FloatingLabelContainerArea>
     </EditInputsBlock>
@@ -1595,7 +1600,11 @@ const editPage = (
 
       <Widget
         src="${REPL_ACCOUNT}/widget/WebGuide.PublishDropdown"
-        loading={props?.children}
+        loading={
+          <ButtonPlaceholder>
+            <Loader $halfSize />
+          </ButtonPlaceholder>
+        }
         props={{
           disabled: !(
             isConfigEdited ||
@@ -1607,6 +1616,7 @@ const editPage = (
             { value: 'publish', title: 'Publish' },
             { value: 'export', title: 'Export guide' },
           ],
+          skin,
         }}
       />
     </EditButtonsBlock>
@@ -1616,11 +1626,7 @@ const editPage = (
 return (
   <Theme skin={skin}>
     {props.type === 'callout' ? (
-      <Callout
-        data-mweb-context-type="wg-chapter"
-        data-mweb-context-parsed={JSON.stringify({ id: props.id })}
-        className={isEditMode ? 'edit-mode' : ''}
-      >
+      <Callout className={isEditMode ? 'edit-mode' : ''}>
         {header}
         {isEditMode ? (
           editPage
@@ -1628,9 +1634,11 @@ return (
           <>
             {props.status?.text ? statuses(props.status) : null}
             {title ? <Title className={props.type}>{title}</Title> : null}
-            <MarkdownWrapper>
-              <Markdown text={content} />
-            </MarkdownWrapper>
+            {content ? (
+              <MarkdownWrapper>
+                <Markdown text={content} />
+              </MarkdownWrapper>
+            ) : null}
             {showChecked ? checkbox : null}
             {navButtons}
           </>
@@ -1652,9 +1660,11 @@ return (
             {title ? <Title className={props.type}>{title}</Title> : null}
             <Card>
               {props.status?.text ? statuses(props.status) : null}
-              <MarkdownWrapper>
-                <Markdown text={content} />
-              </MarkdownWrapper>
+              {content ? (
+                <MarkdownWrapper>
+                  <Markdown text={content} />
+                </MarkdownWrapper>
+              ) : null}
             </Card>
             <Footer>
               {showChecked ? checkbox : null}

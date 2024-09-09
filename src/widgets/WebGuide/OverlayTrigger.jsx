@@ -1,7 +1,15 @@
 const CustomTooltip = styled('DappletTooltip')`
-  z-index: 99999999; // over the notch
+  z-index: 2000;
   min-height: 140px;
   width: 320px;
+
+  &[data-context-level='system'] {
+    z-index: 7000;
+  }
+
+  &[data-context-level='callout'] {
+    z-index: 9000;
+  }
 
   &[data-popper-reference-hidden='true'] {
     position: fixed !important;
@@ -68,15 +76,21 @@ return props.type === 'callout' && !props.noTarget ? (
     show={true}
     popperConfig={{ strategy: props.strategy ?? 'absolute' }}
     placement={props.placement ?? 'auto'}
-    offset={[0, 20]}
+    offset={props.offset}
     overlay={
-      <CustomTooltip bsPrefix={`wg-tooltip-${props.skin}`}>
-        <Widget src="${REPL_ACCOUNT}/widget/WebGuide.Page" props={props} loading={<></>} />
+      <CustomTooltip
+        bsPrefix={`wg-tooltip-${props.skin}`}
+        data-context-level={props.contextLevel}
+        data-mweb-context-type="wg-chapter"
+        data-mweb-context-parsed={JSON.stringify({ id: props.id + '-callout' })}
+        data-mweb-context-level="callout"
+      >
+        <Widget src={props.widgetId} props={props} loading={<></>} />
       </CustomTooltip>
     }
   >
     {props.onRefAttach}
   </DappletOverlayTrigger>
 ) : (
-  <Widget src="${REPL_ACCOUNT}/widget/WebGuide.Page" loading={<></>} props={props} />
+  <Widget src={props.widgetId} loading={<></>} props={props} />
 )
