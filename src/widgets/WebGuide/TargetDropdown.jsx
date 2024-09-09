@@ -327,9 +327,7 @@ return (
           position.placement === currentPosition.placement ? (
             <DropdownButtonItemActive
               key={customAction.placement}
-              onClick={() => {
-                handleButtonItemClick(position)
-              }}
+              onClick={() => handleButtonItemClick(position)}
             >
               {position.icon && <position.icon />}
               {position.title}
@@ -337,9 +335,7 @@ return (
           ) : (
             <DropdownButtonItem
               key={position.placement}
-              onClick={() => {
-                onItemClick(position.placement)
-              }}
+              onClick={() => onItemClick(position.placement)}
             >
               {position.icon && <position.icon />}
               {position.title}
