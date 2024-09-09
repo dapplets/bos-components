@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "name": "Document App Example"
+  },
+  "$": {
+    "controller": "${REPL_ACCOUNT}/widget/DocumentExample.Main",
+    "targets": [
+      {
+        "namespace": "${REPL_ACCOUNT}/parser/twitter",
+        "contextType": "root"
+      }
+    ],
+    "permissions": {
+      "documents": true
+    }
+  }
+}
