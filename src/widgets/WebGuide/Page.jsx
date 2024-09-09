@@ -1152,8 +1152,6 @@ const {
 const [newTitle, setNewTitle] = useState(title ?? '')
 const [newContent, setNewContent] = useState(content ?? '')
 const [newTarget, setNewTarget] = useState('')
-const [isSaveOrExportDropdownOpened, setIsSaveOrExportDropdownOpened] = useState(false)
-const [currentEditAction, setCurrentEditAction] = useState(editActions[0])
 const [savingStarted, setSavingStarted] = useState(false)
 const [publishStatusMessage, setPublishStatusMessage] = useState(null)
 
