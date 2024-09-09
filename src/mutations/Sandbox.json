@@ -14,7 +14,12 @@
     {
       "appId": "${REPL_ACCOUNT}/app/WebGuide",
       "documentId": "${REPL_ACCOUNT}/document/WebGuide-Test-Guide"
-    }
+    },
+    {
+      "appId": "${REPL_ACCOUNT}/app/WebGuide",
+      "documentId": "${REPL_ACCOUNT}/document/WebGuide-Welcome-Guide"
+    },
+    "${REPL_ACCOUNT}/app/WebGuide"
   ],
   "$targets": [
     {
