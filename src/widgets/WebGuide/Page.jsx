@@ -1158,7 +1158,7 @@ const [publishStatusMessage, setPublishStatusMessage] = useState(null)
 useEffect(() => {
   setNewTitle(title)
   setNewContent(content)
-  setNewTarget(contextType && contextId ? `${contextType}/${contextId}` : 'No target')
+  setNewTarget(contextType && contextId ? `${contextType}/${contextId}` : 'No target') // ToDo: why have a separate state for this?
   setPublishStatusMessage(null)
 }, [navi, title, content, contextType, contextId])
 
