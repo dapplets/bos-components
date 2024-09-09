@@ -118,6 +118,13 @@ const deepCopy = (obj) => JSON.parse(JSON.stringify(obj))
 // ToDo: naive deep compare
 const isDeepEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b)
 
+const clearTreeBranch = (node) => ({
+  namespace: node.namespace,
+  type: node.type,
+  id: node.id,
+  parent: node.parent ? clearTreeBranch(node.parent) : undefined,
+})
+
 const configTemplate = {
   action: true,
 }
@@ -159,14 +166,17 @@ useEffect(() => {
     .catch(console.error)
 }, [])
 
-const localConfig = Storage.privateGet(appContext)
+const localConfigResponse = Storage.privateGet(appContext)
+const localConfig =
+  localConfigResponse &&
+  (typeof localConfigResponse === 'string' ? JSON.parse(localConfigResponse) : localConfigResponse)
 
 useEffect(() => {
   setShowApp(!!guideConfig || !!localConfig)
 
   if (localConfig) {
     if (!isDeepEqual(localConfig, editingConfig)) {
-      setEditingConfig(JSON.parse(localConfig))
+      setEditingConfig(localConfig)
     }
   } else if (guideConfig && !isDeepEqual(guideConfig, editingConfig)) {
     setEditingConfig(guideConfig)
@@ -223,10 +233,7 @@ if (
 }
 
 const saveConfigToLocalStorage = (data) => {
-  Storage.privateSet(
-    appContext,
-    !data || isDeepEqual(data, guideConfig) ? undefined : JSON.stringify(data)
-  )
+  Storage.privateSet(appContext, !data || isDeepEqual(data, guideConfig) ? undefined : data)
 }
 
 const handleConfigImport = (guide) => {
@@ -387,7 +394,7 @@ const handleTargetSet = (newTarget) => {
   const updatedChapter = updatedConfig.chapters[chapterCounter]
 
   updatedChapter.type = 'callout'
-  updatedChapter.target = newTarget
+  updatedChapter.target = newTarget ? clearTreeBranch(newTarget) : null
 
   setEditingConfig(updatedConfig)
   saveConfigToLocalStorage(updatedConfig)
@@ -738,9 +745,15 @@ return (
         </OverlayTriggerWrapper>
       ) : currentChapter.target ? (
         <>
-          <DappletPortal inMemory target={currentChapter.target} component={ChapterWrapper} />
+          <DappletPortal
+            inMemory
+            target={currentChapter.target}
+            component={ChapterWrapper}
+            isFirstTargetOnly={currentChapter.isFirstTargetOnly}
+          />
           <Highlighter
             target={currentChapter.target}
+            isFirstTargetOnly={currentChapter.isFirstTargetOnly}
             styles={{
               borderColor: '#14AE5C',
               backgroundColor: 'rgb(56 255 63 / 10%)',
