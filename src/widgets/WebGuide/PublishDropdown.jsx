@@ -66,7 +66,6 @@ const RightButton = styled.button`
   }
   svg {
     width: 10px;
-    transform: rotate(180deg);
   }
 `
 
@@ -77,19 +76,46 @@ const ItemGroup = styled.div`
   align-items: center;
   flex-direction: column;
   right: 0;
-  top: -100px;
+  top: 46px;
   width: 125px;
-  padding: 10px 16px;
-  gap: 5px;
   border-radius: 10px;
-  background: var(--primBtnBg);
+  background: #f8f9ff;
   font-size: 14px;
   font-weight: 400;
   text-align: center;
   color: var(--dropdownColor);
+  box-shadow:
+    0px 97px 39px rgba(0, 0, 0, 0.01),
+    0px 54px 33px rgba(0, 0, 0, 0.05),
+    0px 24px 24px rgba(0, 0, 0, 0.09),
+    0px 6px 13px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 `
 
-const arrowIcon = (
+const DropdownButtonItem = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 31px;
+  border: none;
+  background: inherit;
+  user-select: none;
+  padding: 8px 16px 5px;
+  box-sizing: content-box;
+  cursor: pointer;
+
+  &:hover {
+    background: #e2e2e5;
+    color: #384bff;
+  }
+
+  &:last-child {
+    padding: 5px 16px 8px;
+  }
+`
+
+const ArrowIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="8" viewBox="0 0 14 8" fill="none">
     <path
       d="M1 1L7 7L13 1"
@@ -101,23 +127,7 @@ const arrowIcon = (
   </svg>
 )
 
-const DropdownButtonItem = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 31px;
-  border-radius: 4px;
-  cursor: pointer;
-  border: none;
-  background: inherit;
-  &:hover {
-    background: #e2e2e5;
-    color: var(--primBtnCol);
-  }
-`
-
-const { disabled, onMainButtonClick, customActions } = props
+const { disabled, onMainButtonClick, customActions, skin } = props
 
 const [currentEditAction, setCurrentEditAction] = useState(customActions[0])
 const [isOpen, setOpen] = useState(false)
@@ -137,7 +147,9 @@ return (
         <TextSave>{currentEditAction.title}</TextSave>
       </LeftButton>
 
-      <RightButton onClick={() => setOpen(!isOpen)}>{arrowIcon}</RightButton>
+      <RightButton onClick={() => setOpen(!isOpen)}>
+        <ArrowIcon />
+      </RightButton>
     </ButtonGroup>
 
     {isOpen ? (
