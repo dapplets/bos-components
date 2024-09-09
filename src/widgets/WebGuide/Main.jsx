@@ -230,6 +230,25 @@ if (
   return <></>
 }
 
+const handlePlacementChange = (newPlacement) => {
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedChapter = updatedConfig.chapters[chapterCounter]
+
+  updatedChapter.placement = newPlacement
+
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
+}
+
+const handleSkinToggle = () => {
+  const updatedConfig = deepCopy(editingConfig)
+
+  updatedConfig.skin = updatedConfig.skin === 'META_GUIDE' ? 'DEFAULT' : 'META_GUIDE'
+
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
+}
+
 const saveConfigToLocalStorage = (data) => {
   Storage.privateSet(appContext, !data || isDeepEqual(data, guideConfig) ? undefined : data)
 }
@@ -662,7 +681,7 @@ const ChapterWrapper = (props) => {
           ? currentChapter.target.type
           : currentChapter.contextType,
         contextId: currentChapter.target ? currentChapter.target.id : currentChapter.if?.id?.eq,
-        placement: currentChapter.target ? undefined : currentChapter.placement, // ToDo: cannot define placement for target
+        placement: currentChapter.target ? currentChapter.placement : undefined,
         strategy: currentChapter.target
           ? currentChapter.namespace === 'mweb'
             ? 'fixed'
@@ -695,7 +714,8 @@ const ChapterWrapper = (props) => {
                   props.attachInsPointRef(ref)
                 }
               : props.children,
-        skin: currentChapter.skin ?? 'DEFAULT',
+        skin: editingConfig.skin ?? 'DEFAULT',
+        onSkinToggle: handleSkinToggle,
         isEditMode,
         setEditMode,
         startEditTarget: () => setEditTarget(true),
@@ -712,6 +732,7 @@ const ChapterWrapper = (props) => {
         handleExportConfig,
         handleSave,
         noTarget,
+        onPlacementChange: handlePlacementChange,
         contextLevel: props.context?.level,
       }}
     />
