@@ -240,8 +240,6 @@ if (
   return <></>
 }
 
-let notificationInstance = null
-
 const handlePlacementChange = (newPlacement) => {
   const updatedConfig = deepCopy(editingConfig)
   const updatedChapter = updatedConfig.chapters[chapterCounter]
@@ -259,7 +257,6 @@ const handlePlacementChange = (newPlacement) => {
       setEditingConfig(deepCopy(editingConfig))
       saveConfigToLocalStorage(updatedConfig)
       clearInterval(timerInterval)
-      notificationInstance = null
     }
 
     const timer = setTimeout(() => {
@@ -270,46 +267,37 @@ const handlePlacementChange = (newPlacement) => {
       timerInterval = setInterval(() => {
         timeLeft -= 1
 
-        if (notificationInstance) {
-          notificationInstance.update({
-            body: `Reverting changes in ${timeLeft} seconds...`,
-          })
-        }
-
         if (timeLeft <= 0) {
           clearInterval(timerInterval)
         }
       }, 1000)
     }
 
-    if (!notificationInstance) {
-      notificationInstance = notify({
-        type: 'info',
-        subject: 'Change target',
-        body: `Reverting changes in ${timeLeft} seconds...`,
-        duration: 9,
-        showProgress: true,
-        pauseOnHover: false,
-        actions: [
-          {
-            label: 'OK',
-            onClick: () => {
-              clearTimeout(timer)
-              clearInterval(timerInterval)
-              saveConfigToLocalStorage(updatedConfig)
-              notificationInstance = null
-            },
+    notify({
+      type: 'info',
+      subject: 'Change target',
+      body: `Reverting changes in ${timeLeft} seconds...`,
+      duration: 9,
+      showProgress: true,
+      pauseOnHover: false,
+      actions: [
+        {
+          label: 'OK',
+          onClick: () => {
+            clearTimeout(timer)
+            clearInterval(timerInterval)
+            saveConfigToLocalStorage(updatedConfig)
           },
-          {
-            label: 'Cancel',
-            onClick: () => {
-              clearTimeout(timer)
-              revertChanges()
-            },
+        },
+        {
+          label: 'Cancel',
+          onClick: () => {
+            clearTimeout(timer)
+            revertChanges()
           },
-        ],
-      })
-    }
+        },
+      ],
+    })
 
     startTimer()
   } else {
