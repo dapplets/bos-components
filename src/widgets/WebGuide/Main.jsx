@@ -240,14 +240,10 @@ const handlePlacementChange = (newPlacement) => {
   setEditingConfig(updatedConfig)
 
   if (newPlacement !== 'auto') {
-    let timeLeft = 9
-    let timerInterval
-
     const revertChanges = () => {
       updatedChapter.placement = previousPlacement
       setEditingConfig(deepCopy(editingConfig))
       saveConfigToLocalStorage(updatedConfig)
-      clearInterval(timerInterval)
     }
 
     const timer = setTimeout(() => {
@@ -257,7 +253,7 @@ const handlePlacementChange = (newPlacement) => {
     notify({
       type: 'info',
       subject: 'Change target',
-      body: `Reverting changes in ${timeLeft} seconds...`,
+      body: `Reverting changes in 9 seconds...`,
       duration: 9,
       showProgress: true,
       pauseOnHover: false,
@@ -266,7 +262,7 @@ const handlePlacementChange = (newPlacement) => {
           label: 'OK',
           onClick: () => {
             clearTimeout(timer)
-            clearInterval(timerInterval)
+
             saveConfigToLocalStorage(updatedConfig)
           },
         },
