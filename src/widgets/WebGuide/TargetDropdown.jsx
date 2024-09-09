@@ -328,7 +328,6 @@ return (
             <DropdownButtonItemActive
               key={customAction.placement}
               onClick={() => {
-                setOpen(!isOpen)
                 handleButtonItemClick(position)
               }}
             >
