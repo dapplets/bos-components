@@ -141,7 +141,6 @@ const [pageCounter, setPageCounter] = useState(0)
 const [isEditMode, setEditMode] = useState(false)
 const [isEditTarget, setEditTarget] = useState(false)
 const [noTarget, setNoTarget] = useState(false)
-const [timerNotify, setTimerNotify] = useState(30)
 const [showFirstScreen, setShowFirstScreen] = useState(false)
 
 const findParentContext = (context, type) => {
