@@ -239,45 +239,43 @@ const handlePlacementChange = (newPlacement) => {
   updatedChapter.placement = newPlacement
   setEditingConfig(updatedConfig)
 
-  if (newPlacement !== 'auto') {
-    const revertChanges = () => {
-      updatedChapter.placement = previousPlacement
-      setEditingConfig(deepCopy(editingConfig))
-      saveConfigToLocalStorage(updatedConfig)
-    }
+  if (newPlacement === 'auto') {
+    saveConfigToLocalStorage(updatedConfig)
+    return
+  }
 
-    const timer = setTimeout(() => {
-      revertChanges()
-    }, 9000)
+  let timer
 
-    notify({
-      type: 'info',
-      subject: 'Change target',
-      body: `Reverting changes in 9 seconds...`,
-      duration: 9,
-      showProgress: true,
-      pauseOnHover: false,
-      actions: [
-        {
-          label: 'OK',
-          onClick: () => {
-            clearTimeout(timer)
+  const revertChanges = () => {
+    clearTimeout(timer)
 
-            saveConfigToLocalStorage(updatedConfig)
-          },
-        },
-        {
-          label: 'Cancel',
-          onClick: () => {
-            clearTimeout(timer)
-            revertChanges()
-          },
-        },
-      ],
-    })
-  } else {
+    const updatedConfig = deepCopy(editingConfig)
+    const updatedChapter = updatedConfig.chapters[chapterCounter]
+    updatedChapter.placement = previousPlacement
+    setEditingConfig(updatedConfig)
     saveConfigToLocalStorage(updatedConfig)
   }
+
+  const commitChanges = () => {
+    clearTimeout(timer)
+    saveConfigToLocalStorage(updatedConfig)
+  }
+
+  timer = setTimeout(() => {
+    revertChanges()
+  }, 9000)
+
+  notify({
+    type: 'info',
+    subject: 'Change target',
+    body: `Reverting changes in 9 seconds...`,
+    duration: 9,
+    showProgress: true,
+    actions: [
+      { label: 'OK', onClick: commitChanges },
+      { label: 'Cancel', onClick: revertChanges },
+    ],
+  })
 }
 
 const handleSkinToggle = () => {
