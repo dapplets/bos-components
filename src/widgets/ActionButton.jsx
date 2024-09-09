@@ -52,6 +52,7 @@ return (
       type: 'action-button',
       appId,
     })}
+    data-mweb-context-level="system"
   >
     <ImgButtonWrapper>{children}</ImgButtonWrapper>
   </ButtonActionWrapper>
