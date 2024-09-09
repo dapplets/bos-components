@@ -141,8 +141,6 @@ const [isEditTarget, setEditTarget] = useState(false)
 const [noTarget, setNoTarget] = useState(false)
 const [showFirstScreen, setShowFirstScreen] = useState(false)
 
-console.log('document', document)
-
 const findParentContext = (context, type) => {
   if (!context) return null
   if (context.type === type) return context
@@ -158,7 +156,7 @@ const getMutationId = () => {
 const mutationId = getMutationId()
 const mutatorId = mutationId?.split('/')[0]
 
-const localConfigResponse = Storage.privateGet(appContext)
+const localConfigResponse = Storage.privateGet(appContext + (document ? '/' + document.id : ''))
 const localConfig =
   localConfigResponse &&
   (typeof localConfigResponse === 'string' ? JSON.parse(localConfigResponse) : localConfigResponse)
@@ -179,7 +177,11 @@ useEffect(() => {
 }, [])
 
 useEffect(() => {
-  setShowApp(!!guideConfig || (!!localConfig && !!localConfig.chapters.length) || showFirstScreen)
+  setShowApp(
+    (!!guideConfig && (!localConfig || !!localConfig.chapters.length)) ||
+      (!!localConfig && !!localConfig.chapters.length) ||
+      showFirstScreen
+  )
   setShowFirstScreen((guideConfig === null && !localConfig) || showFirstScreen)
 
   if (localConfig) {
@@ -253,7 +255,10 @@ const handleCreateDocument = (config) => {
 }
 
 const saveConfigToLocalStorage = (data) => {
-  Storage.privateSet(appContext, !data || isDeepEqual(data, guideConfig) ? undefined : data)
+  Storage.privateSet(
+    appContext + (document ? '/' + document.id : ''),
+    !data || isDeepEqual(data, guideConfig) ? undefined : data
+  )
 }
 
 const handleConfigImport = (guide) => {
@@ -267,7 +272,9 @@ const handleClose = () => {
 
 const handleActionClick = () => {
   setShowApp((val) => !val)
-  setShowFirstScreen(!guideConfig && (!localConfig || !localConfig.chapters.length))
+  setShowFirstScreen(
+    (!guideConfig && !localConfig) || (!!localConfig && !localConfig.chapters.length)
+  )
   setEditMode(false)
   setChapterCounter(0)
   setPageCounter(0)
