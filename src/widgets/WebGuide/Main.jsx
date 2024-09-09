@@ -254,16 +254,6 @@ const handlePlacementChange = (newPlacement) => {
       revertChanges()
     }, 9000)
 
-    const startTimer = () => {
-      timerInterval = setInterval(() => {
-        timeLeft -= 1
-
-        if (timeLeft <= 0) {
-          clearInterval(timerInterval)
-        }
-      }, 1000)
-    }
-
     notify({
       type: 'info',
       subject: 'Change target',
@@ -289,8 +279,6 @@ const handlePlacementChange = (newPlacement) => {
         },
       ],
     })
-
-    startTimer()
   } else {
     saveConfigToLocalStorage(updatedConfig)
   }
