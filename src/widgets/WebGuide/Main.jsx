@@ -642,7 +642,7 @@ const ChapterWrapper = (props) => {
                 }
               : props.children,
         skin: skins[currentIndexSkins] ?? skins[currentIndexSkins + 1],
-        onSkins: () => handleChangeSkin(),
+        onSkins: handleChangeSkin,
         isEditMode,
         setEditMode,
         startEditTarget: () => setEditTarget(true),
