@@ -126,36 +126,6 @@ const clearTreeBranch = (node) => ({
   placement: node.placement,
 })
 
-const findTargets = (obj) => {
-  const stack = [obj]
-  const targets = []
-
-  while (stack.length > 0) {
-    const current = stack.pop()
-
-    if (current && typeof current === 'object') {
-      if (current.target) {
-        if (!targets.some((target) => isEqual(target, current.target))) {
-          targets.push(current.target)
-        }
-      }
-
-      for (const key in current) {
-        if (current.hasOwnProperty(key) && typeof current[key] === 'object') {
-          stack.push(current[key])
-        }
-      }
-    }
-  }
-
-  return targets
-}
-
-// Функция для сравнения объектов (простая глубокая проверка равенства)
-const isEqual = (obj1, obj2) => {
-  return JSON.stringify(obj1) === JSON.stringify(obj2)
-}
-
 const configTemplate = {
   action: true,
 }
