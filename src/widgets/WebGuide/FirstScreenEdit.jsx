@@ -663,7 +663,7 @@ const {
   didTheGuidePublished,
 } = props
 
-State.init({ image: icon ?? {} })
+State.init({ image: icon && icon.ipfs_cid ? { cid: icon.ipfs_cid } : {} }) // ToDo: ipfs_cid -> cid -- to fix in the future
 const [newTitle, setNewTitle] = useState(title ?? '')
 const [newDescription, setNewDescription] = useState(description ?? '')
 const [currentEditAction, setCurrentEditAction] = useState(editActions[0])
@@ -675,7 +675,7 @@ useEffect(() => {
   setNewTitle(title ?? '')
   setNewDescription(description ?? '')
   setPublishStatusMessage(null)
-  State.update({ image: icon ?? {} })
+  State.update({ image: icon && icon.ipfs_cid ? { cid: icon.ipfs_cid } : {} }) // ToDo: ipfs_cid -> cid -- to fix in the future
 }, [title, description, icon])
 
 const filesOnChange = (files) => {
@@ -700,7 +700,7 @@ const handleMainButtonClick = (editActionValue) => {
       const emptyPages = handleSave({
         newTitle,
         newDescription,
-        newIcon: state.image,
+        newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
       })
       if (emptyPages) {
         setSavingStarted(false)
@@ -714,7 +714,7 @@ const handleMainButtonClick = (editActionValue) => {
       return handleExportConfig({
         newTitle,
         newDescription,
-        newIcon: state.image,
+        newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
       })
     default:
       console.error('No such an edit action')
@@ -753,7 +753,7 @@ return (
               openChapters({
                 newTitle,
                 newDescription,
-                newIcon: state.image,
+                newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
               })
             }
           >
@@ -777,7 +777,7 @@ return (
                   {state.image.cid ? (
                     <img
                       src={`https://ipfs.near.social/ipfs/${state.image.cid}`}
-                      alt={state.image.name}
+                      alt={`${newTitle ?? 'Guide'} image`}
                       style={{ width: '100%' }}
                     />
                   ) : (
@@ -856,12 +856,12 @@ return (
               ? onChapterAdd({
                   newTitle,
                   newDescription,
-                  newIcon: state.image,
+                  newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
                 })
               : onStart({
                   newTitle,
                   newDescription,
-                  newIcon: state.image,
+                  newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
                 })
           }
         >
@@ -881,7 +881,7 @@ return (
             {isConfigEdited ||
             newTitle !== (title ?? '') ||
             newDescription !== (description ?? '') ||
-            state.image?.cid !== icon?.cid
+            state.image?.cid !== icon?.ipfs_cid // ToDo: cid -> ipfs_cid -- to fix in the future
               ? 'Delete all local changes'
               : 'Cancel'}
           </SuccessButton>
@@ -894,10 +894,12 @@ return (
             }
             props={{
               disabled: !(
-                isConfigEdited ||
-                newTitle !== (title ?? '') ||
-                newDescription !== (description ?? '') ||
-                state.image?.cid !== icon?.cid
+                (
+                  isConfigEdited ||
+                  newTitle !== (title ?? '') ||
+                  newDescription !== (description ?? '') ||
+                  state.image?.cid !== icon?.ipfs_cid
+                ) // ToDo: cid -> ipfs_cid -- to fix in the future
               ),
               onMainButtonClick: handleMainButtonClick,
               customActions: [
