@@ -44,22 +44,6 @@
     {
       "appId": "${REPL_ACCOUNT}/app/DocumentExample",
       "documentId": null
-    },
-    {
-      "appId": "${REPL_ACCOUNT}/app/DocumentExample",
-      "documentId": "bos.dapplets.testnet/document/DocumentExample-1725296048440"
-    },
-    {
-      "appId": "${REPL_ACCOUNT}/app/DocumentExample",
-      "documentId": "bos.dapplets.testnet/document/DocumentExample-1725296118552"
-    },
-    {
-      "appId": "${REPL_ACCOUNT}/app/DocumentExample",
-      "documentId": "bos.dapplets.testnet/document/DocumentExample-1725296135784"
-    },
-    {
-      "appId": "${REPL_ACCOUNT}/app/DocumentExample",
-      "documentId": "bos.dapplets.testnet/document/DocumentExample-1725296197100"
     }
   ]
 }

@@ -126,13 +126,12 @@ const clearTreeBranch = (node) => ({
   parent: node.parent ? clearTreeBranch(node.parent) : undefined,
 })
 
-const configTemplate = {
-  action: true,
-}
+const configTemplate = { action: true }
 
 const { accountId: loggedInAccountId } = context
-const { linkDb, context: appContext } = props
+const { linkDb: LinkDb, context: appContext, getDocument, commitDocument, notify } = props
 
+const [document, setDocument] = useState(undefined) // null will be used if not found in DB
 const [guideConfig, setGuideConfig] = useState(undefined) // null will be used if not found in DB
 const [editingConfig, setEditingConfig] = useState(configTemplate)
 const [showApp, setShowApp] = useState(true)
@@ -158,23 +157,42 @@ const getMutationId = () => {
 const mutationId = getMutationId()
 const mutatorId = mutationId?.split('/')[0]
 
-const localConfigResponse = Storage.privateGet(appContext)
+const localConfigResponse = Storage.privateGet(appContext + (document ? '/' + document.id : ''))
 const localConfig =
   localConfigResponse &&
   (typeof localConfigResponse === 'string' ? JSON.parse(localConfigResponse) : localConfigResponse)
 
 useEffect(() => {
-  linkDb
-    .get(appContext, mutatorId)
-    .then((response) => {
-      if (!response?.[mutatorId]) return
-      setGuideConfig(response[mutatorId])
-    })
-    .catch(console.error)
+  if (getDocument) {
+    //ToDo: remove it in the future
+    getDocument()
+      .then((doc) => {
+        setDocument(doc)
+        if (doc)
+          LinkDb.get(appContext, mutatorId)
+            .then((response) => {
+              if (!response?.[mutatorId]) return
+              setGuideConfig(response[mutatorId])
+            })
+            .catch(console.error)
+      })
+      .catch(console.error)
+  } else {
+    LinkDb.get(appContext, mutatorId)
+      .then((response) => {
+        if (!response?.[mutatorId]) return
+        setGuideConfig(response[mutatorId])
+      })
+      .catch(console.error)
+  }
 }, [])
 
 useEffect(() => {
-  setShowApp(!!guideConfig || (!!localConfig && !!localConfig.chapters.length) || showFirstScreen)
+  setShowApp(
+    (!!guideConfig && (!localConfig || !!localConfig.chapters.length)) ||
+      (!!localConfig && !!localConfig.chapters.length) ||
+      showFirstScreen
+  )
   setShowFirstScreen((guideConfig === null && !localConfig) || showFirstScreen)
 
   if (localConfig) {
@@ -230,27 +248,104 @@ if (
   return <></>
 }
 
+const handleCreateDocument = (config) => {
+  const documentId =
+    '${REPL_ACCOUNT}/document/WebGuide-' +
+    (config.title
+      ?.split(' ')
+      .filter((x) => x)
+      .join('-') ?? Date.now())
+
+  const documentMetadata = {
+    name: config.title,
+    description: config.description,
+    image: config.icon,
+  }
+
+  return commitDocument(documentId, documentMetadata, appContext, { [loggedInAccountId]: config })
+}
+
+const notifyWithCountdown = ({ type, subject, body, duration, onOk, onCancelOrTimeout }) => {
+  let timer
+
+  const handleOk = () => {
+    clearTimeout(timer)
+    onOk()
+  }
+
+  const handleCancel = () => {
+    clearTimeout(timer)
+    onCancelOrTimeout()
+  }
+
+  timer = setTimeout(() => {
+    onCancelOrTimeout()
+  }, duration * 1000)
+
+  notify({
+    type,
+    subject,
+    body,
+    duration,
+    showProgress: true,
+    actions: [
+      { label: 'OK', onClick: handleOk },
+      { label: 'Cancel', onClick: handleCancel },
+    ],
+  })
+}
+
 const handlePlacementChange = (newPlacement) => {
   const updatedConfig = deepCopy(editingConfig)
   const updatedChapter = updatedConfig.chapters[chapterCounter]
+  const previousPlacement = updatedChapter.placement
 
   updatedChapter.placement = newPlacement
-
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+
+  if (newPlacement === 'auto') {
+    saveConfigToLocalStorage(updatedConfig)
+    return
+  }
+
+  const commitChanges = () => {
+    saveConfigToLocalStorage(updatedConfig)
+  }
+
+  const revertChanges = () => {
+    const updatedConfig = deepCopy(editingConfig)
+    const updatedChapter = updatedConfig.chapters[chapterCounter]
+
+    updatedChapter.placement = previousPlacement
+
+    setEditingConfig(updatedConfig)
+    saveConfigToLocalStorage(updatedConfig)
+  }
+
+  notifyWithCountdown({
+    type: 'info',
+    subject: 'Change target',
+    body: `Reverting changes in 9 seconds...`,
+    duration: 9,
+    onOk: commitChanges,
+    onCancelOrTimeout: revertChanges,
+  })
 }
 
 const handleSkinToggle = () => {
   const updatedConfig = deepCopy(editingConfig)
 
-  updatedConfig.skin = updatedConfig.skin === 'META_GUIDE' ? 'DEFAULT' : 'META_GUIDE'
+  updatedConfig.skin = updatedConfig.skin === 'DEFAULT' ? 'META_GUIDE' : 'DEFAULT'
 
   setEditingConfig(updatedConfig)
   saveConfigToLocalStorage(updatedConfig)
 }
 
 const saveConfigToLocalStorage = (data) => {
-  Storage.privateSet(appContext, !data || isDeepEqual(data, guideConfig) ? undefined : data)
+  Storage.privateSet(
+    appContext + (document ? '/' + document.id : ''),
+    !data || isDeepEqual(data, guideConfig) ? undefined : data
+  )
 }
 
 const handleConfigImport = (guide) => {
@@ -264,7 +359,9 @@ const handleClose = () => {
 
 const handleActionClick = () => {
   setShowApp((val) => !val)
-  setShowFirstScreen(!guideConfig && (!localConfig || !localConfig.chapters.length))
+  setShowFirstScreen(
+    (!guideConfig && !localConfig) || (!!localConfig && !localConfig.chapters.length)
+  )
   setEditMode(false)
   setChapterCounter(0)
   setPageCounter(0)
@@ -342,9 +439,9 @@ const saveConfig = (config) => {
   if (emptyPages?.length) return emptyPages
   const isConfigEdited = !isDeepEqual(config, guideConfig)
   if (isConfigEdited) {
-    linkDb
-      .set(appContext, { [mutatorId]: config })
-      .then(() => {
+    ;(document ? LinkDb.set(appContext, { [mutatorId]: config }) : handleCreateDocument(config))
+      ?.then(() => {
+        console.log('Saved')
         setGuideConfig(config)
         setEditMode(false)
         setChapterCounter(0)
@@ -354,6 +451,7 @@ const saveConfig = (config) => {
       })
       .catch(console.error)
   } else {
+    console.log('Not saved')
     setGuideConfig(guideConfig)
     setEditMode(false)
     setChapterCounter(0)
@@ -804,6 +902,7 @@ return (
           <Widget
             src="${REPL_ACCOUNT}/widget/WebGuide.Action"
             props={{
+              docId: document?.id,
               isActive: showApp,
               onClick: handleActionClick,
             }}
@@ -821,7 +920,7 @@ return (
           target={{
             namespace: 'mweb',
             contextType: 'mweb-overlay-action',
-            if: { id: { eq: 'action-button-web-guide' } },
+            if: { id: { eq: `action-button-web-guide${document ? '-' + document.id : ''}` } },
           }}
           component={(props) => (
             <Widget
@@ -849,9 +948,10 @@ return (
                 setEditMode,
                 handleRemoveAllChanges,
                 isConfigEdited: !isDeepEqual(editingConfig, guideConfig),
-                title: editingConfig.title,
-                description: editingConfig.description,
-                icon: editingConfig.icon,
+                title: document?.metadata.title ?? editingConfig.title,
+                description: document?.metadata.description ?? editingConfig.description,
+                icon: document?.metadata.image ?? editingConfig.icon,
+                hasDocument: !!document,
                 handleExportConfig: handleExportConfigFromFirstScreen,
                 handleSave: handleSaveFromFirstScreen,
                 hasChapters: !!editingConfig.chapters?.length,

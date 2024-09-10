@@ -231,6 +231,7 @@ const FloatingLabelContainer = styled.div`
   position: relative;
   display: flex;
   background: #f8f9ff;
+  flex-grow: 1;
 `
 
 const FloatingLabelContainerArea = styled.div`
@@ -254,6 +255,12 @@ const StyledInput = styled.input`
   border: none;
   width: 100%;
   outline: none;
+
+  &:disabled {
+    background: #fff;
+    color: #7a818b;
+    border: 1px solid #f8f9ff;
+  }
 
   &:focus + label,
   &:not(:placeholder-shown) + label {
@@ -307,6 +314,12 @@ const StyledTextarea = styled.textarea`
   position: relative;
   border: none;
 
+  &:disabled {
+    background: #fff;
+    color: #7a818b;
+    border: 1px solid #f8f9ff;
+  }
+
   &::-webkit-resizer {
     display: none;
   }
@@ -315,7 +328,6 @@ const StyledTextarea = styled.textarea`
   &:not(:placeholder-shown) + label {
     height: 25px;
     width: 99%;
-    background: inherit;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -329,7 +341,7 @@ const ImageBlock = styled.div`
   display: flex !important;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: ${(props) => (props.$fromDocument ? '' : '100%')};
 
   & > .d-inline-block {
     width: ${(props) => (props.$hasImage ? '100%' : '')};
@@ -642,6 +654,7 @@ const {
   title,
   description,
   icon,
+  hasDocument,
   handleExportConfig,
   handleSave,
   hasChapters,
@@ -650,7 +663,7 @@ const {
   didTheGuidePublished,
 } = props
 
-State.init({ image: icon ?? {} })
+State.init({ image: icon && icon.ipfs_cid ? { cid: icon.ipfs_cid } : {} }) // ToDo: ipfs_cid -> cid -- to fix in the future
 const [newTitle, setNewTitle] = useState(title ?? '')
 const [newDescription, setNewDescription] = useState(description ?? '')
 const [currentEditAction, setCurrentEditAction] = useState(editActions[0])
@@ -662,7 +675,7 @@ useEffect(() => {
   setNewTitle(title ?? '')
   setNewDescription(description ?? '')
   setPublishStatusMessage(null)
-  State.update({ image: icon ?? {} })
+  State.update({ image: icon && icon.ipfs_cid ? { cid: icon.ipfs_cid } : {} }) // ToDo: ipfs_cid -> cid -- to fix in the future
 }, [title, description, icon])
 
 const filesOnChange = (files) => {
@@ -687,7 +700,7 @@ const handleMainButtonClick = (editActionValue) => {
       const emptyPages = handleSave({
         newTitle,
         newDescription,
-        newIcon: state.image,
+        newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
       })
       if (emptyPages) {
         setSavingStarted(false)
@@ -701,7 +714,7 @@ const handleMainButtonClick = (editActionValue) => {
       return handleExportConfig({
         newTitle,
         newDescription,
-        newIcon: state.image,
+        newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
       })
     default:
       console.error('No such an edit action')
@@ -740,7 +753,7 @@ return (
               openChapters({
                 newTitle,
                 newDescription,
-                newIcon: state.image,
+                newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
               })
             }
           >
@@ -756,34 +769,72 @@ return (
           <StyledLabel htmlFor={'owner'}>Owner</StyledLabel>
         </FloatingLabelContainer>
 
-        <ImageBlock $hasImage={!!state.image.cid}>
-          {state.image.cid ? null : (
-            <ImageWrapper>
-              <ImagePlaceholder />
-            </ImageWrapper>
-          )}
-          <IpfsImageUpload image={state.image} />
-        </ImageBlock>
+        {hasDocument ? (
+          <>
+            <div style={{ display: 'flex' }}>
+              <ImageBlock $fromDocument={hasDocument} $hasImage={!!state.image.cid}>
+                <ImageWrapper>
+                  {state.image.cid ? (
+                    <img
+                      src={`https://ipfs.near.social/ipfs/${state.image.cid}`}
+                      alt={`${newTitle ?? 'Guide'} image`}
+                      style={{ width: '100%' }}
+                    />
+                  ) : (
+                    <ImagePlaceholder />
+                  )}
+                </ImageWrapper>
+              </ImageBlock>
 
-        <FloatingLabelContainer>
-          <StyledInput
-            id={'title'}
-            type={'text'}
-            value={newTitle}
-            onChange={(e) => setNewTitle(e.target.value)}
-          />
-          <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
-        </FloatingLabelContainer>
+              <FloatingLabelContainer>
+                <StyledInput id={'title'} type={'text'} value={newTitle} readOnly disabled />
+                <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
+              </FloatingLabelContainer>
+            </div>
 
-        <FloatingLabelContainerArea>
-          <StyledTextarea
-            id={'description'}
-            type={'text'}
-            value={newDescription}
-            onChange={(e) => setNewDescription(e.target.value)}
-          />
-          <StyledLabel htmlFor={'description'}>Description</StyledLabel>
-        </FloatingLabelContainerArea>
+            <FloatingLabelContainerArea>
+              <StyledTextarea
+                id={'description'}
+                type={'text'}
+                value={newDescription}
+                readOnly
+                disabled
+              />
+              <StyledLabel htmlFor={'description'}>Description</StyledLabel>
+            </FloatingLabelContainerArea>
+          </>
+        ) : (
+          <>
+            <ImageBlock $hasImage={!!state.image.cid}>
+              {state.image.cid ? null : (
+                <ImageWrapper>
+                  <ImagePlaceholder />
+                </ImageWrapper>
+              )}
+              <IpfsImageUpload image={state.image} />
+            </ImageBlock>
+
+            <FloatingLabelContainer>
+              <StyledInput
+                id={'title'}
+                type={'text'}
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+              />
+              <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
+            </FloatingLabelContainer>
+
+            <FloatingLabelContainerArea>
+              <StyledTextarea
+                id={'description'}
+                type={'text'}
+                value={newDescription}
+                onChange={(e) => setNewDescription(e.target.value)}
+              />
+              <StyledLabel htmlFor={'description'}>Description</StyledLabel>
+            </FloatingLabelContainerArea>
+          </>
+        )}
       </EditInputsBlock>
 
       <ButtonsCreateBlock>
@@ -805,12 +856,12 @@ return (
               ? onChapterAdd({
                   newTitle,
                   newDescription,
-                  newIcon: state.image,
+                  newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
                 })
               : onStart({
                   newTitle,
                   newDescription,
-                  newIcon: state.image,
+                  newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
                 })
           }
         >
@@ -830,7 +881,7 @@ return (
             {isConfigEdited ||
             newTitle !== (title ?? '') ||
             newDescription !== (description ?? '') ||
-            state.image?.cid !== icon?.cid
+            state.image?.cid !== icon?.ipfs_cid // ToDo: cid -> ipfs_cid -- to fix in the future
               ? 'Delete all local changes'
               : 'Cancel'}
           </SuccessButton>
@@ -843,10 +894,12 @@ return (
             }
             props={{
               disabled: !(
-                isConfigEdited ||
-                newTitle !== (title ?? '') ||
-                newDescription !== (description ?? '') ||
-                state.image?.cid !== icon?.cid
+                (
+                  isConfigEdited ||
+                  newTitle !== (title ?? '') ||
+                  newDescription !== (description ?? '') ||
+                  state.image?.cid !== icon?.ipfs_cid
+                ) // ToDo: cid -> ipfs_cid -- to fix in the future
               ),
               onMainButtonClick: handleMainButtonClick,
               customActions: [
