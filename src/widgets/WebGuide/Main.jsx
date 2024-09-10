@@ -668,31 +668,35 @@ const handleRevertChanges = () => {
   const chapter = updatedConfig.chapters[chapterCounter]
   const page = chapter.pages[pageCounter]
 
-  const originalChapter = Array.isArray(guideConfig?.chapters)
-    ? guideConfig.chapters.find((x) => x.id === chapter.id)
-    : undefined
+  const originalChapter =
+    guideConfig &&
+    Array.isArray(guideConfig.chapters) &&
+    guideConfig.chapters.find((x) => x.id === chapter.id)
 
   const originalPage =
-    originalChapter && Array.isArray(originalChapter.pages)
-      ? originalChapter.pages.find((x) => x.id === page.id)
-      : undefined
+    originalChapter &&
+    Array.isArray(originalChapter.pages) &&
+    originalChapter.pages.find((x) => x.id === page.id)
 
   if (!guideConfig || !originalChapter) {
-    handlePageRemove()
-    handleClickPrev()
-    return
+    chapter.type = 'infobox'
+    chapter.target = undefined
+    page.title = ''
+    page.content = ''
   } else if (!originalPage) {
-    handlePageRemove()
-    handleClickPrev()
-    return
+    chapter.type = originalChapter.type
+    chapter.target = originalChapter.target ?? null
+    page.title = ''
+    page.content = ''
   } else {
     chapter.type = originalChapter.type
     chapter.target = originalChapter.target ?? null
     page.title = originalPage.title
     page.content = originalPage.content
-    setEditingConfig(updatedConfig)
-    saveConfigToLocalStorage(updatedConfig)
   }
+
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
 }
 
 const handleRemoveAllChanges = () => {
