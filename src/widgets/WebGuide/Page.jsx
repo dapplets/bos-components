@@ -1298,16 +1298,14 @@ const {
   placement,
 } = props
 
-const [newTitle, setNewTitle] = useState(title ?? '')
-const [newContent, setNewContent] = useState(content ?? '')
-const [newTarget, setNewTarget] = useState('')
+const [newTitle, setNewTitle] = useState(title)
+const [newContent, setNewContent] = useState(content)
 const [savingStarted, setSavingStarted] = useState(false)
 const [publishStatusMessage, setPublishStatusMessage] = useState(null)
 
 useEffect(() => {
   setNewTitle(title)
   setNewContent(content)
-  setNewTarget(contextType && contextId ? `${contextType}/${contextId}` : 'No target') // ToDo: why have a separate state for this?
   setPublishStatusMessage(null)
 }, [navi, title, content, contextType, contextId])
 
@@ -1472,6 +1470,12 @@ const navButtonsEdit = !buttons?.length ? null : buttons?.length > 1 ? (
   </ActionsGroupEdit>
 )
 
+console.log('isPageEdited', isPageEdited)
+console.log('newTitle', newTitle)
+console.log('title', title)
+console.log('newContent', newContent)
+console.log('content', content)
+
 const editPage = (
   <>
     {navButtonsEdit}
@@ -1493,11 +1497,10 @@ const editPage = (
           {iconRemove} Remove page
         </ButtonRemove>
         <ButtonRevert
-          disabled={!isPageEdited && newTitle === title && newContent === content}
+          disabled={!(isPageEdited || newTitle !== title || newContent !== content)}
           onClick={() => {
-            setNewTitle(title ?? '')
-            setNewContent(content ?? '')
-            setNewTarget(contextType && contextId ? `${contextType}/${contextId}` : 'No target')
+            setNewTitle(title)
+            setNewContent(content)
             onRevertChanges()
           }}
         >
@@ -1506,7 +1509,13 @@ const editPage = (
       </OptionsBlock>
       <TargetBlock>
         <FloatingLabelContainer>
-          <StyledInput id={'target'} type={'text'} readonly disabled value={newTarget} />
+          <StyledInput
+            id={'target'}
+            type={'text'}
+            readonly
+            disabled
+            value={contextType && contextId ? `${contextType}/${contextId}` : 'No target'}
+          />
           <StyledLabel htmlFor={'target'}>Target</StyledLabel>
           <InputButtons>
             {props.type === 'callout' && (
@@ -1533,11 +1542,7 @@ const editPage = (
             src="${REPL_ACCOUNT}/widget/WebGuide.TargetDropdown"
             loading={props?.children}
             props={{
-              disabled: !(
-                isConfigEdited ||
-                newTitle !== (title ?? '') ||
-                newContent !== (content ?? '')
-              ),
+              disabled: !(isConfigEdited || newTitle !== title || newContent !== content),
               onItemClick: onPlacementChange,
               oldPosition: placement,
             }}
@@ -1593,7 +1598,7 @@ const editPage = (
           handleRemoveAllChanges()
         }}
       >
-        {isConfigEdited || newTitle !== (title ?? '') || newContent !== (content ?? '')
+        {isConfigEdited || newTitle !== title || newContent !== content
           ? 'Delete all local changes'
           : 'Cancel'}
       </SuccessButton>
@@ -1606,11 +1611,7 @@ const editPage = (
           </ButtonPlaceholder>
         }
         props={{
-          disabled: !(
-            isConfigEdited ||
-            newTitle !== (title ?? '') ||
-            newContent !== (content ?? '')
-          ),
+          disabled: !(isConfigEdited || newTitle !== title || newContent !== content),
           onMainButtonClick: handleMainButtonClick,
           customActions: [
             { value: 'publish', title: 'Publish' },

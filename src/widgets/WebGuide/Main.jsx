@@ -454,7 +454,7 @@ const handleTargetRemove = ({ newTitle, newContent }) => {
   const updatedPage = updatedChapter.pages[pageCounter]
 
   updatedChapter.type = 'infobox'
-  updatedChapter.target = {}
+  updatedChapter.target = null
   updatedPage.title = newTitle
   updatedPage.content = newContent
 
@@ -583,7 +583,7 @@ const handleRevertChanges = () => {
     return
   } else {
     chapter.type = originalChapter.type
-    chapter.target = originalChapter.target ?? undefined
+    chapter.target = originalChapter.target ?? null
     page.title = originalPage.title
     page.content = originalPage.content
     setEditingConfig(updatedConfig)
@@ -662,6 +662,17 @@ const ChapterWrapper = (props) => {
       label: 'Next',
     })
 
+  const isConfigEdited = !isDeepEqual(editingConfig, guideConfig)
+
+  const isPageEdited = () => {
+    if (!isConfigEdited) return false
+    const originalCurrentPage = guideConfig?.chapters
+      ?.find((chapter) => chapter.id === currentChapter.id)
+      ?.pages?.find((page) => page.id === currentPage.id)
+    if (!originalCurrentPage) !(!currentPage.title && !currentPage.content && !currentPage.target)
+    return !isDeepEqual(currentPage, originalCurrentPage)
+  }
+
   return (
     <Widget
       src="${REPL_ACCOUNT}/widget/WebGuide.OverlayTrigger"
@@ -670,11 +681,8 @@ const ChapterWrapper = (props) => {
         widgetId: '${REPL_ACCOUNT}/widget/WebGuide.Page',
         guideTitle: editingConfig.title,
         guideDescription: editingConfig.description,
-        isConfigEdited: !isDeepEqual(editingConfig, guideConfig),
-        isPageEdited: !isDeepEqual(
-          currentPage,
-          guideConfig.chapters[chapterCounter].pages[pageCounter]
-        ),
+        isConfigEdited,
+        isPageEdited: isPageEdited(),
         id: currentChapter.id,
         type: currentChapter.type,
         contextType: currentChapter.target
