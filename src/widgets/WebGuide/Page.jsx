@@ -1470,12 +1470,6 @@ const navButtonsEdit = !buttons?.length ? null : buttons?.length > 1 ? (
   </ActionsGroupEdit>
 )
 
-console.log('isPageEdited', isPageEdited)
-console.log('newTitle', newTitle)
-console.log('title', title)
-console.log('newContent', newContent)
-console.log('content', content)
-
 const editPage = (
   <>
     {navButtonsEdit}

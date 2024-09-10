@@ -119,6 +119,12 @@ const deepCopy = (obj) => JSON.parse(JSON.stringify(obj))
 // ToDo: naive deep compare
 const isDeepEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b)
 
+const isTargetEqual = (a, b) => {
+  if (!a && !b) return true
+  if (!a || !b || a.id !== b.id || a.namespace !== b.namespace || a.type !== b.type) return false
+  return (!a.parent && !b.parent) || (a.parent && b.parent && isTargetEqual(a.parent, b.parent))
+}
+
 const clearTreeBranch = (node) => ({
   namespace: node.namespace,
   type: node.type,
@@ -762,13 +768,26 @@ const ChapterWrapper = (props) => {
 
   const isConfigEdited = !isDeepEqual(editingConfig, guideConfig)
 
+  const originalCurrentChapter =
+    guideConfig &&
+    Array.isArray(guideConfig.chapters) &&
+    guideConfig.chapters.find((chapter) => chapter.id === currentChapter.id)
+
+  const isTargetChanged = () => {
+    if (!originalCurrentChapter) return !!currentChapter.target
+    return !isTargetEqual(currentChapter.target, originalCurrentChapter.target)
+  }
+
   const isPageEdited = () => {
     if (!isConfigEdited) return false
-    const originalCurrentPage = guideConfig?.chapters
-      ?.find((chapter) => chapter.id === currentChapter.id)
-      ?.pages?.find((page) => page.id === currentPage.id)
-    if (!originalCurrentPage) !(!currentPage.title && !currentPage.content && !currentPage.target)
-    return !isDeepEqual(currentPage, originalCurrentPage)
+    const originalCurrentPage =
+      originalCurrentChapter &&
+      Array.isArray(originalCurrentChapter.pages) &&
+      originalCurrentChapter.pages.find((page) => page.id === currentPage.id)
+
+    const targetChanged = isTargetChanged()
+    if (!originalCurrentPage) return !(!currentPage.title && !currentPage.content && !targetChanged)
+    return !(isDeepEqual(currentPage, originalCurrentPage) && !targetChanged)
   }
 
   return (
