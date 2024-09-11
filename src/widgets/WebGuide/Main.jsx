@@ -814,10 +814,11 @@ const ChapterWrapper = (props) => {
         isPageEdited: isPageEdited(),
         id: currentChapter.id,
         type: currentChapter.type,
-        contextType: currentChapter.target
-          ? currentChapter.target.type
-          : currentChapter.contextType,
-        contextId: currentChapter.target ? currentChapter.target.id : currentChapter.if?.id?.eq,
+        contextType: currentChapter.target?.type ?? currentChapter.target?.contextType,
+        contextId:
+          currentChapter.target?.id ??
+          currentChapter.target?.if?.id?.eq ??
+          currentChapter.target?.if?.widgetSrc?.eq,
         placement: currentChapter.target && currentChapter.placement,
         strategy: currentChapter.target
           ? currentChapter.namespace === 'mweb'
