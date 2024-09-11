@@ -545,6 +545,7 @@ const handleTargetSet = (newTarget) => {
 
   updatedChapter.type = 'callout'
   updatedChapter.target = newTarget ? clearTreeBranch(newTarget) : null
+  delete updatedChapter.placement
 
   setEditingConfig(updatedConfig)
   saveConfigToLocalStorage(updatedConfig)
@@ -559,6 +560,7 @@ const handleTargetRemove = ({ newTitle, newContent }) => {
 
   updatedChapter.type = 'infobox'
   updatedChapter.target = null
+  delete updatedChapter.placement
   updatedPage.title = newTitle
   updatedPage.content = newContent
 
@@ -681,16 +683,19 @@ const handleRevertChanges = () => {
   if (!guideConfig || !originalChapter) {
     chapter.type = 'infobox'
     chapter.target = undefined
+    delete chapter.placement
     page.title = ''
     page.content = ''
   } else if (!originalPage) {
     chapter.type = originalChapter.type
     chapter.target = originalChapter.target ?? null
+    chapter.placement = originalChapter.placement
     page.title = ''
     page.content = ''
   } else {
     chapter.type = originalChapter.type
     chapter.target = originalChapter.target ?? null
+    chapter.placement = originalChapter.placement
     page.title = originalPage.title
     page.content = originalPage.content
   }
@@ -778,8 +783,11 @@ const ChapterWrapper = (props) => {
     guideConfig.chapters.find((chapter) => chapter.id === currentChapter.id)
 
   const isTargetChanged = () => {
-    if (!originalCurrentChapter) return !!currentChapter.target
-    return !isTargetEqual(currentChapter.target, originalCurrentChapter.target)
+    if (!originalCurrentChapter) return !!currentChapter.target && !!currentChapter.placement
+    return (
+      !isTargetEqual(currentChapter.target, originalCurrentChapter.target) ||
+      currentChapter.placement !== originalCurrentChapter.placement
+    )
   }
 
   const isPageEdited = () => {
@@ -810,7 +818,7 @@ const ChapterWrapper = (props) => {
           ? currentChapter.target.type
           : currentChapter.contextType,
         contextId: currentChapter.target ? currentChapter.target.id : currentChapter.if?.id?.eq,
-        placement: currentChapter.target ? currentChapter.placement : undefined,
+        placement: currentChapter.target && currentChapter.placement,
         strategy: currentChapter.target
           ? currentChapter.namespace === 'mweb'
             ? 'fixed'

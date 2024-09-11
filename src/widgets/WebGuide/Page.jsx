@@ -1534,9 +1534,8 @@ const editPage = (
         {contextType && contextId ? (
           <Widget
             src="${REPL_ACCOUNT}/widget/WebGuide.TargetDropdown"
-            loading={props?.children}
+            loading={<></>}
             props={{
-              disabled: !(isConfigEdited || newTitle !== title || newContent !== content),
               onItemClick: onPlacementChange,
               oldPosition: placement,
             }}
