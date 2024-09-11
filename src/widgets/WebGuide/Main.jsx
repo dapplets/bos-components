@@ -920,7 +920,7 @@ return (
                 type: 'callout',
                 strategy: 'fixed',
                 placement: 'left',
-                offset: [0, 45],
+                offset: [0, 25],
                 noArrow: true,
                 onRefAttach: ({ ref }) => {
                   // ToDo: move to the engine
