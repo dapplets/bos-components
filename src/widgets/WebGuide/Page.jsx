@@ -1505,8 +1505,12 @@ const editPage = (
             type={'text'}
             readonly
             disabled
-            value={contextType && contextId ? `${contextType}/${contextId}` : 'No target'}
-            title={contextType && contextId ? `${contextType}/${contextId}` : 'No target'}
+            value={
+              contextType ? (contextId ? `${contextType}/${contextId}` : contextType) : 'No target'
+            }
+            title={
+              contextType ? (contextId ? `${contextType}/${contextId}` : contextType) : 'No target'
+            }
           />
           <StyledLabel htmlFor={'target'}>Target</StyledLabel>
           <InputButtons>
@@ -1529,7 +1533,7 @@ const editPage = (
             </EditTargetButton>
           </InputButtons>
         </FloatingLabelContainer>
-        {contextType && contextId ? (
+        {contextType ? (
           <Widget
             src="${REPL_ACCOUNT}/widget/WebGuide.TargetDropdown"
             loading={<></>}
