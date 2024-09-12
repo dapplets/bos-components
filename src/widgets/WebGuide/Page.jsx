@@ -113,7 +113,7 @@ const Callout = styled.div`
   box-sizing: border-box;
   position: relative;
   display: flex;
-  width: 320px;
+  width: 360px;
   padding: 12px 14px 14px;
   flex-direction: column;
   justify-content: center;
@@ -124,10 +124,6 @@ const Callout = styled.div`
   background: var(--bgMain);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-
-  &.edit-mode {
-    width: 360px;
-  }
 `
 
 const Header = styled.div`
@@ -868,6 +864,7 @@ const StyledInput = styled.input`
   border: 1px solid #e2e2e5;
   width: 100%;
   outline: none;
+  text-overflow: ellipsis;
 
   &:focus + label,
   &:not(:placeholder-shown) + label {
@@ -1298,16 +1295,14 @@ const {
   placement,
 } = props
 
-const [newTitle, setNewTitle] = useState(title ?? '')
-const [newContent, setNewContent] = useState(content ?? '')
-const [newTarget, setNewTarget] = useState('')
+const [newTitle, setNewTitle] = useState(title)
+const [newContent, setNewContent] = useState(content)
 const [savingStarted, setSavingStarted] = useState(false)
 const [publishStatusMessage, setPublishStatusMessage] = useState(null)
 
 useEffect(() => {
   setNewTitle(title)
   setNewContent(content)
-  setNewTarget(contextType && contextId ? `${contextType}/${contextId}` : 'No target') // ToDo: why have a separate state for this?
   setPublishStatusMessage(null)
 }, [navi, title, content, contextType, contextId])
 
@@ -1493,11 +1488,10 @@ const editPage = (
           {iconRemove} Remove page
         </ButtonRemove>
         <ButtonRevert
-          disabled={!isPageEdited || (newTitle === (title ?? '') && newContent === (content ?? ''))}
+          disabled={!(isPageEdited || newTitle !== title || newContent !== content)}
           onClick={() => {
-            setNewTitle(title ?? '')
-            setNewContent(content ?? '')
-            setNewTarget(contextType && contextId ? `${contextType}/${contextId}` : 'No target')
+            setNewTitle(title)
+            setNewContent(content)
             onRevertChanges()
           }}
         >
@@ -1506,7 +1500,14 @@ const editPage = (
       </OptionsBlock>
       <TargetBlock>
         <FloatingLabelContainer>
-          <StyledInput id={'target'} type={'text'} readonly disabled value={newTarget} />
+          <StyledInput
+            id={'target'}
+            type={'text'}
+            readonly
+            disabled
+            value={contextType && contextId ? `${contextType}/${contextId}` : 'No target'}
+            title={contextType && contextId ? `${contextType}/${contextId}` : 'No target'}
+          />
           <StyledLabel htmlFor={'target'}>Target</StyledLabel>
           <InputButtons>
             {props.type === 'callout' && (
@@ -1531,13 +1532,8 @@ const editPage = (
         {contextType && contextId ? (
           <Widget
             src="${REPL_ACCOUNT}/widget/WebGuide.TargetDropdown"
-            loading={props?.children}
+            loading={<></>}
             props={{
-              disabled: !(
-                isConfigEdited ||
-                newTitle !== (title ?? '') ||
-                newContent !== (content ?? '')
-              ),
               onItemClick: onPlacementChange,
               oldPosition: placement,
             }}
@@ -1549,6 +1545,7 @@ const editPage = (
           id={'title'}
           type={'text'}
           value={newTitle}
+          title={newTitle}
           onChange={(e) => {
             setNewTitle(e.target.value)
           }}
@@ -1593,7 +1590,7 @@ const editPage = (
           handleRemoveAllChanges()
         }}
       >
-        {isConfigEdited || newTitle !== (title ?? '') || newContent !== (content ?? '')
+        {isConfigEdited || newTitle !== title || newContent !== content
           ? 'Delete all local changes'
           : 'Cancel'}
       </SuccessButton>
@@ -1606,11 +1603,7 @@ const editPage = (
           </ButtonPlaceholder>
         }
         props={{
-          disabled: !(
-            isConfigEdited ||
-            newTitle !== (title ?? '') ||
-            newContent !== (content ?? '')
-          ),
+          disabled: !(isConfigEdited || newTitle !== title || newContent !== content),
           onMainButtonClick: handleMainButtonClick,
           customActions: [
             { value: 'publish', title: 'Publish' },
@@ -1626,7 +1619,7 @@ const editPage = (
 return (
   <Theme skin={skin}>
     {props.type === 'callout' ? (
-      <Callout className={isEditMode ? 'edit-mode' : ''}>
+      <Callout>
         {header}
         {isEditMode ? (
           editPage

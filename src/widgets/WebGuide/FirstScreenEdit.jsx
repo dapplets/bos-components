@@ -39,7 +39,7 @@ const Theme = ({ skin, children }) => {
 const Container = styled.div`
   position: relative;
   display: flex;
-  width: 350px;
+  width: 360px;
   padding: 20px;
   flex-direction: column;
   justify-content: center;

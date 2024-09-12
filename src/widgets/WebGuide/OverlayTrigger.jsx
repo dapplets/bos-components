@@ -1,7 +1,7 @@
 const CustomTooltip = styled('DappletTooltip')`
   z-index: 2000;
   min-height: 140px;
-  width: 320px;
+  width: 360px;
 
   &[data-context-level='system'] {
     z-index: 7000;
