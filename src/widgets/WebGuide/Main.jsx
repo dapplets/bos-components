@@ -119,6 +119,12 @@ const deepCopy = (obj) => JSON.parse(JSON.stringify(obj))
 // ToDo: naive deep compare
 const isDeepEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b)
 
+const isTargetEqual = (a, b) => {
+  if (!a && !b) return true
+  if (!a || !b || a.id !== b.id || a.namespace !== b.namespace || a.type !== b.type) return false
+  return (!a.parent && !b.parent) || (a.parent && b.parent && isTargetEqual(a.parent, b.parent))
+}
+
 const clearTreeBranch = (node) => ({
   namespace: node.namespace,
   type: node.type,
@@ -539,6 +545,7 @@ const handleTargetSet = (newTarget) => {
 
   updatedChapter.type = 'callout'
   updatedChapter.target = newTarget ? clearTreeBranch(newTarget) : null
+  delete updatedChapter.placement
 
   setEditingConfig(updatedConfig)
   saveConfigToLocalStorage(updatedConfig)
@@ -552,7 +559,8 @@ const handleTargetRemove = ({ newTitle, newContent }) => {
   const updatedPage = updatedChapter.pages[pageCounter]
 
   updatedChapter.type = 'infobox'
-  updatedChapter.target = {}
+  updatedChapter.target = null
+  delete updatedChapter.placement
   updatedPage.title = newTitle
   updatedPage.content = newContent
 
@@ -662,22 +670,32 @@ const handleRevertChanges = () => {
   const chapter = updatedConfig.chapters[chapterCounter]
   const page = chapter.pages[pageCounter]
 
-  const originalChapter = guideConfig.chapters.find((x) => x.id === chapter.id)
-  const originalPage = originalChapter.pages.find((x) => x.id === page.id)
+  const originalChapter =
+    guideConfig &&
+    Array.isArray(guideConfig.chapters) &&
+    guideConfig.chapters.find((x) => x.id === chapter.id)
+
+  const originalPage =
+    originalChapter &&
+    Array.isArray(originalChapter.pages) &&
+    originalChapter.pages.find((x) => x.id === page.id)
 
   if (!guideConfig || !originalChapter) {
     chapter.type = 'infobox'
     chapter.target = undefined
+    delete chapter.placement
     page.title = ''
     page.content = ''
   } else if (!originalPage) {
     chapter.type = originalChapter.type
-    chapter.target = originalChapter.target ?? undefined
+    chapter.target = originalChapter.target ?? null
+    chapter.placement = originalChapter.placement
     page.title = ''
     page.content = ''
   } else {
     chapter.type = originalChapter.type
-    chapter.target = originalChapter.target ?? undefined
+    chapter.target = originalChapter.target ?? null
+    chapter.placement = originalChapter.placement
     page.title = originalPage.title
     page.content = originalPage.content
   }
@@ -757,6 +775,33 @@ const ChapterWrapper = (props) => {
       label: 'Next',
     })
 
+  const isConfigEdited = !isDeepEqual(editingConfig, guideConfig)
+
+  const originalCurrentChapter =
+    guideConfig &&
+    Array.isArray(guideConfig.chapters) &&
+    guideConfig.chapters.find((chapter) => chapter.id === currentChapter.id)
+
+  const isTargetChanged = () => {
+    if (!originalCurrentChapter) return !!currentChapter.target && !!currentChapter.placement
+    return (
+      !isTargetEqual(currentChapter.target, originalCurrentChapter.target) ||
+      currentChapter.placement !== originalCurrentChapter.placement
+    )
+  }
+
+  const isPageEdited = () => {
+    if (!isConfigEdited) return false
+    const originalCurrentPage =
+      originalCurrentChapter &&
+      Array.isArray(originalCurrentChapter.pages) &&
+      originalCurrentChapter.pages.find((page) => page.id === currentPage.id)
+
+    const targetChanged = isTargetChanged()
+    if (!originalCurrentPage) return !(!currentPage.title && !currentPage.content && !targetChanged)
+    return !(isDeepEqual(currentPage, originalCurrentPage) && !targetChanged)
+  }
+
   return (
     <Widget
       src="${REPL_ACCOUNT}/widget/WebGuide.OverlayTrigger"
@@ -765,18 +810,15 @@ const ChapterWrapper = (props) => {
         widgetId: '${REPL_ACCOUNT}/widget/WebGuide.Page',
         guideTitle: editingConfig.title,
         guideDescription: editingConfig.description,
-        isConfigEdited: !isDeepEqual(editingConfig, guideConfig),
-        isPageEdited: !isDeepEqual(
-          currentPage,
-          guideConfig.chapters[chapterCounter].pages[pageCounter]
-        ),
+        isConfigEdited,
+        isPageEdited: isPageEdited(),
         id: currentChapter.id,
         type: currentChapter.type,
         contextType: currentChapter.target
           ? currentChapter.target.type
           : currentChapter.contextType,
         contextId: currentChapter.target ? currentChapter.target.id : currentChapter.if?.id?.eq,
-        placement: currentChapter.target ? currentChapter.placement : undefined,
+        placement: currentChapter.target && currentChapter.placement,
         strategy: currentChapter.target
           ? currentChapter.namespace === 'mweb'
             ? 'fixed'
