@@ -1274,7 +1274,7 @@ const {
   onSkinToggle,
   title,
   content,
-  mutatorId,
+  isEditAllowed,
   isEditMode,
   setEditMode,
   startEditTarget,
@@ -1353,7 +1353,7 @@ const header = (
           </EditButton>
         ) : null}
 
-        {context.accountId === mutatorId ? (
+        {isEditAllowed ? (
           <EditButton
             onClick={() => {
               handleSavePageChanges()

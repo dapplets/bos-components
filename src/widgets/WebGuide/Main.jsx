@@ -168,6 +168,11 @@ const localConfig =
   localConfigResponse &&
   (typeof localConfigResponse === 'string' ? JSON.parse(localConfigResponse) : localConfigResponse)
 
+// editing allowed for document owner or mutator if document is not published yet
+const isEditAllowed = document
+  ? loggedInAccountId === document.authorId
+  : loggedInAccountId === mutatorId
+
 useEffect(() => {
   if (getDocument) {
     //ToDo: remove it in the future
@@ -175,10 +180,10 @@ useEffect(() => {
       .then((doc) => {
         setDocument(doc)
         if (doc)
-          LinkDb.get(appContext, mutatorId)
+          LinkDb.get(appContext, doc.authorId)
             .then((response) => {
-              if (!response?.[mutatorId]) return
-              setGuideConfig(response[mutatorId])
+              if (!response?.[doc.authorId]) return
+              setGuideConfig(response[doc.authorId])
             })
             .catch(console.error)
       })
@@ -226,7 +231,7 @@ useEffect(() => {
 
   // Here is the callout chapter with no taret in the DOM
   // ToDo: it is assumed that there is only one config for the context
-  if (isEditMode || (localConfig && loggedInAccountId === mutatorId)) {
+  if (isEditMode || (localConfig && isEditAllowed)) {
     setNoTarget(true)
     setEditMode(true)
     return
@@ -248,7 +253,7 @@ useEffect(() => {
 
 // If there is no config and the user is not a mutator do not show anything
 if (
-  loggedInAccountId !== mutatorId &&
+  !isEditAllowed &&
   (!editingConfig || !editingConfig.chapters?.length || !editingConfig.chapters[0].pages?.length)
 ) {
   return <></>
@@ -256,7 +261,8 @@ if (
 
 const handleCreateDocument = (config) => {
   const documentId =
-    '${REPL_ACCOUNT}/document/WebGuide-' +
+    loggedInAccountId +
+    '/document/WebGuide-' +
     (config.title
       ?.split(' ')
       .filter((x) => x)
@@ -445,7 +451,10 @@ const saveConfig = (config) => {
   if (emptyPages?.length) return emptyPages
   const isConfigEdited = !isDeepEqual(config, guideConfig)
   if (isConfigEdited) {
-    ;(document ? LinkDb.set(appContext, { [mutatorId]: config }) : handleCreateDocument(config))
+    ;(document
+      ? LinkDb.set(appContext, { [document.authorId]: config })
+      : handleCreateDocument(config)
+    )
       ?.then(() => {
         console.log('Saved')
         setGuideConfig(config)
@@ -840,7 +849,7 @@ const ChapterWrapper = (props) => {
         title: currentPage.title,
         content: currentPage.content,
         showChecked: currentChapter.showChecked,
-        mutatorId,
+        isEditAllowed,
         onRefAttach:
           currentChapter.type === 'callout' && !noTarget
             ? ({ ref }) => {
