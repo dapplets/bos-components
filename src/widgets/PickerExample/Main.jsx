@@ -10,6 +10,8 @@ const handleClose = () => {
 
 const ChapterWrapper = (props) => {
   const widgetProps = {
+    widgetId: '${REPL_ACCOUNT}/widget/WebGuide.Page',
+    offset: [0, 20],
     id: selectedContext.id,
     type: 'callout',
     onClose: handleClose,
