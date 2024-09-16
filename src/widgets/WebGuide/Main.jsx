@@ -792,7 +792,7 @@ const ChapterWrapper = (props) => {
     guideConfig.chapters.find((chapter) => chapter.id === currentChapter.id)
 
   const isTargetChanged = () => {
-    if (!originalCurrentChapter) return !!currentChapter.target && !!currentChapter.placement
+    if (!originalCurrentChapter) return !!currentChapter.target || !!currentChapter.placement
     return (
       !isTargetEqual(currentChapter.target, originalCurrentChapter.target) ||
       currentChapter.placement !== originalCurrentChapter.placement
