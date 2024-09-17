@@ -3,16 +3,14 @@
     "name": "Static Link Example",
     "description": "Application that doesn't require to create a user link to be injected"
   },
-  "$": {
-    "targets": [
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/twitter",
-        "contextType": "post",
-        "if": { "id": { "not": null } },
-        "injectTo": "southPanel",
-        "componentId": "${REPL_ACCOUNT}/widget/StaticLinkExample.Main",
-        "static": true
-      }
-    ]
-  }
+  "$targets": [
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/twitter",
+      "contextType": "post",
+      "if": { "id": { "not": null } },
+      "injectTo": "southPanel",
+      "componentId": "${REPL_ACCOUNT}/widget/StaticLinkExample.Main",
+      "static": true
+    }
+  ]
 }

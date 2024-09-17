@@ -3,14 +3,12 @@
     "name": "Picker Adapter Tester",
     "description": "Test adapters with Picker"
   },
-  "$": {
-    "controller": "${REPL_ACCOUNT}/widget/WebGuide.Main",
-    "targets": [
-      {
-        "namespace": "engine",
-        "contextType": "website"
-      }
-    ],
-    "parsers": "any"
-  }
+  "controller": "${REPL_ACCOUNT}/widget/WebGuide.Main",
+  "$targets": [
+    {
+      "namespace": "engine",
+      "contextType": "website"
+    }
+  ],
+  "$parsers": "any"
 }

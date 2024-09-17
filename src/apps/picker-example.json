@@ -6,14 +6,12 @@
       "ipfs_cid": "bafkreiev3ms6hw27s3uildcy6pnxxilv2fvh2c6juv3mrav76d2j4c4fyu"
     }
   },
-  "$": {
-    "controller": "${REPL_ACCOUNT}/widget/PickerExample.Main",
-    "targets": [
-      {
-        "namespace": "engine",
-        "contextType": "website"
-      }
-    ],
-    "parsers": "any"
-  }
+  "controller": "${REPL_ACCOUNT}/widget/PickerExample.Main",
+  "$targets": [
+    {
+      "namespace": "engine",
+      "contextType": "website"
+    }
+  ],
+  "$parsers": "any"
 }

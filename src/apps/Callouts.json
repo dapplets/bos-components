@@ -2,15 +2,13 @@
   "metadata": {
     "name": "Test Callouts"
   },
-  "$": {
-    "targets": [
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/twitter",
-        "contextType": "post",
-        "if": { "id": { "not": null, "index": true } },
-        "injectTo": "afterText",
-        "componentId": "${REPL_ACCOUNT}/widget/Onboarding.Callout"
-      }
-    ]
-  }
+  "$targets": [
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/twitter",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "afterText",
+      "componentId": "${REPL_ACCOUNT}/widget/Onboarding.Callout"
+    }
+  ]
 }
