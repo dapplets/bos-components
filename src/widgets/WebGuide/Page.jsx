@@ -269,35 +269,16 @@ const NavigationButton = styled.div`
 `
 
 const {
-  isConfigEdited,
-  isPageEdited,
-  contextId,
-  contextType,
   navi,
   onClose,
   buttons,
   skin,
-  onSkinToggle,
   title,
   content,
   isEditAllowed,
   isEditMode,
   setEditMode,
-  startEditTarget,
-  handleTargetRemove,
-  onPageDataChange,
-  onPageAdd,
-  onChapterAdd,
-  onPageRemove,
-  buttonRemoveDisabled,
-  onRevertChanges,
-  handleRemoveAllChanges,
   onClickPageIndicator,
-  handleExportConfig,
-  handleSave,
-  noTarget,
-  onPlacementChange,
-  placement,
 } = props
 
 const Header = () => (
@@ -317,40 +298,7 @@ const Header = () => (
 )
 
 const EditMode = () => (
-  <Widget
-    src="${REPL_ACCOUNT}/widget/WebGuide.PageEdit"
-    loading={<></>}
-    props={{
-      isConfigEdited,
-      isPageEdited,
-      contextId,
-      contextType,
-      navi,
-      onClickPageIndicator,
-      buttons,
-      skin,
-      title,
-      content,
-      setEditMode,
-      startEditTarget,
-      handleTargetRemove,
-      onPageDataChange,
-      onPageAdd,
-      onChapterAdd,
-      onPageRemove,
-      buttonRemoveDisabled,
-      onRevertChanges,
-      handleRemoveAllChanges,
-      handleExportConfig,
-      handleSave,
-      onClose,
-      noTarget,
-      isEditAllowed,
-      onPlacementChange,
-      placement,
-      onSkinToggle,
-    }}
-  />
+  <Widget src="${REPL_ACCOUNT}/widget/WebGuide.PageEdit" loading={<></>} props={props} />
 )
 
 const NavButton = ({ btn }) => (

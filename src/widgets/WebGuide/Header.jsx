@@ -189,7 +189,7 @@ return (
                   key={index}
                   className={index == navi?.currentPageIndex ? 'active' : 'inactive'}
                   title={`Page ${index + 1}`}
-                  onClick={() => onClickPageIndicator({ index, newTitle, newContent })}
+                  onClick={() => onClickPageIndicator(index)}
                 />
               ))}
           </PagesIndicators>
