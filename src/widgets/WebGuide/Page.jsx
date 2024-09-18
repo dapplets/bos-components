@@ -1,78 +1,10 @@
-const DefaultTheme = styled.div`
-  --bgMain: #fffffe;
-  --colorMain: #02193a;
-  --colorP: #777777;
-  --border: #02193a;
-  --cardBg: rgba(248, 249, 255, 1);
-  --bgInfoBlock: #e2e2e5;
-  --navActive: #384bff;
-  --navInactiveBg: #e3e3e3;
-  --navInactiveBorder: none;
-
-  --statusInfoCol: #246efd;
-  --statusWarningCol: #d0911a;
-  --statusErrorCol: #db504a;
-  --statusInfoBg: rgba(234, 241, 255, 1);
-  --statusWarningBg: rgba(255, 248, 235, 1);
-  --statusErrorBg: rgba(246, 240, 246, 1);
-
-  --primBtnCol: white;
-  --primBtnBg: #02193a;
-  --primBtnBg01: #02193a1a;
-  --primBtnBgH: #1c3559;
-  --primBtnBgA: #020c19;
-  --secBtnCol: #02193a;
-  --secBtnBorderCol: #e2e2e5;
-  --secBtnBgH: #eee;
-  --secBtnBgA: #ddd;
-
-  --dropdownColor: white;
-  --bg-grey: #e2e2e5;
-`
-
-const MetaGuideTheme = styled.div`
-  --bgMain: #4e77e1;
-  --bgInfoBlock: #628bf5;
-  --colorMain: white;
-  --colorP: rgba(248, 249, 255, 1);
-  --border: #4e77e1;
-  --cardBg: rgba(255, 255, 255, 0.1);
-
-  --navActive: white;
-  --navInactiveBg: #4e77e1;
-  --navInactiveBorder: white;
-
-  --statusInfoCol: white;
-  --statusWarningCol: #d0911a;
-  --statusErrorCol: #db504a;
-  --statusInfoBg: rgba(255, 255, 255, 0.2);
-  --statusWarningBg: rgba(255, 255, 255, 0.2);
-  --statusErrorBg: rgba(255, 255, 255, 0.2);
-
-  --primBtnCol: #4e77e1;
-  --primBtnBg: white;
-  --primBtnBg01: #ffffff1a;
-  --primBtnBgH: rgb(242 243 255);
-  --primBtnBgA: rgb(222 225 255);
-  --secBtnCol: white;
-  --secBtnBorderCol: white;
-  --secBtnBgH: #5f84e4;
-  --secBtnBgA: #6c8ee5;
-
-  --dropdownColor: #222222;
-  --bg-grey: #e7ecef;
-`
-
-const Theme = ({ skin, children }) => {
-  switch (skin) {
-    case 'DEFAULT':
-      return <DefaultTheme children={children} />
-    case 'META_GUIDE':
-      return <MetaGuideTheme children={children} />
-    default:
-      return <></>
-  }
-}
+const Theme = ({ skin, children }) => (
+  <Widget
+    src={'${REPL_ACCOUNT}/widget/WebGuide.Themes.' + skin}
+    loading={<></>}
+    props={{ children }}
+  />
+)
 
 const InfoBox = styled.div`
   position: relative;
@@ -411,6 +343,7 @@ const EditMode = () => (
       handleRemoveAllChanges,
       handleExportConfig,
       handleSave,
+      onClose,
       noTarget,
       isEditAllowed,
       onPlacementChange,

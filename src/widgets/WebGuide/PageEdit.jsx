@@ -544,6 +544,7 @@ const {
   title,
   content,
   setEditMode,
+  onClose,
   startEditTarget,
   handleTargetRemove,
   onPageDataChange,
@@ -644,7 +645,10 @@ const Header = () => (
     loading={<div style={{ height: 25 }}></div>}
     props={{
       navi,
-      onClose,
+      onClose: () => {
+        handleSavePageChanges()
+        onClose()
+      },
       mutatorId,
       isEditMode: true,
       onEditButtonClick: () => {
