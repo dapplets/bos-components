@@ -150,26 +150,29 @@ const ViewIcon = () => (
   </svg>
 )
 
-const { navi, onClose, mutatorId, isEditMode, setEditMode, isEditAllowed, onClickPageIndicator } =
-  props
+const {
+  navi,
+  onClose,
+  mutatorId,
+  isEditMode,
+  onEditButtonClick,
+  isEditAllowed,
+  onClickPageIndicator,
+  onSkinToggle,
+} = props
 
 return (
   <Header>
     <TopLine>
       <HeaderButtonGroup>
-        {isEditMode ? (
+        {isEditMode && onSkinToggle ? (
           <EditButton onClick={onSkinToggle}>
             <SwitchThemesIcon />
           </EditButton>
         ) : null}
 
         {isEditAllowed ? (
-          <EditButton
-            onClick={() => {
-              handleSavePageChanges()
-              setEditMode((val) => !val)
-            }}
-          >
+          <EditButton onClick={onEditButtonClick}>
             {isEditMode ? <ViewIcon /> : <EditIcon />}
           </EditButton>
         ) : null}

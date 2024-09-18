@@ -371,13 +371,13 @@ const {
 const Header = () => (
   <Widget
     src="${REPL_ACCOUNT}/widget/WebGuide.Header"
-    loading={<></>}
+    loading={<div style={{ height: 25 }}></div>}
     props={{
       navi,
       onClose,
       mutatorId,
       isEditMode,
-      setEditMode,
+      onEditButtonClick: () => setEditMode(true),
       isEditAllowed,
       onClickPageIndicator: (index) => onClickPageIndicator({ index }),
     }}
@@ -415,6 +415,7 @@ const EditMode = () => (
       isEditAllowed,
       onPlacementChange,
       placement,
+      onSkinToggle,
     }}
   />
 )

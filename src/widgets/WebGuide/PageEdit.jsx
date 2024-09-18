@@ -559,6 +559,7 @@ const {
   isEditAllowed,
   onPlacementChange,
   placement,
+  onSkinToggle,
 } = props
 
 const [newTitle, setNewTitle] = useState(title)
@@ -640,15 +641,19 @@ const navButtonsEdit = !buttons?.length ? null : buttons?.length > 1 ? (
 const Header = () => (
   <Widget
     src="${REPL_ACCOUNT}/widget/WebGuide.Header"
-    loading={<></>}
+    loading={<div style={{ height: 25 }}></div>}
     props={{
       navi,
       onClose,
       mutatorId,
-      isEditMode,
-      setEditMode,
+      isEditMode: true,
+      onEditButtonClick: () => {
+        handleSavePageChanges()
+        setEditMode(false)
+      },
       isEditAllowed,
       onClickPageIndicator: (index) => onClickPageIndicator({ index, newTitle, newContent }),
+      onSkinToggle,
     }}
   />
 )
