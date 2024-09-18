@@ -95,7 +95,7 @@ const ErrorIcon = () => (
     </g>
     <defs>
       <clipPath id="clip0_358_97">
-        <rect width="20" height="20" fill="white" />
+        <rect width="20" height="20" fill="var(--colorMain)" />
       </clipPath>
     </defs>
   </svg>
@@ -128,7 +128,7 @@ const InfoIcon = () => (
     </g>
     <defs>
       <clipPath id="clip0_358_90">
-        <rect width="20" height="20" fill="white" />
+        <rect width="20" height="20" fill="var(--colorMain)" />
       </clipPath>
     </defs>
   </svg>

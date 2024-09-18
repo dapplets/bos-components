@@ -10,6 +10,8 @@ const handleClose = () => {
 
 const ChapterWrapper = (props) => {
   const widgetProps = {
+    widgetId: '${REPL_ACCOUNT}/widget/WebGuide.Page',
+    offset: [0, 20],
     id: selectedContext.id,
     type: 'callout',
     onClose: handleClose,
@@ -30,6 +32,7 @@ ${JSON.stringify(selectedContext.parsed, null, 2)}
     onRefAttach: ({ ref }) => {
       props.attachContextRef(ref)
     },
+    contextLevel: props.context?.level,
   }
 
   console.log('selectedContext', selectedContext)
@@ -112,9 +115,10 @@ const TimelineLatch = styled.button`
 
 const NotchLatch = styled.button`
   display: flex;
-  position: absolute;
-  top: ${(props) => `${props.$height / 2 - 14}px`};
-  left: ${(props) => `${props.$position === 'right' ? props.$width : '-35'}px`};
+  position: fixed;
+  top: ${(props) => `${props.$top}px`};
+  margin-top: ${(props) => `${props.$height / 2 - 14}px`};
+  margin-left: ${(props) => `${props.$position === 'right' ? props.$width : '-35'}px`};
   width: ${(props) => `${props.$position === 'right' ? '28' : '32'}px`};
   height: 29px;
   padding: 0;
@@ -146,6 +150,7 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
         $variant={variant}
         $width={contextDimensions.width}
         $height={contextDimensions.height}
+        $top={contextDimensions.top}
         onClick={() => setSelectedContext(context)}
         $position={'right'}
       >
@@ -159,6 +164,7 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
         $variant={variant}
         $width={contextDimensions.width}
         $height={contextDimensions.height}
+        $top={contextDimensions.top}
         onClick={() => setSelectedContext(context)}
         $position={'left'}
       >
@@ -204,7 +210,16 @@ return (
     />
 
     {isRunnigApp && selectedContext ? (
-      <DappletPortal inMemory target={selectedContext} component={ChapterWrapper} />
+      <>
+        <DappletPortal inMemory target={selectedContext} component={ChapterWrapper} />
+        <Highlighter
+          target={selectedContext}
+          styles={{
+            borderColor: 'rgb(255 47 104)',
+            backgroundColor: 'rgb(255 47 104 / 10%)',
+          }}
+        />
+      </>
     ) : null}
   </>
 )

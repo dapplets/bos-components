@@ -1,4 +1,4 @@
-const { isActive, onClick } = props
+const { docId, isActive, onClick } = props
 
 const IconQuestionMark = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -15,7 +15,7 @@ return (
     src="${REPL_ACCOUNT}/widget/ActionButton"
     loading={<></>}
     props={{
-      appId: 'web-guide',
+      appId: `web-guide${docId ? '-' + docId : ''}`,
       tooltip: isActive ? 'Stop Web Guide' : 'Run Web Guide',
       isActive,
       children: <IconQuestionMark />,

@@ -4,7 +4,7 @@ const DefaultTheme = styled.div`
   --colorP: #777777;
   --border: #02193a;
   --cardBg: rgba(248, 249, 255, 1);
-
+  --bgInfoBlock: #e2e2e5;
   --navActive: #384bff;
   --navInactiveBg: #e3e3e3;
   --navInactiveBorder: none;
@@ -25,10 +25,14 @@ const DefaultTheme = styled.div`
   --secBtnBorderCol: #e2e2e5;
   --secBtnBgH: #eee;
   --secBtnBgA: #ddd;
+
+  --dropdownColor: white;
+  --bg-grey: #e2e2e5;
 `
 
 const MetaGuideTheme = styled.div`
   --bgMain: #4e77e1;
+  --bgInfoBlock: #628bf5;
   --colorMain: white;
   --colorP: rgba(248, 249, 255, 1);
   --border: #4e77e1;
@@ -54,6 +58,9 @@ const MetaGuideTheme = styled.div`
   --secBtnBorderCol: white;
   --secBtnBgH: #5f84e4;
   --secBtnBgA: #6c8ee5;
+
+  --dropdownColor: #222222;
+  --bg-grey: #e7ecef;
 `
 
 const Theme = ({ skin, children }) => {
@@ -106,7 +113,7 @@ const Callout = styled.div`
   box-sizing: border-box;
   position: relative;
   display: flex;
-  width: 320px;
+  width: 360px;
   padding: 12px 14px 14px;
   flex-direction: column;
   justify-content: flex-start;
@@ -117,10 +124,6 @@ const Callout = styled.div`
   background: var(--bgMain);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-
-  &.edit-mode {
-    width: 360px;
-  }
 `
 
 const Title = styled.h1`
@@ -342,9 +345,10 @@ const {
   onClose,
   buttons,
   skin,
+  onSkinToggle,
   title,
   content,
-  mutatorId,
+  isEditAllowed,
   isEditMode,
   setEditMode,
   startEditTarget,
@@ -360,6 +364,8 @@ const {
   handleExportConfig,
   handleSave,
   noTarget,
+  onPlacementChange,
+  placement,
 } = props
 
 const Header = () => (
@@ -372,6 +378,7 @@ const Header = () => (
       mutatorId,
       isEditMode,
       setEditMode,
+      isEditAllowed,
       onClickPageIndicator: (index) => onClickPageIndicator({ index }),
     }}
   />
@@ -405,6 +412,9 @@ const EditMode = () => (
       handleExportConfig,
       handleSave,
       noTarget,
+      isEditAllowed,
+      onPlacementChange,
+      placement,
     }}
   />
 )
@@ -443,11 +453,7 @@ const NavButtons = () =>
 return (
   <Theme skin={skin}>
     {props.type === 'callout' ? (
-      <Callout
-        data-mweb-context-type="wg-chapter"
-        data-mweb-context-parsed={JSON.stringify({ id: props.id })}
-        className={isEditMode ? 'edit-mode' : ''}
-      >
+      <Callout>
         {isEditMode ? (
           <EditMode />
         ) : (

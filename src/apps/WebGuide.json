@@ -13,6 +13,9 @@
         "contextType": "website"
       }
     ],
-    "parsers": "any"
+    "parsers": "any",
+    "permissions": {
+      "documents": true
+    }
   }
 }

@@ -72,9 +72,10 @@ const TimelineLatch = styled.button`
 // ToDo: Styled components cause unnecessary re-rendering in BOS
 const NotchLatch = styled.button`
   display: flex;
-  position: absolute;
-  top: ${(props) => `${props.$height / 2 - 14}px`};
-  left: ${(props) => `${props.$position === 'right' ? props.$width : '-35'}px`};
+  position: fixed;
+  top: ${(props) => `${props.$top}px`};
+  margin-top: ${(props) => `${props.$height / 2 - 14}px`};
+  margin-left: ${(props) => `${props.$position === 'right' ? props.$width : '-35'}px`};
   width: ${(props) => `${props.$position === 'right' ? '28' : '32'}px`};
   height: 29px;
   padding: 0;
@@ -118,6 +119,12 @@ const deepCopy = (obj) => JSON.parse(JSON.stringify(obj))
 // ToDo: naive deep compare
 const isDeepEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b)
 
+const isTargetEqual = (a, b) => {
+  if (!a && !b) return true
+  if (!a || !b || a.id !== b.id || a.namespace !== b.namespace || a.type !== b.type) return false
+  return (!a.parent && !b.parent) || (a.parent && b.parent && isTargetEqual(a.parent, b.parent))
+}
+
 const clearTreeBranch = (node) => ({
   namespace: node.namespace,
   type: node.type,
@@ -125,13 +132,12 @@ const clearTreeBranch = (node) => ({
   parent: node.parent ? clearTreeBranch(node.parent) : undefined,
 })
 
-const configTemplate = {
-  action: true,
-}
+const configTemplate = { action: true }
 
 const { accountId: loggedInAccountId } = context
-const { linkDb, context: appContext } = props
+const { linkDb: LinkDb, context: appContext, getDocument, commitDocument, notify } = props
 
+const [document, setDocument] = useState(undefined) // null will be used if not found in DB
 const [guideConfig, setGuideConfig] = useState(undefined) // null will be used if not found in DB
 const [editingConfig, setEditingConfig] = useState(configTemplate)
 const [showApp, setShowApp] = useState(true)
@@ -157,23 +163,47 @@ const getMutationId = () => {
 const mutationId = getMutationId()
 const mutatorId = mutationId?.split('/')[0]
 
-const localConfigResponse = Storage.privateGet(appContext)
+const localConfigResponse = Storage.privateGet(appContext + (document ? '/' + document.id : ''))
 const localConfig =
   localConfigResponse &&
   (typeof localConfigResponse === 'string' ? JSON.parse(localConfigResponse) : localConfigResponse)
 
+// editing allowed for document owner or mutator if document is not published yet
+const isEditAllowed = document
+  ? loggedInAccountId === document.authorId
+  : loggedInAccountId === mutatorId
+
 useEffect(() => {
-  linkDb
-    .get(appContext, mutatorId)
-    .then((response) => {
-      if (!response?.[mutatorId]) return
-      setGuideConfig(response[mutatorId])
-    })
-    .catch(console.error)
+  if (getDocument) {
+    //ToDo: remove it in the future
+    getDocument()
+      .then((doc) => {
+        setDocument(doc)
+        if (doc)
+          LinkDb.get(appContext, doc.authorId)
+            .then((response) => {
+              if (!response?.[doc.authorId]) return
+              setGuideConfig(response[doc.authorId])
+            })
+            .catch(console.error)
+      })
+      .catch(console.error)
+  } else {
+    LinkDb.get(appContext, mutatorId)
+      .then((response) => {
+        if (!response?.[mutatorId]) return
+        setGuideConfig(response[mutatorId])
+      })
+      .catch(console.error)
+  }
 }, [])
 
 useEffect(() => {
-  setShowApp(!!guideConfig || (!!localConfig && !!localConfig.chapters.length) || showFirstScreen)
+  setShowApp(
+    (!!guideConfig && (!localConfig || !!localConfig.chapters.length)) ||
+      (!!localConfig && !!localConfig.chapters.length) ||
+      showFirstScreen
+  )
   setShowFirstScreen((guideConfig === null && !localConfig) || showFirstScreen)
 
   if (localConfig) {
@@ -201,7 +231,7 @@ useEffect(() => {
 
   // Here is the callout chapter with no taret in the DOM
   // ToDo: it is assumed that there is only one config for the context
-  if (isEditMode || (localConfig && loggedInAccountId === mutatorId)) {
+  if (isEditMode || (localConfig && isEditAllowed)) {
     setNoTarget(true)
     setEditMode(true)
     return
@@ -223,14 +253,111 @@ useEffect(() => {
 
 // If there is no config and the user is not a mutator do not show anything
 if (
-  loggedInAccountId !== mutatorId &&
+  !isEditAllowed &&
   (!editingConfig || !editingConfig.chapters?.length || !editingConfig.chapters[0].pages?.length)
 ) {
   return <></>
 }
 
+const handleCreateDocument = (config) => {
+  const documentId =
+    loggedInAccountId +
+    '/document/WebGuide-' +
+    (config.title
+      ?.split(' ')
+      .filter((x) => x)
+      .join('-') ?? Date.now())
+
+  const documentMetadata = {
+    name: config.title,
+    description: config.description,
+    image: config.icon,
+  }
+
+  return commitDocument(documentId, documentMetadata, appContext, { [loggedInAccountId]: config })
+}
+
+const notifyWithCountdown = ({ type, subject, body, duration, onOk, onCancelOrTimeout }) => {
+  let timer
+
+  const handleOk = () => {
+    clearTimeout(timer)
+    onOk()
+  }
+
+  const handleCancel = () => {
+    clearTimeout(timer)
+    onCancelOrTimeout()
+  }
+
+  timer = setTimeout(() => {
+    onCancelOrTimeout()
+  }, duration * 1000)
+
+  notify({
+    type,
+    subject,
+    body,
+    duration,
+    showProgress: true,
+    actions: [
+      { label: 'OK', onClick: handleOk },
+      { label: 'Cancel', onClick: handleCancel },
+    ],
+  })
+}
+
+const handlePlacementChange = (newPlacement) => {
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedChapter = updatedConfig.chapters[chapterCounter]
+  const previousPlacement = updatedChapter.placement
+
+  updatedChapter.placement = newPlacement
+  setEditingConfig(updatedConfig)
+
+  if (newPlacement === 'auto') {
+    saveConfigToLocalStorage(updatedConfig)
+    return
+  }
+
+  const commitChanges = () => {
+    saveConfigToLocalStorage(updatedConfig)
+  }
+
+  const revertChanges = () => {
+    const updatedConfig = deepCopy(editingConfig)
+    const updatedChapter = updatedConfig.chapters[chapterCounter]
+
+    updatedChapter.placement = previousPlacement
+
+    setEditingConfig(updatedConfig)
+    saveConfigToLocalStorage(updatedConfig)
+  }
+
+  notifyWithCountdown({
+    type: 'info',
+    subject: 'Change target',
+    body: `Reverting changes in 9 seconds...`,
+    duration: 9,
+    onOk: commitChanges,
+    onCancelOrTimeout: revertChanges,
+  })
+}
+
+const handleSkinToggle = () => {
+  const updatedConfig = deepCopy(editingConfig)
+
+  updatedConfig.skin = updatedConfig.skin === 'DEFAULT' ? 'META_GUIDE' : 'DEFAULT'
+
+  setEditingConfig(updatedConfig)
+  saveConfigToLocalStorage(updatedConfig)
+}
+
 const saveConfigToLocalStorage = (data) => {
-  Storage.privateSet(appContext, !data || isDeepEqual(data, guideConfig) ? undefined : data)
+  Storage.privateSet(
+    appContext + (document ? '/' + document.id : ''),
+    !data || isDeepEqual(data, guideConfig) ? undefined : data
+  )
 }
 
 const handleConfigImport = (guide) => {
@@ -244,7 +371,9 @@ const handleClose = () => {
 
 const handleActionClick = () => {
   setShowApp((val) => !val)
-  setShowFirstScreen(!guideConfig && (!localConfig || !localConfig.chapters.length))
+  setShowFirstScreen(
+    (!guideConfig && !localConfig) || (!!localConfig && !localConfig.chapters.length)
+  )
   setEditMode(false)
   setChapterCounter(0)
   setPageCounter(0)
@@ -322,9 +451,12 @@ const saveConfig = (config) => {
   if (emptyPages?.length) return emptyPages
   const isConfigEdited = !isDeepEqual(config, guideConfig)
   if (isConfigEdited) {
-    linkDb
-      .set(appContext, { [mutatorId]: config })
-      .then(() => {
+    ;(document
+      ? LinkDb.set(appContext, { [document.authorId]: config })
+      : handleCreateDocument(config)
+    )
+      ?.then(() => {
+        console.log('Saved')
         setGuideConfig(config)
         setEditMode(false)
         setChapterCounter(0)
@@ -334,6 +466,7 @@ const saveConfig = (config) => {
       })
       .catch(console.error)
   } else {
+    console.log('Not saved')
     setGuideConfig(guideConfig)
     setEditMode(false)
     setChapterCounter(0)
@@ -421,6 +554,7 @@ const handleTargetSet = (newTarget) => {
 
   updatedChapter.type = 'callout'
   updatedChapter.target = newTarget ? clearTreeBranch(newTarget) : null
+  delete updatedChapter.placement
 
   setEditingConfig(updatedConfig)
   saveConfigToLocalStorage(updatedConfig)
@@ -434,7 +568,8 @@ const handleTargetRemove = ({ newTitle, newContent }) => {
   const updatedPage = updatedChapter.pages[pageCounter]
 
   updatedChapter.type = 'infobox'
-  updatedChapter.target = {}
+  updatedChapter.target = null
+  delete updatedChapter.placement
   updatedPage.title = newTitle
   updatedPage.content = newContent
 
@@ -544,22 +679,32 @@ const handleRevertChanges = () => {
   const chapter = updatedConfig.chapters[chapterCounter]
   const page = chapter.pages[pageCounter]
 
-  const originalChapter = guideConfig.chapters.find((x) => x.id === chapter.id)
-  const originalPage = originalChapter.pages.find((x) => x.id === page.id)
+  const originalChapter =
+    guideConfig &&
+    Array.isArray(guideConfig.chapters) &&
+    guideConfig.chapters.find((x) => x.id === chapter.id)
+
+  const originalPage =
+    originalChapter &&
+    Array.isArray(originalChapter.pages) &&
+    originalChapter.pages.find((x) => x.id === page.id)
 
   if (!guideConfig || !originalChapter) {
     chapter.type = 'infobox'
     chapter.target = undefined
+    delete chapter.placement
     page.title = ''
     page.content = ''
   } else if (!originalPage) {
     chapter.type = originalChapter.type
-    chapter.target = originalChapter.target ?? undefined
+    chapter.target = originalChapter.target ?? null
+    chapter.placement = originalChapter.placement
     page.title = ''
     page.content = ''
   } else {
     chapter.type = originalChapter.type
-    chapter.target = originalChapter.target ?? undefined
+    chapter.target = originalChapter.target ?? null
+    chapter.placement = originalChapter.placement
     page.title = originalPage.title
     page.content = originalPage.content
   }
@@ -639,24 +784,51 @@ const ChapterWrapper = (props) => {
       label: 'Next',
     })
 
+  const isConfigEdited = !isDeepEqual(editingConfig, guideConfig)
+
+  const originalCurrentChapter =
+    guideConfig &&
+    Array.isArray(guideConfig.chapters) &&
+    guideConfig.chapters.find((chapter) => chapter.id === currentChapter.id)
+
+  const isTargetChanged = () => {
+    if (!originalCurrentChapter) return !!currentChapter.target || !!currentChapter.placement
+    return (
+      !isTargetEqual(currentChapter.target, originalCurrentChapter.target) ||
+      currentChapter.placement !== originalCurrentChapter.placement
+    )
+  }
+
+  const isPageEdited = () => {
+    if (!isConfigEdited) return false
+    const originalCurrentPage =
+      originalCurrentChapter &&
+      Array.isArray(originalCurrentChapter.pages) &&
+      originalCurrentChapter.pages.find((page) => page.id === currentPage.id)
+
+    const targetChanged = isTargetChanged()
+    if (!originalCurrentPage) return !(!currentPage.title && !currentPage.content && !targetChanged)
+    return !(isDeepEqual(currentPage, originalCurrentPage) && !targetChanged)
+  }
+
   return (
     <Widget
       src="${REPL_ACCOUNT}/widget/WebGuide.OverlayTrigger"
       loading={<></>}
       props={{
         widgetId: '${REPL_ACCOUNT}/widget/WebGuide.Page',
-        isConfigEdited: !isDeepEqual(editingConfig, guideConfig),
-        isPageEdited: !isDeepEqual(
-          currentPage,
-          guideConfig.chapters[chapterCounter].pages[pageCounter]
-        ),
+        guideTitle: editingConfig.title,
+        guideDescription: editingConfig.description,
+        isConfigEdited,
+        isPageEdited: isPageEdited(),
         id: currentChapter.id,
         type: currentChapter.type,
-        contextType: currentChapter.target
-          ? currentChapter.target.type
-          : currentChapter.contextType,
-        contextId: currentChapter.target ? currentChapter.target.id : currentChapter.if?.id?.eq,
-        placement: currentChapter.target ? undefined : currentChapter.placement, // ToDo: cannot define placement for target
+        contextType: currentChapter.target?.type ?? currentChapter.target?.contextType,
+        contextId:
+          currentChapter.target?.id ??
+          currentChapter.target?.if?.id?.eq ??
+          currentChapter.target?.if?.widgetSrc?.eq,
+        placement: currentChapter.target && currentChapter.placement,
         strategy: currentChapter.target
           ? currentChapter.namespace === 'mweb'
             ? 'fixed'
@@ -677,7 +849,8 @@ const ChapterWrapper = (props) => {
         },
         title: currentPage.title,
         content: currentPage.content,
-        mutatorId,
+        showChecked: currentChapter.showChecked,
+        isEditAllowed,
         onRefAttach:
           currentChapter.type === 'callout' && !noTarget
             ? ({ ref }) => {
@@ -688,7 +861,8 @@ const ChapterWrapper = (props) => {
                   props.attachInsPointRef(ref)
                 }
               : props.children,
-        skin: currentChapter.skin ?? 'DEFAULT',
+        skin: editingConfig.skin ?? 'META_GUIDE',
+        onSkinToggle: handleSkinToggle,
         isEditMode,
         setEditMode,
         startEditTarget: () => setEditTarget(true),
@@ -705,6 +879,8 @@ const ChapterWrapper = (props) => {
         handleExportConfig,
         handleSave,
         noTarget,
+        onPlacementChange: handlePlacementChange,
+        contextLevel: props.context?.level,
       }}
     />
   )
@@ -732,6 +908,7 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
         $variant={variant}
         $width={contextDimensions.width}
         $height={contextDimensions.height}
+        $top={contextDimensions.top}
         onClick={() => handleTargetSet(context)}
         $position={'right'}
       >
@@ -746,6 +923,7 @@ const ContextTypeLatch = ({ context, variant, contextDimensions }) => {
         $variant={variant}
         $width={contextDimensions.width}
         $height={contextDimensions.height}
+        $top={contextDimensions.top}
         onClick={() => handleTargetSet(context)}
         $position={'left'}
       >
@@ -765,6 +943,7 @@ return (
           <Widget
             src="${REPL_ACCOUNT}/widget/WebGuide.Action"
             props={{
+              docId: document?.id,
               isActive: showApp,
               onClick: handleActionClick,
             }}
@@ -782,7 +961,7 @@ return (
           target={{
             namespace: 'mweb',
             contextType: 'mweb-overlay-action',
-            if: { id: { eq: 'action-button-web-guide' } },
+            if: { id: { eq: `action-button-web-guide${document ? '-' + document.id : ''}` } },
           }}
           component={(props) => (
             <Widget
@@ -793,7 +972,7 @@ return (
                 type: 'callout',
                 strategy: 'fixed',
                 placement: 'left',
-                offset: [0, 45],
+                offset: [0, 25],
                 noArrow: true,
                 onRefAttach: ({ ref }) => {
                   // ToDo: move to the engine
@@ -810,9 +989,10 @@ return (
                 setEditMode,
                 handleRemoveAllChanges,
                 isConfigEdited: !isDeepEqual(editingConfig, guideConfig),
-                title: editingConfig.title,
-                description: editingConfig.description,
-                icon: editingConfig.icon,
+                title: document?.metadata.title ?? editingConfig.title,
+                description: document?.metadata.description ?? editingConfig.description,
+                icon: document?.metadata.image ?? editingConfig.icon,
+                hasDocument: !!document,
                 handleExportConfig: handleExportConfigFromFirstScreen,
                 handleSave: handleSaveFromFirstScreen,
                 hasChapters: !!editingConfig.chapters?.length,
