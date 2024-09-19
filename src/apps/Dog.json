@@ -6,50 +6,48 @@
       "ipfs_cid": "bafkreiconobvmlnm3vjjyvmcvy3sruppk2e3g7b6sxampmy6ajbm2ln54q"
     }
   },
-  "$": {
-    "targets": [
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/twitter",
-        "contextType": "post",
-        "if": { "id": { "not": null, "index": true } },
-        "injectTo": "root",
-        "componentId": "${REPL_ACCOUNT}/widget/Dog"
-      },
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/near-social",
-        "contextType": "post",
-        "if": { "id": { "not": null, "index": true } },
-        "injectTo": "root",
-        "componentId": "${REPL_ACCOUNT}/widget/Dog"
-      },
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/linkedin",
-        "contextType": "post",
-        "if": { "id": { "not": null, "index": true } },
-        "injectTo": "root",
-        "componentId": "${REPL_ACCOUNT}/widget/Dog"
-      },
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/youtube",
-        "contextType": "post",
-        "if": { "id": { "not": null, "index": true } },
-        "injectTo": "root",
-        "componentId": "${REPL_ACCOUNT}/widget/Dog"
-      },
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/reddit",
-        "contextType": "post",
-        "if": { "id": { "not": null, "index": true } },
-        "injectTo": "root",
-        "componentId": "${REPL_ACCOUNT}/widget/Dog"
-      },
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/github",
-        "contextType": "post",
-        "if": { "id": { "not": null, "index": true } },
-        "injectTo": "root",
-        "componentId": "${REPL_ACCOUNT}/widget/Dog"
-      }
-    ]
-  }
+  "$targets": [
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/twitter",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "root",
+      "componentId": "${REPL_ACCOUNT}/widget/Dog"
+    },
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/near-social",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "root",
+      "componentId": "${REPL_ACCOUNT}/widget/Dog"
+    },
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/linkedin",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "root",
+      "componentId": "${REPL_ACCOUNT}/widget/Dog"
+    },
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/youtube",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "root",
+      "componentId": "${REPL_ACCOUNT}/widget/Dog"
+    },
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/reddit",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "root",
+      "componentId": "${REPL_ACCOUNT}/widget/Dog"
+    },
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/github",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "root",
+      "componentId": "${REPL_ACCOUNT}/widget/Dog"
+    }
+  ]
 }

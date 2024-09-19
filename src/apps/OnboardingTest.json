@@ -6,24 +6,22 @@
       "ipfs_cid": "bafkreih235nlz4vricl2h5s3ti7fmwsrkqerrqhspcan7z2vzhh5ebjk7y"
     }
   },
-  "$": {
-    "targets": [
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/commonTest",
-        "contextType": "body",
-        "if": { "id": { "not": null, "index": true } },
-        "injectTo": "end",
-        "injectOnce": true,
-        "componentId": "${REPL_ACCOUNT}/widget/OnboardingTest.Main"
-      },
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/twitter-test",
-        "contextType": "body",
-        "if": { "id": { "not": null, "index": true } },
-        "injectTo": "end",
-        "injectOnce": true,
-        "componentId": "${REPL_ACCOUNT}/widget/OnboardingTest.Main"
-      }
-    ]
-  }
+  "$targets": [
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/commonTest",
+      "contextType": "body",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "end",
+      "injectOnce": true,
+      "componentId": "${REPL_ACCOUNT}/widget/OnboardingTest.Main"
+    },
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/twitter-test",
+      "contextType": "body",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "end",
+      "injectOnce": true,
+      "componentId": "${REPL_ACCOUNT}/widget/OnboardingTest.Main"
+    }
+  ]
 }

@@ -2,17 +2,15 @@
   "metadata": {
     "name": "Blink Example"
   },
-  "$": {
-    "targets": [
-      {
-        "namespace": "engine",
-        "contextType": "link",
-        "if": {
-          "innerText": { "contains": "https://augm.link" }
-        },
-        "componentId": "${REPL_ACCOUNT}/widget/BlinkExample.Main",
-        "static": true
-      }
-    ]
-  }
+  "$targets": [
+    {
+      "namespace": "engine",
+      "contextType": "link",
+      "if": {
+        "innerText": { "contains": "https://augm.link" }
+      },
+      "componentId": "${REPL_ACCOUNT}/widget/BlinkExample.Main",
+      "static": true
+    }
+  ]
 }

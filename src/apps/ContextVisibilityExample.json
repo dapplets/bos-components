@@ -2,13 +2,11 @@
   "metadata": {
     "name": "Context Visibility App Example"
   },
-  "$": {
-    "controller": "${REPL_ACCOUNT}/widget/ContextVisibilityExample.Main",
-    "targets": [
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/twitter",
-        "contextType": "root"
-      }
-    ]
-  }
+  "controller": "${REPL_ACCOUNT}/widget/ContextVisibilityExample.Main",
+  "$targets": [
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/twitter",
+      "contextType": "root"
+    }
+  ]
 }
