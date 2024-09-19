@@ -95,18 +95,6 @@ const InfoBox = styled.div`
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   align-items: center;
   justify-content: center;
-
-  animation: falling-animation 0.3s linear forwards;
-
-  @keyframes falling-animation {
-    from {
-      transform: translate(-50%, -200%);
-    }
-
-    to {
-      transform: translate(-50%, -50%);
-    }
-  }
 `
 
 const Callout = styled.div`
