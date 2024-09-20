@@ -2,13 +2,11 @@
   "metadata": {
     "name": "Context Query App Example"
   },
-  "$": {
-    "controller": "${REPL_ACCOUNT}/widget/ContextQueryExample.Main",
-    "targets": [
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/twitter",
-        "contextType": "root"
-      }
-    ]
-  }
+  "controller": "${REPL_ACCOUNT}/widget/ContextQueryExample.Main",
+  "$targets": [
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/twitter",
+      "contextType": "root"
+    }
+  ]
 }

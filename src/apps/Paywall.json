@@ -6,57 +6,55 @@
       "ipfs_cid": "bafkreif7roycllkswl2sveqpt4zbzce3e4vjasr756bdh4a2334i55upnq"
     }
   },
-  "$": {
-    "targets": [
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/twitter",
-        "contextType": "post",
-        "if": { "id": { "not": null, "index": true } },
-        "injectTo": "afterText",
-        "componentId": "${REPL_ACCOUNT}/widget/Paywall.Main"
-      },
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/github",
-        "contextType": "post",
-        "if": { "id": { "not": null, "index": true } },
-        "injectTo": "afterText",
-        "componentId": "${REPL_ACCOUNT}/widget/Paywall.Main"
-      },
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/near-social",
-        "contextType": "post",
-        "if": { "id": { "not": null, "index": true } },
-        "injectTo": "afterText",
-        "componentId": "${REPL_ACCOUNT}/widget/Paywall.Main"
-      },
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/linkedin",
-        "contextType": "post",
-        "if": { "id": { "not": null, "index": true } },
-        "injectTo": "afterText",
-        "componentId": "${REPL_ACCOUNT}/widget/Paywall.Main"
-      },
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/youtube",
-        "contextType": "post",
-        "if": { "id": { "not": null, "index": true } },
-        "injectTo": "afterText",
-        "componentId": "${REPL_ACCOUNT}/widget/Paywall.Main"
-      },
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/reddit",
-        "contextType": "post",
-        "if": { "id": { "not": null, "index": true } },
-        "injectTo": "afterText",
-        "componentId": "${REPL_ACCOUNT}/widget/Paywall.Main"
-      },
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/reddit-new",
-        "contextType": "post",
-        "if": { "id": { "not": null, "index": true } },
-        "injectTo": "afterText",
-        "componentId": "${REPL_ACCOUNT}/widget/Paywall.Main"
-      }
-    ]
-  }
+  "$targets": [
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/twitter",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "afterText",
+      "componentId": "${REPL_ACCOUNT}/widget/Paywall.Main"
+    },
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/github",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "afterText",
+      "componentId": "${REPL_ACCOUNT}/widget/Paywall.Main"
+    },
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/near-social",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "afterText",
+      "componentId": "${REPL_ACCOUNT}/widget/Paywall.Main"
+    },
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/linkedin",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "afterText",
+      "componentId": "${REPL_ACCOUNT}/widget/Paywall.Main"
+    },
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/youtube",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "afterText",
+      "componentId": "${REPL_ACCOUNT}/widget/Paywall.Main"
+    },
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/reddit",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "afterText",
+      "componentId": "${REPL_ACCOUNT}/widget/Paywall.Main"
+    },
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/reddit-new",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "afterText",
+      "componentId": "${REPL_ACCOUNT}/widget/Paywall.Main"
+    }
+  ]
 }

@@ -6,15 +6,13 @@
       "ipfs_cid": "bafkreie4tum66dxhl4twu6ak3d2vgtxkwc3rkoay2rriqzdwm4m2hflgwy"
     }
   },
-  "$": {
-    "targets": [
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/twitter",
-        "contextType": "post",
-        "if": { "id": { "not": null, "index": true } },
-        "injectTo": "southPanel",
-        "componentId": "${REPL_ACCOUNT}/widget/NotifyTest.Main"
-      }
-    ]
-  }
+  "$targets": [
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/twitter",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "southPanel",
+      "componentId": "${REPL_ACCOUNT}/widget/NotifyTest.Main"
+    }
+  ]
 }

@@ -2,13 +2,11 @@
   "metadata": {
     "name": "Controller App Example"
   },
-  "$": {
-    "controller": "${REPL_ACCOUNT}/widget/ControllerExample.Main",
-    "targets": [
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/twitter",
-        "contextType": "root"
-      }
-    ]
-  }
+  "controller": "${REPL_ACCOUNT}/widget/ControllerExample.Main",
+  "$targets": [
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/twitter",
+      "contextType": "root"
+    }
+  ]
 }

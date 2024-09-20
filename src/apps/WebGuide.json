@@ -5,17 +5,15 @@
       "ipfs_cid": "bafkreihwu5plfrt7ndwsodrnjsjlkqbx3lqfua7sbfpcdfagz5kjpwj55y"
     }
   },
-  "$": {
-    "controller": "${REPL_ACCOUNT}/widget/WebGuide.Main",
-    "targets": [
-      {
-        "namespace": "engine",
-        "contextType": "website"
-      }
-    ],
-    "parsers": "any",
-    "permissions": {
-      "documents": true
+  "controller": "${REPL_ACCOUNT}/widget/WebGuide.Main",
+  "$targets": [
+    {
+      "namespace": "engine",
+      "contextType": "website"
     }
+  ],
+  "$parsers": "any",
+  "$permissions": {
+    "documents": true
   }
 }

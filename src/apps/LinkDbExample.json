@@ -3,16 +3,14 @@
     "name": "Link DB Example",
     "description": "Store and retrieve context-linked data in the Link DB"
   },
-  "$": {
-    "targets": [
-      {
-        "namespace": "${REPL_ACCOUNT}/parser/twitter",
-        "contextType": "post",
-        "if": { "id": { "not": null } },
-        "injectTo": "southPanel",
-        "componentId": "${REPL_ACCOUNT}/widget/LinkDbExample.Main",
-        "static": true
-      }
-    ]
-  }
+  "$targets": [
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/twitter",
+      "contextType": "post",
+      "if": { "id": { "not": null } },
+      "injectTo": "southPanel",
+      "componentId": "${REPL_ACCOUNT}/widget/LinkDbExample.Main",
+      "static": true
+    }
+  ]
 }
