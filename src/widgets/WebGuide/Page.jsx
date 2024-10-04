@@ -18,19 +18,7 @@ const InfoBox = styled.div`
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   align-items: center;
-  justify-content: flex-start;
-
-  animation: falling-animation 0.3s linear forwards;
-
-  @keyframes falling-animation {
-    from {
-      transform: translate(-50%, -200%);
-    }
-
-    to {
-      transform: translate(-50%, -50%);
-    }
-  }
+  justify-content: center;
 `
 
 const Callout = styled.div`
