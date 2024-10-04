@@ -1,11 +1,3 @@
-const Theme = ({ skin, children }) => (
-  <Widget
-    src={'${REPL_ACCOUNT}/widget/WebGuide.Themes.' + skin}
-    loading={<></>}
-    props={{ children }}
-  />
-)
-
 const InfoBox = styled.div`
   position: relative;
   position: absolute;
@@ -333,41 +325,17 @@ const NavButtons = () =>
   )
 
 return (
-  <Theme skin={skin}>
-    {props.type === 'callout' ? (
-      <Callout>
-        {isEditMode ? (
-          <EditMode />
-        ) : (
-          <>
-            <Header />
-            {props.status?.text ? (
-              <Widget
-                src="${REPL_ACCOUNT}/widget/WebGuide.Status"
-                loading={<></>}
-                props={{ status: props.status }}
-              />
-            ) : null}
-            {title ? <Title className={props.type}>{title}</Title> : null}
-            {content ? (
-              <MarkdownWrapper>
-                <Markdown text={content} />
-              </MarkdownWrapper>
-            ) : null}
-            <NavButtons />
-          </>
-        )}
-        <div data-mweb-insertion-point="hidden" style={{ display: 'none' }} />
-      </Callout>
-    ) : props.type === 'infobox' ? (
-      <InfoBox>
-        {isEditMode ? (
-          <EditMode />
-        ) : (
-          <>
-            <Header />
-            {title ? <Title className={props.type}>{title}</Title> : null}
-            <Card>
+  <Widget
+    src={'${REPL_ACCOUNT}/widget/WebGuide.Themes.' + skin}
+    loading={<></>}
+    props={{
+      children: props.type === 'callout' ? (
+        <Callout>
+          {isEditMode ? (
+            <EditMode />
+          ) : (
+            <>
+              <Header />
               {props.status?.text ? (
                 <Widget
                   src="${REPL_ACCOUNT}/widget/WebGuide.Status"
@@ -375,20 +343,46 @@ return (
                   props={{ status: props.status }}
                 />
               ) : null}
+              {title ? <Title className={props.type}>{title}</Title> : null}
               {content ? (
                 <MarkdownWrapper>
                   <Markdown text={content} />
                 </MarkdownWrapper>
               ) : null}
-            </Card>
-            <Footer>
               <NavButtons />
-            </Footer>
-          </>
-        )}
-      </InfoBox>
-    ) : (
-      <></>
-    )}
-  </Theme>
+            </>
+          )}
+          <div data-mweb-insertion-point="hidden" style={{ display: 'none' }} />
+        </Callout>
+      ) : props.type === 'infobox' ? (
+        <InfoBox>
+          {isEditMode ? (
+            <EditMode />
+          ) : (
+            <>
+              <Header />
+              {title ? <Title className={props.type}>{title}</Title> : null}
+              <Card>
+                {props.status?.text ? (
+                  <Widget
+                    src="${REPL_ACCOUNT}/widget/WebGuide.Status"
+                    loading={<></>}
+                    props={{ status: props.status }}
+                  />
+                ) : null}
+                {content ? (
+                  <MarkdownWrapper>
+                    <Markdown text={content} />
+                  </MarkdownWrapper>
+                ) : null}
+              </Card>
+              <Footer>
+                <NavButtons />
+              </Footer>
+            </>
+          )}
+        </InfoBox>
+      ) : null
+    }}
+  />
 )
