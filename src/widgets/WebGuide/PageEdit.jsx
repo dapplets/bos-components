@@ -39,7 +39,7 @@ const ActionsGroupEdit = styled.div`
 const EditInputsBlock = styled.div`
   width: 100%;
   padding: 10px;
-  padding-bottom: 0;
+  gap: 10px;
   border-radius: 10px;
   background: var(--bgInfoBlock);
   display: flex;
@@ -57,7 +57,6 @@ const OptionsBlock = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 10px;
 `
 
 const ButtonRemove = styled.button`
@@ -112,9 +111,7 @@ const FloatingLabelContainer = styled.div`
   border-radius: 10px;
   overflow: hidden;
   box-sizing: border-box;
-  margin-bottom: 10px;
   position: relative;
-  flex: 1 1 auto;
   display: flex;
 `
 
@@ -123,12 +120,22 @@ const FloatingLabelContainerArea = styled.div`
   border-radius: 10px;
   overflow: hidden;
   box-sizing: border-box;
-  margin-bottom: 10px;
   position: relative;
   flex: 1 1 auto;
   display: flex;
+  flex-direction: column;
   border: 1px solid rgb(226, 226, 229);
   border-radius: 10px;
+
+  label {
+    position: relative;
+    width: 100%;
+    padding: 6px 10px 4px;
+    font-size: 12px;
+    display: block;
+    top: 0;
+    left: 0;
+  }
 `
 
 const StyledInput = styled.input`
@@ -163,7 +170,7 @@ const StyledLabel = styled.label`
 `
 
 const StyledTextarea = styled.textarea`
-  padding: 25px 10px 10px;
+  padding: 5px 10px 10px;
   background: inherit;
   color: var(--colorMain);
   line-height: 100%;
@@ -172,8 +179,10 @@ const StyledTextarea = styled.textarea`
   width: 100%;
   outline: none;
   min-height: 150px;
+  height: 100%;
   position: relative;
   border: none;
+  resize: none;
 
   &:focus + label,
   &:not(:placeholder-shown) + label {
@@ -713,7 +722,7 @@ return (
       </OptionsBlock>
 
       <TargetBlock>
-        <FloatingLabelContainer>
+        <FloatingLabelContainer style={{ flex: 1}}>
           <StyledInput
             id={'target'}
             type={'text'}
@@ -771,13 +780,13 @@ return (
       </FloatingLabelContainer>
 
       <FloatingLabelContainerArea>
+        <StyledLabel htmlFor={'content'}>Description</StyledLabel>
         <StyledTextarea
           id={'content'}
           type={'text'}
           value={newContent}
           onChange={(e) => setNewContent(e.target.value)}
         />
-        <StyledLabel htmlFor={'content'}>Description</StyledLabel>
       </FloatingLabelContainerArea>
     </EditInputsBlock>
 
