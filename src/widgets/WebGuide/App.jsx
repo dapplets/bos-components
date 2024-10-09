@@ -5,7 +5,7 @@ const {
   isDeepEqual,
   isTargetEqual,
   clearTreeBranch,
-} = VM.require("${REPL_ACCOUNT}/widget/WebGuide.Utils")
+} = VM.require('${REPL_ACCOUNT}/widget/WebGuide.Utils')
 
 const {
   showApp,
@@ -22,31 +22,9 @@ const {
   query,
 } = props
 
-const OverlayTriggerWrapper = styled.div`
-  display: flex;
-  z-index: 500;
-
-  .OverlayTrigger {
-    position: absolute;
-    background: #db504a;
-    border: 1px solid #db504a;
-    width: 6px;
-    height: 49px;
-    right: -6px;
-    top: 10px;
-    border-radius: 0px 4px 4px 0px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    z-index: 79;
-  }
-`
-
 const configTemplate = { action: true }
 
-const [showFirstScreen, setShowFirstScreen] = useState(false)
+const [showInfoChapter, setShowInfoChapter] = useState(false)
 const [isEditMode, setEditMode] = useState(false)
 const [editingConfig, setEditingConfig] = useState(configTemplate)
 const [chapterCounter, setChapterCounter] = useState(0)
@@ -65,7 +43,7 @@ const isEditAllowed = document
   : loggedInAccountId === mutatorId
 
 useEffect(() => {
-  setShowFirstScreen(
+  setShowInfoChapter(
     (!guideConfig && !localConfig) || (!!localConfig && !localConfig.chapters.length)
   )
   setEditMode(false)
@@ -77,9 +55,9 @@ useEffect(() => {
   setShowApp(
     (!!guideConfig && (!localConfig || !!localConfig.chapters.length)) ||
       (!!localConfig && !!localConfig.chapters.length) ||
-      showFirstScreen
+      showInfoChapter
   )
-  setShowFirstScreen((guideConfig === null && !localConfig) || showFirstScreen)
+  setShowInfoChapter((guideConfig === null && !localConfig) || showInfoChapter)
 
   if (localConfig) {
     if (!isDeepEqual(localConfig, editingConfig)) {
@@ -93,7 +71,7 @@ useEffect(() => {
   }
 }, [guideConfig, localConfig])
 
-// If there is no target on the page, find the chapter to show or show the first screen to the mutator
+// If there is no target on the page, find the chapter to show or show the Info page to the mutator
 useEffect(() => {
   if (
     !editingConfig.chapters?.length ||
@@ -157,7 +135,8 @@ const handleTargetSet = (newTarget) => {
   setEditTarget(false)
 }
 
-if (isEditTarget) return <Widget src="${REPL_ACCOUNT}/widget/WebGuide.Tools.Picker" props={{ handleTargetSet }} />
+if (isEditTarget)
+  return <Widget src="${REPL_ACCOUNT}/widget/WebGuide.Tools.Picker" props={{ handleTargetSet }} />
 
 const handleCreateDocument = (config) => {
   const documentId =
@@ -345,7 +324,7 @@ const saveConfig = (config) => {
         setChapterCounter(0)
         setPageCounter(0)
         saveConfigToLocalStorage(null)
-        setShowFirstScreen(false)
+        setShowInfoChapter(false)
       })
       .catch(console.error)
   } else {
@@ -366,7 +345,7 @@ const handleSave = ({ newTitle, newContent }) => {
   return saveConfig(updatedConfig)
 }
 
-const handleSaveFromFirstScreen = ({ newTitle, newDescription, newIcon }) => {
+const handleSaveFromInfoPage = ({ newTitle, newDescription, newIcon }) => {
   const updatedConfig = deepCopy(editingConfig)
   updatedConfig.title = newTitle
   updatedConfig.description = newDescription
@@ -389,7 +368,7 @@ const handleExportConfig = ({ newTitle, newContent }) => {
   return exportConfig(updatedConfig)
 }
 
-const handleExportConfigFromFirstScreen = ({ newTitle, newDescription, newIcon }) => {
+const handleExportConfigFromInfoPage = ({ newTitle, newDescription, newIcon }) => {
   const updatedConfig = deepCopy(editingConfig)
   updatedConfig.title = newTitle
   updatedConfig.description = newDescription
@@ -422,7 +401,7 @@ const handlePageDataChange = ({ newTitle, newContent }) => {
   saveConfigToLocalStorage(updatedConfig)
 }
 
-const handleFirstScreenDataChange = ({ newTitle, newDescription, newIcon }) => {
+const handleInfoPageDataChange = ({ newTitle, newDescription, newIcon }) => {
   const updatedConfig = deepCopy(editingConfig)
   updatedConfig.title = newTitle
   updatedConfig.description = newDescription
@@ -460,7 +439,7 @@ const addChapter = (config, addFirst) => {
   if (!addFirst) {
     handleChapterIncrement(config)
   } else {
-    setShowFirstScreen(false)
+    setShowInfoChapter(false)
   }
 }
 
@@ -473,7 +452,7 @@ const handleChapterAdd = ({ newTitle, newContent }) => {
   addChapter(updatedConfig, false)
 }
 
-const handleAddChapterFromFirstScreen = ({ newTitle, newDescription, newIcon }) => {
+const handleAddChapterFromInfoPage = ({ newTitle, newDescription, newIcon }) => {
   const updatedConfig = deepCopy(editingConfig)
   updatedConfig.title = newTitle
   updatedConfig.description = newDescription
@@ -512,7 +491,7 @@ const handleStartCreation = ({ newTitle, newDescription, newIcon }) => {
   setEditingConfig(updatedConfig)
   saveConfigToLocalStorage(updatedConfig)
   setEditMode(true)
-  setShowFirstScreen(false)
+  setShowInfoChapter(false)
 }
 
 const handlePageRemove = () => {
@@ -537,7 +516,7 @@ const handlePageRemove = () => {
 
   setEditingConfig(updatedConfig)
   saveConfigToLocalStorage(updatedConfig)
-  if (updatedConfig.chapters.length === 0) setShowFirstScreen(true)
+  if (updatedConfig.chapters.length === 0) setShowInfoChapter(true)
 }
 
 /**
@@ -587,7 +566,7 @@ const handleRemoveAllChanges = () => {
   saveConfigToLocalStorage(null)
   setChapterCounter(0)
   setPageCounter(0)
-  if (!guideConfig) setShowFirstScreen(true)
+  if (!guideConfig) setShowInfoChapter(true)
 }
 
 const openSaveChangesPopup = ({ newTitle, newContent }) => {
@@ -601,11 +580,11 @@ const openSaveChangesPopup = ({ newTitle, newContent }) => {
   saveConfigToLocalStorage(updatedConfig)
 }
 
-const openFirstScreen = () => setShowFirstScreen(true)
+const openInfoPage = () => setShowInfoChapter(true)
 
 const openChapters = (payload) => {
-  handleFirstScreenDataChange(payload)
-  setShowFirstScreen(false)
+  handleInfoPageDataChange(payload)
+  setShowInfoChapter(false)
 }
 
 const currentChapter = editingConfig.chapters[chapterCounter]
@@ -632,7 +611,7 @@ const ChapterWrapper = (props) => {
     buttons.push({
       variant: 'secondary',
       disabled: false,
-      onClick: openFirstScreen,
+      onClick: openInfoPage,
       label: 'Guide config',
     })
   }
@@ -685,7 +664,7 @@ const ChapterWrapper = (props) => {
       src="${REPL_ACCOUNT}/widget/WebGuide.Components.OverlayTrigger"
       loading={<></>}
       props={{
-        widgetId: '${REPL_ACCOUNT}/widget/WebGuide.Pages.Public',
+        widgetId: '${REPL_ACCOUNT}/widget/WebGuide.Pages.PagesResolver',
         guideTitle: editingConfig.title,
         guideDescription: editingConfig.description,
         isConfigEdited,
@@ -755,7 +734,7 @@ const ChapterWrapper = (props) => {
   )
 }
 
-const FirstScreenComponent = (props) => (
+const InfoComponent = (props) => (
   <Widget
     src="${REPL_ACCOUNT}/widget/WebGuide.Components.OverlayTrigger"
     props={{
@@ -768,10 +747,9 @@ const FirstScreenComponent = (props) => (
       noArrow: true,
       onRefAttach: ({ ref }) => props.attachContextRef(ref), // ToDo: move to the engine
 
-      // for FirstScreenEdit
-      skin: 'FIRST_SCREEN',
+      // for Info page
       onClose: () => {
-        setShowFirstScreen(false)
+        setShowInfoChapter(false)
         handleClose()
       },
       onConfigImport: handleConfigImport,
@@ -782,48 +760,46 @@ const FirstScreenComponent = (props) => (
       description: document?.metadata.description ?? editingConfig.description,
       icon: document?.metadata.image ?? editingConfig.icon,
       hasDocument: !!document,
-      handleExportConfig: handleExportConfigFromFirstScreen,
-      handleSave: handleSaveFromFirstScreen,
+      handleExportConfig: handleExportConfigFromInfoPage,
+      handleSave: handleSaveFromInfoPage,
       hasChapters: !!editingConfig.chapters?.length,
       openChapters,
       onStart: handleStartCreation,
-      onChapterAdd: handleAddChapterFromFirstScreen,
+      onChapterAdd: handleAddChapterFromInfoPage,
       didTheGuidePublished: !!guideConfig,
     }}
   />
 )
 
-return showFirstScreen ? (
+return showInfoChapter ? (
+  <DappletPortal
+    inMemory
+    target={{
+      namespace: 'mweb',
+      contextType: 'mweb-overlay-action',
+      if: { id: { eq: `action-button-web-guide${document ? '-' + document.id : ''}` } },
+    }}
+    component={InfoComponent}
+  />
+) : currentChapter?.type === 'infobox' || noTarget ? (
+  <DappletOverlay>
+    <ChapterWrapper />
+  </DappletOverlay>
+) : currentChapter.target ? (
+  <>
     <DappletPortal
       inMemory
-      target={{
-        namespace: 'mweb',
-        contextType: 'mweb-overlay-action',
-        if: { id: { eq: `action-button-web-guide${document ? '-' + document.id : ''}` } },
-      }}
-      component={FirstScreenComponent}
+      target={currentChapter.target}
+      component={ChapterWrapper}
+      isFirstTargetOnly={currentChapter.isFirstTargetOnly}
     />
-  ) : currentChapter?.type === 'infobox' || noTarget ? (
-    <OverlayTriggerWrapper>
-      <DappletOverlay>
-        <ChapterWrapper />
-      </DappletOverlay>
-    </OverlayTriggerWrapper>
-  ) : currentChapter.target ? (
-    <>
-      <DappletPortal
-        inMemory
-        target={currentChapter.target}
-        component={ChapterWrapper}
-        isFirstTargetOnly={currentChapter.isFirstTargetOnly}
-      />
-      <Highlighter
-        target={currentChapter.target}
-        isFirstTargetOnly={currentChapter.isFirstTargetOnly}
-        styles={{
-          borderColor: '#14AE5C',
-          backgroundColor: 'rgb(56 255 63 / 10%)',
-        }}
-      />
-    </>
-  ) : null
+    <Highlighter
+      target={currentChapter.target}
+      isFirstTargetOnly={currentChapter.isFirstTargetOnly}
+      styles={{
+        borderColor: '#14AE5C',
+        backgroundColor: 'rgb(56 255 63 / 10%)',
+      }}
+    />
+  </>
+) : null

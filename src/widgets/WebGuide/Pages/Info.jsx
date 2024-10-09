@@ -606,7 +606,6 @@ const editActions = [
 ]
 
 const {
-  skin,
   onClose,
   onStart,
   onConfigImport,
@@ -690,7 +689,7 @@ const handleButtonItemClick = (item) => {
 
 return (
   <Widget
-    src='${REPL_ACCOUNT}/widget/WebGuide.Themes.INFO'
+    src="${REPL_ACCOUNT}/widget/WebGuide.Themes.INFO"
     loading={<></>}
     props={{
       children: (
@@ -872,7 +871,6 @@ return (
                     { value: 'publish', title: 'Publish' },
                     { value: 'export', title: 'Export guide' },
                   ],
-                  skin,
                 }}
               />
             </EditButtonsBlock>
@@ -884,7 +882,7 @@ return (
             </LoaderBackground>
           )}
         </Container>
-      )
+      ),
     }}
   />
 )

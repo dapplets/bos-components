@@ -127,7 +127,7 @@ const ArrowIcon = () => (
   </svg>
 )
 
-const { disabled, onMainButtonClick, customActions, skin } = props
+const { disabled, onMainButtonClick, customActions } = props
 
 const [currentEditAction, setCurrentEditAction] = useState(customActions[0])
 const [isOpen, setOpen] = useState(false)

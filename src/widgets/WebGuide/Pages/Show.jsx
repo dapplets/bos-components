@@ -1,43 +1,3 @@
-const InfoBox = styled.div`
-  position: relative;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  width: 546px;
-  height: 656px;
-  border: 1px solid var(--border);
-  background: var(--bgMain);
-  border-radius: 20px;
-  padding: 20px;
-  gap: 20px;
-  box-shadow: none;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
-    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  align-items: center;
-  justify-content: center;
-`
-
-const Callout = styled.div`
-  box-sizing: border-box;
-  position: relative;
-  display: flex;
-  width: 360px;
-  padding: 12px 14px 14px;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 10px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--bgMain);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
-    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-`
-
 const Title = styled.h1`
   padding: 0;
   margin: 0 0 -10px;
@@ -148,35 +108,6 @@ const Footer = styled.div`
   gap: 20px;
 `
 
-const ContainerCheckbox = styled.div`
-  display: flex;
-
-  &.infobox {
-    align-items: flex-end;
-  }
-
-  &.callout {
-    align-items: flex-start;
-  }
-`
-
-const CheckboxInput = styled.input`
-  width: 16px;
-  height: 16px;
-  border-radius: 5px;
-  border: 1px solid #384bff;
-  margin-right: 8px;
-`
-
-const Label = styled.label`
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 17.88px;
-  color: #7a818b;
-  cursor: pointer;
-  width: max-content;
-`
-
 const NavigationGroup = styled.div`
   display: flex;
   align-items: center;
@@ -248,18 +179,8 @@ const NavigationButton = styled.div`
   }
 `
 
-const {
-  navi,
-  onClose,
-  buttons,
-  skin,
-  title,
-  content,
-  isEditAllowed,
-  isEditMode,
-  setEditMode,
-  onClickPageIndicator,
-} = props
+const { navi, onClose, buttons, title, content, isEditAllowed, setEditMode, onClickPageIndicator } =
+  props
 
 const Header = () => (
   <Widget
@@ -269,7 +190,7 @@ const Header = () => (
       navi,
       onClose,
       mutatorId,
-      isEditMode,
+      isEditMode: false,
       onEditButtonClick: () => setEditMode(true),
       isEditAllowed,
       onClickPageIndicator: (index) => onClickPageIndicator({ index }),
@@ -277,8 +198,12 @@ const Header = () => (
   />
 )
 
-const EditMode = () => (
-  <Widget src="${REPL_ACCOUNT}/widget/WebGuide.Pages.Edit" loading={<></>} props={props} />
+const Status = () => (
+  <Widget
+    src="${REPL_ACCOUNT}/widget/WebGuide.Components.Status"
+    loading={<></>}
+    props={{ status: props.status }}
+  />
 )
 
 const NavButton = ({ btn }) => (
@@ -312,65 +237,41 @@ const NavButtons = () =>
     <></>
   )
 
-return (
-  <Widget
-    src={'${REPL_ACCOUNT}/widget/WebGuide.Themes.' + skin}
-    loading={<></>}
-    props={{
-      children: props.type === 'callout' ? (
-        <Callout>
-          {isEditMode ? (
-            <EditMode />
-          ) : (
-            <>
-              <Header />
-              {props.status?.text ? (
-                <Widget
-                  src="${REPL_ACCOUNT}/widget/WebGuide.Components.Status"
-                  loading={<></>}
-                  props={{ status: props.status }}
-                />
-              ) : null}
-              {title ? <Title className={props.type}>{title}</Title> : null}
-              {content ? (
-                <MarkdownWrapper>
-                  <Markdown text={content} />
-                </MarkdownWrapper>
-              ) : null}
-              <NavButtons />
-            </>
-          )}
-          <div data-mweb-insertion-point="hidden" style={{ display: 'none' }} />
-        </Callout>
-      ) : props.type === 'infobox' ? (
-        <InfoBox>
-          {isEditMode ? (
-            <EditMode />
-          ) : (
-            <>
-              <Header />
-              {title ? <Title className={props.type}>{title}</Title> : null}
-              <Card>
-                {props.status?.text ? (
-                  <Widget
-                    src="${REPL_ACCOUNT}/widget/WebGuide.Components.Status"
-                    loading={<></>}
-                    props={{ status: props.status }}
-                  />
-                ) : null}
-                {content ? (
-                  <MarkdownWrapper>
-                    <Markdown text={content} />
-                  </MarkdownWrapper>
-                ) : null}
-              </Card>
-              <Footer>
-                <NavButtons />
-              </Footer>
-            </>
-          )}
-        </InfoBox>
-      ) : null
-    }}
-  />
-)
+switch (props.type) {
+  case 'infobox':
+    return (
+      <>
+        <Header />
+        {title ? <Title className={props.type}>{title}</Title> : null}
+        <Card>
+          {props.status?.text ? <Status /> : null}
+          {content ? (
+            <MarkdownWrapper>
+              <Markdown text={content} />
+            </MarkdownWrapper>
+          ) : null}
+        </Card>
+        <Footer>
+          <NavButtons />
+        </Footer>
+      </>
+    )
+
+  case 'callout':
+    return (
+      <>
+        <Header />
+        {props.status?.text ? <Status /> : null}
+        {title ? <Title className={props.type}>{title}</Title> : null}
+        {content ? (
+          <MarkdownWrapper>
+            <Markdown text={content} />
+          </MarkdownWrapper>
+        ) : null}
+        <NavButtons />
+      </>
+    )
+
+  default:
+    return null
+}

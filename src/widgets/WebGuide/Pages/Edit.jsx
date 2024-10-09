@@ -617,6 +617,44 @@ const handleMainButtonClick = (editActionValue) => {
   }
 }
 
+const Header = () => (
+  <Widget
+    src="${REPL_ACCOUNT}/widget/WebGuide.Components.Header"
+    loading={<div style={{ height: 25 }}></div>}
+    props={{
+      navi,
+      onClose: () => {
+        handleSavePageChanges()
+        onClose()
+      },
+      mutatorId,
+      isEditMode: true,
+      onEditButtonClick: () => {
+        handleSavePageChanges()
+        setEditMode(false)
+      },
+      isEditAllowed,
+      onClickPageIndicator: (index) => onClickPageIndicator({ index, newTitle, newContent }),
+      onSkinToggle,
+    }}
+  />
+)
+
+const NoTargetStatus = () => (
+  <div style={{ width: '100%', marginTop: -10 }}>
+    <Widget
+      src="${REPL_ACCOUNT}/widget/WebGuide.Components.Status"
+      loading={<></>}
+      props={{
+        status: {
+          type: 'warning',
+          text: 'There is no target for this chapter on the web page',
+        },
+      }}
+    />
+  </div>
+)
+
 const actionButtonEdit = (btn) => (
   <ActionButtonEdit
     key={btn.label}
@@ -649,48 +687,12 @@ const navButtonsEdit = !buttons?.length ? null : buttons?.length > 1 ? (
   </ActionsGroupEdit>
 )
 
-const Header = () => (
-  <Widget
-    src="${REPL_ACCOUNT}/widget/WebGuide.Components.Header"
-    loading={<div style={{ height: 25 }}></div>}
-    props={{
-      navi,
-      onClose: () => {
-        handleSavePageChanges()
-        onClose()
-      },
-      mutatorId,
-      isEditMode: true,
-      onEditButtonClick: () => {
-        handleSavePageChanges()
-        setEditMode(false)
-      },
-      isEditAllowed,
-      onClickPageIndicator: (index) => onClickPageIndicator({ index, newTitle, newContent }),
-      onSkinToggle,
-    }}
-  />
-)
-
 return (
   <>
     <Header />
     {navButtonsEdit}
 
-    {noTarget ? (
-      <div style={{ width: '100%', marginTop: -10 }}>
-        <Widget
-          src="${REPL_ACCOUNT}/widget/WebGuide.Components.Status"
-          loading={<></>}
-          props={{
-            status: {
-              type: 'warning',
-              text: 'There is no target for this chapter on the web page',
-            },
-          }}
-        />
-      </div>
-    ) : null}
+    {noTarget ? <NoTargetStatus /> : null}
 
     {props.status?.text ? (
       <Widget
@@ -722,7 +724,7 @@ return (
       </OptionsBlock>
 
       <TargetBlock>
-        <FloatingLabelContainer style={{ flex: 1}}>
+        <FloatingLabelContainer style={{ flex: 1 }}>
           <StyledInput
             id={'target'}
             type={'text'}
@@ -841,7 +843,6 @@ return (
             { value: 'publish', title: 'Publish' },
             { value: 'export', title: 'Export guide' },
           ],
-          skin,
         }}
       />
     </EditButtonsBlock>
