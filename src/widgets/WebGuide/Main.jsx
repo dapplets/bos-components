@@ -75,6 +75,7 @@ return (
         closeApp: () => setShowApp(false),
         setShowApp,
         loggedInAccountId: context.accountId,
+        mutatorId,
         document,
         guideConfig,
         setGuideConfig,

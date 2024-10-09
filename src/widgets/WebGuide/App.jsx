@@ -12,6 +12,7 @@ const {
   closeApp,
   setShowApp,
   loggedInAccountId,
+  mutatorId,
   document,
   guideConfig,
   setGuideConfig,
