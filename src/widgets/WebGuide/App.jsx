@@ -136,6 +136,13 @@ if (
 
 if (!showApp) return null
 
+const saveConfigToLocalStorage = (data) => {
+  Storage.privateSet(
+    appContext + (document ? '/' + document.id : ''),
+    !data || isDeepEqual(data, guideConfig) ? undefined : data
+  )
+}
+
 const handleTargetSet = (newTarget) => {
   const updatedConfig = deepCopy(editingConfig)
   const updatedChapter = updatedConfig.chapters[chapterCounter]
@@ -244,13 +251,6 @@ const handleSkinToggle = () => {
 
   setEditingConfig(updatedConfig)
   saveConfigToLocalStorage(updatedConfig)
-}
-
-const saveConfigToLocalStorage = (data) => {
-  Storage.privateSet(
-    appContext + (document ? '/' + document.id : ''),
-    !data || isDeepEqual(data, guideConfig) ? undefined : data
-  )
 }
 
 const handleConfigImport = (guide) => {

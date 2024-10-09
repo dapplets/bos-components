@@ -2,9 +2,7 @@ const { linkDb: LinkDb, context: appContext, getDocument } = props
 
 const [document, setDocument] = useState(undefined) // null will be used if not found in DB
 const [guideConfig, setGuideConfig] = useState(undefined) // null will be used if not found in DB
-
 const [showApp, setShowApp] = useState(true)
-const closeApp = () => setShowApp(false)
 
 const findParentContext = (context, type) => {
   if (!context) return null
@@ -74,7 +72,7 @@ return (
       src="${REPL_ACCOUNT}/widget/WebGuide.App"
       props={{
         showApp,
-        closeApp,
+        closeApp: () => setShowApp(false),
         setShowApp,
         loggedInAccountId: context.accountId,
         document,
