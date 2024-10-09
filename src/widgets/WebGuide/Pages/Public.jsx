@@ -263,7 +263,7 @@ const {
 
 const Header = () => (
   <Widget
-    src="${REPL_ACCOUNT}/widget/WebGuide.Header"
+    src="${REPL_ACCOUNT}/widget/WebGuide.Components.Header"
     loading={<div style={{ height: 25 }}></div>}
     props={{
       navi,
@@ -278,7 +278,7 @@ const Header = () => (
 )
 
 const EditMode = () => (
-  <Widget src="${REPL_ACCOUNT}/widget/WebGuide.PageEdit" loading={<></>} props={props} />
+  <Widget src="${REPL_ACCOUNT}/widget/WebGuide.Pages.Edit" loading={<></>} props={props} />
 )
 
 const NavButton = ({ btn }) => (
@@ -326,7 +326,7 @@ return (
               <Header />
               {props.status?.text ? (
                 <Widget
-                  src="${REPL_ACCOUNT}/widget/WebGuide.Status"
+                  src="${REPL_ACCOUNT}/widget/WebGuide.Components.Status"
                   loading={<></>}
                   props={{ status: props.status }}
                 />
@@ -353,7 +353,7 @@ return (
               <Card>
                 {props.status?.text ? (
                   <Widget
-                    src="${REPL_ACCOUNT}/widget/WebGuide.Status"
+                    src="${REPL_ACCOUNT}/widget/WebGuide.Components.Status"
                     loading={<></>}
                     props={{ status: props.status }}
                   />

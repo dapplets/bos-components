@@ -651,7 +651,7 @@ const navButtonsEdit = !buttons?.length ? null : buttons?.length > 1 ? (
 
 const Header = () => (
   <Widget
-    src="${REPL_ACCOUNT}/widget/WebGuide.Header"
+    src="${REPL_ACCOUNT}/widget/WebGuide.Components.Header"
     loading={<div style={{ height: 25 }}></div>}
     props={{
       navi,
@@ -680,7 +680,7 @@ return (
     {noTarget ? (
       <div style={{ width: '100%', marginTop: -10 }}>
         <Widget
-          src="${REPL_ACCOUNT}/widget/WebGuide.Status"
+          src="${REPL_ACCOUNT}/widget/WebGuide.Components.Status"
           loading={<></>}
           props={{
             status: {
@@ -694,7 +694,7 @@ return (
 
     {props.status?.text ? (
       <Widget
-        src="${REPL_ACCOUNT}/widget/WebGuide.Status"
+        src="${REPL_ACCOUNT}/widget/WebGuide.Components.Status"
         loading={<></>}
         props={{
           status: props.status,
@@ -758,7 +758,7 @@ return (
         </FloatingLabelContainer>
         {contextType ? (
           <Widget
-            src="${REPL_ACCOUNT}/widget/WebGuide.TargetDropdown"
+            src="${REPL_ACCOUNT}/widget/WebGuide.Components.TargetDropdown"
             loading={<></>}
             props={{
               onItemClick: onPlacementChange,
@@ -808,7 +808,7 @@ return (
     {publishStatusMessage?.text ? (
       <div style={{ padding: '0 10px', width: '100%' }}>
         <Widget
-          src="${REPL_ACCOUNT}/widget/WebGuide.Status"
+          src="${REPL_ACCOUNT}/widget/WebGuide.Components.Status"
           loading={<></>}
           props={{ status: publishStatusMessage }}
         />
@@ -828,7 +828,7 @@ return (
       </SuccessButton>
 
       <Widget
-        src="${REPL_ACCOUNT}/widget/WebGuide.PublishDropdown"
+        src="${REPL_ACCOUNT}/widget/WebGuide.Components.PublishDropdown"
         loading={
           <ButtonPlaceholder>
             <Loader $halfSize />
