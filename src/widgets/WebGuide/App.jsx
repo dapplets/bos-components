@@ -21,6 +21,7 @@ const {
   commitDocument,
   notify,
   query,
+  isEditAllowed,
 } = props
 
 const configTemplate = { action: true }
@@ -37,11 +38,6 @@ const localConfigResponse = Storage.privateGet(appContext + (document ? '/' + do
 const localConfig =
   localConfigResponse &&
   (typeof localConfigResponse === 'string' ? JSON.parse(localConfigResponse) : localConfigResponse)
-
-// editing allowed for document owner or mutator if document is not published yet
-const isEditAllowed = document
-  ? loggedInAccountId === document.authorId
-  : loggedInAccountId === mutatorId
 
 useEffect(() => {
   setShowInfoChapter(
@@ -104,14 +100,6 @@ useEffect(() => {
   setChapterCounter(0)
   setPageCounter(0)
 }, [editingConfig, chapterCounter])
-
-// If there is no config and the user is not a mutator do not show anything
-if (
-  !isEditAllowed &&
-  (!editingConfig || !editingConfig.chapters?.length || !editingConfig.chapters[0].pages?.length)
-) {
-  return <></>
-}
 
 if (!showApp) return null
 

@@ -1,8 +1,12 @@
 const { linkDb: LinkDb, context: appContext, getDocument } = props
+const loggedInAccountId = context.accountId
 
 const [document, setDocument] = useState(undefined) // null will be used if not found in DB
 const [guideConfig, setGuideConfig] = useState(undefined) // null will be used if not found in DB
 const [showApp, setShowApp] = useState(true)
+
+// console.log('document', document)
+// console.log('guideConfig', guideConfig)
 
 const findParentContext = (context, type) => {
   if (!context) return null
@@ -53,6 +57,19 @@ const MiniOverlayTarget = {
   arrowTo: 'context',
 }
 
+// editing allowed for document owner or mutator if document is not published yet
+const isEditAllowed = document
+  ? loggedInAccountId === document.authorId
+  : loggedInAccountId === mutatorId
+
+// If there is no config and the user is not a mutator do not show anything
+if (
+  !isEditAllowed &&
+  (!guideConfig || !guideConfig.chapters?.length || !guideConfig.chapters[0].pages?.length)
+) {
+  return <></>
+}
+
 return (
   <>
     <DappletPortal
@@ -74,7 +91,7 @@ return (
         showApp,
         closeApp: () => setShowApp(false),
         setShowApp,
-        loggedInAccountId: context.accountId,
+        loggedInAccountId,
         mutatorId,
         document,
         guideConfig,
@@ -84,6 +101,7 @@ return (
         commitDocument: props.commitDocument,
         notify: props.notify,
         query: props.query,
+        isEditAllowed,
       }}
     />
   </>
