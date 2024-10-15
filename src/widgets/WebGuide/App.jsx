@@ -504,6 +504,23 @@ const openChapters = (payload) => {
   setShowInfoChapter(false)
 }
 
+const updateAfterSaving = (config) => {
+  setGuideConfig(config)
+  setEditMode(false)
+  setChapterCounter(0)
+  setPageCounter(0)
+  saveConfigToLocalStorage(null)
+  setShowInfoChapter(false)
+}
+
+const updateAfterNotSaving = () => {
+  setGuideConfig(guideConfig)
+  setEditMode(false)
+  setChapterCounter(0)
+  setPageCounter(0)
+  saveConfigToLocalStorage(null)
+}
+
 const currentChapter = editingConfig.chapters[chapterCounter]
 
 const ChapterWrapper = (props) => {
@@ -576,23 +593,6 @@ const ChapterWrapper = (props) => {
     return !(isDeepEqual(currentPage, originalCurrentPage) && !targetChanged)
   }
 
-  const updateAfterSaving = (config) => {
-    setGuideConfig(config)
-    setEditMode(false)
-    setChapterCounter(0)
-    setPageCounter(0)
-    saveConfigToLocalStorage(null)
-    setShowInfoChapter(false)
-  }
-
-  const updateAfterNotSaving = () => {
-    setGuideConfig(guideConfig)
-    setEditMode(false)
-    setChapterCounter(0)
-    setPageCounter(0)
-    saveConfigToLocalStorage(null)
-  }
-
   return (
     <Widget
       src="${REPL_ACCOUNT}/widget/WebGuide.Components.OverlayTrigger"
@@ -662,6 +662,8 @@ const ChapterWrapper = (props) => {
         noTarget,
         onPlacementChange: handlePlacementChange,
         contextLevel: props.context?.level,
+
+        // for publishing
         guideConfig,
         editingConfig,
         chapterCounter,
@@ -710,7 +712,8 @@ const InfoComponent = (props) => (
       openChapters,
       onStart: handleStartCreation,
       onChapterAdd: handleAddChapterFromInfoPage,
-      didTheGuidePublished: !!guideConfig,
+
+      // for publishing
       guideConfig,
       editingConfig,
       chapterCounter,

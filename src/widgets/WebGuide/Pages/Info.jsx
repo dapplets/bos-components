@@ -623,7 +623,6 @@ const {
   hasChapters,
   openChapters,
   onChapterAdd,
-  didTheGuidePublished,
   guideConfig,
   editingConfig,
   chapterCounter,
@@ -767,8 +766,8 @@ return (
       children: (
         <Container>
           <Header>
-            <Title $didTheGuidePublished={didTheGuidePublished}>
-              {didTheGuidePublished ? (
+            <Title $didTheGuidePublished={!!guideConfig}>
+              {!!guideConfig ? (
                 "You're editing an existing guide"
               ) : (
                 <>
