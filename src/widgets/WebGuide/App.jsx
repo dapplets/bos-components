@@ -22,6 +22,7 @@ const {
   notify,
   query,
   isEditAllowed,
+  getDocument,
 } = props
 
 const configTemplate = { action: true }
@@ -126,24 +127,6 @@ const handleTargetSet = (newTarget) => {
 
 if (isEditTarget)
   return <Widget src="${REPL_ACCOUNT}/widget/WebGuide.Tools.Picker" props={{ handleTargetSet }} />
-
-const handleCreateDocument = (config) => {
-  const documentId =
-    loggedInAccountId +
-    '/document/WebGuide-' +
-    (config.title
-      ?.split(' ')
-      .filter((x) => x)
-      .join('-') ?? Date.now())
-
-  const documentMetadata = {
-    name: config.title,
-    description: config.description,
-    image: config.icon,
-  }
-
-  return commitDocument(documentId, documentMetadata, appContext, { [loggedInAccountId]: config })
-}
 
 const notifyWithCountdown = ({ type, subject, body, duration, onOk, onCancelOrTimeout }) => {
   let timer
@@ -285,61 +268,6 @@ const handleClickNext = () => {
   } else {
     setPageCounter((val) => val + 1)
   }
-}
-
-const getEmptyPages = (config) =>
-  config.chapters
-    .map((chapter, i) =>
-      chapter.pages
-        .map((page, j) => (!page.title.trim() && !page.content.trim() ? `${i + 1}.${j + 1}` : null))
-        .filter((page) => page)
-    )
-    .filter((val) => val?.length)
-    .flat()
-
-const saveConfig = (config) => {
-  const emptyPages = getEmptyPages(config)
-  if (emptyPages?.length) return emptyPages
-  const isConfigEdited = !isDeepEqual(config, guideConfig)
-  if (isConfigEdited) {
-    ;(document
-      ? saveToLinkDB(appContext, { [document.authorId]: config })
-      : handleCreateDocument(config)
-    )
-      ?.then(() => {
-        console.log('Saved')
-        setGuideConfig(config)
-        setEditMode(false)
-        setChapterCounter(0)
-        setPageCounter(0)
-        saveConfigToLocalStorage(null)
-        setShowInfoChapter(false)
-      })
-      .catch(console.error)
-  } else {
-    console.log('Not saved')
-    setGuideConfig(guideConfig)
-    setEditMode(false)
-    setChapterCounter(0)
-    setPageCounter(0)
-    saveConfigToLocalStorage(null)
-  }
-}
-
-const handleSave = ({ newTitle, newContent }) => {
-  const updatedConfig = deepCopy(editingConfig)
-  const updatedPage = updatedConfig.chapters[chapterCounter].pages[pageCounter]
-  updatedPage.title = newTitle
-  updatedPage.content = newContent
-  return saveConfig(updatedConfig)
-}
-
-const handleSaveFromInfoPage = ({ newTitle, newDescription, newIcon }) => {
-  const updatedConfig = deepCopy(editingConfig)
-  updatedConfig.title = newTitle
-  updatedConfig.description = newDescription
-  updatedConfig.icon = newIcon
-  return saveConfig(updatedConfig)
 }
 
 const exportConfig = (config) => {
@@ -648,6 +576,23 @@ const ChapterWrapper = (props) => {
     return !(isDeepEqual(currentPage, originalCurrentPage) && !targetChanged)
   }
 
+  const updateAfterSaving = (config) => {
+    setGuideConfig(config)
+    setEditMode(false)
+    setChapterCounter(0)
+    setPageCounter(0)
+    saveConfigToLocalStorage(null)
+    setShowInfoChapter(false)
+  }
+
+  const updateAfterNotSaving = () => {
+    setGuideConfig(guideConfig)
+    setEditMode(false)
+    setChapterCounter(0)
+    setPageCounter(0)
+    saveConfigToLocalStorage(null)
+  }
+
   return (
     <Widget
       src="${REPL_ACCOUNT}/widget/WebGuide.Components.OverlayTrigger"
@@ -714,10 +659,21 @@ const ChapterWrapper = (props) => {
         onClickPageIndicator: handleClickPageIndicator,
         handleRemoveAllChanges,
         handleExportConfig,
-        handleSave,
         noTarget,
         onPlacementChange: handlePlacementChange,
         contextLevel: props.context?.level,
+        guideConfig,
+        editingConfig,
+        chapterCounter,
+        pageCounter,
+        document,
+        appContext,
+        saveToLinkDB,
+        loggedInAccountId,
+        getDocument,
+        commitDocument,
+        updateAfterSaving,
+        updateAfterNotSaving,
       }}
     />
   )
@@ -750,12 +706,23 @@ const InfoComponent = (props) => (
       icon: document?.metadata.image ?? editingConfig.icon,
       hasDocument: !!document,
       handleExportConfig: handleExportConfigFromInfoPage,
-      handleSave: handleSaveFromInfoPage,
       hasChapters: !!editingConfig.chapters?.length,
       openChapters,
       onStart: handleStartCreation,
       onChapterAdd: handleAddChapterFromInfoPage,
       didTheGuidePublished: !!guideConfig,
+      guideConfig,
+      editingConfig,
+      chapterCounter,
+      pageCounter,
+      document,
+      appContext,
+      saveToLinkDB,
+      loggedInAccountId,
+      getDocument,
+      commitDocument,
+      updateAfterSaving,
+      updateAfterNotSaving,
     }}
   />
 )

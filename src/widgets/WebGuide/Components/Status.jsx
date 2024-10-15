@@ -11,12 +11,12 @@ const WrapperAlert = styled.div`
   outline: none;
 
   &.warning {
-    background: var(--primBtnBg);
+    background: var(--statusWarningBg);
     color: var(--statusWarningCol);
   }
 
   &.error {
-    background: var(--primBtnBg);
+    background: var(--statusErrorBg);
     color: var(--statusErrorCol);
   }
 

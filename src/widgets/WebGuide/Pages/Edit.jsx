@@ -1,3 +1,6 @@
+const { getEmptyPages, isDeepEqual, deepCopy, createDocumentId, createDocumentMetadata } =
+  VM.require('${REPL_ACCOUNT}/widget/WebGuide.Utils')
+
 const ActionButtonEdit = styled.div`
   display: flex;
   box-sizing: border-box;
@@ -565,18 +568,29 @@ const {
   onRevertChanges,
   handleRemoveAllChanges,
   handleExportConfig,
-  handleSave,
   noTarget,
   isEditAllowed,
   onPlacementChange,
   placement,
   onSkinToggle,
+  guideConfig,
+  editingConfig,
+  chapterCounter,
+  pageCounter,
+  document,
+  appContext,
+  saveToLinkDB,
+  loggedInAccountId,
+  getDocument,
+  commitDocument,
+  updateAfterSaving,
+  updateAfterNotSaving,
 } = props
 
 const [newTitle, setNewTitle] = useState(title)
 const [newContent, setNewContent] = useState(content)
-const [savingStarted, setSavingStarted] = useState(false)
 const [publishStatusMessage, setPublishStatusMessage] = useState(null)
+const [savingStarted, setSavingStarted] = useState(false)
 
 useEffect(() => {
   setNewTitle(title)
@@ -589,6 +603,62 @@ const handleSavePageChanges = () => {
     newTitle,
     newContent,
   })
+}
+
+const commitNewDocument = (config) => {
+  const documentId = createDocumentId(config)
+  const documentMetadata = createDocumentMetadata(config)
+  return commitDocument(documentId, documentMetadata, appContext, { [loggedInAccountId]: config })
+}
+
+const saveConfig = (config) => {
+  const emptyPages = getEmptyPages(config)
+  if (emptyPages?.length) return emptyPages
+  const isConfigEdited = !isDeepEqual(config, guideConfig)
+  if (isConfigEdited) {
+    ;(document
+      ? saveToLinkDB(appContext, { [document.authorId]: config })
+      : getDocument(createDocumentId(config)).then((existingDocument) => {
+          // console.log('existingDocument', existingDocument)
+          if (existingDocument) {
+            setPublishStatusMessage({
+              type: 'error',
+              text: err.message,
+            })
+            setSavingStarted(false)
+            throw new Error('A document with this ID already exists!')
+          }
+          return commitNewDocument(config)
+        })
+    )
+      ?.then(() => {
+        console.log('Saved')
+        updateAfterSaving(config)
+      })
+      .catch((err) => {
+        console.log('err', err)
+        if (err.message === 'Document with that ID already exists') {
+          setPublishStatusMessage({
+            type: 'error',
+            text: err.message,
+          })
+          setSavingStarted(false)
+        } else {
+          console.error(err)
+        }
+      })
+  } else {
+    console.log('Not saved')
+    updateAfterNotSaving()
+  }
+}
+
+const handleSave = ({ newTitle, newContent }) => {
+  const updatedConfig = deepCopy(editingConfig)
+  const updatedPage = updatedConfig.chapters[chapterCounter].pages[pageCounter]
+  updatedPage.title = newTitle
+  updatedPage.content = newContent
+  return saveConfig(updatedConfig)
 }
 
 const handleMainButtonClick = (editActionValue) => {
@@ -837,7 +907,9 @@ return (
           </ButtonPlaceholder>
         }
         props={{
-          disabled: !(isConfigEdited || newTitle !== title || newContent !== content),
+          disabled:
+            publishStatusMessage ||
+            !(isConfigEdited || newTitle !== title || newContent !== content),
           onMainButtonClick: handleMainButtonClick,
           customActions: [
             { value: 'publish', title: 'Publish' },

@@ -14,8 +14,8 @@ const MetaGuideTheme = styled.div`
   --statusWarningCol: #d0911a;
   --statusErrorCol: #db504a;
   --statusInfoBg: rgba(255, 255, 255, 0.2);
-  --statusWarningBg: rgba(255, 255, 255, 0.2);
-  --statusErrorBg: rgba(255, 255, 255, 0.2);
+  --statusWarningBg: white;
+  --statusErrorBg: white;
 
   --primBtnCol: #4e77e1;
   --primBtnBg: white;

@@ -35,6 +35,34 @@ const clearTreeBranch = (node) => ({
   parent: node.parent ? clearTreeBranch(node.parent) : undefined,
 })
 
+const getEmptyPages = (config) =>
+  config.chapters
+    .map((chapter, i) =>
+      chapter.pages
+        .map((page, j) => (!page.title.trim() && !page.content.trim() ? `${i + 1}.${j + 1}` : null))
+        .filter((page) => page)
+    )
+    .filter((val) => val?.length)
+    .flat()
+
+const createDocumentId = (config) => {
+  const id =
+    loggedInAccountId +
+    '/document/WebGuide-' +
+    (config.title
+      ?.split(' ')
+      .filter((x) => x)
+      .join('-') ?? Date.now())
+  // console.log('id', id)
+  return id
+}
+
+const createDocumentMetadata = (config) => ({
+  name: config.title,
+  description: config.description,
+  image: config.icon,
+})
+
 return {
   generateNewPage,
   generateNewChapter,
@@ -42,4 +70,7 @@ return {
   isDeepEqual,
   isTargetEqual,
   clearTreeBranch,
+  getEmptyPages,
+  createDocumentId,
+  createDocumentMetadata,
 }

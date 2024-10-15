@@ -1,3 +1,6 @@
+const { getEmptyPages, isDeepEqual, deepCopy, createDocumentId, createDocumentMetadata } =
+  VM.require('${REPL_ACCOUNT}/widget/WebGuide.Utils')
+
 const Container = styled.div`
   position: relative;
   display: flex;
@@ -617,20 +620,31 @@ const {
   icon,
   hasDocument,
   handleExportConfig,
-  handleSave,
   hasChapters,
   openChapters,
   onChapterAdd,
   didTheGuidePublished,
+  guideConfig,
+  editingConfig,
+  chapterCounter,
+  pageCounter,
+  document,
+  appContext,
+  saveToLinkDB,
+  loggedInAccountId,
+  getDocument,
+  commitDocument,
+  updateAfterSaving,
+  updateAfterNotSaving,
 } = props
 
 State.init({ image: icon && icon.ipfs_cid ? { cid: icon.ipfs_cid } : {} }) // ToDo: ipfs_cid -> cid -- to fix in the future
 const [newTitle, setNewTitle] = useState(title ?? '')
 const [newDescription, setNewDescription] = useState(description ?? '')
 const [currentEditAction, setCurrentEditAction] = useState(editActions[0])
-const [savingStarted, setSavingStarted] = useState(false)
-const [publishStatusMessage, setPublishStatusMessage] = useState(null)
 const [isSaveOrExportDropdownOpened, setIsSaveOrExportDropdownOpened] = useState(false)
+const [publishStatusMessage, setPublishStatusMessage] = useState(null)
+const [savingStarted, setSavingStarted] = useState(false)
 
 useEffect(() => {
   setNewTitle(title ?? '')
@@ -638,6 +652,8 @@ useEffect(() => {
   setPublishStatusMessage(null)
   State.update({ image: icon && icon.ipfs_cid ? { cid: icon.ipfs_cid } : {} }) // ToDo: ipfs_cid -> cid -- to fix in the future
 }, [title, description, icon])
+
+useEffect(() => setPublishStatusMessage(null), [newTitle])
 
 const filesOnChange = (files) => {
   if (!files?.length) return
@@ -652,6 +668,62 @@ const filesOnChange = (files) => {
     .catch((err) => {
       console.error(err)
     })
+}
+
+const commitNewDocument = (config) => {
+  const documentId = createDocumentId(config)
+  const documentMetadata = createDocumentMetadata(config)
+  return commitDocument(documentId, documentMetadata, appContext, { [loggedInAccountId]: config })
+}
+
+const saveConfig = (config) => {
+  const emptyPages = getEmptyPages(config)
+  if (emptyPages?.length) return emptyPages
+  const isConfigEdited = !isDeepEqual(config, guideConfig)
+  if (isConfigEdited) {
+    ;(document
+      ? saveToLinkDB(appContext, { [document.authorId]: config })
+      : getDocument(createDocumentId(config)).then((existingDocument) => {
+          // console.log('existingDocument', existingDocument)
+          if (existingDocument) {
+            setPublishStatusMessage({
+              type: 'error',
+              text: err.message,
+            })
+            setSavingStarted(false)
+            throw new Error('A document with this ID already exists!')
+          }
+          return commitNewDocument(config)
+        })
+    )
+      ?.then(() => {
+        console.log('Saved')
+        updateAfterSaving(config)
+      })
+      .catch((err) => {
+        console.log('err', err)
+        if (err.message === 'Document with that ID already exists') {
+          setPublishStatusMessage({
+            type: 'error',
+            text: err.message,
+          })
+          setSavingStarted(false)
+        } else {
+          console.error(err)
+        }
+      })
+  } else {
+    console.log('Not saved')
+    updateAfterNotSaving()
+  }
+}
+
+const handleSave = ({ newTitle, newDescription, newIcon }) => {
+  const updatedConfig = deepCopy(editingConfig)
+  updatedConfig.title = newTitle
+  updatedConfig.description = newDescription
+  updatedConfig.icon = newIcon
+  return saveConfig(updatedConfig)
 }
 
 const handleMainButtonClick = (editActionValue) => {
@@ -835,6 +907,16 @@ return (
             </AddedChapterButton>
           </ButtonsCreateBlock>
 
+          {publishStatusMessage?.text ? (
+            <div style={{ padding: 0, width: '100%' }}>
+              <Widget
+                src="${REPL_ACCOUNT}/widget/WebGuide.Components.Status"
+                loading={<></>}
+                props={{ status: publishStatusMessage }}
+              />
+            </div>
+          ) : null}
+
           {hasChapters ? (
             <EditButtonsBlock>
               <SuccessButton
@@ -858,14 +940,16 @@ return (
                   </ButtonPlaceholder>
                 }
                 props={{
-                  disabled: !(
-                    (
-                      isConfigEdited ||
-                      newTitle !== (title ?? '') ||
-                      newDescription !== (description ?? '') ||
-                      state.image?.cid !== icon?.ipfs_cid
-                    ) // ToDo: cid -> ipfs_cid -- to fix in the future
-                  ),
+                  disabled:
+                    publishStatusMessage ||
+                    !(
+                      (
+                        isConfigEdited ||
+                        newTitle !== (title ?? '') ||
+                        newDescription !== (description ?? '') ||
+                        state.image?.cid !== icon?.ipfs_cid
+                      ) // ToDo: cid -> ipfs_cid -- to fix in the future
+                    ),
                   onMainButtonClick: handleMainButtonClick,
                   customActions: [
                     { value: 'publish', title: 'Publish' },

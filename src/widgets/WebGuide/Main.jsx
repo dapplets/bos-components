@@ -5,9 +5,6 @@ const [document, setDocument] = useState(undefined) // null will be used if not 
 const [guideConfig, setGuideConfig] = useState(undefined) // null will be used if not found in DB
 const [showApp, setShowApp] = useState(true)
 
-// console.log('document', document)
-// console.log('guideConfig', guideConfig)
-
 const findParentContext = (context, type) => {
   if (!context) return null
   if (context.type === type) return context
@@ -102,6 +99,7 @@ return (
         notify: props.notify,
         query: props.query,
         isEditAllowed,
+        getDocument,
       }}
     />
   </>
