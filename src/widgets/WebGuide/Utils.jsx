@@ -45,7 +45,7 @@ const getEmptyPages = (config) =>
     .filter((val) => val?.length)
     .flat()
 
-const createDocumentId = (config) => {
+const createDocumentId = (config, loggedInAccountId) => {
   const id =
     loggedInAccountId +
     '/document/WebGuide-' +

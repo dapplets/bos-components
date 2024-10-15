@@ -606,7 +606,7 @@ const handleSavePageChanges = () => {
 }
 
 const commitNewDocument = (config) => {
-  const documentId = createDocumentId(config)
+  const documentId = createDocumentId(config, loggedInAccountId)
   const documentMetadata = createDocumentMetadata(config)
   return commitDocument(documentId, documentMetadata, appContext, { [loggedInAccountId]: config })
 }
@@ -618,7 +618,7 @@ const saveConfig = (config) => {
   if (isConfigEdited) {
     ;(document
       ? saveToLinkDB(appContext, { [document.authorId]: config })
-      : getDocument(createDocumentId(config)).then((existingDocument) => {
+      : getDocument(createDocumentId(config, loggedInAccountId)).then((existingDocument) => {
           // console.log('existingDocument', existingDocument)
           if (existingDocument) {
             setPublishStatusMessage({
