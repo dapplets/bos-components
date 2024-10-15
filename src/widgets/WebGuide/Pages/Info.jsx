@@ -610,18 +610,12 @@ const editActions = [
 
 const {
   onClose,
-  onStart,
-  onConfigImport,
+  onStartCreation,
+  onImportConfig,
   setEditMode,
-  handleRemoveAllChanges,
-  isConfigEdited,
-  title,
-  description,
-  icon,
-  hasDocument,
-  handleExportConfig,
-  hasChapters,
-  openChapters,
+  onRemoveAllChanges,
+  onExportConfig,
+  onOpenChapters,
   onChapterAdd,
   guideConfig,
   editingConfig,
@@ -636,6 +630,12 @@ const {
   updateAfterSaving,
   updateAfterNotSaving,
 } = props
+
+const title = document?.metadata.title ?? editingConfig.title
+const description = document?.metadata.description ?? editingConfig.description
+const icon = document?.metadata.image ?? editingConfig.icon
+const hasChapters = !!editingConfig.chapters?.length
+const isConfigEdited = !isDeepEqual(guideConfig, editingConfig)
 
 State.init({ image: icon && icon.ipfs_cid ? { cid: icon.ipfs_cid } : {} }) // ToDo: ipfs_cid -> cid -- to fix in the future
 const [newTitle, setNewTitle] = useState(title ?? '')
@@ -662,7 +662,7 @@ const filesOnChange = (files) => {
     .text()
     .then((json) => {
       const webGuideConfig = JSON.parse(json)
-      onConfigImport(webGuideConfig)
+      onImportConfig(webGuideConfig)
     })
     .catch((err) => {
       console.error(err)
@@ -678,8 +678,8 @@ const commitNewDocument = (config) => {
 const saveConfig = (config) => {
   const emptyPages = getEmptyPages(config)
   if (emptyPages?.length) return emptyPages
-  const isConfigEdited = !isDeepEqual(config, guideConfig)
-  if (isConfigEdited) {
+  const isConfigToPublishEdited = !isDeepEqual(config, guideConfig)
+  if (isConfigToPublishEdited) {
     ;(document
       ? saveToLinkDB(appContext, { [document.authorId]: config })
       : getDocument(createDocumentId(config)).then((existingDocument) => {
@@ -743,7 +743,7 @@ const handleMainButtonClick = (editActionValue) => {
       }
       break
     case 'export':
-      return handleExportConfig({
+      return onExportConfig({
         newTitle,
         newDescription,
         newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
@@ -786,7 +786,7 @@ return (
             <ActionsGroup>
               <ActionButton
                 onClick={() =>
-                  openChapters({
+                  onOpenChapters({
                     newTitle,
                     newDescription,
                     newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
@@ -805,10 +805,10 @@ return (
               <StyledLabel htmlFor={'owner'}>Owner</StyledLabel>
             </FloatingLabelContainer>
 
-            {hasDocument ? (
+            {!!document ? (
               <>
                 <div style={{ display: 'flex' }}>
-                  <ImageBlock $fromDocument={hasDocument} $hasImage={!!state.image.cid}>
+                  <ImageBlock $fromDocument={!!document} $hasImage={!!state.image.cid}>
                     <ImageWrapper>
                       {state.image.cid ? (
                         <img
@@ -894,7 +894,7 @@ return (
                       newDescription,
                       newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
                     })
-                  : onStart({
+                  : onStartCreation({
                       newTitle,
                       newDescription,
                       newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
@@ -921,7 +921,7 @@ return (
               <SuccessButton
                 onClick={() => {
                   setEditMode(false)
-                  handleRemoveAllChanges()
+                  onRemoveAllChanges()
                 }}
               >
                 {isConfigEdited ||

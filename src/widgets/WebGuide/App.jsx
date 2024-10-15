@@ -204,10 +204,6 @@ const handleSkinToggle = () => {
   saveConfigToLocalStorage(updatedConfig)
 }
 
-const handleConfigImport = (guide) => {
-  setEditingConfig(guide)
-}
-
 const handleClose = () => {
   closeApp()
   setEditMode(false)
@@ -499,7 +495,7 @@ const openSaveChangesPopup = ({ newTitle, newContent }) => {
 
 const openInfoPage = () => setShowInfoChapter(true)
 
-const openChapters = (payload) => {
+const handleOpenChapters = (payload) => {
   handleInfoPageDataChange(payload)
   setShowInfoChapter(false)
 }
@@ -598,25 +594,38 @@ const ChapterWrapper = (props) => {
       src="${REPL_ACCOUNT}/widget/WebGuide.Components.OverlayTrigger"
       loading={<></>}
       props={{
+        // for OverlayTrigger
         widgetId: '${REPL_ACCOUNT}/widget/WebGuide.Pages.PagesResolver',
-        guideTitle: editingConfig.title,
-        guideDescription: editingConfig.description,
-        isConfigEdited,
-        isPageEdited: isPageEdited(),
-        id: currentChapter.id,
         type: currentChapter.type,
-        contextType: currentChapter.target?.type ?? currentChapter.target?.contextType,
-        contextId:
-          currentChapter.target?.id ??
-          currentChapter.target?.if?.id?.eq ??
-          currentChapter.target?.if?.widgetSrc?.eq,
-        placement: currentChapter.target && currentChapter.placement,
         strategy: currentChapter.target
           ? currentChapter.namespace === 'mweb'
             ? 'fixed'
             : undefined
           : currentChapter.strategy, // ToDo: cannot define strategy for target
+        placement: currentChapter.target && currentChapter.placement,
         offset: [0, 20],
+        onRefAttach:
+          currentChapter.type === 'callout' && !noTarget
+            ? ({ ref }) => {
+                props.attachContextRef(ref)
+              }
+            : currentChapter.arrowTo === 'insPoint'
+              ? ({ ref }) => {
+                  props.attachInsPointRef(ref)
+                }
+              : props.children,
+
+        // for pages
+        guideTitle: editingConfig.title,
+        guideDescription: editingConfig.description,
+        isConfigEdited,
+        isPageEdited: isPageEdited(),
+        id: currentChapter.id,
+        contextType: currentChapter.target?.type ?? currentChapter.target?.contextType,
+        contextId:
+          currentChapter.target?.id ??
+          currentChapter.target?.if?.id?.eq ??
+          currentChapter.target?.if?.widgetSrc?.eq,
         navi: {
           currentChapterIndex: chapterCounter,
           totalChapters: editingConfig.chapters.length,
@@ -633,16 +642,6 @@ const ChapterWrapper = (props) => {
         content: currentPage.content,
         showChecked: currentChapter.showChecked,
         isEditAllowed,
-        onRefAttach:
-          currentChapter.type === 'callout' && !noTarget
-            ? ({ ref }) => {
-                props.attachContextRef(ref)
-              }
-            : currentChapter.arrowTo === 'insPoint'
-              ? ({ ref }) => {
-                  props.attachInsPointRef(ref)
-                }
-              : props.children,
         skin: editingConfig.skin ?? 'META_GUIDE',
         onSkinToggle: handleSkinToggle,
         isEditMode,
@@ -695,25 +694,6 @@ const InfoComponent = (props) => (
       onRefAttach: ({ ref }) => props.attachContextRef(ref), // ToDo: move to the engine
 
       // for Info page
-      onClose: () => {
-        setShowInfoChapter(false)
-        handleClose()
-      },
-      onConfigImport: handleConfigImport,
-      setEditMode,
-      handleRemoveAllChanges,
-      isConfigEdited: !isDeepEqual(editingConfig, guideConfig),
-      title: document?.metadata.title ?? editingConfig.title,
-      description: document?.metadata.description ?? editingConfig.description,
-      icon: document?.metadata.image ?? editingConfig.icon,
-      hasDocument: !!document,
-      handleExportConfig: handleExportConfigFromInfoPage,
-      hasChapters: !!editingConfig.chapters?.length,
-      openChapters,
-      onStart: handleStartCreation,
-      onChapterAdd: handleAddChapterFromInfoPage,
-
-      // for publishing
       guideConfig,
       editingConfig,
       chapterCounter,
@@ -726,6 +706,17 @@ const InfoComponent = (props) => (
       commitDocument,
       updateAfterSaving,
       updateAfterNotSaving,
+      setEditMode,
+      onRemoveAllChanges: handleRemoveAllChanges,
+      onOpenChapters: handleOpenChapters,
+      onClose: () => {
+        setShowInfoChapter(false)
+        handleClose()
+      },
+      onImportConfig: setEditingConfig,
+      onExportConfig: handleExportConfigFromInfoPage,
+      onStartCreation: handleStartCreation,
+      onChapterAdd: handleAddChapterFromInfoPage,
     }}
   />
 )
