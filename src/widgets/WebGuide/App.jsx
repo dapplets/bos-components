@@ -562,33 +562,6 @@ const ChapterWrapper = (props) => {
       label: 'Next',
     })
 
-  const isConfigEdited = !isDeepEqual(editingConfig, guideConfig)
-
-  const originalCurrentChapter =
-    guideConfig &&
-    Array.isArray(guideConfig.chapters) &&
-    guideConfig.chapters.find((chapter) => chapter.id === currentChapter.id)
-
-  const isTargetChanged = () => {
-    if (!originalCurrentChapter) return !!currentChapter.target || !!currentChapter.placement
-    return (
-      !isTargetEqual(currentChapter.target, originalCurrentChapter.target) ||
-      currentChapter.placement !== originalCurrentChapter.placement
-    )
-  }
-
-  const isPageEdited = () => {
-    if (!isConfigEdited) return false
-    const originalCurrentPage =
-      originalCurrentChapter &&
-      Array.isArray(originalCurrentChapter.pages) &&
-      originalCurrentChapter.pages.find((page) => page.id === currentPage.id)
-
-    const targetChanged = isTargetChanged()
-    if (!originalCurrentPage) return !(!currentPage.title && !currentPage.content && !targetChanged)
-    return !(isDeepEqual(currentPage, originalCurrentPage) && !targetChanged)
-  }
-
   return (
     <Widget
       src="${REPL_ACCOUNT}/widget/WebGuide.Components.OverlayTrigger"
@@ -614,55 +587,13 @@ const ChapterWrapper = (props) => {
                   props.attachInsPointRef(ref)
                 }
               : props.children,
+        noTarget,
+        skin: editingConfig.skin ?? 'META_GUIDE',
+        contextLevel: props.context?.level,
+        id: currentChapter.id,
 
         // for pages
-        guideTitle: editingConfig.title,
-        guideDescription: editingConfig.description,
-        isConfigEdited,
-        isPageEdited: isPageEdited(),
-        id: currentChapter.id,
-        contextType: currentChapter.target?.type ?? currentChapter.target?.contextType,
-        contextId:
-          currentChapter.target?.id ??
-          currentChapter.target?.if?.id?.eq ??
-          currentChapter.target?.if?.widgetSrc?.eq,
-        navi: {
-          currentChapterIndex: chapterCounter,
-          totalChapters: editingConfig.chapters.length,
-          currentPageIndex: pageCounter,
-          totalPages: pages.length,
-        },
-        onClose: handleClose,
-        buttons,
-        status: status && {
-          type: status[0],
-          text: status[1],
-        },
-        title: currentPage.title,
-        content: currentPage.content,
-        showChecked: currentChapter.showChecked,
-        isEditAllowed,
-        skin: editingConfig.skin ?? 'META_GUIDE',
-        onSkinToggle: handleSkinToggle,
         isEditMode,
-        setEditMode,
-        startEditTarget: () => setEditTarget(true),
-        handleTargetRemove,
-        buttonRemoveDisabled:
-          currentChapterIndex + 1 === totalChapters && totalChapters === 1 && totalPages === 1,
-        onPageDataChange: handlePageDataChange,
-        onChapterAdd: handleChapterAdd,
-        onPageAdd: handlePageAdd,
-        onPageRemove: handlePageRemove,
-        onRevertChanges: handleRevertChanges,
-        onClickPageIndicator: handleClickPageIndicator,
-        handleRemoveAllChanges,
-        handleExportConfig,
-        noTarget,
-        onPlacementChange: handlePlacementChange,
-        contextLevel: props.context?.level,
-
-        // for publishing
         guideConfig,
         editingConfig,
         chapterCounter,
@@ -675,6 +606,34 @@ const ChapterWrapper = (props) => {
         commitDocument,
         updateAfterSaving,
         updateAfterNotSaving,
+        navi: {
+          currentChapterIndex: chapterCounter,
+          totalChapters: editingConfig.chapters.length,
+          currentPageIndex: pageCounter,
+          totalPages: pages.length,
+        },
+        buttons,
+        status: status && {
+          type: status[0],
+          text: status[1],
+        },
+        title: currentPage.title,
+        content: currentPage.content,
+        isEditAllowed,
+        setEditMode,
+        onClose: handleClose,
+        onSkinToggle: handleSkinToggle,
+        onStartEditTarget: () => setEditTarget(true),
+        onTargetRemove: handleTargetRemove,
+        onPageDataChange: handlePageDataChange,
+        onChapterAdd: handleChapterAdd,
+        onPageAdd: handlePageAdd,
+        onPageRemove: handlePageRemove,
+        onRevertChanges: handleRevertChanges,
+        onClickPageIndicator: handleClickPageIndicator,
+        onRemoveAllChanges: handleRemoveAllChanges,
+        onExportConfig: handleExportConfig,
+        onPlacementChange: handlePlacementChange,
       }}
     />
   )
@@ -692,6 +651,9 @@ const InfoComponent = (props) => (
       offset: [0, 25],
       noArrow: true,
       onRefAttach: ({ ref }) => props.attachContextRef(ref), // ToDo: move to the engine
+      skin: 'INFO',
+      contextLevel: 'system',
+      id: 'info',
 
       // for Info page
       guideConfig,

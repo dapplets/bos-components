@@ -546,33 +546,6 @@ const IconPlus = () => (
 )
 
 const {
-  isConfigEdited,
-  isPageEdited,
-  contextId,
-  contextType,
-  navi,
-  onClickPageIndicator,
-  buttons,
-  skin,
-  title,
-  content,
-  setEditMode,
-  onClose,
-  startEditTarget,
-  handleTargetRemove,
-  onPageDataChange,
-  onPageAdd,
-  onChapterAdd,
-  onPageRemove,
-  buttonRemoveDisabled,
-  onRevertChanges,
-  handleRemoveAllChanges,
-  handleExportConfig,
-  noTarget,
-  isEditAllowed,
-  onPlacementChange,
-  placement,
-  onSkinToggle,
   guideConfig,
   editingConfig,
   chapterCounter,
@@ -585,6 +558,28 @@ const {
   commitDocument,
   updateAfterSaving,
   updateAfterNotSaving,
+  navi,
+  buttons,
+  skin,
+  title,
+  content,
+  noTarget,
+  isEditAllowed,
+  placement,
+  setEditMode,
+  onClickPageIndicator,
+  onClose,
+  onStartEditTarget,
+  onTargetRemove,
+  onPageDataChange,
+  onPageAdd,
+  onChapterAdd,
+  onPageRemove,
+  onRevertChanges,
+  onRemoveAllChanges,
+  onExportConfig,
+  onPlacementChange,
+  onSkinToggle,
 } = props
 
 const [newTitle, setNewTitle] = useState(title)
@@ -596,7 +591,47 @@ useEffect(() => {
   setNewTitle(title)
   setNewContent(content)
   setPublishStatusMessage(null)
-}, [navi, title, content, contextType, contextId])
+}, [navi, title, content, chapterCounter, pageCounter])
+
+const isConfigEdited = !isDeepEqual(editingConfig, guideConfig)
+const currentChapter = editingConfig.chapters[chapterCounter]
+const currentPage = currentChapter.pages[pageCounter]
+
+const contextType = currentChapter.target?.type ?? currentChapter.target?.contextType
+const contextId =
+  currentChapter.target?.id ??
+  currentChapter.target?.if?.id?.eq ??
+  currentChapter.target?.if?.widgetSrc?.eq
+
+const originalCurrentChapter =
+  guideConfig &&
+  Array.isArray(guideConfig.chapters) &&
+  guideConfig.chapters.find((chapter) => chapter.id === currentChapter.id)
+
+const isTargetChanged = () => {
+  if (!originalCurrentChapter) return !!currentChapter.target || !!currentChapter.placement
+  return (
+    !isTargetEqual(currentChapter.target, originalCurrentChapter.target) ||
+    currentChapter.placement !== originalCurrentChapter.placement
+  )
+}
+
+const checkIsPageEdited = () => {
+  if (!isConfigEdited) return false
+  const originalCurrentPage =
+    originalCurrentChapter &&
+    Array.isArray(originalCurrentChapter.pages) &&
+    originalCurrentChapter.pages.find((page) => page.id === currentPage.id)
+
+  const targetChanged = isTargetChanged()
+  if (!originalCurrentPage) return !(!currentPage.title && !currentPage.content && !targetChanged)
+  return !(isDeepEqual(currentPage, originalCurrentPage) && !targetChanged)
+}
+
+const isPageEdited = checkIsPageEdited()
+
+const buttonRemoveDisabled =
+  chapterCounter + 1 === navi.totalChapters && navi.totalChapters === 1 && navi.totalPages === 1
 
 const handleSavePageChanges = () => {
   onPageDataChange({
@@ -678,7 +713,7 @@ const handleMainButtonClick = (editActionValue) => {
       }
       break
     case 'export':
-      return handleExportConfig({
+      return onExportConfig({
         newTitle,
         newContent,
       })
@@ -812,7 +847,7 @@ return (
             {props.type === 'callout' && (
               <EditTargetButton
                 title="Delete target"
-                onClick={() => handleTargetRemove({ newTitle, newContent })}
+                onClick={() => onTargetRemove({ newTitle, newContent })}
               >
                 <CloseIcon />
               </EditTargetButton>
@@ -821,7 +856,7 @@ return (
               title="Pick target"
               onClick={() => {
                 handleSavePageChanges()
-                startEditTarget()
+                onStartEditTarget()
               }}
             >
               <IconEditTarget />
@@ -891,7 +926,7 @@ return (
       <SuccessButton
         onClick={() => {
           setEditMode(false)
-          handleRemoveAllChanges()
+          onRemoveAllChanges()
         }}
       >
         {isConfigEdited || newTitle !== title || newContent !== content

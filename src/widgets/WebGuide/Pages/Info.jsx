@@ -18,7 +18,7 @@ const Container = styled.div`
     0px 44px 17px rgba(34, 34, 34, 0.01),
     0px 25px 15px rgba(34, 34, 34, 0.03),
     0px 11px 11px rgba(34, 34, 34, 0.04),
-    0px 3px 6px rgba(34, 34, 34, 0.05);
+    0px 3px 14px 14px rgba(34, 34, 34, 0.05);
 
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
