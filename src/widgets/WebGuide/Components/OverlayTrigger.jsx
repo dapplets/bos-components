@@ -25,6 +25,10 @@ const CustomTooltip = styled('DappletTooltip')`
     bottom: 22px !important;
   }
 
+  .tooltip-arrow {
+    z-index: 1;
+  }
+
   .tooltip-arrow::before {
     border: none;
     display: inline-block;
