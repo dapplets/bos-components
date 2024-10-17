@@ -1,5 +1,11 @@
-const { getEmptyPages, isDeepEqual, deepCopy, createDocumentId, createDocumentMetadata } =
-  VM.require('${REPL_ACCOUNT}/widget/WebGuide.Utils')
+const {
+  getEmptyPages,
+  isDeepEqual,
+  deepCopy,
+  createDocumentId,
+  createDocumentMetadata,
+  isTargetEqual,
+} = VM.require('${REPL_ACCOUNT}/widget/WebGuide.Utils')
 
 const ActionButtonEdit = styled.div`
   display: flex;

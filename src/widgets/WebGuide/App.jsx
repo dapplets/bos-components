@@ -642,6 +642,7 @@ const ChapterWrapper = (props) => {
 const InfoComponent = (props) => (
   <Widget
     src="${REPL_ACCOUNT}/widget/WebGuide.Components.OverlayTrigger"
+    loading={<></>}
     props={{
       // for OverlayTrigger
       widgetId: '${REPL_ACCOUNT}/widget/WebGuide.Pages.Info',
