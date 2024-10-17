@@ -6,11 +6,10 @@ const ButtonGroup = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 54px;
   border-radius: 10px;
   overflow: hidden;
   background: var(--primBtnCol);
-  border: 1px solid var(--primBtnBg);
+  border: 1px solid #e2e2e5;
 `
 
 const LeftButton = styled.button`
@@ -23,10 +22,9 @@ const LeftButton = styled.button`
   background: var(--primBtnCol);
   color: var(--primBtnBg);
   width: 72px;
-  padding: 10px 8px !important;
+  padding: 25px 10px 10px;
   font-size: 14px;
   font-weight: 400;
-  line-height: 20.86px;
   text-align: center;
   cursor: pointer;
 
@@ -43,7 +41,9 @@ const LeftButton = styled.button`
 `
 
 const StyledLabel = styled.label`
-  font-size: 1rem;
+  position: absolute;
+  top: 0.5rem;
+  font-size: 12px;
   color: #bbccd0;
 `
 
@@ -53,19 +53,49 @@ const TextSave = styled.div`
   text-overflow: ellipsis;
   text-align: center;
   text-transform: lowercase;
-  max-width: 72px;
+  max-width: 67px;
   white-space: nowrap;
-  font-size: 12px;
 `
 
 const RightButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 5px;
   padding: 5px !important;
   border: none;
   background: var(--primBtnCol);
   cursor: pointer;
+  @keyframes rotate-is-open {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    50% {
+      transform: rotate(90deg);
+    }
+
+    100% {
+      transform: rotate(180deg);
+    }
+  }
+  @keyframes rotate-is-close {
+    0% {
+      transform: rotate(180deg);
+    }
+
+    50% {
+      transform: rotate(90deg);
+    }
+
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+  animation-name: ${(props) => props.$isOpen || 'rotate-is-close'};
+  animation-duration: 0.2s;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
 
   &:disabled {
     opacity: 0.5;
@@ -79,7 +109,6 @@ const RightButton = styled.button`
   }
   svg {
     width: 10px;
-    transform: rotate(180deg);
     path {
       stroke: var(--primBtnBg);
     }
@@ -318,7 +347,7 @@ return (
         <TextSave>{currentPosition.title}</TextSave>
       </LeftButton>
 
-      <RightButton onClick={() => setOpen(!isOpen)}>{arrowIcon}</RightButton>
+      <RightButton $isOpen={isOpen && 'rotate-is-open'} onClick={() => setOpen(!isOpen)}>{arrowIcon}</RightButton>
     </ButtonGroup>
 
     {isOpen ? (
