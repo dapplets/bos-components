@@ -631,7 +631,7 @@ const {
   updateAfterNotSaving,
 } = props
 
-const title = document?.metadata.title ?? editingConfig.title
+const title = document?.metadata.name ?? editingConfig.title
 const description = document?.metadata.description ?? editingConfig.description
 const icon = document?.metadata.image ?? editingConfig.icon
 const hasChapters = !!editingConfig.chapters?.length
