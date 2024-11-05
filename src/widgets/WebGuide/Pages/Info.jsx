@@ -1,40 +1,5 @@
-const FirstScreenEdit = styled.div`
-  --bgMain: #fffffe;
-  --colorMain: #02193a;
-  --colorP: #777777;
-  --border: #02193a;
-  --cardBg: rgba(248, 249, 255, 1);
-
-  --navActive: #384bff;
-  --navInactiveBg: #e3e3e3;
-  --navInactiveBorder: none;
-
-  --statusInfoCol: #246efd;
-  --statusWarningCol: #d0911a;
-  --statusErrorCol: #db504a;
-  --statusInfoBg: rgba(234, 241, 255, 1);
-  --statusWarningBg: rgba(255, 248, 235, 1);
-  --statusErrorBg: rgba(246, 240, 246, 1);
-
-  --primBtnCol: white;
-  --primBtnBg: #384bff;
-  --primBtnBg01: #02193a1a;
-  --primBtnBgH: #1c3559;
-  --primBtnBgA: #020c19;
-  --secBtnCol: #02193a;
-  --secBtnBorderCol: #e2e2e5;
-  --secBtnBgH: #eee;
-  --secBtnBgA: #ddd;
-`
-
-const Theme = ({ skin, children }) => {
-  switch (skin) {
-    case 'FIRST_SCREEN':
-      return <FirstScreenEdit children={children} />
-    default:
-      return <></>
-  }
-}
+const { getEmptyPages, isDeepEqual, deepCopy, createDocumentId, createDocumentMetadata } =
+  VM.require('${REPL_ACCOUNT}/widget/WebGuide.Utils')
 
 const Container = styled.div`
   position: relative;
@@ -53,7 +18,7 @@ const Container = styled.div`
     0px 44px 17px rgba(34, 34, 34, 0.01),
     0px 25px 15px rgba(34, 34, 34, 0.03),
     0px 11px 11px rgba(34, 34, 34, 0.04),
-    0px 3px 6px rgba(34, 34, 34, 0.05);
+    0px 3px 14px 14px rgba(34, 34, 34, 0.05);
 
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -644,32 +609,41 @@ const editActions = [
 ]
 
 const {
-  skin,
   onClose,
-  onStart,
-  onConfigImport,
+  onStartCreation,
+  onImportConfig,
   setEditMode,
-  handleRemoveAllChanges,
-  isConfigEdited,
-  title,
-  description,
-  icon,
-  hasDocument,
-  handleExportConfig,
-  handleSave,
-  hasChapters,
-  openChapters,
+  onRemoveAllChanges,
+  onExportConfig,
+  onOpenChapters,
   onChapterAdd,
-  didTheGuidePublished,
+  guideConfig,
+  editingConfig,
+  chapterCounter,
+  pageCounter,
+  document,
+  appContext,
+  saveToLinkDB,
+  loggedInAccountId,
+  getDocument,
+  commitDocument,
+  updateAfterSaving,
+  updateAfterNotSaving,
 } = props
+
+const title = document?.metadata.name ?? editingConfig.title
+const description = document?.metadata.description ?? editingConfig.description
+const icon = document?.metadata.image ?? editingConfig.icon
+const hasChapters = !!editingConfig.chapters?.length
+const isConfigEdited = !isDeepEqual(guideConfig, editingConfig)
 
 State.init({ image: icon && icon.ipfs_cid ? { cid: icon.ipfs_cid } : {} }) // ToDo: ipfs_cid -> cid -- to fix in the future
 const [newTitle, setNewTitle] = useState(title ?? '')
 const [newDescription, setNewDescription] = useState(description ?? '')
 const [currentEditAction, setCurrentEditAction] = useState(editActions[0])
-const [savingStarted, setSavingStarted] = useState(false)
-const [publishStatusMessage, setPublishStatusMessage] = useState(null)
 const [isSaveOrExportDropdownOpened, setIsSaveOrExportDropdownOpened] = useState(false)
+const [publishStatusMessage, setPublishStatusMessage] = useState(null)
+const [savingStarted, setSavingStarted] = useState(false)
 
 useEffect(() => {
   setNewTitle(title ?? '')
@@ -677,6 +651,8 @@ useEffect(() => {
   setPublishStatusMessage(null)
   State.update({ image: icon && icon.ipfs_cid ? { cid: icon.ipfs_cid } : {} }) // ToDo: ipfs_cid -> cid -- to fix in the future
 }, [title, description, icon])
+
+useEffect(() => setPublishStatusMessage(null), [newTitle])
 
 const filesOnChange = (files) => {
   if (!files?.length) return
@@ -686,11 +662,67 @@ const filesOnChange = (files) => {
     .text()
     .then((json) => {
       const webGuideConfig = JSON.parse(json)
-      onConfigImport(webGuideConfig)
+      onImportConfig(webGuideConfig)
     })
     .catch((err) => {
       console.error(err)
     })
+}
+
+const commitNewDocument = (config) => {
+  const documentId = createDocumentId(config, loggedInAccountId)
+  const documentMetadata = createDocumentMetadata(config)
+  return commitDocument(documentId, documentMetadata, appContext, { [loggedInAccountId]: config })
+}
+
+const saveConfig = (config) => {
+  const emptyPages = getEmptyPages(config)
+  if (emptyPages?.length) return emptyPages
+  const isConfigToPublishEdited = !isDeepEqual(config, guideConfig)
+  if (isConfigToPublishEdited) {
+    ;(document
+      ? saveToLinkDB(appContext, { [document.authorId]: config })
+      : getDocument(createDocumentId(config, loggedInAccountId)).then((existingDocument) => {
+          // console.log('existingDocument', existingDocument)
+          if (existingDocument) {
+            setPublishStatusMessage({
+              type: 'error',
+              text: err.message,
+            })
+            setSavingStarted(false)
+            throw new Error('A document with this ID already exists!')
+          }
+          return commitNewDocument(config)
+        })
+    )
+      ?.then(() => {
+        console.log('Saved')
+        updateAfterSaving(config)
+      })
+      .catch((err) => {
+        console.log('err', err)
+        if (err.message === 'Document with that ID already exists') {
+          setPublishStatusMessage({
+            type: 'error',
+            text: err.message,
+          })
+          setSavingStarted(false)
+        } else {
+          console.error(err)
+        }
+      })
+  } else {
+    console.log('Not saved')
+    updateAfterNotSaving()
+  }
+}
+
+const handleSave = ({ newTitle, newDescription, newIcon }) => {
+  const updatedConfig = deepCopy(editingConfig)
+  updatedConfig.title = newTitle
+  updatedConfig.description = newDescription
+  updatedConfig.icon = newIcon
+  return saveConfig(updatedConfig)
 }
 
 const handleMainButtonClick = (editActionValue) => {
@@ -711,7 +743,7 @@ const handleMainButtonClick = (editActionValue) => {
       }
       break
     case 'export':
-      return handleExportConfig({
+      return onExportConfig({
         newTitle,
         newDescription,
         newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
@@ -727,196 +759,213 @@ const handleButtonItemClick = (item) => {
 }
 
 return (
-  <Theme skin={skin}>
-    <Container>
-      <Header>
-        <Title $didTheGuidePublished={didTheGuidePublished}>
-          {didTheGuidePublished ? (
-            "You're editing an existing guide"
-          ) : (
-            <>
-              There's nothing here.
-              <br />
-              Be the first to create a guide.
-            </>
-          )}
-        </Title>
-
-        <CloseButton onClick={onClose}>
-          <CloseIcon />
-        </CloseButton>
-      </Header>
-      {hasChapters && (
-        <ActionsGroup>
-          <ActionButton
-            onClick={() =>
-              openChapters({
-                newTitle,
-                newDescription,
-                newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
-              })
-            }
-          >
-            Chapters
-            <IconNextEdit />
-          </ActionButton>
-        </ActionsGroup>
-      )}
-
-      <EditInputsBlock>
-        <FloatingLabelContainer>
-          <StyledInputOwner id={'owner'} type={'text'} value={context.accountId} readOnly />
-          <StyledLabel htmlFor={'owner'}>Owner</StyledLabel>
-        </FloatingLabelContainer>
-
-        {hasDocument ? (
-          <>
-            <div style={{ display: 'flex' }}>
-              <ImageBlock $fromDocument={hasDocument} $hasImage={!!state.image.cid}>
-                <ImageWrapper>
-                  {state.image.cid ? (
-                    <img
-                      src={`https://ipfs.near.social/ipfs/${state.image.cid}`}
-                      alt={`${newTitle ?? 'Guide'} image`}
-                      style={{ width: '100%' }}
-                    />
-                  ) : (
-                    <ImagePlaceholder />
-                  )}
-                </ImageWrapper>
-              </ImageBlock>
-
-              <FloatingLabelContainer>
-                <StyledInput id={'title'} type={'text'} value={newTitle} readOnly disabled />
-                <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
-              </FloatingLabelContainer>
-            </div>
-
-            <FloatingLabelContainerArea>
-              <StyledTextarea
-                id={'description'}
-                type={'text'}
-                value={newDescription}
-                readOnly
-                disabled
-              />
-              <StyledLabel htmlFor={'description'}>Description</StyledLabel>
-            </FloatingLabelContainerArea>
-          </>
-        ) : (
-          <>
-            <ImageBlock $hasImage={!!state.image.cid}>
-              {state.image.cid ? null : (
-                <ImageWrapper>
-                  <ImagePlaceholder />
-                </ImageWrapper>
+  <Widget
+    src="${REPL_ACCOUNT}/widget/WebGuide.Themes.INFO"
+    loading={<></>}
+    props={{
+      children: (
+        <Container>
+          <Header>
+            <Title $didTheGuidePublished={!!guideConfig}>
+              {!!guideConfig ? (
+                "You're editing an existing guide"
+              ) : (
+                <>
+                  There's nothing here.
+                  <br />
+                  Be the first to create a guide.
+                </>
               )}
-              <IpfsImageUpload image={state.image} />
-            </ImageBlock>
+            </Title>
 
+            <CloseButton onClick={onClose}>
+              <CloseIcon />
+            </CloseButton>
+          </Header>
+          {hasChapters && (
+            <ActionsGroup>
+              <ActionButton
+                onClick={() =>
+                  onOpenChapters({
+                    newTitle,
+                    newDescription,
+                    newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
+                  })
+                }
+              >
+                Chapters
+                <IconNextEdit />
+              </ActionButton>
+            </ActionsGroup>
+          )}
+
+          <EditInputsBlock>
             <FloatingLabelContainer>
-              <StyledInput
-                id={'title'}
-                type={'text'}
-                value={newTitle}
-                onChange={(e) => setNewTitle(e.target.value)}
-              />
-              <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
+              <StyledInputOwner id={'owner'} type={'text'} value={context.accountId} readOnly />
+              <StyledLabel htmlFor={'owner'}>Owner</StyledLabel>
             </FloatingLabelContainer>
 
-            <FloatingLabelContainerArea>
-              <StyledTextarea
-                id={'description'}
-                type={'text'}
-                value={newDescription}
-                onChange={(e) => setNewDescription(e.target.value)}
+            {!!document ? (
+              <>
+                <div style={{ display: 'flex' }}>
+                  <ImageBlock $fromDocument={!!document} $hasImage={!!state.image.cid}>
+                    <ImageWrapper>
+                      {state.image.cid ? (
+                        <img
+                          src={`https://ipfs.near.social/ipfs/${state.image.cid}`}
+                          alt={`${newTitle ?? 'Guide'} image`}
+                          style={{ width: '100%' }}
+                        />
+                      ) : (
+                        <ImagePlaceholder />
+                      )}
+                    </ImageWrapper>
+                  </ImageBlock>
+
+                  <FloatingLabelContainer>
+                    <StyledInput id={'title'} type={'text'} value={newTitle} readOnly disabled />
+                    <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
+                  </FloatingLabelContainer>
+                </div>
+
+                <FloatingLabelContainerArea>
+                  <StyledTextarea
+                    id={'description'}
+                    type={'text'}
+                    value={newDescription}
+                    readOnly
+                    disabled
+                  />
+                  <StyledLabel htmlFor={'description'}>Description</StyledLabel>
+                </FloatingLabelContainerArea>
+              </>
+            ) : (
+              <>
+                <ImageBlock $hasImage={!!state.image.cid}>
+                  {state.image.cid ? null : (
+                    <ImageWrapper>
+                      <ImagePlaceholder />
+                    </ImageWrapper>
+                  )}
+                  <IpfsImageUpload image={state.image} />
+                </ImageBlock>
+
+                <FloatingLabelContainer>
+                  <StyledInput
+                    id={'title'}
+                    type={'text'}
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                  />
+                  <StyledLabel htmlFor={'title'}>Guide title</StyledLabel>
+                </FloatingLabelContainer>
+
+                <FloatingLabelContainerArea>
+                  <StyledTextarea
+                    id={'description'}
+                    type={'text'}
+                    value={newDescription}
+                    onChange={(e) => setNewDescription(e.target.value)}
+                  />
+                  <StyledLabel htmlFor={'description'}>Description</StyledLabel>
+                </FloatingLabelContainerArea>
+              </>
+            )}
+          </EditInputsBlock>
+
+          <ButtonsCreateBlock>
+            <Files
+              multiple={false}
+              accepts={['application/json']}
+              minFileSize={1}
+              onChange={filesOnChange}
+              clickable
+            >
+              <ImportButton>
+                <ImportIcon />
+                Import
+              </ImportButton>
+            </Files>
+            <AddedChapterButton
+              onClick={() =>
+                hasChapters
+                  ? onChapterAdd({
+                      newTitle,
+                      newDescription,
+                      newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
+                    })
+                  : onStartCreation({
+                      newTitle,
+                      newDescription,
+                      newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
+                    })
+              }
+            >
+              <IconPlus />
+              Add chapter
+            </AddedChapterButton>
+          </ButtonsCreateBlock>
+
+          {publishStatusMessage?.text ? (
+            <div style={{ padding: 0, width: '100%' }}>
+              <Widget
+                src="${REPL_ACCOUNT}/widget/WebGuide.Components.Status"
+                loading={<></>}
+                props={{ status: publishStatusMessage }}
               />
-              <StyledLabel htmlFor={'description'}>Description</StyledLabel>
-            </FloatingLabelContainerArea>
-          </>
-        )}
-      </EditInputsBlock>
+            </div>
+          ) : null}
 
-      <ButtonsCreateBlock>
-        <Files
-          multiple={false}
-          accepts={['application/json']}
-          minFileSize={1}
-          onChange={filesOnChange}
-          clickable
-        >
-          <ImportButton>
-            <ImportIcon />
-            Import
-          </ImportButton>
-        </Files>
-        <AddedChapterButton
-          onClick={() =>
-            hasChapters
-              ? onChapterAdd({
-                  newTitle,
-                  newDescription,
-                  newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
-                })
-              : onStart({
-                  newTitle,
-                  newDescription,
-                  newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
-                })
-          }
-        >
-          <IconPlus />
-          Add chapter
-        </AddedChapterButton>
-      </ButtonsCreateBlock>
+          {hasChapters ? (
+            <EditButtonsBlock>
+              <SuccessButton
+                onClick={() => {
+                  setEditMode(false)
+                  onRemoveAllChanges()
+                }}
+              >
+                {isConfigEdited ||
+                newTitle !== (title ?? '') ||
+                newDescription !== (description ?? '') ||
+                state.image?.cid !== icon?.ipfs_cid // ToDo: cid -> ipfs_cid -- to fix in the future
+                  ? 'Delete all local changes'
+                  : 'Cancel'}
+              </SuccessButton>
+              <Widget
+                src="${REPL_ACCOUNT}/widget/WebGuide.PublishDropdown"
+                loading={
+                  <ButtonPlaceholder>
+                    <Loader $halfSize />
+                  </ButtonPlaceholder>
+                }
+                props={{
+                  disabled:
+                    publishStatusMessage ||
+                    !(
+                      (
+                        isConfigEdited ||
+                        newTitle !== (title ?? '') ||
+                        newDescription !== (description ?? '') ||
+                        state.image?.cid !== icon?.ipfs_cid
+                      ) // ToDo: cid -> ipfs_cid -- to fix in the future
+                    ),
+                  onMainButtonClick: handleMainButtonClick,
+                  customActions: [
+                    { value: 'publish', title: 'Publish' },
+                    { value: 'export', title: 'Export guide' },
+                  ],
+                }}
+              />
+            </EditButtonsBlock>
+          ) : null}
 
-      {hasChapters ? (
-        <EditButtonsBlock>
-          <SuccessButton
-            onClick={() => {
-              setEditMode(false)
-              handleRemoveAllChanges()
-            }}
-          >
-            {isConfigEdited ||
-            newTitle !== (title ?? '') ||
-            newDescription !== (description ?? '') ||
-            state.image?.cid !== icon?.ipfs_cid // ToDo: cid -> ipfs_cid -- to fix in the future
-              ? 'Delete all local changes'
-              : 'Cancel'}
-          </SuccessButton>
-          <Widget
-            src="${REPL_ACCOUNT}/widget/WebGuide.PublishDropdown"
-            loading={
-              <ButtonPlaceholder>
-                <Loader $halfSize />
-              </ButtonPlaceholder>
-            }
-            props={{
-              disabled: !(
-                (
-                  isConfigEdited ||
-                  newTitle !== (title ?? '') ||
-                  newDescription !== (description ?? '') ||
-                  state.image?.cid !== icon?.ipfs_cid
-                ) // ToDo: cid -> ipfs_cid -- to fix in the future
-              ),
-              onMainButtonClick: handleMainButtonClick,
-              customActions: [
-                { value: 'publish', title: 'Publish' },
-                { value: 'export', title: 'Export guide' },
-              ],
-              skin,
-            }}
-          />
-        </EditButtonsBlock>
-      ) : null}
-
-      {savingStarted && (
-        <LoaderBackground>
-          <Loader />
-        </LoaderBackground>
-      )}
-    </Container>
-  </Theme>
+          {savingStarted && (
+            <LoaderBackground>
+              <Loader />
+            </LoaderBackground>
+          )}
+        </Container>
+      ),
+    }}
+  />
 )
