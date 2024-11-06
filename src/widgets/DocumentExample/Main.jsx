@@ -1,5 +1,5 @@
 const { accountId } = context // The order is important, because context redeclared
-const { linkDb: LinkDb, commitDocument, context, getDocument } = props
+const { commitDocument, getDocument } = props
 
 const MiniOverlayTarget = {
   namespace: 'mweb',
@@ -9,10 +9,7 @@ const MiniOverlayTarget = {
   arrowTo: 'context',
 }
 
-const DefaultValue = { counter: 0 }
-
 const [document, setDocument] = useState(null)
-const [data, setData] = useState(DefaultValue)
 const [isLoading, setIsLoading] = useState(true)
 
 useEffect(() => {
@@ -20,32 +17,28 @@ useEffect(() => {
     getDocument()
       .then((doc) => setDocument(doc))
       .catch(console.error)
+      .finally(() => setIsLoading(false))
   }
-
-  LinkDb.get(context, accountId)
-    .then((data) => setData(data[accountId] ?? DefaultValue))
-    .catch(console.error)
-    .finally(() => setIsLoading(false))
 }, [])
 
 const handleCreateDocument = () => {
-  const documentId = '${REPL_ACCOUNT}/document/DocumentExample-' + Date.now()
-
-  const documentMetadata = {
-    name: 'Document ' + Date.now(),
-    description: 'Document created by ${REPL_ACCOUNT} at ' + Date.now(),
-    image: {
-      ipfs_cid: 'bafkreie4tum66dxhl4twu6ak3d2vgtxkwc3rkoay2rriqzdwm4m2hflgwy', // cat icon
+  const document = {
+    // ID is generated based on metadata.name
+    metadata: {
+      name: 'Document ' + Date.now(),
+      description: `Document created by ${accountId} at ` + Date.now(),
+      image: {
+        ipfs_cid: 'bafkreie4tum66dxhl4twu6ak3d2vgtxkwc3rkoay2rriqzdwm4m2hflgwy', // cat icon
+      },
     },
+    source: 'origin',
+    content: { counter: 1 },
   }
-
-  const newData = { counter: 1 }
-  const counterData = { [accountId]: newData }
 
   setIsLoading(true)
 
-  commitDocument(documentId, documentMetadata, context, counterData)
-    .then(() => setData(newData))
+  commitDocument(document)
+    .then((doc) => setDocument(doc))
     .catch(console.error)
     .finally(() => setIsLoading(false))
 }
@@ -53,12 +46,20 @@ const handleCreateDocument = () => {
 const handleIncrementClick = () => {
   setIsLoading(true)
 
-  const newData = { counter: (data.counter ?? 0) + 1 }
+  // edit document content
+  document.content = { counter: (document.content?.counter ?? 0) + 1 }
 
-  LinkDb.set(context, { [accountId]: newData })
-    .then(() => setData(newData))
-    .catch(console.error)
-    .finally(() => setIsLoading(false))
+  if (document.content.counter < 10) {
+    commitDocument({ ...document, source: 'local' })
+      .then((doc) => setDocument(doc))
+      .catch(console.error)
+      .finally(() => setIsLoading(false))
+  } else {
+    commitDocument({ ...document, source: 'origin' })
+      .then((doc) => setDocument(doc))
+      .catch(console.error)
+      .finally(() => setIsLoading(false))
+  }
 }
 
 return (
@@ -89,7 +90,7 @@ return (
             onClick={handleIncrementClick}
             title={document.id}
           >
-            Doc: {data?.counter ?? 0}
+            {document.source} {document.content?.counter ?? 0}
           </button>
         )
       }}
