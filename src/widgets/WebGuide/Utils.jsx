@@ -57,12 +57,6 @@ const createDocumentId = (config, loggedInAccountId) => {
   return id
 }
 
-const createDocumentMetadata = (config) => ({
-  name: config.title,
-  description: config.description,
-  image: config.icon,
-})
-
 return {
   generateNewPage,
   generateNewChapter,
@@ -72,5 +66,4 @@ return {
   clearTreeBranch,
   getEmptyPages,
   createDocumentId,
-  createDocumentMetadata,
 }

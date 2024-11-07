@@ -11,6 +11,7 @@ const MiniOverlayTarget = {
 
 const [document, setDocument] = useState(null)
 const [isLoading, setIsLoading] = useState(true)
+console.log('document', document)
 
 useEffect(() => {
   if (getDocument) {

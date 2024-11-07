@@ -179,8 +179,17 @@ const NavigationButton = styled.div`
   }
 `
 
-const { navi, onClose, buttons, title, content, isEditAllowed, setEditMode, onClickPageIndicator } =
-  props
+const {
+  navi,
+  onClose,
+  buttons,
+  title,
+  content,
+  isEditAllowed,
+  setEditMode,
+  onClickPageIndicator,
+  onFork,
+} = props
 
 const Header = () => (
   <Widget
@@ -194,6 +203,7 @@ const Header = () => (
       onEditButtonClick: () => setEditMode(true),
       isEditAllowed,
       onClickPageIndicator: (index) => onClickPageIndicator({ index }),
+      onFork,
     }}
   />
 )

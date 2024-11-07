@@ -17,7 +17,7 @@ const LeftButton = styled('DappletFileDownloader')`
   border: none;
   background: var(--primBtnBg);
   color: var(--primBtnCol);
-  width: 104px;
+  min-width: 104px;
   padding: 10px 12px !important;
   font-size: 14px;
   font-weight: 400;

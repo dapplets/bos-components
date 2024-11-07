@@ -1,9 +1,10 @@
-const { linkDb: LinkDb, context: appContext, getDocument } = props
+const { context: appContext, getDocument, commitDocument } = props
 const loggedInAccountId = context.accountId
 
 const [document, setDocument] = useState(undefined) // null will be used if not found in DB
 const [guideConfig, setGuideConfig] = useState(undefined) // null will be used if not found in DB
 const [showApp, setShowApp] = useState(true)
+console.log('document', document)
 
 const findParentContext = (context, type) => {
   if (!context) return null
@@ -21,29 +22,45 @@ const mutationId = getMutationId()
 const mutatorId = mutationId?.split('/')[0]
 
 useEffect(() => {
-  if (getDocument) {
-    //ToDo: remove it in the future
-    getDocument()
-      .then((doc) => {
-        setDocument(doc)
-        if (doc)
-          LinkDb.get(appContext, doc.authorId)
-            .then((response) => {
-              if (!response?.[doc.authorId]) return
-              setGuideConfig(response[doc.authorId])
-            })
-            .catch(console.error)
-      })
-      .catch(console.error)
-  } else {
-    LinkDb.get(appContext, mutatorId)
-      .then((response) => {
-        if (!response?.[mutatorId]) return
-        setGuideConfig(response[mutatorId])
-      })
-      .catch(console.error)
-  }
+  getDocument()
+    .then((doc) => {
+      setDocument(doc)
+      setGuideConfig(doc.content)
+    })
+    .catch(console.error)
 }, [])
+
+const handleCommitDocument = (config) => {
+  const newDocument = document
+    ? { ...document, content: config, source: 'origin' }
+    : {
+        metadata: {
+          name: config.title,
+          description: config.description,
+          image: config.icon,
+        },
+        source: 'origin',
+        content: config,
+      }
+  return commitDocument(newDocument)
+}
+
+const handleFork = () => {
+  console.log('Fork')
+  console.log('document', document)
+  const newDocument = document
+    ? { ...document, content: config, source: 'origin' }
+    : {
+        metadata: {
+          name: config.title,
+          description: config.description,
+          image: config.icon,
+        },
+        source: 'origin',
+        content: config,
+      }
+  return commitDocument(newDocument)
+}
 
 // ToDo: move to the engine?
 const MiniOverlayTarget = {
@@ -93,9 +110,9 @@ return (
         document,
         guideConfig,
         setGuideConfig,
-        saveToLinkDB: LinkDb.set,
         appContext,
-        commitDocument: props.commitDocument,
+        onCommitDocument: handleCommitDocument,
+        onFork: handleFork,
         notify: props.notify,
         query: props.query,
         isEditAllowed,

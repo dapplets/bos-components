@@ -1,11 +1,6 @@
-const {
-  getEmptyPages,
-  isDeepEqual,
-  deepCopy,
-  createDocumentId,
-  createDocumentMetadata,
-  isTargetEqual,
-} = VM.require('${REPL_ACCOUNT}/widget/WebGuide.Utils')
+const { getEmptyPages, isDeepEqual, deepCopy, createDocumentId, isTargetEqual } = VM.require(
+  '${REPL_ACCOUNT}/widget/WebGuide.Utils'
+)
 
 const ActionButtonEdit = styled.div`
   display: flex;
@@ -558,10 +553,9 @@ const {
   pageCounter,
   document,
   appContext,
-  saveToLinkDB,
   loggedInAccountId,
   getDocument,
-  commitDocument,
+  onCommitDocument,
   updateAfterSaving,
   updateAfterNotSaving,
   navi,
@@ -646,33 +640,13 @@ const handleSavePageChanges = () => {
   })
 }
 
-const commitNewDocument = (config) => {
-  const documentId = createDocumentId(config, loggedInAccountId)
-  const documentMetadata = createDocumentMetadata(config)
-  return commitDocument(documentId, documentMetadata, appContext, { [loggedInAccountId]: config })
-}
-
 const saveConfig = (config) => {
   const emptyPages = getEmptyPages(config)
   if (emptyPages?.length) return emptyPages
-  const isConfigEdited = !isDeepEqual(config, guideConfig)
-  if (isConfigEdited) {
-    ;(document
-      ? saveToLinkDB(appContext, { [document.authorId]: config })
-      : getDocument(createDocumentId(config, loggedInAccountId)).then((existingDocument) => {
-          // console.log('existingDocument', existingDocument)
-          if (existingDocument) {
-            setPublishStatusMessage({
-              type: 'error',
-              text: err.message,
-            })
-            setSavingStarted(false)
-            throw new Error('A document with this ID already exists!')
-          }
-          return commitNewDocument(config)
-        })
-    )
-      ?.then(() => {
+  const isConfigToPublishEdited = !isDeepEqual(config, guideConfig)
+  if (isConfigToPublishEdited) {
+    onCommitDocument(config)
+      .then(() => {
         console.log('Saved')
         updateAfterSaving(config)
       })

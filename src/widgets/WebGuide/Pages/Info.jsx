@@ -1,5 +1,6 @@
-const { getEmptyPages, isDeepEqual, deepCopy, createDocumentId, createDocumentMetadata } =
-  VM.require('${REPL_ACCOUNT}/widget/WebGuide.Utils')
+const { getEmptyPages, isDeepEqual, deepCopy, createDocumentId } = VM.require(
+  '${REPL_ACCOUNT}/widget/WebGuide.Utils'
+)
 
 const Container = styled.div`
   position: relative;
@@ -623,10 +624,9 @@ const {
   pageCounter,
   document,
   appContext,
-  saveToLinkDB,
   loggedInAccountId,
   getDocument,
-  commitDocument,
+  onCommitDocument,
   updateAfterSaving,
   updateAfterNotSaving,
 } = props
@@ -669,33 +669,13 @@ const filesOnChange = (files) => {
     })
 }
 
-const commitNewDocument = (config) => {
-  const documentId = createDocumentId(config, loggedInAccountId)
-  const documentMetadata = createDocumentMetadata(config)
-  return commitDocument(documentId, documentMetadata, appContext, { [loggedInAccountId]: config })
-}
-
 const saveConfig = (config) => {
   const emptyPages = getEmptyPages(config)
   if (emptyPages?.length) return emptyPages
   const isConfigToPublishEdited = !isDeepEqual(config, guideConfig)
   if (isConfigToPublishEdited) {
-    ;(document
-      ? saveToLinkDB(appContext, { [document.authorId]: config })
-      : getDocument(createDocumentId(config, loggedInAccountId)).then((existingDocument) => {
-          // console.log('existingDocument', existingDocument)
-          if (existingDocument) {
-            setPublishStatusMessage({
-              type: 'error',
-              text: err.message,
-            })
-            setSavingStarted(false)
-            throw new Error('A document with this ID already exists!')
-          }
-          return commitNewDocument(config)
-        })
-    )
-      ?.then(() => {
+    onCommitDocument(config)
+      .then(() => {
         console.log('Saved')
         updateAfterSaving(config)
       })
@@ -932,7 +912,7 @@ return (
                   : 'Cancel'}
               </SuccessButton>
               <Widget
-                src="${REPL_ACCOUNT}/widget/WebGuide.PublishDropdown"
+                src="${REPL_ACCOUNT}/widget/WebGuide.Components.PublishDropdown"
                 loading={
                   <ButtonPlaceholder>
                     <Loader $halfSize />
