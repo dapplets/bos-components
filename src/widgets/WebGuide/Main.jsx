@@ -3,44 +3,28 @@ const loggedInAccountId = context.accountId
 
 const [document, setDocument] = useState(undefined)
 const [showApp, setShowApp] = useState(true)
-console.log('document', document)
 
 useEffect(() => {
   if (!document)
-    getDocument()
+    getDocument({ source: 'origin' })
       .then((doc) => setDocument(doc))
       .catch(console.error)
 }, [])
 
-const saveLocally = (content) => {
-  console.log('Save locally')
-  commitDocument({ ...document, content, source: 'local' })
-    .then((doc) => setDocument(doc))
-    .catch(console.error)
-}
-
-const handleCommitDocument = (config) => {
-  console.log('Committing')
-  const newDocument = document
-    ? { ...document, content: config, source: 'origin' }
-    : {
-        metadata: {
-          name: config.title,
-          description: config.description,
-          image: config.icon,
-        },
-        source: 'origin',
-        content: config,
-      }
-  return commitDocument(newDocument)
-}
-
-const handleFork = () => {
-  console.log('Fork')
-  console.log('document', document)
-  const newDocument = { ...document, source: 'origin' }
-  return commitDocument(newDocument)
-}
+const handleCommitDocument = (config) =>
+  commitDocument(
+    document
+      ? { ...document, content: config, source: 'origin' }
+      : {
+          metadata: {
+            name: config.title,
+            description: config.description,
+            image: config.icon,
+          },
+          source: 'origin',
+          content: config,
+        }
+  )
 
 // ToDo: move to the engine?
 const MiniOverlayTarget = {
@@ -106,14 +90,18 @@ return (
         mutatorId,
         document,
         appContext,
-        onCommitDocument: handleCommitDocument,
-        onFork: handleFork,
         notify: props.notify,
         query: props.query,
         isEditAllowed,
         getDocument,
         setDocument,
-        saveLocally,
+        onCommitDocument: handleCommitDocument,
+        onFork: () => commitDocument({ ...document, source: 'origin' }),
+        saveLocally: (content) =>
+          commitDocument({ ...document, content, source: 'local' })
+            .then((doc) => setDocument(doc))
+            .catch(console.error),
+        deleteLocalDocument: props.deleteLocalDocument,
       }}
     />
   </>

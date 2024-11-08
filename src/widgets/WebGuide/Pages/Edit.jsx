@@ -553,7 +553,6 @@ const {
   pageCounter,
   appContext,
   loggedInAccountId,
-  getDocument,
   onCommitDocument,
   updateAfterSaving,
   updateAfterNotSaving,

@@ -15,14 +15,15 @@ const {
   mutatorId,
   document,
   appContext,
-  onCommitDocument,
-  onFork,
   notify,
   query,
   isEditAllowed,
   getDocument,
   setDocument,
+  onCommitDocument,
+  onFork,
   saveLocally,
+  deleteLocalDocument,
 } = props
 
 const configTemplate = { action: true }
@@ -34,8 +35,15 @@ const [chapterCounter, setChapterCounter] = useState(0)
 const [pageCounter, setPageCounter] = useState(0)
 const [isEditTarget, setEditTarget] = useState(false)
 const [noTarget, setNoTarget] = useState(false)
+const [localConfigResponse, setLocalConfigResponse] = useState(undefined)
 
-const localConfigResponse = Storage.privateGet(appContext + (document ? '/' + document.id : ''))
+useEffect(() => {
+  if (localConfigResponse === undefined)
+    getDocument({ source: 'local' })
+      .then((res) => setLocalConfigResponse(res.content))
+      .catch(console.error)
+}, [])
+
 const localConfig =
   localConfigResponse &&
   (typeof localConfigResponse === 'string' ? JSON.parse(localConfigResponse) : localConfigResponse)
@@ -104,8 +112,6 @@ useEffect(() => {
 
 if (!showApp) return null
 
-const saveConfigToLocalStorage = (data) => saveLocally(data) // ToDo FIX IT!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 const handleTargetSet = (newTarget) => {
   const updatedConfig = deepCopy(editingConfig)
   const updatedChapter = updatedConfig.chapters[chapterCounter]
@@ -115,7 +121,7 @@ const handleTargetSet = (newTarget) => {
   delete updatedChapter.placement
 
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
 
   setEditTarget(false)
 }
@@ -162,12 +168,12 @@ const handlePlacementChange = (newPlacement) => {
   setEditingConfig(updatedConfig)
 
   if (newPlacement === 'auto') {
-    saveConfigToLocalStorage(updatedConfig)
+    saveLocally(updatedConfig)
     return
   }
 
   const commitChanges = () => {
-    saveConfigToLocalStorage(updatedConfig)
+    saveLocally(updatedConfig)
   }
 
   const revertChanges = () => {
@@ -177,7 +183,7 @@ const handlePlacementChange = (newPlacement) => {
     updatedChapter.placement = previousPlacement
 
     setEditingConfig(updatedConfig)
-    saveConfigToLocalStorage(updatedConfig)
+    saveLocally(updatedConfig)
   }
 
   notifyWithCountdown({
@@ -196,7 +202,7 @@ const handleSkinToggle = () => {
   updatedConfig.skin = updatedConfig.skin === 'DEFAULT' ? 'META_GUIDE' : 'DEFAULT'
 
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
 }
 
 const handleClose = () => {
@@ -292,7 +298,7 @@ const handleClickPageIndicator = ({ index: pageIndex, newTitle, newContent }) =>
   if (newContent !== undefined) updatedPage.content = newContent
 
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
 
   setPageCounter(pageIndex)
 }
@@ -306,7 +312,7 @@ const handlePageDataChange = ({ newTitle, newContent }) => {
   updatedPage.content = newContent
 
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
 }
 
 const handleInfoPageDataChange = ({ newTitle, newDescription, newIcon }) => {
@@ -315,7 +321,7 @@ const handleInfoPageDataChange = ({ newTitle, newDescription, newIcon }) => {
   updatedConfig.description = newDescription
   updatedConfig.icon = newIcon
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
 }
 
 const handleTargetRemove = ({ newTitle, newContent }) => {
@@ -330,7 +336,7 @@ const handleTargetRemove = ({ newTitle, newContent }) => {
   updatedPage.content = newContent
 
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
 
   setEditTarget(false)
 }
@@ -343,7 +349,7 @@ const addChapter = (config, addFirst) => {
     config.chapters.splice(chapterCounter + 1, 0, newChapter)
   }
   setEditingConfig(config)
-  saveConfigToLocalStorage(config)
+  saveLocally(config)
   if (!addFirst) {
     handleChapterIncrement(config)
   } else {
@@ -380,7 +386,7 @@ const handlePageAdd = ({ newTitle, newContent }) => {
   updatedChapter.pages.splice(pageCounter + 1, 0, newPage)
 
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
 
   setPageCounter((val) => val + 1)
 }
@@ -397,7 +403,7 @@ const handleStartCreation = ({ newTitle, newDescription, newIcon }) => {
     updatedConfig.chapters = [newChapter]
   }
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
   setEditMode(true)
   setShowInfoChapter(false)
 }
@@ -423,7 +429,7 @@ const handlePageRemove = () => {
   }
 
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
   if (updatedConfig.chapters.length === 0) setShowInfoChapter(true)
 }
 
@@ -466,12 +472,12 @@ const handleRevertChanges = () => {
   }
 
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
 }
 
 const handleRemoveAllChanges = () => {
   setEditingConfig(document.content || configTemplate)
-  saveConfigToLocalStorage(null)
+  deleteLocalDocument()
   setChapterCounter(0)
   setPageCounter(0)
   if (!document.content) setShowInfoChapter(true)
@@ -485,7 +491,7 @@ const openSaveChangesPopup = ({ newTitle, newContent }) => {
   if (updatedPage.content !== newContent) updatedPage.content = newContent
 
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
 }
 
 const openInfoPage = () => setShowInfoChapter(true)
@@ -500,7 +506,7 @@ const updateAfterSaving = (config) => {
   setEditMode(false)
   setChapterCounter(0)
   setPageCounter(0)
-  saveConfigToLocalStorage(null)
+  deleteLocalDocument()
   setShowInfoChapter(false)
 }
 
@@ -509,7 +515,7 @@ const updateAfterNotSaving = () => {
   setEditMode(false)
   setChapterCounter(0)
   setPageCounter(0)
-  saveConfigToLocalStorage(null)
+  deleteLocalDocument()
 }
 
 const currentChapter = editingConfig.chapters[chapterCounter]
@@ -595,7 +601,6 @@ const ChapterWrapper = (props) => {
         pageCounter,
         appContext,
         loggedInAccountId,
-        getDocument,
         onCommitDocument,
         onFork,
         updateAfterSaving,
@@ -657,7 +662,6 @@ const InfoComponent = (props) => (
       pageCounter,
       appContext,
       loggedInAccountId,
-      getDocument,
       onCommitDocument,
       updateAfterSaving,
       updateAfterNotSaving,

@@ -622,7 +622,6 @@ const {
   document,
   appContext,
   loggedInAccountId,
-  getDocument,
   onCommitDocument,
   updateAfterSaving,
   updateAfterNotSaving,
