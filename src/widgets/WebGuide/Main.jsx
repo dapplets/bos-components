@@ -95,7 +95,7 @@ return (
         getDocument,
         setDocument,
         onCommitDocument: handleCommitDocument,
-        onFork: () => commitDocument({ ...document, source: 'origin' }),
+        onFork: () => commitDocument({ ...document, source: 'local' }),
         saveLocally: (content) =>
           commitDocument({ ...document, content, source: 'local' })
             .then((doc) => setDocument(doc))
