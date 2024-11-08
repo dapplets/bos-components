@@ -173,6 +173,7 @@ const {
   onClickPageIndicator,
   onSkinToggle,
   onFork,
+  loggedInAccountId,
 } = props
 
 return (
@@ -189,7 +190,7 @@ return (
           <EditButton onClick={onEditButtonClick}>
             {isEditMode ? <ViewIcon /> : <EditIcon />}
           </EditButton>
-        ) : !isEditMode ? (
+        ) : !isEditMode && loggedInAccountId ? (
           <EditButton onClick={onFork}>
             <ForkIcon />
           </EditButton>

@@ -180,6 +180,7 @@ const NavigationButton = styled.div`
 `
 
 const {
+  loggedInAccountId,
   navi,
   onClose,
   buttons,
@@ -204,6 +205,7 @@ const Header = () => (
       isEditAllowed,
       onClickPageIndicator: (index) => onClickPageIndicator({ index }),
       onFork,
+      loggedInAccountId,
     }}
   />
 )

@@ -620,8 +620,6 @@ const {
   chapterCounter,
   pageCounter,
   document,
-  appContext,
-  loggedInAccountId,
   onCommitDocument,
   updateAfterSaving,
   updateAfterNotSaving,

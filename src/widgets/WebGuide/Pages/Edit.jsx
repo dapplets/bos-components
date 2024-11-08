@@ -551,8 +551,6 @@ const {
   editingConfig,
   chapterCounter,
   pageCounter,
-  appContext,
-  loggedInAccountId,
   onCommitDocument,
   updateAfterSaving,
   updateAfterNotSaving,

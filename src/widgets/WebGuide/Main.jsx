@@ -89,7 +89,6 @@ return (
         loggedInAccountId,
         mutatorId,
         document,
-        appContext,
         notify: props.notify,
         query: props.query,
         isEditAllowed,
