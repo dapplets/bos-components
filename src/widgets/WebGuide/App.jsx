@@ -22,6 +22,7 @@ const {
   isEditAllowed,
   getDocument,
   setDocument,
+  saveLocally,
 } = props
 
 const configTemplate = { action: true }
@@ -103,12 +104,7 @@ useEffect(() => {
 
 if (!showApp) return null
 
-const saveConfigToLocalStorage = (data) => {
-  Storage.privateSet(
-    appContext + (document ? '/' + document.id : ''),
-    !data || isDeepEqual(data, document.content) ? undefined : data
-  )
-}
+const saveConfigToLocalStorage = (data) => saveLocally(data) // ToDo FIX IT!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 const handleTargetSet = (newTarget) => {
   const updatedConfig = deepCopy(editingConfig)

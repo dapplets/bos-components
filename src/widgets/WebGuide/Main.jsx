@@ -5,21 +5,6 @@ const [document, setDocument] = useState(undefined)
 const [showApp, setShowApp] = useState(true)
 console.log('document', document)
 
-const findParentContext = (context, type) => {
-  if (!context) return null
-  if (context.type === type) return context
-  return findParentContext(context.parent, type)
-}
-
-const getMutationId = () => {
-  const websiteContext = findParentContext(appContext, 'website')
-  if (!websiteContext) return null
-  return websiteContext.parsed.mutationId
-}
-
-const mutationId = getMutationId()
-const mutatorId = mutationId?.split('/')[0]
-
 useEffect(() => {
   if (!document)
     getDocument()
@@ -27,7 +12,15 @@ useEffect(() => {
       .catch(console.error)
 }, [])
 
+const saveLocally = (content) => {
+  console.log('Save locally')
+  commitDocument({ ...document, content, source: 'local' })
+    .then((doc) => setDocument(doc))
+    .catch(console.error)
+}
+
 const handleCommitDocument = (config) => {
+  console.log('Committing')
   const newDocument = document
     ? { ...document, content: config, source: 'origin' }
     : {
@@ -45,17 +38,7 @@ const handleCommitDocument = (config) => {
 const handleFork = () => {
   console.log('Fork')
   console.log('document', document)
-  const newDocument = document
-    ? { ...document, content: config, source: 'origin' }
-    : {
-        metadata: {
-          name: config.title,
-          description: config.description,
-          image: config.icon,
-        },
-        source: 'origin',
-        content: config,
-      }
+  const newDocument = { ...document, source: 'origin' }
   return commitDocument(newDocument)
 }
 
@@ -67,6 +50,21 @@ const MiniOverlayTarget = {
   if: { id: { eq: 'mweb-overlay' } },
   arrowTo: 'context',
 }
+
+const findParentContext = (context, type) => {
+  if (!context) return null
+  if (context.type === type) return context
+  return findParentContext(context.parent, type)
+}
+
+const getMutationId = () => {
+  const websiteContext = findParentContext(appContext, 'website')
+  if (!websiteContext) return null
+  return websiteContext.parsed.mutationId
+}
+
+const mutationId = getMutationId()
+const mutatorId = mutationId?.split('/')[0]
 
 // editing allowed for document owner or mutator if document is not published yet
 const isEditAllowed = document
@@ -115,6 +113,7 @@ return (
         isEditAllowed,
         getDocument,
         setDocument,
+        saveLocally,
       }}
     />
   </>
