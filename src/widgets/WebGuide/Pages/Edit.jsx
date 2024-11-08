@@ -1,4 +1,4 @@
-const { getEmptyPages, isDeepEqual, deepCopy, createDocumentId, isTargetEqual } = VM.require(
+const { getEmptyPages, isDeepEqual, deepCopy, isTargetEqual } = VM.require(
   '${REPL_ACCOUNT}/widget/WebGuide.Utils'
 )
 
@@ -547,11 +547,10 @@ const IconPlus = () => (
 )
 
 const {
-  guideConfig,
+  document,
   editingConfig,
   chapterCounter,
   pageCounter,
-  document,
   appContext,
   loggedInAccountId,
   getDocument,
@@ -593,7 +592,7 @@ useEffect(() => {
   setPublishStatusMessage(null)
 }, [navi, title, content, chapterCounter, pageCounter])
 
-const isConfigEdited = !isDeepEqual(editingConfig, guideConfig)
+const isConfigEdited = !isDeepEqual(editingConfig, document.content)
 const currentChapter = editingConfig.chapters[chapterCounter]
 const currentPage = currentChapter.pages[pageCounter]
 
@@ -604,9 +603,9 @@ const contextId =
   currentChapter.target?.if?.widgetSrc?.eq
 
 const originalCurrentChapter =
-  guideConfig &&
-  Array.isArray(guideConfig.chapters) &&
-  guideConfig.chapters.find((chapter) => chapter.id === currentChapter.id)
+  document.content &&
+  Array.isArray(document.content.chapters) &&
+  document.content.chapters.find((chapter) => chapter.id === currentChapter.id)
 
 const isTargetChanged = () => {
   if (!originalCurrentChapter) return !!currentChapter.target || !!currentChapter.placement
@@ -643,7 +642,7 @@ const handleSavePageChanges = () => {
 const saveConfig = (config) => {
   const emptyPages = getEmptyPages(config)
   if (emptyPages?.length) return emptyPages
-  const isConfigToPublishEdited = !isDeepEqual(config, guideConfig)
+  const isConfigToPublishEdited = !isDeepEqual(config, document.content)
   if (isConfigToPublishEdited) {
     onCommitDocument(config)
       .then(() => {

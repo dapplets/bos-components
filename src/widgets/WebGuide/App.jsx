@@ -14,8 +14,6 @@ const {
   loggedInAccountId,
   mutatorId,
   document,
-  guideConfig,
-  setGuideConfig,
   appContext,
   onCommitDocument,
   onFork,
@@ -23,6 +21,7 @@ const {
   query,
   isEditAllowed,
   getDocument,
+  setDocument,
 } = props
 
 const configTemplate = { action: true }
@@ -42,7 +41,7 @@ const localConfig =
 
 useEffect(() => {
   setShowInfoChapter(
-    (!guideConfig && !localConfig) || (!!localConfig && !localConfig.chapters.length)
+    (!document.content && !localConfig) || (!!localConfig && !localConfig.chapters.length)
   )
   setEditMode(false)
   setChapterCounter(0)
@@ -51,23 +50,23 @@ useEffect(() => {
 
 useEffect(() => {
   setShowApp(
-    (!!guideConfig && (!localConfig || !!localConfig.chapters.length)) ||
+    (!!document.content && (!localConfig || !!localConfig.chapters.length)) ||
       (!!localConfig && !!localConfig.chapters.length) ||
       showInfoChapter
   )
-  setShowInfoChapter((guideConfig === null && !localConfig) || showInfoChapter)
+  setShowInfoChapter((!document.content && !localConfig) || showInfoChapter)
 
   if (localConfig) {
     if (!isDeepEqual(localConfig, editingConfig)) {
       setEditingConfig(localConfig)
     }
-  } else if (guideConfig && !isDeepEqual(guideConfig, editingConfig)) {
-    setEditingConfig(guideConfig)
+  } else if (document.content && !isDeepEqual(document.content, editingConfig)) {
+    setEditingConfig(document.content)
     setChapterCounter(0)
     setPageCounter(0)
     setEditMode(false)
   }
-}, [guideConfig, localConfig])
+}, [document.content, localConfig])
 
 // If there is no target on the page, find the chapter to show or show the Info page to the mutator
 useEffect(() => {
@@ -107,7 +106,7 @@ if (!showApp) return null
 const saveConfigToLocalStorage = (data) => {
   Storage.privateSet(
     appContext + (document ? '/' + document.id : ''),
-    !data || isDeepEqual(data, guideConfig) ? undefined : data
+    !data || isDeepEqual(data, document.content) ? undefined : data
   )
 }
 
@@ -441,16 +440,16 @@ const handleRevertChanges = () => {
   const page = chapter.pages[pageCounter]
 
   const originalChapter =
-    guideConfig &&
-    Array.isArray(guideConfig.chapters) &&
-    guideConfig.chapters.find((x) => x.id === chapter.id)
+    document.content &&
+    Array.isArray(document.content.chapters) &&
+    document.content.chapters.find((x) => x.id === chapter.id)
 
   const originalPage =
     originalChapter &&
     Array.isArray(originalChapter.pages) &&
     originalChapter.pages.find((x) => x.id === page.id)
 
-  if (!guideConfig || !originalChapter) {
+  if (!document.content || !originalChapter) {
     chapter.type = 'infobox'
     chapter.target = undefined
     delete chapter.placement
@@ -475,11 +474,11 @@ const handleRevertChanges = () => {
 }
 
 const handleRemoveAllChanges = () => {
-  setEditingConfig(guideConfig || configTemplate)
+  setEditingConfig(document.content || configTemplate)
   saveConfigToLocalStorage(null)
   setChapterCounter(0)
   setPageCounter(0)
-  if (!guideConfig) setShowInfoChapter(true)
+  if (!document.content) setShowInfoChapter(true)
 }
 
 const openSaveChangesPopup = ({ newTitle, newContent }) => {
@@ -501,7 +500,7 @@ const handleOpenChapters = (payload) => {
 }
 
 const updateAfterSaving = (config) => {
-  setGuideConfig(config)
+  setDocument((val) => ({ ...val, content: config }))
   setEditMode(false)
   setChapterCounter(0)
   setPageCounter(0)
@@ -510,7 +509,7 @@ const updateAfterSaving = (config) => {
 }
 
 const updateAfterNotSaving = () => {
-  setGuideConfig(guideConfig)
+  setDocument((val) => val)
   setEditMode(false)
   setChapterCounter(0)
   setPageCounter(0)
@@ -593,12 +592,11 @@ const ChapterWrapper = (props) => {
         id: currentChapter.id,
 
         // for pages
+        document,
         isEditMode,
-        guideConfig,
         editingConfig,
         chapterCounter,
         pageCounter,
-        document,
         appContext,
         loggedInAccountId,
         getDocument,
@@ -657,11 +655,10 @@ const InfoComponent = (props) => (
       id: 'info',
 
       // for Info page
-      guideConfig,
+      document,
       editingConfig,
       chapterCounter,
       pageCounter,
-      document,
       appContext,
       loggedInAccountId,
       getDocument,

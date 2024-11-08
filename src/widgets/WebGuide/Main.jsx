@@ -1,8 +1,7 @@
 const { context: appContext, getDocument, commitDocument } = props
 const loggedInAccountId = context.accountId
 
-const [document, setDocument] = useState(undefined) // null will be used if not found in DB
-const [guideConfig, setGuideConfig] = useState(undefined) // null will be used if not found in DB
+const [document, setDocument] = useState(undefined)
 const [showApp, setShowApp] = useState(true)
 console.log('document', document)
 
@@ -22,12 +21,10 @@ const mutationId = getMutationId()
 const mutatorId = mutationId?.split('/')[0]
 
 useEffect(() => {
-  getDocument()
-    .then((doc) => {
-      setDocument(doc)
-      setGuideConfig(doc.content)
-    })
-    .catch(console.error)
+  if (!document)
+    getDocument()
+      .then((doc) => setDocument(doc))
+      .catch(console.error)
 }, [])
 
 const handleCommitDocument = (config) => {
@@ -79,7 +76,9 @@ const isEditAllowed = document
 // If there is no config and the user is not a mutator do not show anything
 if (
   !isEditAllowed &&
-  (!guideConfig || !guideConfig.chapters?.length || !guideConfig.chapters[0].pages?.length)
+  (!document.content ||
+    !document.content.chapters?.length ||
+    !document.content.chapters[0].pages?.length)
 ) {
   return <></>
 }
@@ -108,8 +107,6 @@ return (
         loggedInAccountId,
         mutatorId,
         document,
-        guideConfig,
-        setGuideConfig,
         appContext,
         onCommitDocument: handleCommitDocument,
         onFork: handleFork,
@@ -117,6 +114,7 @@ return (
         query: props.query,
         isEditAllowed,
         getDocument,
+        setDocument,
       }}
     />
   </>

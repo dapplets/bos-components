@@ -1,6 +1,4 @@
-const { getEmptyPages, isDeepEqual, deepCopy, createDocumentId } = VM.require(
-  '${REPL_ACCOUNT}/widget/WebGuide.Utils'
-)
+const { getEmptyPages, isDeepEqual, deepCopy } = VM.require('${REPL_ACCOUNT}/widget/WebGuide.Utils')
 
 const Container = styled.div`
   position: relative;
@@ -618,7 +616,6 @@ const {
   onExportConfig,
   onOpenChapters,
   onChapterAdd,
-  guideConfig,
   editingConfig,
   chapterCounter,
   pageCounter,
@@ -635,7 +632,7 @@ const title = document?.metadata.name ?? editingConfig.title
 const description = document?.metadata.description ?? editingConfig.description
 const icon = document?.metadata.image ?? editingConfig.icon
 const hasChapters = !!editingConfig.chapters?.length
-const isConfigEdited = !isDeepEqual(guideConfig, editingConfig)
+const isConfigEdited = !isDeepEqual(document.content, editingConfig)
 
 State.init({ image: icon && icon.ipfs_cid ? { cid: icon.ipfs_cid } : {} }) // ToDo: ipfs_cid -> cid -- to fix in the future
 const [newTitle, setNewTitle] = useState(title ?? '')
@@ -672,7 +669,7 @@ const filesOnChange = (files) => {
 const saveConfig = (config) => {
   const emptyPages = getEmptyPages(config)
   if (emptyPages?.length) return emptyPages
-  const isConfigToPublishEdited = !isDeepEqual(config, guideConfig)
+  const isConfigToPublishEdited = !isDeepEqual(config, document.content)
   if (isConfigToPublishEdited) {
     onCommitDocument(config)
       .then(() => {
@@ -746,8 +743,8 @@ return (
       children: (
         <Container>
           <Header>
-            <Title $didTheGuidePublished={!!guideConfig}>
-              {!!guideConfig ? (
+            <Title $didTheGuidePublished={!!document.content}>
+              {!!document.content ? (
                 "You're editing an existing guide"
               ) : (
                 <>
