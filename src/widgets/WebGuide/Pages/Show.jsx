@@ -126,7 +126,7 @@ const NavigationGroup = styled.div`
   }
 `
 
-const NavigationButton = styled.div`
+const NavigationButton = styled.button`
   display: flex;
   box-sizing: border-box;
   width: 180px;
@@ -157,6 +157,7 @@ const NavigationButton = styled.div`
     }
     &:disabled {
       opacity: 0.3;
+      cursor: default;
     }
   }
 
@@ -175,6 +176,7 @@ const NavigationButton = styled.div`
 
     &:disabled {
       opacity: 0.3;
+      cursor: default;
     }
   }
 `
@@ -191,6 +193,8 @@ const {
   onFork,
 } = props
 
+const [isLoading, setIsLoading] = useState(false)
+
 const Header = () => (
   <Widget
     src="${REPL_ACCOUNT}/widget/WebGuide.Components.Header"
@@ -204,6 +208,8 @@ const Header = () => (
       isEditAllowed,
       onClickPageIndicator: (index) => onClickPageIndicator({ index }),
       onFork,
+      isLoading,
+      setIsLoading,
     }}
   />
 )
@@ -221,7 +227,7 @@ const NavButton = ({ btn }) => (
     key={btn.label}
     className={btn.variant}
     onClick={btn.onClick}
-    disabled={btn.disabled}
+    disabled={btn.disabled || isLoading}
   >
     {btn.label}
   </NavigationButton>

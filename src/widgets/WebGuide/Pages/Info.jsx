@@ -608,6 +608,13 @@ const editActions = [
 ]
 
 const {
+  document,
+  editingConfig,
+  localConfig,
+  chapterCounter,
+  pageCounter,
+  loggedInAccountId,
+
   onClose,
   onStartCreation,
   onImportConfig,
@@ -616,11 +623,6 @@ const {
   onExportConfig,
   onOpenChapters,
   onChapterAdd,
-  editingConfig,
-  chapterCounter,
-  pageCounter,
-  document,
-  loggedInAccountId,
   onCommitDocument,
   updateAfterSaving,
   updateAfterNotSaving,
@@ -908,7 +910,8 @@ return (
                 {isConfigEdited ||
                 newTitle !== (title ?? '') ||
                 newDescription !== (description ?? '') ||
-                state.image?.cid !== icon?.ipfs_cid // ToDo: cid -> ipfs_cid -- to fix in the future
+                state.image?.cid !== icon?.ipfs_cid || // ToDo: cid -> ipfs_cid -- to fix in the future
+                localConfig
                   ? 'Delete all local changes'
                   : 'Cancel'}
               </SuccessButton>

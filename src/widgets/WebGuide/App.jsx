@@ -512,7 +512,6 @@ const updateAfterNotSaving = () => {
   setEditMode(false)
   setChapterCounter(0)
   setPageCounter(0)
-  deleteLocalDocument()
 }
 
 const currentChapter = editingConfig.chapters[chapterCounter]
@@ -594,6 +593,7 @@ const ChapterWrapper = (props) => {
         document,
         isEditMode,
         editingConfig,
+        localConfig,
         chapterCounter,
         pageCounter,
         onCommitDocument,
@@ -654,6 +654,7 @@ const InfoComponent = (props) => (
       // for Info page
       document,
       editingConfig,
+      localConfig,
       chapterCounter,
       pageCounter,
       loggedInAccountId,

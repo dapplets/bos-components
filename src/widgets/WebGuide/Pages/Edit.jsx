@@ -549,6 +549,7 @@ const IconPlus = () => (
 const {
   document,
   editingConfig,
+  localConfig,
   chapterCounter,
   pageCounter,
   onCommitDocument,
@@ -912,7 +913,7 @@ return (
           onRemoveAllChanges()
         }}
       >
-        {isConfigEdited || newTitle !== title || newContent !== content
+        {isConfigEdited || newTitle !== title || newContent !== content || !!localConfig
           ? 'Delete all local changes'
           : 'Cancel'}
       </SuccessButton>

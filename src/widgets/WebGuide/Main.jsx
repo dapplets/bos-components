@@ -120,7 +120,7 @@ return (
         query,
         getDocument,
         setDocument,
-        deleteLocalDocument,
+        deleteLocalDocument: () => deleteLocalDocument().then(() => setLocalConfig(null)),
         onCommitDocument: handleCommitDocument,
         onFork: () =>
           commitDocument({ ...document, source: 'local' })
