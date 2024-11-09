@@ -11,20 +11,43 @@ useEffect(() => {
       .catch(console.error)
 }, [])
 
-const handleCommitDocument = (config) =>
-  commitDocument(
-    document
-      ? { ...document, content: config, source: 'origin' }
-      : {
-          metadata: {
-            name: config.title,
-            description: config.description,
-            image: config.icon,
-          },
-          source: 'origin',
-          content: config,
-        }
-  )
+const handleCommitDocument = (config) => {
+  const documentToCommit = document
+    ? { ...document, content: config, source: 'origin' }
+    : {
+        metadata: {
+          name: config.title,
+          description: config.description,
+          image: config.icon,
+        },
+        source: 'origin',
+        content: config,
+      }
+
+  commitDocument(documentToCommit)
+    .then((doc) => setDocument(doc))
+    .catch(console.error)
+}
+
+const handleForkDocument = () => {
+  return commitDocument({ ...document, source: 'local' }).catch(console.error)
+}
+
+const handleSaveLocally = (config) => {
+  const documentToCommit = document
+    ? { ...document, content: config, source: 'local' }
+    : {
+        metadata: {
+          name: config.title,
+          description: config.description,
+          image: config.icon,
+        },
+        source: 'local',
+        content: config,
+      }
+
+  commitDocument(documentToCommit).catch(console.error)
+}
 
 // ToDo: move to the engine?
 const MiniOverlayTarget = {
@@ -51,9 +74,12 @@ const mutationId = getMutationId()
 const mutatorId = mutationId?.split('/')[0]
 
 // editing allowed for document owner or mutator if document is not published yet
-const isEditAllowed = document
-  ? loggedInAccountId === document.authorId
-  : loggedInAccountId === mutatorId
+// const isEditAllowed = document
+//   ? loggedInAccountId === document.authorId
+//   : loggedInAccountId === mutatorId
+
+// editing allowed for anyone
+const isEditAllowed = true
 
 // If there is no config and the user is not a mutator do not show anything
 if (
@@ -95,11 +121,8 @@ return (
         getDocument,
         setDocument,
         onCommitDocument: handleCommitDocument,
-        onFork: () => commitDocument({ ...document, source: 'local' }),
-        saveLocally: (content) =>
-          commitDocument({ ...document, content, source: 'local' })
-            .then((doc) => setDocument(doc))
-            .catch(console.error),
+        onFork: handleForkDocument,
+        saveLocally: handleSaveLocally,
         deleteLocalDocument: props.deleteLocalDocument,
       }}
     />
