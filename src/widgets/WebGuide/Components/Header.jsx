@@ -65,13 +65,19 @@ const Navi = styled.button`
     background: var(--navInactiveBg);
     border: 1px solid var(--navInactiveBorder);
   }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
 `
 
 const HeaderButtonGroup = styled.div`
   display: flex;
-  gap: 10px;
   flex: 1;
   justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
 `
 
 const Close = styled.button`
@@ -92,6 +98,61 @@ const EditButton = styled.button`
   border: none;
   padding: 0 !important;
   cursor: pointer;
+`
+
+const Loader = styled.div`
+  width: ${(props) => (props.$halfSize ? '24px' : '48px')};
+  height: ${(props) => (props.$halfSize ? '24px' : '48px')};
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  border: 3px solid;
+  border-color: white white transparent transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+
+  &::after,
+  &::before {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    border: 3px solid;
+    border-color: transparent transparent #ff3d00 #ff3d00;
+    width: ${(props) => (props.$halfSize ? '20px' : '40px')};
+    height: ${(props) => (props.$halfSize ? '20px' : '40px')};
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: rotationBack 0.5s linear infinite;
+    transform-origin: center center;
+  }
+  &::before {
+    width: ${(props) => (props.$halfSize ? '16px' : '32px')};
+    height: ${(props) => (props.$halfSize ? '16px' : '32px')};
+    border-color: white white transparent transparent;
+    animation: rotation 1.5s linear infinite;
+  }
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes rotationBack {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(-360deg);
+    }
+  }
 `
 
 const SwitchThemesIcon = () => (
@@ -150,6 +211,18 @@ const ViewIcon = () => (
   </svg>
 )
 
+const ForkIcon = () => (
+  <svg width="15" height="20" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M9.57143 4.38889C9.95031 4.38889 10.3137 4.23671 10.5816 3.96582C10.8495 3.69494 11 3.32753 11 2.94444C11 2.56135 10.8495 2.19395 10.5816 1.92307C10.3137 1.65218 9.95031 1.5 9.57143 1.5C9.19255 1.5 8.82919 1.65218 8.56128 1.92307C8.29337 2.19395 8.14286 2.56135 8.14286 2.94444C8.14286 3.32753 8.29337 3.69494 8.56128 3.96582C8.82919 4.23671 9.19255 4.38889 9.57143 4.38889ZM9.57143 4.38889V5.11111C9.57143 6.91667 8.14286 7.27778 8.14286 7.27778L3.85714 8.72222C3.85714 8.72222 2.42857 9.08333 2.42857 10.8889V11.6111M2.42857 4.38889C2.80745 4.38889 3.17081 4.23671 3.43872 3.96582C3.70663 3.69494 3.85714 3.32753 3.85714 2.94444C3.85714 2.56135 3.70663 2.19395 3.43872 1.92307C3.17081 1.65218 2.80745 1.5 2.42857 1.5C2.04969 1.5 1.68633 1.65218 1.41842 1.92307C1.15051 2.19395 1 2.56135 1 2.94444C1 3.32753 1.15051 3.69494 1.41842 3.96582C1.68633 4.23671 2.04969 4.38889 2.42857 4.38889ZM2.42857 4.38889V11.6111M2.42857 11.6111C2.80745 11.6111 3.17081 11.7633 3.43872 12.0342C3.70663 12.3051 3.85714 12.6725 3.85714 13.0556C3.85714 13.4386 3.70663 13.806 3.43872 14.0769C3.17081 14.3478 2.80745 14.5 2.42857 14.5C2.04969 14.5 1.68633 14.3478 1.41842 14.0769C1.15051 13.806 1 13.4386 1 13.0556C1 12.6725 1.15051 12.3051 1.41842 12.0342C1.68633 11.7633 2.04969 11.6111 2.42857 11.6111Z"
+      stroke="var(--colorMain)"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
 const {
   navi,
   onClose,
@@ -159,6 +232,9 @@ const {
   isEditAllowed,
   onClickPageIndicator,
   onSkinToggle,
+  onFork,
+  isLoading,
+  setIsLoading,
 } = props
 
 return (
@@ -175,6 +251,16 @@ return (
           <EditButton onClick={onEditButtonClick}>
             {isEditMode ? <ViewIcon /> : <EditIcon />}
           </EditButton>
+        ) : !isEditMode ? (
+          <EditButton
+            disabled={isLoading}
+            onClick={() => {
+              setIsLoading(true)
+              onFork().then(() => setIsLoading(false))
+            }}
+          >
+            {isLoading ? <Loader $halfSize /> : <ForkIcon />}
+          </EditButton>
         ) : null}
         <Close onClick={onClose}>
           <CloseIcon />
@@ -190,6 +276,7 @@ return (
                   className={index == navi?.currentPageIndex ? 'active' : 'inactive'}
                   title={`Page ${index + 1}`}
                   onClick={() => onClickPageIndicator(index)}
+                  disabled={isLoading}
                 />
               ))}
           </PagesIndicators>

@@ -45,24 +45,6 @@ const getEmptyPages = (config) =>
     .filter((val) => val?.length)
     .flat()
 
-const createDocumentId = (config, loggedInAccountId) => {
-  const id =
-    loggedInAccountId +
-    '/document/WebGuide-' +
-    (config.title
-      ?.split(' ')
-      .filter((x) => x)
-      .join('-') ?? Date.now())
-  // console.log('id', id)
-  return id
-}
-
-const createDocumentMetadata = (config) => ({
-  name: config.title,
-  description: config.description,
-  image: config.icon,
-})
-
 return {
   generateNewPage,
   generateNewChapter,
@@ -71,6 +53,4 @@ return {
   isTargetEqual,
   clearTreeBranch,
   getEmptyPages,
-  createDocumentId,
-  createDocumentMetadata,
 }

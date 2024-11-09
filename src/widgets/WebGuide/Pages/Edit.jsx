@@ -1,11 +1,6 @@
-const {
-  getEmptyPages,
-  isDeepEqual,
-  deepCopy,
-  createDocumentId,
-  createDocumentMetadata,
-  isTargetEqual,
-} = VM.require('${REPL_ACCOUNT}/widget/WebGuide.Utils')
+const { getEmptyPages, isDeepEqual, deepCopy, isTargetEqual } = VM.require(
+  '${REPL_ACCOUNT}/widget/WebGuide.Utils'
+)
 
 const ActionButtonEdit = styled.div`
   display: flex;
@@ -552,16 +547,12 @@ const IconPlus = () => (
 )
 
 const {
-  guideConfig,
+  document,
   editingConfig,
+  localConfig,
   chapterCounter,
   pageCounter,
-  document,
-  appContext,
-  saveToLinkDB,
-  loggedInAccountId,
-  getDocument,
-  commitDocument,
+  onCommitDocument,
   updateAfterSaving,
   updateAfterNotSaving,
   navi,
@@ -572,6 +563,7 @@ const {
   noTarget,
   isEditAllowed,
   placement,
+  loggedInAccountId,
   setEditMode,
   onClickPageIndicator,
   onClose,
@@ -599,7 +591,7 @@ useEffect(() => {
   setPublishStatusMessage(null)
 }, [navi, title, content, chapterCounter, pageCounter])
 
-const isConfigEdited = !isDeepEqual(editingConfig, guideConfig)
+const isConfigEdited = !isDeepEqual(editingConfig, document.content)
 const currentChapter = editingConfig.chapters[chapterCounter]
 const currentPage = currentChapter.pages[pageCounter]
 
@@ -610,9 +602,9 @@ const contextId =
   currentChapter.target?.if?.widgetSrc?.eq
 
 const originalCurrentChapter =
-  guideConfig &&
-  Array.isArray(guideConfig.chapters) &&
-  guideConfig.chapters.find((chapter) => chapter.id === currentChapter.id)
+  document.content &&
+  Array.isArray(document.content.chapters) &&
+  document.content.chapters.find((chapter) => chapter.id === currentChapter.id)
 
 const isTargetChanged = () => {
   if (!originalCurrentChapter) return !!currentChapter.target || !!currentChapter.placement
@@ -646,35 +638,15 @@ const handleSavePageChanges = () => {
   })
 }
 
-const commitNewDocument = (config) => {
-  const documentId = createDocumentId(config, loggedInAccountId)
-  const documentMetadata = createDocumentMetadata(config)
-  return commitDocument(documentId, documentMetadata, appContext, { [loggedInAccountId]: config })
-}
-
 const saveConfig = (config) => {
   const emptyPages = getEmptyPages(config)
   if (emptyPages?.length) return emptyPages
-  const isConfigEdited = !isDeepEqual(config, guideConfig)
-  if (isConfigEdited) {
-    ;(document
-      ? saveToLinkDB(appContext, { [document.authorId]: config })
-      : getDocument(createDocumentId(config, loggedInAccountId)).then((existingDocument) => {
-          // console.log('existingDocument', existingDocument)
-          if (existingDocument) {
-            setPublishStatusMessage({
-              type: 'error',
-              text: err.message,
-            })
-            setSavingStarted(false)
-            throw new Error('A document with this ID already exists!')
-          }
-          return commitNewDocument(config)
-        })
-    )
-      ?.then(() => {
+  const isConfigToPublishEdited = !isDeepEqual(config, document.content)
+  if (isConfigToPublishEdited) {
+    onCommitDocument(config)
+      .then((doc) => {
         console.log('Saved')
-        updateAfterSaving(config)
+        updateAfterSaving(doc)
       })
       .catch((err) => {
         console.log('err', err)
@@ -703,6 +675,12 @@ const handleSave = ({ newTitle, newContent }) => {
 }
 
 const handleMainButtonClick = (editActionValue) => {
+  if (!loggedInAccountId) {
+    return setPublishStatusMessage({
+      type: 'error',
+      text: 'You need to be logged in to publish a guide.',
+    })
+  }
   switch (editActionValue) {
     case 'publish':
       setSavingStarted(true)
@@ -935,7 +913,7 @@ return (
           onRemoveAllChanges()
         }}
       >
-        {isConfigEdited || newTitle !== title || newContent !== content
+        {isConfigEdited || newTitle !== title || newContent !== content || !!localConfig
           ? 'Delete all local changes'
           : 'Cancel'}
       </SuccessButton>

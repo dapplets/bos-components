@@ -11,18 +11,19 @@ const {
   showApp,
   closeApp,
   setShowApp,
-  loggedInAccountId,
   mutatorId,
   document,
-  guideConfig,
-  setGuideConfig,
-  saveToLinkDB,
-  appContext,
-  commitDocument,
   notify,
   query,
   isEditAllowed,
   getDocument,
+  setDocument,
+  onCommitDocument,
+  onFork,
+  saveLocally,
+  deleteLocalDocument,
+  localConfig,
+  loggedInAccountId,
 } = props
 
 const configTemplate = { action: true }
@@ -34,15 +35,11 @@ const [chapterCounter, setChapterCounter] = useState(0)
 const [pageCounter, setPageCounter] = useState(0)
 const [isEditTarget, setEditTarget] = useState(false)
 const [noTarget, setNoTarget] = useState(false)
-
-const localConfigResponse = Storage.privateGet(appContext + (document ? '/' + document.id : ''))
-const localConfig =
-  localConfigResponse &&
-  (typeof localConfigResponse === 'string' ? JSON.parse(localConfigResponse) : localConfigResponse)
+// console.log('showInfoChapter', showInfoChapter)
 
 useEffect(() => {
   setShowInfoChapter(
-    (!guideConfig && !localConfig) || (!!localConfig && !localConfig.chapters.length)
+    (!document.content && !localConfig) || (!!localConfig && !localConfig.chapters.length)
   )
   setEditMode(false)
   setChapterCounter(0)
@@ -50,24 +47,32 @@ useEffect(() => {
 }, [showApp])
 
 useEffect(() => {
+  // console.log(
+  //   '(!!document.content && (!localConfig || !!localConfig.chapters.length))',
+  //   !!document.content && (!localConfig || !!localConfig.chapters.length)
+  // )
+  // console.log(
+  //   '(!!localConfig && !!localConfig.chapters.length)',
+  //   !!localConfig && !!localConfig.chapters.length
+  // )
   setShowApp(
-    (!!guideConfig && (!localConfig || !!localConfig.chapters.length)) ||
+    (!!document.content && (!localConfig || !!localConfig.chapters.length)) ||
       (!!localConfig && !!localConfig.chapters.length) ||
       showInfoChapter
   )
-  setShowInfoChapter((guideConfig === null && !localConfig) || showInfoChapter)
+  setShowInfoChapter((!document.content && !localConfig) || showInfoChapter)
 
   if (localConfig) {
     if (!isDeepEqual(localConfig, editingConfig)) {
       setEditingConfig(localConfig)
     }
-  } else if (guideConfig && !isDeepEqual(guideConfig, editingConfig)) {
-    setEditingConfig(guideConfig)
+  } else if (document.content && !isDeepEqual(document.content, editingConfig)) {
+    setEditingConfig(document.content)
     setChapterCounter(0)
     setPageCounter(0)
     setEditMode(false)
   }
-}, [guideConfig, localConfig])
+}, [document.content])
 
 // If there is no target on the page, find the chapter to show or show the Info page to the mutator
 useEffect(() => {
@@ -104,13 +109,6 @@ useEffect(() => {
 
 if (!showApp) return null
 
-const saveConfigToLocalStorage = (data) => {
-  Storage.privateSet(
-    appContext + (document ? '/' + document.id : ''),
-    !data || isDeepEqual(data, guideConfig) ? undefined : data
-  )
-}
-
 const handleTargetSet = (newTarget) => {
   const updatedConfig = deepCopy(editingConfig)
   const updatedChapter = updatedConfig.chapters[chapterCounter]
@@ -120,7 +118,7 @@ const handleTargetSet = (newTarget) => {
   delete updatedChapter.placement
 
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
 
   setEditTarget(false)
 }
@@ -167,12 +165,12 @@ const handlePlacementChange = (newPlacement) => {
   setEditingConfig(updatedConfig)
 
   if (newPlacement === 'auto') {
-    saveConfigToLocalStorage(updatedConfig)
+    saveLocally(updatedConfig)
     return
   }
 
   const commitChanges = () => {
-    saveConfigToLocalStorage(updatedConfig)
+    saveLocally(updatedConfig)
   }
 
   const revertChanges = () => {
@@ -182,7 +180,7 @@ const handlePlacementChange = (newPlacement) => {
     updatedChapter.placement = previousPlacement
 
     setEditingConfig(updatedConfig)
-    saveConfigToLocalStorage(updatedConfig)
+    saveLocally(updatedConfig)
   }
 
   notifyWithCountdown({
@@ -201,7 +199,7 @@ const handleSkinToggle = () => {
   updatedConfig.skin = updatedConfig.skin === 'DEFAULT' ? 'META_GUIDE' : 'DEFAULT'
 
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
 }
 
 const handleClose = () => {
@@ -297,7 +295,7 @@ const handleClickPageIndicator = ({ index: pageIndex, newTitle, newContent }) =>
   if (newContent !== undefined) updatedPage.content = newContent
 
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
 
   setPageCounter(pageIndex)
 }
@@ -311,7 +309,7 @@ const handlePageDataChange = ({ newTitle, newContent }) => {
   updatedPage.content = newContent
 
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
 }
 
 const handleInfoPageDataChange = ({ newTitle, newDescription, newIcon }) => {
@@ -320,7 +318,7 @@ const handleInfoPageDataChange = ({ newTitle, newDescription, newIcon }) => {
   updatedConfig.description = newDescription
   updatedConfig.icon = newIcon
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
 }
 
 const handleTargetRemove = ({ newTitle, newContent }) => {
@@ -335,7 +333,7 @@ const handleTargetRemove = ({ newTitle, newContent }) => {
   updatedPage.content = newContent
 
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
 
   setEditTarget(false)
 }
@@ -348,7 +346,7 @@ const addChapter = (config, addFirst) => {
     config.chapters.splice(chapterCounter + 1, 0, newChapter)
   }
   setEditingConfig(config)
-  saveConfigToLocalStorage(config)
+  saveLocally(config)
   if (!addFirst) {
     handleChapterIncrement(config)
   } else {
@@ -385,7 +383,7 @@ const handlePageAdd = ({ newTitle, newContent }) => {
   updatedChapter.pages.splice(pageCounter + 1, 0, newPage)
 
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
 
   setPageCounter((val) => val + 1)
 }
@@ -402,7 +400,7 @@ const handleStartCreation = ({ newTitle, newDescription, newIcon }) => {
     updatedConfig.chapters = [newChapter]
   }
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
   setEditMode(true)
   setShowInfoChapter(false)
 }
@@ -428,7 +426,7 @@ const handlePageRemove = () => {
   }
 
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
   if (updatedConfig.chapters.length === 0) setShowInfoChapter(true)
 }
 
@@ -441,16 +439,16 @@ const handleRevertChanges = () => {
   const page = chapter.pages[pageCounter]
 
   const originalChapter =
-    guideConfig &&
-    Array.isArray(guideConfig.chapters) &&
-    guideConfig.chapters.find((x) => x.id === chapter.id)
+    document.content &&
+    Array.isArray(document.content.chapters) &&
+    document.content.chapters.find((x) => x.id === chapter.id)
 
   const originalPage =
     originalChapter &&
     Array.isArray(originalChapter.pages) &&
     originalChapter.pages.find((x) => x.id === page.id)
 
-  if (!guideConfig || !originalChapter) {
+  if (!document.content || !originalChapter) {
     chapter.type = 'infobox'
     chapter.target = undefined
     delete chapter.placement
@@ -471,15 +469,15 @@ const handleRevertChanges = () => {
   }
 
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
 }
 
 const handleRemoveAllChanges = () => {
-  setEditingConfig(guideConfig || configTemplate)
-  saveConfigToLocalStorage(null)
+  setEditingConfig(document.content || configTemplate)
+  deleteLocalDocument()
   setChapterCounter(0)
   setPageCounter(0)
-  if (!guideConfig) setShowInfoChapter(true)
+  if (!document.content) setShowInfoChapter(true)
 }
 
 const openSaveChangesPopup = ({ newTitle, newContent }) => {
@@ -490,7 +488,7 @@ const openSaveChangesPopup = ({ newTitle, newContent }) => {
   if (updatedPage.content !== newContent) updatedPage.content = newContent
 
   setEditingConfig(updatedConfig)
-  saveConfigToLocalStorage(updatedConfig)
+  saveLocally(updatedConfig)
 }
 
 const openInfoPage = () => setShowInfoChapter(true)
@@ -500,21 +498,20 @@ const handleOpenChapters = (payload) => {
   setShowInfoChapter(false)
 }
 
-const updateAfterSaving = (config) => {
-  setGuideConfig(config)
+const updateAfterSaving = (newDocument) => {
+  setDocument(newDocument)
   setEditMode(false)
   setChapterCounter(0)
   setPageCounter(0)
-  saveConfigToLocalStorage(null)
+  deleteLocalDocument()
   setShowInfoChapter(false)
 }
 
 const updateAfterNotSaving = () => {
-  setGuideConfig(guideConfig)
+  setDocument((val) => val)
   setEditMode(false)
   setChapterCounter(0)
   setPageCounter(0)
-  saveConfigToLocalStorage(null)
 }
 
 const currentChapter = editingConfig.chapters[chapterCounter]
@@ -593,17 +590,14 @@ const ChapterWrapper = (props) => {
         id: currentChapter.id,
 
         // for pages
+        document,
         isEditMode,
-        guideConfig,
         editingConfig,
+        localConfig,
         chapterCounter,
         pageCounter,
-        document,
-        appContext,
-        saveToLinkDB,
-        loggedInAccountId,
-        getDocument,
-        commitDocument,
+        onCommitDocument,
+        onFork,
         updateAfterSaving,
         updateAfterNotSaving,
         navi: {
@@ -620,6 +614,7 @@ const ChapterWrapper = (props) => {
         title: currentPage.title,
         content: currentPage.content,
         isEditAllowed,
+        loggedInAccountId,
         setEditMode,
         onClose: handleClose,
         onSkinToggle: handleSkinToggle,
@@ -657,16 +652,13 @@ const InfoComponent = (props) => (
       id: 'info',
 
       // for Info page
-      guideConfig,
+      document,
       editingConfig,
+      localConfig,
       chapterCounter,
       pageCounter,
-      document,
-      appContext,
-      saveToLinkDB,
       loggedInAccountId,
-      getDocument,
-      commitDocument,
+      onCommitDocument,
       updateAfterSaving,
       updateAfterNotSaving,
       setEditMode,

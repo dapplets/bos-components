@@ -1,5 +1,4 @@
-const { getEmptyPages, isDeepEqual, deepCopy, createDocumentId, createDocumentMetadata } =
-  VM.require('${REPL_ACCOUNT}/widget/WebGuide.Utils')
+const { getEmptyPages, isDeepEqual, deepCopy } = VM.require('${REPL_ACCOUNT}/widget/WebGuide.Utils')
 
 const Container = styled.div`
   position: relative;
@@ -609,6 +608,13 @@ const editActions = [
 ]
 
 const {
+  document,
+  editingConfig,
+  localConfig,
+  chapterCounter,
+  pageCounter,
+  loggedInAccountId,
+
   onClose,
   onStartCreation,
   onImportConfig,
@@ -617,16 +623,7 @@ const {
   onExportConfig,
   onOpenChapters,
   onChapterAdd,
-  guideConfig,
-  editingConfig,
-  chapterCounter,
-  pageCounter,
-  document,
-  appContext,
-  saveToLinkDB,
-  loggedInAccountId,
-  getDocument,
-  commitDocument,
+  onCommitDocument,
   updateAfterSaving,
   updateAfterNotSaving,
 } = props
@@ -635,7 +632,7 @@ const title = document?.metadata.name ?? editingConfig.title
 const description = document?.metadata.description ?? editingConfig.description
 const icon = document?.metadata.image ?? editingConfig.icon
 const hasChapters = !!editingConfig.chapters?.length
-const isConfigEdited = !isDeepEqual(guideConfig, editingConfig)
+const isConfigEdited = !isDeepEqual(document.content, editingConfig)
 
 State.init({ image: icon && icon.ipfs_cid ? { cid: icon.ipfs_cid } : {} }) // ToDo: ipfs_cid -> cid -- to fix in the future
 const [newTitle, setNewTitle] = useState(title ?? '')
@@ -669,35 +666,15 @@ const filesOnChange = (files) => {
     })
 }
 
-const commitNewDocument = (config) => {
-  const documentId = createDocumentId(config, loggedInAccountId)
-  const documentMetadata = createDocumentMetadata(config)
-  return commitDocument(documentId, documentMetadata, appContext, { [loggedInAccountId]: config })
-}
-
 const saveConfig = (config) => {
   const emptyPages = getEmptyPages(config)
   if (emptyPages?.length) return emptyPages
-  const isConfigToPublishEdited = !isDeepEqual(config, guideConfig)
+  const isConfigToPublishEdited = !isDeepEqual(config, document.content)
   if (isConfigToPublishEdited) {
-    ;(document
-      ? saveToLinkDB(appContext, { [document.authorId]: config })
-      : getDocument(createDocumentId(config, loggedInAccountId)).then((existingDocument) => {
-          // console.log('existingDocument', existingDocument)
-          if (existingDocument) {
-            setPublishStatusMessage({
-              type: 'error',
-              text: err.message,
-            })
-            setSavingStarted(false)
-            throw new Error('A document with this ID already exists!')
-          }
-          return commitNewDocument(config)
-        })
-    )
-      ?.then(() => {
+    onCommitDocument(config)
+      .then((doc) => {
         console.log('Saved')
-        updateAfterSaving(config)
+        updateAfterSaving(doc)
       })
       .catch((err) => {
         console.log('err', err)
@@ -726,6 +703,12 @@ const handleSave = ({ newTitle, newDescription, newIcon }) => {
 }
 
 const handleMainButtonClick = (editActionValue) => {
+  if (!loggedInAccountId) {
+    return setPublishStatusMessage({
+      type: 'error',
+      text: 'You need to be logged in to publish a guide.',
+    })
+  }
   switch (editActionValue) {
     case 'publish':
       setSavingStarted(true)
@@ -766,8 +749,8 @@ return (
       children: (
         <Container>
           <Header>
-            <Title $didTheGuidePublished={!!guideConfig}>
-              {!!guideConfig ? (
+            <Title $didTheGuidePublished={!!document.content}>
+              {!!document.content ? (
                 "You're editing an existing guide"
               ) : (
                 <>
@@ -927,12 +910,13 @@ return (
                 {isConfigEdited ||
                 newTitle !== (title ?? '') ||
                 newDescription !== (description ?? '') ||
-                state.image?.cid !== icon?.ipfs_cid // ToDo: cid -> ipfs_cid -- to fix in the future
+                state.image?.cid !== icon?.ipfs_cid || // ToDo: cid -> ipfs_cid -- to fix in the future
+                localConfig
                   ? 'Delete all local changes'
                   : 'Cancel'}
               </SuccessButton>
               <Widget
-                src="${REPL_ACCOUNT}/widget/WebGuide.PublishDropdown"
+                src="${REPL_ACCOUNT}/widget/WebGuide.Components.PublishDropdown"
                 loading={
                   <ButtonPlaceholder>
                     <Loader $halfSize />

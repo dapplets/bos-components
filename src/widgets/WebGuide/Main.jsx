@@ -1,9 +1,62 @@
-const { linkDb: LinkDb, context: appContext, getDocument } = props
+const {
+  context: appContext,
+  getDocument,
+  commitDocument,
+  deleteLocalDocument,
+  notify,
+  query,
+} = props
 const loggedInAccountId = context.accountId
 
-const [document, setDocument] = useState(undefined) // null will be used if not found in DB
-const [guideConfig, setGuideConfig] = useState(undefined) // null will be used if not found in DB
+const [document, setDocument] = useState(undefined)
 const [showApp, setShowApp] = useState(true)
+const [localConfig, setLocalConfig] = useState(undefined)
+// console.log('document', document)
+// console.log('localConfig', localConfig)
+
+useEffect(() => {
+  if (!document) {
+    getDocument({ source: 'origin' })
+      .then((doc) => {
+        // console.log('doc', doc)
+        setDocument(doc)
+      })
+      .catch(console.error)
+  }
+  if (localConfig === undefined) {
+    getDocument({ source: 'local' })
+      .then((res) => {
+        // console.log('res', res)
+        res.content && setLocalConfig(res.content)
+      })
+      .catch(console.error)
+  }
+}, [])
+
+const handleCommitDocument = (config) => {
+  return commitDocument(
+    document
+      ? { ...document, content: config, source: 'origin' }
+      : {
+          metadata: {
+            name: config.title,
+            description: config.description,
+            image: config.icon,
+          },
+          source: 'origin',
+          content: config,
+        }
+  )
+}
+
+// ToDo: move to the engine?
+const MiniOverlayTarget = {
+  namespace: 'mweb',
+  contextType: 'mweb-overlay',
+  injectTo: 'mweb-actions-panel',
+  if: { id: { eq: 'mweb-overlay' } },
+  arrowTo: 'context',
+}
 
 const findParentContext = (context, type) => {
   if (!context) return null
@@ -20,49 +73,19 @@ const getMutationId = () => {
 const mutationId = getMutationId()
 const mutatorId = mutationId?.split('/')[0]
 
-useEffect(() => {
-  if (getDocument) {
-    //ToDo: remove it in the future
-    getDocument()
-      .then((doc) => {
-        setDocument(doc)
-        if (doc)
-          LinkDb.get(appContext, doc.authorId)
-            .then((response) => {
-              if (!response?.[doc.authorId]) return
-              setGuideConfig(response[doc.authorId])
-            })
-            .catch(console.error)
-      })
-      .catch(console.error)
-  } else {
-    LinkDb.get(appContext, mutatorId)
-      .then((response) => {
-        if (!response?.[mutatorId]) return
-        setGuideConfig(response[mutatorId])
-      })
-      .catch(console.error)
-  }
-}, [])
-
-// ToDo: move to the engine?
-const MiniOverlayTarget = {
-  namespace: 'mweb',
-  contextType: 'mweb-overlay',
-  injectTo: 'mweb-actions-panel',
-  if: { id: { eq: 'mweb-overlay' } },
-  arrowTo: 'context',
-}
-
-// editing allowed for document owner or mutator if document is not published yet
-const isEditAllowed = document
-  ? loggedInAccountId === document.authorId
-  : loggedInAccountId === mutatorId
+// editing allowed:
+// - for document owner or mutator if document is not published yet;
+// - if local document exists.
+const isEditAllowed =
+  !!localConfig ||
+  (document ? loggedInAccountId === document.authorId : loggedInAccountId === mutatorId)
 
 // If there is no config and the user is not a mutator do not show anything
 if (
   !isEditAllowed &&
-  (!guideConfig || !guideConfig.chapters?.length || !guideConfig.chapters[0].pages?.length)
+  (!document.content ||
+    !document.content.chapters?.length ||
+    !document.content.chapters[0].pages?.length)
 ) {
   return <></>
 }
@@ -85,21 +108,29 @@ return (
     <Widget
       src="${REPL_ACCOUNT}/widget/WebGuide.App"
       props={{
-        showApp,
-        closeApp: () => setShowApp(false),
-        setShowApp,
+        document,
+        localConfig,
+        isEditAllowed,
         loggedInAccountId,
         mutatorId,
-        document,
-        guideConfig,
-        setGuideConfig,
-        saveToLinkDB: LinkDb.set,
-        appContext,
-        commitDocument: props.commitDocument,
-        notify: props.notify,
-        query: props.query,
-        isEditAllowed,
+
+        showApp,
+        setShowApp,
+        notify,
+        query,
         getDocument,
+        setDocument,
+        deleteLocalDocument: () => deleteLocalDocument().then(() => setLocalConfig(null)),
+        onCommitDocument: handleCommitDocument,
+        onFork: () =>
+          commitDocument({ ...document, source: 'local' })
+            .then((doc) => setLocalConfig(doc.content))
+            .catch(console.error),
+        saveLocally: (content) =>
+          commitDocument({ ...document, content, source: 'local' })
+            .then((doc) => setLocalConfig(doc.content))
+            .catch(console.error),
+        closeApp: () => setShowApp(false),
       }}
     />
   </>

@@ -126,7 +126,7 @@ const NavigationGroup = styled.div`
   }
 `
 
-const NavigationButton = styled.div`
+const NavigationButton = styled.button`
   display: flex;
   box-sizing: border-box;
   width: 180px;
@@ -157,6 +157,7 @@ const NavigationButton = styled.div`
     }
     &:disabled {
       opacity: 0.3;
+      cursor: default;
     }
   }
 
@@ -175,12 +176,24 @@ const NavigationButton = styled.div`
 
     &:disabled {
       opacity: 0.3;
+      cursor: default;
     }
   }
 `
 
-const { navi, onClose, buttons, title, content, isEditAllowed, setEditMode, onClickPageIndicator } =
-  props
+const {
+  navi,
+  onClose,
+  buttons,
+  title,
+  content,
+  isEditAllowed,
+  setEditMode,
+  onClickPageIndicator,
+  onFork,
+} = props
+
+const [isLoading, setIsLoading] = useState(false)
 
 const Header = () => (
   <Widget
@@ -194,6 +207,9 @@ const Header = () => (
       onEditButtonClick: () => setEditMode(true),
       isEditAllowed,
       onClickPageIndicator: (index) => onClickPageIndicator({ index }),
+      onFork,
+      isLoading,
+      setIsLoading,
     }}
   />
 )
@@ -211,7 +227,7 @@ const NavButton = ({ btn }) => (
     key={btn.label}
     className={btn.variant}
     onClick={btn.onClick}
-    disabled={btn.disabled}
+    disabled={btn.disabled || isLoading}
   >
     {btn.label}
   </NavigationButton>
