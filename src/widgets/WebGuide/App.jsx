@@ -11,7 +11,6 @@ const {
   showApp,
   closeApp,
   setShowApp,
-  loggedInAccountId,
   mutatorId,
   document,
   notify,
@@ -23,6 +22,8 @@ const {
   onFork,
   saveLocally,
   deleteLocalDocument,
+  localConfig,
+  loggedInAccountId,
 } = props
 
 const configTemplate = { action: true }
@@ -34,18 +35,7 @@ const [chapterCounter, setChapterCounter] = useState(0)
 const [pageCounter, setPageCounter] = useState(0)
 const [isEditTarget, setEditTarget] = useState(false)
 const [noTarget, setNoTarget] = useState(false)
-const [localConfigResponse, setLocalConfigResponse] = useState(undefined)
-
-useEffect(() => {
-  if (localConfigResponse === undefined)
-    getDocument({ source: 'local' })
-      .then((res) => setLocalConfigResponse(res.content))
-      .catch(console.error)
-}, [])
-
-const localConfig =
-  localConfigResponse &&
-  (typeof localConfigResponse === 'string' ? JSON.parse(localConfigResponse) : localConfigResponse)
+// console.log('showInfoChapter', showInfoChapter)
 
 useEffect(() => {
   setShowInfoChapter(
@@ -57,6 +47,14 @@ useEffect(() => {
 }, [showApp])
 
 useEffect(() => {
+  // console.log(
+  //   '(!!document.content && (!localConfig || !!localConfig.chapters.length))',
+  //   !!document.content && (!localConfig || !!localConfig.chapters.length)
+  // )
+  // console.log(
+  //   '(!!localConfig && !!localConfig.chapters.length)',
+  //   !!localConfig && !!localConfig.chapters.length
+  // )
   setShowApp(
     (!!document.content && (!localConfig || !!localConfig.chapters.length)) ||
       (!!localConfig && !!localConfig.chapters.length) ||
@@ -74,7 +72,7 @@ useEffect(() => {
     setPageCounter(0)
     setEditMode(false)
   }
-}, [document.content, localConfig])
+}, [document.content])
 
 // If there is no target on the page, find the chapter to show or show the Info page to the mutator
 useEffect(() => {
@@ -500,8 +498,8 @@ const handleOpenChapters = (payload) => {
   setShowInfoChapter(false)
 }
 
-const updateAfterSaving = (config) => {
-  setDocument((val) => ({ ...val, content: config }))
+const updateAfterSaving = (newDocument) => {
+  setDocument(newDocument)
   setEditMode(false)
   setChapterCounter(0)
   setPageCounter(0)
@@ -598,7 +596,6 @@ const ChapterWrapper = (props) => {
         editingConfig,
         chapterCounter,
         pageCounter,
-        loggedInAccountId,
         onCommitDocument,
         onFork,
         updateAfterSaving,
@@ -617,6 +614,7 @@ const ChapterWrapper = (props) => {
         title: currentPage.title,
         content: currentPage.content,
         isEditAllowed,
+        loggedInAccountId,
         setEditMode,
         onClose: handleClose,
         onSkinToggle: handleSkinToggle,
@@ -658,6 +656,7 @@ const InfoComponent = (props) => (
       editingConfig,
       chapterCounter,
       pageCounter,
+      loggedInAccountId,
       onCommitDocument,
       updateAfterSaving,
       updateAfterNotSaving,

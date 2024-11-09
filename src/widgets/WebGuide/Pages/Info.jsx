@@ -620,6 +620,7 @@ const {
   chapterCounter,
   pageCounter,
   document,
+  loggedInAccountId,
   onCommitDocument,
   updateAfterSaving,
   updateAfterNotSaving,
@@ -669,9 +670,9 @@ const saveConfig = (config) => {
   const isConfigToPublishEdited = !isDeepEqual(config, document.content)
   if (isConfigToPublishEdited) {
     onCommitDocument(config)
-      .then(() => {
+      .then((doc) => {
         console.log('Saved')
-        updateAfterSaving(config)
+        updateAfterSaving(doc)
       })
       .catch((err) => {
         console.log('err', err)
@@ -700,6 +701,12 @@ const handleSave = ({ newTitle, newDescription, newIcon }) => {
 }
 
 const handleMainButtonClick = (editActionValue) => {
+  if (!loggedInAccountId) {
+    return setPublishStatusMessage({
+      type: 'error',
+      text: 'You need to be logged in to publish a guide.',
+    })
+  }
   switch (editActionValue) {
     case 'publish':
       setSavingStarted(true)

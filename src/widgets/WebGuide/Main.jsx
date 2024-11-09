@@ -1,18 +1,40 @@
-const { context: appContext, getDocument, commitDocument } = props
+const {
+  context: appContext,
+  getDocument,
+  commitDocument,
+  deleteLocalDocument,
+  notify,
+  query,
+} = props
 const loggedInAccountId = context.accountId
 
 const [document, setDocument] = useState(undefined)
 const [showApp, setShowApp] = useState(true)
+const [localConfig, setLocalConfig] = useState(undefined)
+// console.log('document', document)
+// console.log('localConfig', localConfig)
 
 useEffect(() => {
-  if (!document)
+  if (!document) {
     getDocument({ source: 'origin' })
-      .then((doc) => setDocument(doc))
+      .then((doc) => {
+        // console.log('doc', doc)
+        setDocument(doc)
+      })
       .catch(console.error)
+  }
+  if (localConfig === undefined) {
+    getDocument({ source: 'local' })
+      .then((res) => {
+        // console.log('res', res)
+        res.content && setLocalConfig(res.content)
+      })
+      .catch(console.error)
+  }
 }, [])
 
-const handleCommitDocument = (config) =>
-  commitDocument(
+const handleCommitDocument = (config) => {
+  return commitDocument(
     document
       ? { ...document, content: config, source: 'origin' }
       : {
@@ -25,6 +47,7 @@ const handleCommitDocument = (config) =>
           content: config,
         }
   )
+}
 
 // ToDo: move to the engine?
 const MiniOverlayTarget = {
@@ -50,10 +73,12 @@ const getMutationId = () => {
 const mutationId = getMutationId()
 const mutatorId = mutationId?.split('/')[0]
 
-// editing allowed for document owner or mutator if document is not published yet
-const isEditAllowed = document
-  ? loggedInAccountId === document.authorId
-  : loggedInAccountId === mutatorId
+// editing allowed:
+// - for document owner or mutator if document is not published yet;
+// - if local document exists.
+const isEditAllowed =
+  !!localConfig ||
+  (document ? loggedInAccountId === document.authorId : loggedInAccountId === mutatorId)
 
 // If there is no config and the user is not a mutator do not show anything
 if (
@@ -83,24 +108,29 @@ return (
     <Widget
       src="${REPL_ACCOUNT}/widget/WebGuide.App"
       props={{
-        showApp,
-        closeApp: () => setShowApp(false),
-        setShowApp,
+        document,
+        localConfig,
+        isEditAllowed,
         loggedInAccountId,
         mutatorId,
-        document,
-        notify: props.notify,
-        query: props.query,
-        isEditAllowed,
+
+        showApp,
+        setShowApp,
+        notify,
+        query,
         getDocument,
         setDocument,
+        deleteLocalDocument,
         onCommitDocument: handleCommitDocument,
-        onFork: () => commitDocument({ ...document, source: 'local' }),
+        onFork: () =>
+          commitDocument({ ...document, source: 'local' })
+            .then((doc) => setLocalConfig(doc.content))
+            .catch(console.error),
         saveLocally: (content) =>
           commitDocument({ ...document, content, source: 'local' })
-            .then((doc) => setDocument(doc))
+            .then((doc) => setLocalConfig(doc.content))
             .catch(console.error),
-        deleteLocalDocument: props.deleteLocalDocument,
+        closeApp: () => setShowApp(false),
       }}
     />
   </>
