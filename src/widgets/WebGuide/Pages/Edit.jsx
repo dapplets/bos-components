@@ -578,6 +578,7 @@ const {
   onExportConfig,
   onPlacementChange,
   onSkinToggle,
+  forkDocument,
 } = props
 
 const [newTitle, setNewTitle] = useState(title)
@@ -638,19 +639,19 @@ const handleSavePageChanges = () => {
   })
 }
 
-const saveConfig = (config) => {
+const saveConfig = (config, publishOrFork) => {
   const emptyPages = getEmptyPages(config)
   if (emptyPages?.length) return emptyPages
   const isConfigToPublishEdited = !isDeepEqual(config, document.content)
   if (isConfigToPublishEdited) {
-    onCommitDocument(config)
+    onCommitDocument(config, publishOrFork)
       .then((doc) => {
         console.log('Saved')
         updateAfterSaving(doc)
       })
       .catch((err) => {
         console.log('err', err)
-        if (err.message === 'Document with that ID already exists') {
+        if (err.message === 'Item with that ID already exists') {
           setPublishStatusMessage({
             type: 'error',
             text: err.message,
@@ -666,28 +667,38 @@ const saveConfig = (config) => {
   }
 }
 
-const handleSave = ({ newTitle, newContent }) => {
+const handleSave = ({ newTitle, newContent }, publishOrFork) => {
   const updatedConfig = deepCopy(editingConfig)
   const updatedPage = updatedConfig.chapters[chapterCounter].pages[pageCounter]
   updatedPage.title = newTitle
   updatedPage.content = newContent
-  return saveConfig(updatedConfig)
+  return saveConfig(updatedConfig, publishOrFork)
 }
 
-const handleMainButtonClick = (editActionValue) => {
+const loginAssertion = () => {
   if (!loggedInAccountId) {
-    return setPublishStatusMessage({
+    setPublishStatusMessage({
       type: 'error',
       text: 'You need to be logged in to publish a guide.',
     })
+    return false
   }
+  return true
+}
+
+const handleMainButtonClick = (editActionValue) => {
   switch (editActionValue) {
     case 'publish':
+    case 'fork':
+      if (!loginAssertion()) return
       setSavingStarted(true)
-      const emptyPages = handleSave({
-        newTitle,
-        newContent,
-      })
+      const emptyPages = handleSave(
+        {
+          newTitle,
+          newContent,
+        },
+        editActionValue
+      )
       if (emptyPages) {
         setSavingStarted(false)
         setPublishStatusMessage({
@@ -775,6 +786,15 @@ const navButtonsEdit = !buttons?.length ? null : buttons?.length > 1 ? (
     <div></div>
   </ActionsGroupEdit>
 )
+
+const hasChanges = isConfigEdited || newTitle !== title || newContent !== content || !!localConfig
+
+const customActions = [
+  { value: 'publish', title: 'Publish' },
+  { value: 'export', title: 'Export guide' },
+]
+if (hasChanges && loggedInAccountId === document.authorId)
+  customActions.push({ value: 'fork', title: 'Save as fork' })
 
 return (
   <>
@@ -913,9 +933,7 @@ return (
           onRemoveAllChanges()
         }}
       >
-        {isConfigEdited || newTitle !== title || newContent !== content || !!localConfig
-          ? 'Delete all local changes'
-          : 'Cancel'}
+        {hasChanges ? 'Delete all local changes' : 'Cancel'}
       </SuccessButton>
 
       <Widget
@@ -926,14 +944,9 @@ return (
           </ButtonPlaceholder>
         }
         props={{
-          disabled:
-            publishStatusMessage ||
-            !(isConfigEdited || newTitle !== title || newContent !== content),
+          disabled: publishStatusMessage || !hasChanges,
           onMainButtonClick: handleMainButtonClick,
-          customActions: [
-            { value: 'publish', title: 'Publish' },
-            { value: 'export', title: 'Export guide' },
-          ],
+          customActions,
         }}
       />
     </EditButtonsBlock>

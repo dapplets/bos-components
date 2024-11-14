@@ -24,6 +24,7 @@ const {
   deleteLocalDocument,
   localConfig,
   loggedInAccountId,
+  forkDocument,
 } = props
 
 const configTemplate = { action: true }
@@ -616,6 +617,7 @@ const ChapterWrapper = (props) => {
         isEditAllowed,
         loggedInAccountId,
         setEditMode,
+        forkDocument,
         onClose: handleClose,
         onSkinToggle: handleSkinToggle,
         onStartEditTarget: () => setEditTarget(true),
@@ -662,6 +664,7 @@ const InfoComponent = (props) => (
       updateAfterSaving,
       updateAfterNotSaving,
       setEditMode,
+      forkDocument,
       onRemoveAllChanges: handleRemoveAllChanges,
       onOpenChapters: handleOpenChapters,
       onClose: () => {

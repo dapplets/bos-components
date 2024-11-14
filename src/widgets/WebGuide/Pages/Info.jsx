@@ -626,6 +626,7 @@ const {
   onCommitDocument,
   updateAfterSaving,
   updateAfterNotSaving,
+  forkDocument,
 } = props
 
 const title = document?.metadata.name ?? editingConfig.title
@@ -666,19 +667,19 @@ const filesOnChange = (files) => {
     })
 }
 
-const saveConfig = (config) => {
+const saveConfig = (config, publishOrFork) => {
   const emptyPages = getEmptyPages(config)
   if (emptyPages?.length) return emptyPages
   const isConfigToPublishEdited = !isDeepEqual(config, document.content)
   if (isConfigToPublishEdited) {
-    onCommitDocument(config)
+    onCommitDocument(config, publishOrFork)
       .then((doc) => {
         console.log('Saved')
         updateAfterSaving(doc)
       })
       .catch((err) => {
         console.log('err', err)
-        if (err.message === 'Document with that ID already exists') {
+        if (err.message === 'Item with that ID already exists') {
           setPublishStatusMessage({
             type: 'error',
             text: err.message,
@@ -694,29 +695,39 @@ const saveConfig = (config) => {
   }
 }
 
-const handleSave = ({ newTitle, newDescription, newIcon }) => {
+const handleSave = ({ newTitle, newDescription, newIcon }, publishOrFork) => {
   const updatedConfig = deepCopy(editingConfig)
   updatedConfig.title = newTitle
   updatedConfig.description = newDescription
   updatedConfig.icon = newIcon
-  return saveConfig(updatedConfig)
+  return saveConfig(updatedConfig, publishOrFork)
 }
 
-const handleMainButtonClick = (editActionValue) => {
+const loginAssertion = () => {
   if (!loggedInAccountId) {
-    return setPublishStatusMessage({
+    setPublishStatusMessage({
       type: 'error',
       text: 'You need to be logged in to publish a guide.',
     })
+    return false
   }
+  return true
+}
+
+const handleMainButtonClick = (editActionValue) => {
   switch (editActionValue) {
     case 'publish':
+    case 'fork':
+      if (!loginAssertion()) return
       setSavingStarted(true)
-      const emptyPages = handleSave({
-        newTitle,
-        newDescription,
-        newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
-      })
+      const emptyPages = handleSave(
+        {
+          newTitle,
+          newDescription,
+          newIcon: state.image?.cid ? { ipfs_cid: state.image.cid } : icon, // ToDo: cid -> ipfs_cid -- to fix in the future
+        },
+        editActionValue
+      )
       if (emptyPages) {
         setSavingStarted(false)
         setPublishStatusMessage({
@@ -740,6 +751,20 @@ const handleButtonItemClick = (item) => {
   setCurrentEditAction(item)
   setIsSaveOrExportDropdownOpened(false)
 }
+
+const hasChanges =
+  isConfigEdited ||
+  newTitle !== title ||
+  newDescription !== description ||
+  state.image?.cid !== icon?.ipfs_cid ||
+  !!localConfig
+
+const customActions = [
+  { value: 'publish', title: 'Publish' },
+  { value: 'export', title: 'Export guide' },
+]
+if (hasChanges && loggedInAccountId === document.authorId)
+  customActions.push({ value: 'fork', title: 'Save as fork' })
 
 return (
   <Widget
@@ -907,13 +932,7 @@ return (
                   onRemoveAllChanges()
                 }}
               >
-                {isConfigEdited ||
-                newTitle !== (title ?? '') ||
-                newDescription !== (description ?? '') ||
-                state.image?.cid !== icon?.ipfs_cid || // ToDo: cid -> ipfs_cid -- to fix in the future
-                localConfig
-                  ? 'Delete all local changes'
-                  : 'Cancel'}
+                {hasChanges ? 'Delete all local changes' : 'Cancel'}
               </SuccessButton>
               <Widget
                 src="${REPL_ACCOUNT}/widget/WebGuide.Components.PublishDropdown"
@@ -923,21 +942,9 @@ return (
                   </ButtonPlaceholder>
                 }
                 props={{
-                  disabled:
-                    publishStatusMessage ||
-                    !(
-                      (
-                        isConfigEdited ||
-                        newTitle !== (title ?? '') ||
-                        newDescription !== (description ?? '') ||
-                        state.image?.cid !== icon?.ipfs_cid
-                      ) // ToDo: cid -> ipfs_cid -- to fix in the future
-                    ),
+                  disabled: publishStatusMessage || !hasChanges,
                   onMainButtonClick: handleMainButtonClick,
-                  customActions: [
-                    { value: 'publish', title: 'Publish' },
-                    { value: 'export', title: 'Export guide' },
-                  ],
+                  customActions,
                 }}
               />
             </EditButtonsBlock>

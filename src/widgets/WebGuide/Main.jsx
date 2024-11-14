@@ -33,15 +33,17 @@ useEffect(() => {
   }
 }, [])
 
-const handleCommitDocument = (config) => {
+const handleCommitDocument = (config, publishOrFork) => {
   return commitDocument(
-    document
+    document && publishOrFork === 'publish'
       ? { ...document, content: config, source: 'origin' }
       : {
           metadata: {
-            name: config.title,
-            description: config.description,
-            image: config.icon,
+            name:
+              (document?.metadata?.name ?? config.title) +
+              (publishOrFork === 'fork' ? ' (fork)' : ''),
+            description: document?.metadata?.description ?? config.description,
+            image: document?.metadata?.image ?? config.icon,
           },
           source: 'origin',
           content: config,
@@ -122,8 +124,8 @@ return (
         setDocument,
         deleteLocalDocument: () => deleteLocalDocument().then(() => setLocalConfig(null)),
         onCommitDocument: handleCommitDocument,
-        onFork: () =>
-          commitDocument({ ...document, source: 'local' })
+        onFork: (source) =>
+          commitDocument({ ...document, source: source ?? 'local' })
             .then((doc) => setLocalConfig(doc.content))
             .catch(console.error),
         saveLocally: (content) =>
