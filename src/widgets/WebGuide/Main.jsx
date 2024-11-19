@@ -104,6 +104,8 @@ return (
           src="${REPL_ACCOUNT}/widget/WebGuide.Tools.Action"
           props={{
             docId: document?.id,
+            docName: document?.metadata?.name,
+            docIcon: document?.metadata?.image,
             isActive: showApp,
             onClick: () => setShowApp((val) => !val),
           }}

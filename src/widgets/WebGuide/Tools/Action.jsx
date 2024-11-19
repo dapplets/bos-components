@@ -1,4 +1,4 @@
-const { docId, isActive, onClick } = props
+const { docId, docName, docIcon, isActive, onClick } = props
 
 const IconQuestionMark = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -16,9 +16,17 @@ return (
     loading={<></>}
     props={{
       appId: `web-guide${docId ? '-' + docId : ''}`,
-      tooltip: isActive ? 'Stop Web Guide' : 'Run Web Guide',
+      tooltip: `${docName ? docName + ': ' : ''}${isActive ? 'Stop Web Guide' : 'Run Web Guide'}`,
       isActive,
-      children: <IconQuestionMark />,
+      children: docIcon?.ipfs_cid ? (
+        <img
+          src={`https://ipfs.near.social/ipfs/${docIcon.ipfs_cid}`}
+          alt={`document icon`}
+          style={{ width: '100%' }}
+        />
+      ) : (
+        <IconQuestionMark />
+      ),
       onClick,
     }}
   />
