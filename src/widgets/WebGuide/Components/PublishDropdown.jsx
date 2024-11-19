@@ -9,7 +9,7 @@ const ButtonGroup = styled.div`
   overflow: hidden;
 `
 
-const LeftButton = styled('DappletFileDownloader')`
+const LeftButton = styled.button`
   flex: 1;
   display: flex;
   justify-content: center;
@@ -92,7 +92,7 @@ const ItemGroup = styled.div`
   overflow: hidden;
 `
 
-const DropdownButtonItem = styled.button`
+const DropdownButtonItem = styled('DappletFileDownloader')`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -128,23 +128,13 @@ const ArrowIcon = () => (
 )
 
 const { disabled, onMainButtonClick, customActions } = props
-
-const [currentEditAction, setCurrentEditAction] = useState(customActions[0])
 const [isOpen, setOpen] = useState(false)
-
-const handleButtonItemClick = (item) => {
-  setCurrentEditAction(item)
-  setOpen(false)
-}
 
 return (
   <DropdownWrapper>
     <ButtonGroup>
-      <LeftButton
-        disabled={disabled && currentEditAction.value === 'publish'}
-        onClick={() => onMainButtonClick(currentEditAction.value)}
-      >
-        <TextSave>{currentEditAction.title}</TextSave>
+      <LeftButton disabled={disabled} onClick={() => onMainButtonClick(customActions[0].value)}>
+        <TextSave>{customActions[0].title}</TextSave>
       </LeftButton>
 
       <RightButton onClick={() => setOpen(!isOpen)}>
@@ -154,10 +144,10 @@ return (
 
     {isOpen ? (
       <ItemGroup>
-        {customActions.map((customAction) => (
+        {customActions.slice(1).map((customAction) => (
           <DropdownButtonItem
             key={customAction.value}
-            onClick={() => handleButtonItemClick(customAction)}
+            onClick={() => onMainButtonClick(customAction.value)}
           >
             {customAction.title}
           </DropdownButtonItem>
