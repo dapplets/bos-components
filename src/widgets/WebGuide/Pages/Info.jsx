@@ -671,27 +671,36 @@ const saveConfig = (config, publishOrFork) => {
   const emptyPages = getEmptyPages(config)
   if (emptyPages?.length) return emptyPages
   const isConfigToPublishEdited = !isDeepEqual(config, document.content)
-  if (isConfigToPublishEdited) {
+  if (isConfigToPublishEdited || publishOrFork === 'fork') {
     onCommitDocument(config, publishOrFork)
       .then((doc) => {
         console.log('Saved')
-        updateAfterSaving(doc)
+        updateAfterSaving(onCommitDocument === handleCommitDocument ? doc : undefined)
       })
       .catch((err) => {
-        console.log('err', err)
         if (err.message === 'Item with that ID already exists') {
+          console.error(err)
           setPublishStatusMessage({
             type: 'error',
             text: err.message,
           })
-          setSavingStarted(false)
         } else {
-          console.error(err)
+          setPublishStatusMessage({
+            type: 'error',
+            text: 'Something went wrong. Please try again.',
+          })
         }
+        console.error(err)
+        setSavingStarted(false)
       })
   } else {
-    console.log('Not saved')
-    updateAfterNotSaving()
+    setPublishStatusMessage({
+      type: 'error',
+      text: 'Edit the document first.',
+    })
+    setSavingStarted(false)
+    // console.log('Not saved')
+    // updateAfterNotSaving()
   }
 }
 
@@ -763,7 +772,7 @@ const customActions = [
   { value: 'publish', title: 'Publish' },
   { value: 'export', title: 'Export guide' },
 ]
-if (hasChanges && loggedInAccountId === document.authorId)
+if (loggedInAccountId === document.authorId)
   customActions.push({ value: 'fork', title: 'Save as fork' })
 
 return (

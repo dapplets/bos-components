@@ -34,6 +34,9 @@ useEffect(() => {
 }, [])
 
 const handleCommitDocument = (config, publishOrFork) => {
+  // console.log('config', config)
+  // console.log('document', document)
+  // console.log('publishOrFork', publishOrFork)
   return commitDocument(
     document && publishOrFork === 'publish'
       ? { ...document, content: config, source: 'origin' }
@@ -129,7 +132,18 @@ return (
             .then((doc) => setLocalConfig(doc.content))
             .catch(console.error),
         saveLocally: (content) =>
-          commitDocument({ ...document, content, source: 'local' })
+          commitDocument({
+            ...document,
+            metadata: {
+              name:
+                (document?.metadata?.name ?? config.title) +
+                (publishOrFork === 'fork' ? ' (fork)' : ''),
+              description: document?.metadata?.description ?? config.description,
+              image: document?.metadata?.image ?? config.icon,
+            },
+            content,
+            source: 'local',
+          })
             .then((doc) => setLocalConfig(doc.content))
             .catch(console.error),
         closeApp: () => setShowApp(false),

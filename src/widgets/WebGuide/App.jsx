@@ -500,7 +500,7 @@ const handleOpenChapters = (payload) => {
 }
 
 const updateAfterSaving = (newDocument) => {
-  setDocument(newDocument)
+  setDocument(newDocument ?? document)
   setEditMode(false)
   setChapterCounter(0)
   setPageCounter(0)
