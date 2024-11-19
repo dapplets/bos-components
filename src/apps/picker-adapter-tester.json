@@ -3,7 +3,7 @@
     "name": "Picker Adapter Tester",
     "description": "Test adapters with Picker"
   },
-  "controller": "${REPL_ACCOUNT}/widget/WebGuide.Main",
+  "controller": "${REPL_ACCOUNT}/widget/PickerAdapterTester.Main",
   "$targets": [
     {
       "namespace": "engine",

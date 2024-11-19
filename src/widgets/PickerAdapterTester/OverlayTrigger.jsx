@@ -9,7 +9,7 @@ return (
     overlay={
       <div>
         <Widget
-          src="bos.dapplets.near/widget/PickerAdapterTester.Input"
+          src="${REPL_ACCOUNT}/widget/PickerAdapterTester.Input"
           loading={<></>}
           props={{
             handleClose,
