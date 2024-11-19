@@ -32,7 +32,7 @@ ${JSON.stringify(selectedContext.parsed, null, 2)}
   }
   return (
     <Widget
-      src="bos.dapplets.near/widget/WebGuide.OverlayTrigger"
+      src="${REPL_ACCOUNT}/widget/WebGuide.OverlayTrigger"
       loading={<></>}
       props={widgetProps}
     />
@@ -52,7 +52,7 @@ return (
       }}
       component={() => (
         <Widget
-          src="bos.dapplets.near/widget/ActionButton"
+          src="${REPL_ACCOUNT}/widget/ActionButton"
           props={{
             appId: 'picker-adapter-tester',
             tooltip: isRunnigApp ? 'Stop Picker Adapter Tester' : 'Run Picker Adapter Tester',
@@ -83,7 +83,7 @@ return (
         inMemory
         component={(props) => (
           <Widget
-            src="bos.dapplets.near/widget/PickerAdapterTester.OverlayTrigger"
+            src="${REPL_ACCOUNT}/widget/PickerAdapterTester.OverlayTrigger"
             loading={<></>}
             props={{
               handleClose: () => {
