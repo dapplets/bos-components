@@ -133,7 +133,13 @@ const [isOpen, setOpen] = useState(false)
 return (
   <DropdownWrapper>
     <ButtonGroup>
-      <LeftButton disabled={disabled} onClick={() => onMainButtonClick(customActions[0].value)}>
+      <LeftButton
+        disabled={disabled}
+        onClick={() => {
+          setOpen(false)
+          onMainButtonClick(customActions[0].value)
+        }}
+      >
         <TextSave>{customActions[0].title}</TextSave>
       </LeftButton>
 
@@ -147,7 +153,10 @@ return (
         {customActions.slice(1).map((customAction) => (
           <DropdownButtonItem
             key={customAction.value}
-            onClick={() => onMainButtonClick(customAction.value)}
+            onClick={() => {
+              setOpen(false)
+              return onMainButtonClick(customAction.value) // 'return' is needed for DappletFileDownloader
+            }}
           >
             {customAction.title}
           </DropdownButtonItem>
