@@ -19,9 +19,6 @@ const generateNewChapter = () => ({
 
 const deepCopy = (obj) => JSON.parse(JSON.stringify(obj))
 
-// ToDo: naive deep compare
-const isDeepEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b)
-
 const isTargetEqual = (a, b) => {
   if (!a && !b) return true
   if (!a || !b || a.id !== b.id || a.namespace !== b.namespace || a.type !== b.type) return false
@@ -49,7 +46,6 @@ return {
   generateNewPage,
   generateNewChapter,
   deepCopy,
-  isDeepEqual,
   isTargetEqual,
   clearTreeBranch,
   getEmptyPages,

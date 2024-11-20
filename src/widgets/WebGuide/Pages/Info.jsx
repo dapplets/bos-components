@@ -1,4 +1,4 @@
-const { getEmptyPages, isDeepEqual, deepCopy } = VM.require('${REPL_ACCOUNT}/widget/WebGuide.Utils')
+const { getEmptyPages, deepCopy } = VM.require('${REPL_ACCOUNT}/widget/WebGuide.Utils')
 
 const Container = styled.div`
   position: relative;
@@ -633,7 +633,6 @@ const title = document?.metadata.name ?? editingConfig.title
 const description = document?.metadata.description ?? editingConfig.description
 const icon = document?.metadata.image ?? editingConfig.icon
 const hasChapters = !!editingConfig.chapters?.length
-const isConfigEdited = !isDeepEqual(document.content, editingConfig)
 
 State.init({ image: icon && icon.ipfs_cid ? { cid: icon.ipfs_cid } : {} }) // ToDo: ipfs_cid -> cid -- to fix in the future
 const [newTitle, setNewTitle] = useState(title ?? '')
@@ -651,6 +650,8 @@ useEffect(() => {
 }, [title, description, icon])
 
 useEffect(() => setPublishStatusMessage(null), [newTitle])
+
+const isConfigEdited = JSON.stringify(document.content) !== JSON.stringify(editingConfig)
 
 const filesOnChange = (files) => {
   if (!files?.length) return
@@ -670,7 +671,7 @@ const filesOnChange = (files) => {
 const saveConfig = (config, publishOrFork) => {
   const emptyPages = getEmptyPages(config)
   if (emptyPages?.length) return emptyPages
-  const isConfigToPublishEdited = !isDeepEqual(config, document.content)
+  const isConfigToPublishEdited = JSON.stringify(config) !== JSON.stringify(document.content)
   if (isConfigToPublishEdited || publishOrFork === 'fork') {
     onCommitDocument(config, publishOrFork)
       .then((doc) => {

@@ -1,11 +1,6 @@
-const {
-  generateNewPage,
-  generateNewChapter,
-  deepCopy,
-  isDeepEqual,
-  isTargetEqual,
-  clearTreeBranch,
-} = VM.require('${REPL_ACCOUNT}/widget/WebGuide.Utils')
+const { generateNewPage, generateNewChapter, deepCopy, clearTreeBranch } = VM.require(
+  '${REPL_ACCOUNT}/widget/WebGuide.Utils'
+)
 
 const {
   showApp,
@@ -36,7 +31,6 @@ const [chapterCounter, setChapterCounter] = useState(0)
 const [pageCounter, setPageCounter] = useState(0)
 const [isEditTarget, setEditTarget] = useState(false)
 const [noTarget, setNoTarget] = useState(false)
-// console.log('showInfoChapter', showInfoChapter)
 
 useEffect(() => {
   setShowInfoChapter(
@@ -48,14 +42,6 @@ useEffect(() => {
 }, [showApp])
 
 useEffect(() => {
-  // console.log(
-  //   '(!!document.content && (!localConfig || !!localConfig.chapters.length))',
-  //   !!document.content && (!localConfig || !!localConfig.chapters.length)
-  // )
-  // console.log(
-  //   '(!!localConfig && !!localConfig.chapters.length)',
-  //   !!localConfig && !!localConfig.chapters.length
-  // )
   setShowApp(
     (!!document.content && (!localConfig || !!localConfig.chapters.length)) ||
       (!!localConfig && !!localConfig.chapters.length) ||
@@ -64,10 +50,13 @@ useEffect(() => {
   setShowInfoChapter((!document.content && !localConfig) || showInfoChapter)
 
   if (localConfig) {
-    if (!isDeepEqual(localConfig, editingConfig)) {
+    if (JSON.stringify(localConfig) !== JSON.stringify(editingConfig)) {
       setEditingConfig(localConfig)
     }
-  } else if (document.content && !isDeepEqual(document.content, editingConfig)) {
+  } else if (
+    document.content &&
+    JSON.stringify(document.content) !== JSON.stringify(editingConfig)
+  ) {
     setEditingConfig(document.content)
     setChapterCounter(0)
     setPageCounter(0)

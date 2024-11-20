@@ -1,4 +1,4 @@
-const { getEmptyPages, isDeepEqual, deepCopy, isTargetEqual } = VM.require(
+const { getEmptyPages, deepCopy, isTargetEqual } = VM.require(
   '${REPL_ACCOUNT}/widget/WebGuide.Utils'
 )
 
@@ -592,7 +592,7 @@ useEffect(() => {
   setPublishStatusMessage(null)
 }, [navi, title, content, chapterCounter, pageCounter])
 
-const isConfigEdited = !isDeepEqual(editingConfig, document.content)
+const isConfigEdited = JSON.stringify(editingConfig) !== JSON.stringify(document.content)
 const currentChapter = editingConfig.chapters[chapterCounter]
 const currentPage = currentChapter.pages[pageCounter]
 
@@ -624,7 +624,7 @@ const checkIsPageEdited = () => {
 
   const targetChanged = isTargetChanged()
   if (!originalCurrentPage) return !(!currentPage.title && !currentPage.content && !targetChanged)
-  return !(isDeepEqual(currentPage, originalCurrentPage) && !targetChanged)
+  return !(JSON.stringify(currentPage) === JSON.stringify(originalCurrentPage) && !targetChanged)
 }
 
 const isPageEdited = checkIsPageEdited()
@@ -642,7 +642,7 @@ const handleSavePageChanges = () => {
 const saveConfig = (config, publishOrFork) => {
   const emptyPages = getEmptyPages(config)
   if (emptyPages?.length) return emptyPages
-  const isConfigToPublishEdited = !isDeepEqual(config, document.content)
+  const isConfigToPublishEdited = JSON.stringify(config) !== JSON.stringify(document.content)
   if (isConfigToPublishEdited || publishOrFork === 'fork') {
     onCommitDocument(config, publishOrFork)
       .then((doc) => {
