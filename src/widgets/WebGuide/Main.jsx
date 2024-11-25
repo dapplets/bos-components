@@ -51,7 +51,7 @@ const handleCommitDocument = (config, publishOrFork) => {
           source: 'origin',
           content: config,
         }
-  )
+  ).then(() => deleteLocalDocument()).catch(console.error)
 }
 
 // ToDo: move to the engine?
