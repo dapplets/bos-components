@@ -256,7 +256,10 @@ return (
             disabled={isLoading}
             onClick={() => {
               setIsLoading(true)
-              onFork().then(() => setIsLoading(false))
+              onFork().then(() => {
+                setIsLoading(false)
+                onEditButtonClick()
+              })
             }}
           >
             {isLoading ? <Loader $halfSize /> : <ForkIcon />}
