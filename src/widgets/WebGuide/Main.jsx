@@ -11,8 +11,41 @@ const loggedInAccountId = context.accountId
 const [document, setDocument] = useState(undefined)
 const [showApp, setShowApp] = useState(true)
 const [localConfig, setLocalConfig] = useState(undefined)
-// console.log('document', document)
-// console.log('localConfig', localConfig)
+
+const waitingForSavingState = {
+  waiting: 'Waiting',
+  checking: 'Checking',
+  saved: 'Saved',
+  not: 'Not waiting',
+}
+const [waitingForSaving, setWaitingForSaving] = useState(waitingForSavingState.not)
+console.log('document', document)
+console.log('localConfig', localConfig)
+
+const fn = () => {
+  if (waitingForSaving === waitingForSavingState.waiting) {
+    setTimeout(() => {
+      setWaitingForSaving(waitingForSavingState.checking)
+    }, 1000)
+  } else if (waitingForSaving === waitingForSavingState.checking) {
+    getDocument({ source: 'origin' })
+      .then((doc) => {
+        console.log('doc', doc)
+        console.log('document', document)
+        if (JSON.stringify(doc) === JSON.stringify(document)) {
+          setWaitingForSaving(waitingForSavingState.waiting)
+        } else {
+          console.log('end')
+          setDocument(doc)
+          setWaitingForSaving(waitingForSavingState.saved)
+        }
+      })
+  }
+}
+
+useEffect(() => {
+  fn()
+}, [waitingForSaving])
 
 useEffect(() => {
   if (!document) {
@@ -129,6 +162,8 @@ return (
         setDocument,
         deleteLocalDocument: () => deleteLocalDocument().then(() => setLocalConfig(null)),
         onCommitDocument: handleCommitDocument,
+        setWaitingForSaving,
+        waitingForSavingState,
         onFork: (source) =>
           commitDocument({ ...document, source: source ?? 'local' })
             .then((doc) => setLocalConfig(doc.content))

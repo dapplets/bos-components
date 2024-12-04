@@ -553,6 +553,8 @@ const {
   chapterCounter,
   pageCounter,
   onCommitDocument,
+  setWaitingForSaving,
+  waitingForSavingState,
   updateAfterSaving,
   updateAfterNotSaving,
   navi,
@@ -643,11 +645,15 @@ const saveConfig = (config, publishOrFork) => {
   const emptyPages = getEmptyPages(config)
   if (emptyPages?.length) return emptyPages
   const isConfigToPublishEdited = JSON.stringify(config) !== JSON.stringify(document.content)
+  console.log('config', config)
+  console.log('publishOrFork', publishOrFork)
+  console.log('isConfigToPublishEdited', isConfigToPublishEdited)
   if (isConfigToPublishEdited || publishOrFork === 'fork') {
     onCommitDocument(config, publishOrFork)
       .then((doc) => {
         console.log('Saved')
-        updateAfterSaving(onCommitDocument === handleCommitDocument ? doc : undefined)
+        setWaitingForSaving(waitingForSavingState.waiting)
+        // updateAfterSaving(onCommitDocument === handleCommitDocument ? doc : undefined)
       })
       .catch((err) => {
         if (err.message === 'Item with that ID already exists') {
