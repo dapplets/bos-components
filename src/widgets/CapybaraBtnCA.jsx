@@ -9,7 +9,7 @@ return (
       padding: 2,
       cursor: 'pointer',
     }}
-    title="Capybara 1.0"
+    title="Capybara CA"
     onClick={(e) => {
       e.preventDefault()
       e.stopPropagation()
