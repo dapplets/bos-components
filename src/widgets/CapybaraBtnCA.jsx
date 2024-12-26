@@ -1,4 +1,5 @@
 const { getConnectedAccountsNet } = props
+const loggedInAccountId = context.accountId
 
 return (
   <button
@@ -13,8 +14,13 @@ return (
     onClick={(e) => {
       e.preventDefault()
       e.stopPropagation()
-      const connectedAccounts = getConnectedAccountsNet()
-      console.log('Connected Accounts:', connectedAccounts)
+      getConnectedAccountsNet(loggedInAccountId, 'near/testnet').then((data) =>
+        console.log(`Connected Accounts for logged in account ${loggedInAccountId}:`, data)
+      )
+      const ethAddr = '0xf64849376812667bda7d902666229f8b8dd90687'
+      getConnectedAccountsNet(ethAddr, 'ethereum').then((data) =>
+        console.log(`Connected Accounts for ethereum account ${ethAddr}:`, data)
+      )
     }}
   >
     <Widget src="${REPL_ACCOUNT}/widget/Capybara" />
