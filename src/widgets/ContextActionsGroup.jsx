@@ -34,11 +34,6 @@ const handleSelectComponent = (app) => {
     })
 }
 
-const OverlayTriggerWrapper = styled.div`
-  display: flex;
-  z-index: 500;
-`
-
 const FloatingModal = styled.div`
   position: absolute;
   left: 50%;
@@ -58,7 +53,7 @@ const FloatingModal = styled.div`
 `
 
 return (
-  <OverlayTriggerWrapper onMouseOver={handleOnMouseEnter}>
+  <div style={{ display: 'flex', zIndex: 500 }} onMouseOver={handleOnMouseEnter}>
     <Widget
       src="${REPL_ACCOUNT}/widget/LayoutManager.TriggerEar"
       props={{ show: state.show, context }}
@@ -98,5 +93,5 @@ return (
         </FloatingModal>
       </DappletOverlay>
     ) : null}
-  </OverlayTriggerWrapper>
+  </div>
 )
