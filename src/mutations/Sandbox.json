@@ -11,6 +11,7 @@
     "${REPL_ACCOUNT}/app/Tipping",
     "${REPL_ACCOUNT}/app/picker-example",
     "${REPL_ACCOUNT}/app/BlinkExample",
+    "${REPL_ACCOUNT}/app/AiAgent",
     {
       "appId": "${REPL_ACCOUNT}/app/WebGuide",
       "documentId": "${REPL_ACCOUNT}/document/WelcomeGuide"
