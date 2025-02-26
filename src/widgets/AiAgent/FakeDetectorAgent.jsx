@@ -229,7 +229,7 @@ const buttonType =
   score < 34 ? ButtonTypes.LAME : score < 67 ? ButtonTypes.UNCLEAR : ButtonTypes.CONVINCINGLY
 
 return (
-  <div style={{ width: '100%', margin: '6px 0' }}>
+  <div style={{ width: '100%', margin: '-6px 0 6px' }}>
     <Button
       $type={buttonType}
       className={isOpened ? 'btn btn-primary' : 'btn btn-primary collapsed'}
