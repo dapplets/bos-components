@@ -24,6 +24,8 @@ const Label = styled.div`
 
 const { contextR: context, config } = props
 
+console.log('context', context)
+
 const [isOpened, setIsOpened] = useState(false)
 const [isSwitchingState, setIsSwitchingState] = useState(false)
 
@@ -49,7 +51,7 @@ const data = useCache(
       body: JSON.stringify(payload),
     }).then((x) => x?.body?.context?.parsedContext),
   `sentiment-analysis/id=${context.id}`,
-  { subscribe: false }
+  { subscribe: true }
 )
 console.log('data', data)
 
