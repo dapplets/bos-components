@@ -205,7 +205,20 @@ console.log('data', data)
 
 if (!data) return <></>
 
-let { score, explanation } = data
+let score, explanation
+
+if (data.score && data.explanation) {
+  score = data.score
+  explanation = data.explanation
+} else if (data.result?.raw_answer) {
+  const [rawScore, justification] = data.result.raw_answer.split('\n\n')
+  score = isNaN(Number(rawScore)) ? Number(rawScore.split(' ')[1]) : Number(rawScore)
+  explanation = justification
+} else {
+  return <></>
+}
+
+score *= 100
 const buttonType =
   score < 34 ? ButtonTypes.LAME : score < 67 ? ButtonTypes.UNCLEAR : ButtonTypes.CONVINCINGLY
 
