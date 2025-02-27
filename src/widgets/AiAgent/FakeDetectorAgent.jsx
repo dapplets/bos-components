@@ -4,17 +4,25 @@ const ButtonTypes = {
   CONVINCINGLY: 'Convincingly',
 }
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: -6px 0 6px;
+  width: 100%;
+`
+
 const Button = styled.button`
   box-sizing: border-box;
   display: flex !important;
   justify-content: space-between;
   align-items: center;
   text-align: center;
-  width: 100%;
   border: none !important;
   border-radius: 10px 10px 0 0 !important;
   padding: 4px 10px !important;
   gap: 5px;
+  width: 100%;
   cursor: pointer;
 
   font-family: system-ui, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
@@ -36,6 +44,7 @@ const Button = styled.button`
   &.collapsed {
     border-radius: 10px 10px 10px 10px !important;
     padding: 4px 6px !important;
+    width: auto;
   }
 
   > div {
@@ -79,43 +88,16 @@ const Button = styled.button`
     line-height: 17.88px !important;
     letter-spacing: 0% !important;
   }
+`
 
-  /* &.primary {
-    border: initial;
-    background: var(--primBtnBg);
-    color: var(--primBtnCol);
-
-    &:hover&:not(:disabled) {
-      background: var(--primBtnBgH);
-    }
-
-    &:active&:not(:disabled) {
-      background: var(--primBtnBgA);
-    }
-    &:disabled {
-      opacity: 0.3;
-      cursor: default;
-    }
+const Collaps = styled.div`
+  transform: scaleY(1);
+  height: auto;
+  &.collapse:not(.show) {
+    display: block !important;
+    transform: scaleY(0) !important;
+    height: 0 !important;
   }
-
-  &.secondary {
-    border: 1px solid var(--secBtnBorderCol);
-    background: initial;
-    color: var(--secBtnCol);
-
-    &:hover&:not(:disabled) {
-      background: var(--secBtnBgH);
-    }
-
-    &:active&:not(:disabled) {
-      background: var(--secBtnBgA);
-    }
-
-    &:disabled {
-      opacity: 0.3;
-      cursor: default;
-    }
-  } */
 `
 
 const Content = styled.div`
@@ -217,7 +199,7 @@ const data = useCache(
       body: JSON.stringify(payload),
     }).then((x) => x?.body?.context?.parsedContext),
   `fakeDetectorStatus/id=${context.id}`,
-  { subscribe: true }
+  { subscribe: false }
 )
 console.log('data', data)
 
@@ -228,7 +210,7 @@ const buttonType =
   score < 34 ? ButtonTypes.LAME : score < 67 ? ButtonTypes.UNCLEAR : ButtonTypes.CONVINCINGLY
 
 return (
-  <div style={{ width: '100%', margin: '-6px 0 6px' }}>
+  <Container>
     <Button
       $type={buttonType}
       className={isOpened ? 'btn btn-primary' : 'btn btn-primary collapsed'}
@@ -260,11 +242,11 @@ return (
         </div>
       ) : null}
     </Button>
-    <div
+    <Collaps
       className={isSwitchingState ? 'collapsing' : isOpened ? 'collapse show' : 'collapse'}
       id="collapseExample"
     >
       <Content className="card card-body">{explanation}</Content>
-    </div>
-  </div>
+    </Collaps>
+  </Container>
 )
