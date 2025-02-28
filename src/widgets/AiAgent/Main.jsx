@@ -38,9 +38,20 @@ const SentimentAnalysisAgent = (props) => {
   )
 }
 
+const AssociativeSummarizer = (props) => {
+  return (
+    <Widget
+      src="${REPL_ACCOUNT}/widget/AiAgent.AssociativeSummarizer"
+      props={{ contextR: props.context, config }}
+      loading={<></>}
+    />
+  )
+}
+
 return (
   <>
     <DappletPortal target={postContextTarget('beforeText')} component={FakeDetectorAgent} />
     <DappletPortal target={postContextTarget('userName')} component={SentimentAnalysisAgent} />
+    <DappletPortal target={postContextTarget('northPanel')} component={AssociativeSummarizer} />
   </>
 )
