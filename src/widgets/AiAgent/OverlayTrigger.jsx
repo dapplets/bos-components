@@ -4,8 +4,8 @@ return (
   <DappletOverlayTrigger
     show={true}
     popperConfig="fixed"
-    placement="right"
-    offset={[0, 10]}
+    placement="bottom"
+    offset={[182, -52]}
     overlay={
       <div>
         <Widget
