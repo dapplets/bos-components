@@ -87,8 +87,8 @@ const data = useCache(
 
 // console.log('data', data)
 
-if (!data || !context?.id) return <></>
-if (!data.body?.context?.parsedContext) {
+if (!data?.body?.context || !context?.id) return <></>
+if (!data.body.context.parsedContext) {
   console.error('Wrong data format:', data)
   return <></>
 }
@@ -96,8 +96,8 @@ if (!data.body?.context?.parsedContext) {
 const handleClose = () => setIsOpened(false)
 
 const Wrapper = (props) => {
-  console.log('context', context)
-  console.log('props.context?.level', props.context?.level)
+  // console.log('context', context)
+  // console.log('props.context?.level', props.context?.level)
   const widgetProps = {
     id: context.id,
     onClose: handleClose,
