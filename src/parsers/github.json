@@ -25,9 +25,8 @@
       "props": {
         "id": "string('global')",
         "websiteName": "string('GitHub')",
-        "username": "normalize-space(string(//div[@class='Overlay-titleWrap']//span[@class='Truncate-text']))",
-        "fullname": "normalize-space(string(//div[@class='Overlay-titleWrap']//span[@class='Truncate-text']/../../span[2]))",
-        "img": "string(//div[@class='Overlay-titleWrap']//img/@src)",
+        "username": "string(//html/head/meta[@name='user-login']/@content)",
+        "img": "string(//img[contains(@class,'avatar')][contains(@class,'circle')]/@src)",
         "url": "string(//html/head/meta[@property='og:url']/@content)"
       },
       "children": ["post", "profile"]

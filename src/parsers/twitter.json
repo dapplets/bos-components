@@ -43,10 +43,10 @@
       "props": {
         "id": "string('global')",
         "websiteName": "string('X')",
-        "username": "substring-after(string(//header//a[@aria-label='Profile']/@href), '/')",
-        "fullname": "string(//*[@aria-label='Account menu']//img/@alt)",
-        "img": "string(//*[@aria-label='Account menu']//img/@src)",
-        "url": "string(//html/head/meta[@property='og:url']/@content)"
+        "username": "substring-after(string(//header//a[@data-testid='AppTabBar_Profile_Link']/@href), '/')",
+        "fullname": "string(//*[@data-testid='SideNav_AccountSwitcher_Button']//img/@alt)",
+        "img": "string(//*[@data-testid='SideNav_AccountSwitcher_Button']//img/@src)",
+        "url": "string(//html/head/link[@rel='canonical']/@href)"
       },
       "children": ["timeline", "profile"]
     },
