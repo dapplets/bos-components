@@ -217,7 +217,7 @@ const data = useCache(
       body: JSON.stringify(payload),
     }).then((x) => x?.body?.context?.parsedContext?.result?.raw_answer),
   `fakeDetectorStatus/id=${context.id}`,
-  { subscribe: false }
+  { subscribe: true }
 )
 // console.log('data', data)
 

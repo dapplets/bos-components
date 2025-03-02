@@ -23,6 +23,7 @@ const FakeDetectorAgent = (props) => {
     <Widget
       src="${REPL_ACCOUNT}/widget/AiAgent.FakeDetectorAgent"
       props={{ contextR: props.context, config }}
+      loading={<></>}
     />
   )
 }
@@ -32,6 +33,7 @@ const SentimentAnalysisAgent = (props) => {
     <Widget
       src="${REPL_ACCOUNT}/widget/AiAgent.SentimentAnalysisAgent"
       props={{ contextR: props.context, config }}
+      loading={<></>}
     />
   )
 }
