@@ -190,7 +190,7 @@ const AigencyLabel = (
 )
 
 const { contextR: context, config } = props
-console.log('context', context)
+// console.log('context', context)
 
 const [isOpened, setIsOpened] = useState(false)
 const [isSwitchingState, setIsSwitchingState] = useState(false)
@@ -219,7 +219,7 @@ const data = useCache(
   `fakeDetectorStatus/id=${context.id}`,
   { subscribe: false }
 )
-console.log('data', data)
+// console.log('data', data)
 
 if (!data) return <></>
 
