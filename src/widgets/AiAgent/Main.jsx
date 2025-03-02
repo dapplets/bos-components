@@ -1,35 +1,30 @@
 const NetworkConfigs = {
   mainnet: {
-    backendUrl: 'http://localhost:3001',
+    backendUrl: 'https://api.aigency.augm.link',
   },
   testnet: {
-    backendUrl: 'http://localhost:3001',
+    backendUrl: 'https://api.aigency.augm.link',
   },
 }
 
 const config = NetworkConfigs[context.networkId]
 
-if (!config) {
-  return <></>
+if (!config) return <></>
+
+const PostContextTarget = {
+  namespace: '${REPL_ACCOUNT}/parser/twitter',
+  contextType: 'post',
+  injectTo: 'afterText',
+  if: { id: { not: null } },
 }
 
-const NewContextHandler = (props) => {
-  const { context } = props
-
-  useEffect(() => {
-    // dapplets.near/agent/fake-detector
-    // dapplets.near/agent/sentiment-analysis
-    // dapplets.near/agent/associative-summarizer
-
-    const agentId = 'dapplets.near/agent/sentiment-analysis'
-    const url = `${config.backendUrl}/context/invoke-agent`
-    const payload = { context, agentId }
-    fetch(url, { method: 'POST', body: JSON.stringify(payload) })
-  }, [context])
-
-  return <></>
+const FakeDetectorAgent = (props) => {
+  return (
+    <Widget
+      src="${REPL_ACCOUNT}/widget/AiAgent.FakeDetectorAgent"
+      props={{ contextR: props.context, config }}
+    />
+  )
 }
 
-const AnyContextTarget = {}
-
-return <DappletPortal inMemory target={AnyContextTarget} component={NewContextHandler} />
+return <DappletPortal target={PostContextTarget} component={FakeDetectorAgent} />
