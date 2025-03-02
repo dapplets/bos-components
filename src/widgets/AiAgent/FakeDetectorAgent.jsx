@@ -177,7 +177,7 @@ const { contextR: context, config } = props
 const [isOpened, setIsOpened] = useState(false)
 const [isSwitchingState, setIsSwitchingState] = useState(false)
 
-const agentId = 'dapplets.near/agent/fake-detector'
+const agentId = 'dapplets.near/agent/nearai-fake-detector'
 const url = `${config.backendUrl}/context/invoke-agent`
 const payload = {
   context: {
@@ -201,7 +201,7 @@ const data = useCache(
   `fakeDetectorStatus/id=${context.id}`,
   { subscribe: true }
 )
-console.log('data', data)
+// console.log('data', data)
 
 if (!data) return <></>
 

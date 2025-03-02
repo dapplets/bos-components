@@ -53,11 +53,11 @@ const data = useCache(
   `sentiment-analysis/id=${context.id}`,
   { subscribe: true }
 )
-console.log('data', data)
+// console.log('data', data)
 
 if (!data) return <></>
 const highest = Object.entries(data).reduce((acc, value) => (acc[1] > value[1] ? acc : value))
-console.log('highest', highest)
+// console.log('highest', highest)
 
 return (
   <Label title="Score provided by Aigency's Sentiment Analysis agent">
