@@ -197,7 +197,12 @@ const data = useCache(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
-    }).then((x) => x?.body?.context?.parsedContext),
+    })
+      .then((x) => {
+        // console.log('x', x)
+        return x?.body?.context?.parsedContext
+      })
+      .catch((err) => console.log(err)),
   `fakeDetectorStatus/id=${context.id}`,
   { subscribe: true }
 )
@@ -218,7 +223,7 @@ if (data.score && data.explanation) {
   return <></>
 }
 
-score *= 100
+score = 100 - score * 100
 const buttonType =
   score < 34 ? ButtonTypes.LAME : score < 67 ? ButtonTypes.UNCLEAR : ButtonTypes.CONVINCINGLY
 
