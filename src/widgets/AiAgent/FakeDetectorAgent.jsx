@@ -215,16 +215,15 @@ const data = useCache(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
-    }).then((x) => x?.body?.context?.parsedContext?.result?.raw_answer),
+    }).then((x) => x?.body?.context?.parsedContext),
   `fakeDetectorStatus/id=${context.id}`,
   { subscribe: true }
 )
-// console.log('data', data)
+console.log('data', data)
 
 if (!data) return <></>
 
-let [score, justification] = data.split('\n\n')
-score = (isNaN(Number(score)) ? Number(score.split(' ')[1]) : Number(score)) * 100
+let { score, explanation } = data
 const buttonType =
   score < 34 ? ButtonTypes.LAME : score < 67 ? ButtonTypes.UNCLEAR : ButtonTypes.CONVINCINGLY
 
@@ -265,7 +264,7 @@ return (
       className={isSwitchingState ? 'collapsing' : isOpened ? 'collapse show' : 'collapse'}
       id="collapseExample"
     >
-      <Content className="card card-body">{justification}</Content>
+      <Content className="card card-body">{explanation}</Content>
     </div>
   </div>
 )

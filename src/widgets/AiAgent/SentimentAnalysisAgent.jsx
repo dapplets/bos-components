@@ -24,7 +24,7 @@ const Label = styled.div`
 
 const { contextR: context, config } = props
 
-console.log('context', context)
+// console.log('context', context)
 
 const [isOpened, setIsOpened] = useState(false)
 const [isSwitchingState, setIsSwitchingState] = useState(false)
