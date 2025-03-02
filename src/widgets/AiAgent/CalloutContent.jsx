@@ -102,6 +102,7 @@ const Icon = styled.div`
   align-items: center;
   width: 24px;
   height: 24px;
+  margin-top: 2px;
   outline: none;
   border: none;
   background: #fff;
@@ -249,7 +250,9 @@ return (
           <Header>
             {`${new Date(post.parsedContext.createdAt).toLocaleString()} • @${post.parsedContext.authorUsername}`}
           </Header>
-          {post.parsedContext.text ? <p>{post.parsedContext.text}</p> : null}
+          {post.parsedContext.text ? (
+            <p style={{ overflowWrap: 'break-word' }}>{post.parsedContext.text}</p>
+          ) : null}
         </PostContent>
       </Post>
     ))}
