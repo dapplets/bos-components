@@ -56,7 +56,9 @@ const data = useCache(
 // console.log('data', data)
 
 if (!data) return <></>
-const highest = Object.entries(data).reduce((acc, value) => (acc[1] > value[1] ? acc : value))
+const highest = Object.entries(data)
+  .filter(([k]) => k !== 'compound')
+  .reduce((acc, value) => (acc[1] > value[1] ? acc : value))
 // console.log('highest', highest)
 
 return (
