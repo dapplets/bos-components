@@ -87,6 +87,10 @@
           "selector": "[data-testid=tweetText]",
           "bosLayoutManager": "${REPL_ACCOUNT}/widget/VerticalLayoutManager",
           "insertionType": "end"
+        },
+        "beforeText": {
+          "selector": "[data-testid=tweetText]",
+          "insertionType": "begin"
         }
       },
       "children": ["postSouthButton", "postAvatar"]
