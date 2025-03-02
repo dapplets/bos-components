@@ -14,7 +14,7 @@ if (!config) return <></>
 const PostContextTarget = {
   namespace: '${REPL_ACCOUNT}/parser/twitter',
   contextType: 'post',
-  injectTo: 'afterText',
+  injectTo: 'beforeText',
   if: { id: { not: null } },
 }
 
