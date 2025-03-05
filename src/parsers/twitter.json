@@ -87,6 +87,19 @@
           "selector": "[data-testid=tweetText]",
           "bosLayoutManager": "${REPL_ACCOUNT}/widget/VerticalLayoutManager",
           "insertionType": "end"
+        },
+        "beforeText": {
+          "selector": "[data-testid=tweetText]",
+          "bosLayoutManager": "${REPL_ACCOUNT}/widget/VerticalLayoutManager",
+          "insertionType": "begin"
+        },
+        "userName": {
+          "selector": "[data-testid='User-Name']",
+          "insertionType": "end"
+        },
+        "northPanel": {
+          "selector": "article[data-testid=tweet] .r-1awozwy.r-18u37iz.r-1cmwbt1.r-1wtj0ep",
+          "insertionType": "begin"
         }
       },
       "children": ["postSouthButton", "postAvatar"]

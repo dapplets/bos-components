@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "name": "AI Agent",
+    "image": {
+      "ipfs_cid": "bafkreifw5rwd7r2k7sk6xo45wc7g2y3pe5wewqztlnipo2wnjatz6fsp34"
+    }
+  },
+  "controller": "${REPL_ACCOUNT}/widget/AiAgent.Main",
+  "$targets": [
+    {
+      "namespace": "engine",
+      "contextType": "website"
+    }
+  ],
+  "$parsers": "any"
+}
