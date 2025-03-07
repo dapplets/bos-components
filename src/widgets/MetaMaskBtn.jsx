@@ -1,5 +1,8 @@
 const [account, setAccount] = useState(null)
+const [amount, setAmount] = useState(0)
+
 console.log('account', account)
+console.log('amount', amount)
 
 Ethers.provider()
   .send('eth_accounts', [])
@@ -248,7 +251,7 @@ const wEthContract = new ethers.Contract(
 )
 
 return (
-  <div>
+  <div style={{ display: 'flex' }}>
     <button
       style={{
         border: 'none',
@@ -259,34 +262,49 @@ return (
         background: 'white',
       }}
       title={account || 'Connect'}
-      onClick={() =>
-        !account
-          ? Ethers.provider()
-              .send('eth_requestAccounts', [])
-              .then((accounts) => setAccount(accounts?.[0]))
-          : console.log('Account, context:', { account, context: props.context })
-      }
-    >
-      <MetamaskIcon />
-    </button>
-    <button
-      style={{
-        border: 'none',
-        background: 'none',
-        margin: 0,
-        padding: 2,
-        cursor: 'pointer',
-        background: 'white',
+      onClick={() => {
+        if (!account) {
+          Ethers.provider()
+            .send('eth_requestAccounts', [])
+            .then((accounts) => setAccount(accounts?.[0]))
+        } else {
+          console.log('Account, context:', { account, context: props.context })
+          wEthContract.retrieve().then((res) => console.log(res.toString()))
+        }
       }}
-      title={account || 'Connect'}
-      onClick={() =>
-        // perform a given method (withdraw in this case)
-        wEthContract.store(154).then((transactionHash) => {
-          console.log(transactionHash)
-        })
-      }
     >
       <MetamaskIcon />
     </button>
+    {account ? (
+      <div style={{ display: 'flex' }}>
+        <input
+          style={{ width: 50 }}
+          onChange={(v) => {
+            console.log('v', v)
+            setAmount(v.target.value)
+          }}
+          value={amount}
+        />
+        <button
+          style={{
+            border: 'none',
+            background: 'none',
+            margin: 0,
+            padding: 2,
+            cursor: 'pointer',
+            background: 'white',
+          }}
+          title="Write to Ethereum contract"
+          onClick={() =>
+            // perform a given method (withdraw in this case)
+            wEthContract.store(amount).then((transactionHash) => {
+              console.log(transactionHash)
+            })
+          }
+        >
+          <MetamaskIcon />
+        </button>
+      </div>
+    ) : null}
   </div>
 )
