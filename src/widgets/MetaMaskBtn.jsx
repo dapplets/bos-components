@@ -1,15 +1,14 @@
-const [account, setAccount] = useState(null)
-const [amount, setAmount] = useState(0)
-
-console.log('account', account)
-console.log('amount', amount)
-
-Ethers.provider()
-  .send('eth_accounts', [])
-  .then((accounts) => setAccount(accounts?.[0]))
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: -6px 0 6px;
+  width: 100%;
+  gap: 8px;
+`
 
 const MetamaskIcon = () => (
-  <svg width="26" height="26" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg width="18" height="18" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M12.3526 0.967743L7.28003 4.73519L8.21807 2.51245L12.3526 0.967743Z"
       fill="#E2761B"
@@ -216,6 +215,29 @@ const MetamaskIcon = () => (
   </svg>
 )
 
+const [account, setAccount] = useState(null)
+const [amount, setAmount] = useState(0)
+const [accounts, setAccounts] = useState([])
+
+console.log('accounts', accounts)
+console.log('account', account)
+console.log('amount', amount)
+
+useEffect(() => {
+  Ethers.provider()
+    .send('eth_accounts', [])
+    .then((accounts) => {
+      setAccounts(accounts)
+      setAccount(accounts?.[0])
+    })
+}, [])
+
+Ethers.provider()
+  .send('eth_chainId', [])
+  .then((chainId) => {
+    console.log('chainId', Number.parseInt(chainId, 16))
+  })
+
 // create a contract instance
 const wEthContract = new ethers.Contract(
   '0x8777f5D4e404DC9d8F4245e0687902D32aBD6407',
@@ -247,21 +269,12 @@ const wEthContract = new ethers.Contract(
       type: 'function',
     },
   ],
-  Ethers.provider().getSigner()
+  Ethers.provider().getSigner(account)
 )
 
 return (
-  <div style={{ display: 'flex' }}>
+  <Container>
     <button
-      style={{
-        border: 'none',
-        background: 'none',
-        margin: 0,
-        padding: 2,
-        cursor: 'pointer',
-        background: 'white',
-      }}
-      title={account || 'Connect'}
       onClick={() => {
         if (!account) {
           Ethers.provider()
@@ -274,9 +287,10 @@ return (
       }}
     >
       <MetamaskIcon />
+      {account || 'Connect'}
     </button>
     {account ? (
-      <div style={{ display: 'flex' }}>
+      <Container>
         <input
           style={{ width: 50 }}
           onChange={(v) => {
@@ -285,26 +299,33 @@ return (
           }}
           value={amount}
         />
-        <button
-          style={{
-            border: 'none',
-            background: 'none',
-            margin: 0,
-            padding: 2,
-            cursor: 'pointer',
-            background: 'white',
+        <label htmlFor="a-select">Choose an account:</label>
+        <select
+          name="accounts"
+          id="a-select"
+          onChange={(res) => {
+            setAccount(res.target.value)
           }}
-          title="Write to Ethereum contract"
+        >
+          {accounts.map((acc) => (
+            <option key={acc} value={acc}>
+              {acc}
+            </option>
+          ))}
+        </select>
+        <button
           onClick={() =>
             // perform a given method (withdraw in this case)
-            wEthContract.store(amount).then((transactionHash) => {
-              console.log(transactionHash)
+            wEthContract.store(amount).then((receipt) => {
+              console.log(receipt)
+              receipt.wait().then((res) => console.log(res))
             })
           }
         >
           <MetamaskIcon />
+          Write to Ethereum contract
         </button>
-      </div>
+      </Container>
     ) : null}
-  </div>
+  </Container>
 )
