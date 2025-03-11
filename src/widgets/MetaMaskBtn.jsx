@@ -1,223 +1,334 @@
+const ConnectButton = styled.button`
+  display: flex;
+  cursor: pointer;
+  border-radius: 18px;
+  border: 4px solid black;
+  width: fit-content;
+  text-transform: inherit;
+  font-weight: inherit;
+  font-size: 22px;
+  line-height: 150%;
+  padding: 0px 16px;
+  gap: 8px;
+  align-items: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family:
+    'Space Grotesk',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Open Sans',
+    'Helvetica Neue',
+    sans-serif;
+  user-select: none;
+  transition: all 0.3s ease-in-out;
+  background: linear-gradient(#faf7e2, #ffa79d, #fc849c, #fc3c89, #f72b5e);
+  box-shadow: 0px 0px 10px 1px rgb(254, 104, 133);
+
+  &:hover {
+    background: linear-gradient(#faf5d2, #fb8f84, #fe6885, #fd1570, #f7136d);
+    box-shadow: 0px 0px 10px 3px rgb(253, 90, 123);
+    transition: all 0.12s ease-in-out;
+  }
+
+  &:active {
+    background: linear-gradient(#faf5d2, #fc7b6c, #f85273, #fc0f6e, #f7136d);
+    box-shadow: 0px 0px 10px 4px rgb(250, 76, 111);
+  }
+
+  svg {
+    height: 30px;
+    stroke-width: 2px;
+  }
+`
+
+const OuterContainer = styled.div`
+  display: flex;
+  margin: -6px 0 6px;
+  width: 100%;
+  background: linear-gradient(#f8fedc, #62606c);
+  border-radius: 16px;
+  border: 4px solid black;
+`
+
+const InnerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 4px;
+  background-color: black;
+  border-radius: 8px;
+  margin: 4px;
+  padding: 4px;
+`
+
+const Header = styled.div`
+  display: flex;
+  width: 100%;
+  height: 20px;
+  border: none;
+  border-top: 2px solid #fedbc0;
+  border-bottom: 2px solid #830e39;
+  background: linear-gradient(#fb8f84, #f7136d);
+`
+
+const Footer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 20px;
+  border: none;
+  background: repeating-linear-gradient(#48d1cf, #48d1cf 4px, black 4px, black 8px);
+`
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  margin: -6px 0 6px;
   width: 100%;
+  background: linear-gradient(#31f7c9, #519096, #4b4c57);
+  padding: 16px;
   gap: 8px;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family:
+    'Space Grotesk',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Open Sans',
+    'Helvetica Neue',
+    sans-serif;
+  user-select: none;
 `
 
-const MetamaskIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M12.3526 0.967743L7.28003 4.73519L8.21807 2.51245L12.3526 0.967743Z"
-      fill="#E2761B"
-      stroke="#E2761B"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M0.642334 0.967743L5.6741 4.77088L4.78194 2.51245L0.642334 0.967743Z"
-      fill="#E4761B"
-      stroke="#E4761B"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M10.5275 9.70068L9.17651 11.7705L12.0671 12.5658L12.8981 9.74657L10.5275 9.70068Z"
-      fill="#E4761B"
-      stroke="#E4761B"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M0.107056 9.74657L0.932938 12.5658L3.82353 11.7705L2.47255 9.70068L0.107056 9.74657Z"
-      fill="#E4761B"
-      stroke="#E4761B"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M3.66047 6.20343L2.85498 7.42186L5.72518 7.54931L5.62322 4.465L3.66047 6.20343Z"
-      fill="#E4761B"
-      stroke="#E4761B"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M9.33454 6.20343L7.3463 4.42931L7.28003 7.54931L10.1451 7.42186L9.33454 6.20343Z"
-      fill="#E4761B"
-      stroke="#E4761B"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M3.82349 11.7705L5.54662 10.9293L4.058 9.76696L3.82349 11.7705Z"
-      fill="#E4761B"
-      stroke="#E4761B"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M7.44824 10.9293L9.17648 11.7705L8.93687 9.76696L7.44824 10.9293Z"
-      fill="#E4761B"
-      stroke="#E4761B"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M9.17648 11.7705L7.44824 10.9293L7.58589 12.056L7.5706 12.5301L9.17648 11.7705Z"
-      fill="#D7C1B3"
-      stroke="#D7C1B3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M3.82349 11.7705L5.42937 12.5301L5.41917 12.056L5.54662 10.9293L3.82349 11.7705Z"
-      fill="#D7C1B3"
-      stroke="#D7C1B3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M5.45486 9.02265L4.01721 8.59951L5.03172 8.13559L5.45486 9.02265Z"
-      fill="#233447"
-      stroke="#233447"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M7.54004 9.02265L7.96318 8.13559L8.98278 8.59951L7.54004 9.02265Z"
-      fill="#233447"
-      stroke="#233447"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M3.82351 11.7705L4.06822 9.70068L2.47253 9.74657L3.82351 11.7705Z"
-      fill="#CD6116"
-      stroke="#CD6116"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M8.93176 9.70068L9.17647 11.7705L10.5274 9.74657L8.93176 9.70068Z"
-      fill="#CD6116"
-      stroke="#CD6116"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M10.1451 7.42186L7.28003 7.54931L7.54513 9.02264L7.96826 8.13559L8.98787 8.59951L10.1451 7.42186Z"
-      fill="#CD6116"
-      stroke="#CD6116"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M4.01733 8.59951L5.03694 8.13559L5.45498 9.02264L5.72518 7.54931L2.85498 7.42186L4.01733 8.59951Z"
-      fill="#CD6116"
-      stroke="#CD6116"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M2.85486 7.42186L4.058 9.76696L4.01721 8.59951L2.85486 7.42186Z"
-      fill="#E4751F"
-      stroke="#E4751F"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M8.98787 8.59951L8.93689 9.76696L10.1451 7.42186L8.98787 8.59951Z"
-      fill="#E4751F"
-      stroke="#E4751F"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M5.72515 7.54931L5.45496 9.02264L5.79143 10.7611L5.8679 8.47205L5.72515 7.54931Z"
-      fill="#E4751F"
-      stroke="#E4751F"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M7.27998 7.54931L7.14233 8.46696L7.20351 10.7611L7.54508 9.02264L7.27998 7.54931Z"
-      fill="#E4751F"
-      stroke="#E4751F"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M7.54506 9.02265L7.20349 10.7611L7.4482 10.9293L8.93682 9.76696L8.98781 8.59951L7.54506 9.02265Z"
-      fill="#F6851B"
-      stroke="#F6851B"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M4.01721 8.59951L4.058 9.76696L5.54662 10.9293L5.79133 10.7611L5.45486 9.02265L4.01721 8.59951Z"
-      fill="#F6851B"
-      stroke="#F6851B"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M7.57055 12.5301L7.58584 12.056L7.45839 11.9438H5.53643L5.41917 12.056L5.42937 12.5301L3.82349 11.7705L4.38427 12.2293L5.52113 13.0195H7.47368L8.61564 12.2293L9.17643 11.7705L7.57055 12.5301Z"
-      fill="#C0AD9E"
-      stroke="#C0AD9E"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M7.44821 10.9293L7.2035 10.7611H5.79135L5.54664 10.9293L5.41919 12.056L5.53644 11.9438H7.45841L7.58586 12.056L7.44821 10.9293Z"
-      fill="#161616"
-      stroke="#161616"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M12.5667 4.9799L13 2.8999L12.3526 0.967743L7.44824 4.60774L9.33452 6.20343L12.0008 6.98343L12.5922 6.29519L12.3373 6.11166L12.7451 5.73951L12.429 5.4948L12.8369 5.18382L12.5667 4.9799Z"
-      fill="#763D16"
-      stroke="#763D16"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M0 2.8999L0.433333 4.9799L0.158039 5.18382L0.565883 5.4948L0.254902 5.73951L0.662745 6.11166L0.407843 6.29519L0.994118 6.98343L3.66039 6.20343L5.54667 4.60774L0.642353 0.967743L0 2.8999Z"
-      fill="#763D16"
-      stroke="#763D16"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M12.0008 6.98343L9.33454 6.20343L10.1451 7.42186L8.93689 9.76696L10.5275 9.74657H12.8981L12.0008 6.98343Z"
-      fill="#F6851B"
-      stroke="#F6851B"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M3.66039 6.20343L0.994114 6.98343L0.107056 9.74657H2.47255L4.05804 9.76696L2.8549 7.42186L3.66039 6.20343Z"
-      fill="#F6851B"
-      stroke="#F6851B"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M7.28002 7.54931L7.44826 4.60775L8.22316 2.51245H4.78198L5.54669 4.60775L5.72512 7.54931L5.7863 8.47716L5.79139 10.7611H7.20355L7.21375 8.47716L7.28002 7.54931Z"
-      fill="#F6851B"
-      stroke="#F6851B"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
+const Select = styled.select`
+  ::picker(select) {
+    appearance: base-select;
+    font: -webkit-small-control;
+  }
+
+  option::checkmark,
+  select::picker-icon {
+    font-weight: 800;
+  }
+
+  width: 360px;
+  margin-bottom: 8px;
+  appearance: base-select;
+  border: 4px solid black;
+  border-radius: 21px;
+  background: linear-gradient(#edf4cb, #c1cdc3);
+  font: -webkit-small-control;
+  font-weight: inherit;
+  cursor: pointer;
+
+  &:open {
+    box-shadow: 4px 4px 0px 0px black;
+    border-radius: 0 0 10px 10px;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  option {
+    border: 4px solid black;
+    border-bottom: none;
+    background: linear-gradient(#edf4cb, #c1cdc3);
+    /*  remove when patch is in  */
+    place-items: center;
+    font-weight: 600;
+    cursor: pointer;
+  }
+`
+
+const ShowerContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 8px;
+`
+
+const Shower = styled.div`
+  display: flex;
+  width: 200px;
+  border-radius: 18px;
+  border: 4px solid black;
+  background: linear-gradient(#f3fedb, #5efdda, #32e8dc, #21ced3, #16bcdb);
+  width: fit-content;
+  text-transform: inherit;
+  font-weight: inherit;
+  font-size: 22px;
+  line-height: 150%;
+  padding: 0 26px;
+  font-size: 72px;
+  text-align: center;
+  font-family: monospace;
+  user-select: none;
+
+  @keyframes pulse2 {
+    0% {
+      background: linear-gradient(#16bcdb, #99f3df, #5efdda, #32e8dc, #21ced3);
+    }
+    33% {
+      background: linear-gradient(#21ced3, #16bcdb, #99f3df, #5efdda, #32e8dc);
+    }
+    66% {
+      background: linear-gradient(#32e8dc, #21ced3, #16bcdb, #99f3df, #5efdda);
+    }
+    100% {
+      background: linear-gradient(#5efdda, #32e8dc, #21ced3, #16bcdb, #99f3df);
+    }
+  }
+
+  &:hover {
+    animation: pulse2 0.5s infinite;
+  }
+`
+
+const Input = styled.input`
+  height: 36px;
+  border-radius: 18px;
+  border: 4px solid black;
+  background: linear-gradient(#edf4cb, #c1cdc3);
+  width: fit-content;
+  text-transform: inherit;
+  font-weight: inherit;
+  text-align: center;
+  width: 80px;
+  transition: all 0.4s ease;
+  font-size: 22px;
+  line-height: 150%;
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    box-shadow: 4px 4px 0px 0px black;
+    transform: translate(-4px, -4px);
+  }
+`
+
+const ButtonGroup = styled.div`
+  display: flex;
+  width: 100%;
+  height: 60px;
+  align-items: center;
+  justify-content: space-between;
+
+  svg {
+    height: 60px;
+    margin: 1rem;
+    stroke-width: 2px;
+  }
+`
+
+const Button = styled.button`
+  cursor: pointer;
+  border-radius: 18px;
+  border: 4px solid black;
+  background: linear-gradient(#faf5d2, #fb8f84, #fe6885, #fd1570, #f7136d);
+  width: fit-content;
+  text-transform: inherit;
+  font-weight: inherit;
+  font-size: 22px;
+  line-height: 150%;
+  padding: 0 26px;
+
+  @keyframes pulse {
+    0% {
+      background: linear-gradient(#f7136d, #fdbcb5, #fb8f84, #fe6885, #fd1570);
+    }
+    33% {
+      background: linear-gradient(#fd1570, #f7136d, #fdbcb5, #fb8f84, #fe6885);
+    }
+    66% {
+      background: linear-gradient(#fe6885, #fd1570, #f7136d, #fdbcb5, #fb8f84);
+    }
+    100% {
+      background: linear-gradient(#fb8f84, #fe6885, #fd1570, #f7136d, #fdbcb5);
+    }
+  }
+
+  &:hover {
+    animation: pulse 0.5s infinite;
+  }
+
+  &:active {
+    animation: none;
+    background: linear-gradient(#fff4a3, #ff6a59, #ff375f, #e60d64, #ce0958);
+  }
+`
+
+const MetaMaskLinesIcon = () => (
+  <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m23.971 35.016h2.262l.726 3.415h-3.335" />
+      <path d="m42.158 31.771-11.57.213-4.355 3.032.384-18.232 2.391-5.934 11.613-4.611 1.879 5.721-1.708 6.746.171 3.415-1.11 1.638 2.305 8.012-2.092 8.496-8.539-2.647-4.568 4.141h-2.988" />
+      <path d="m39.8529 23.7591-8.1549-2.4062" />
+      <path d="m40.7922 18.7057 1.4943-.2561" />
+      <path d="m42.2865 20.3282-1.4047.1705" />
+      <path d="m26.4389 25.2438 7.9489-.1764" />
+      <path d="m35.647 31.891-4.12 5.729-.939-5.636 3.8-6.917-2.69-3.714-5.081-4.569 14.004-10.545" />
+      <path d="m26.2329 35.0155 5.2943 2.6044" />
+      <path d="m27.45 29.663 3.186-1.185-2.274-1.185z" />
+      <path d="m29.0081 10.8497h-5.0373" />
+      <path d="m24.029 35.016h-2.262l-.726 3.415h2.583" />
+      <path d="m5.842 31.771 11.57.213 4.355 3.032-.384-18.232-2.391-5.934-11.613-4.611-1.879 5.721 1.708 6.746-.171 3.415 1.11 1.638-2.305 8.012 2.092 8.496 8.539-2.647 4.568 4.141h2.988" />
+      <path d="m8.1471 23.7591 8.1549-2.4062" />
+      <path d="m7.2078 18.7057-1.4943-.2561" />
+      <path d="m5.7135 20.3282 1.4047.1705" />
+      <path d="m21.5611 25.2438-7.9489-.1764" />
+      <path d="m12.353 31.891 4.12 5.729.939-5.636-3.8-6.917 2.69-3.714 5.081-4.569-14.004-10.545" />
+      <path d="m21.7671 35.0155-5.2943 2.6044" />
+      <path d="m20.55 29.663-3.186-1.185 2.274-1.185z" />
+      <path d="m18.9919 10.8497h5.0373" />
+    </g>
   </svg>
 )
+
+const abi = [
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'num',
+        type: 'uint256',
+      },
+    ],
+    name: 'store',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'retrieve',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+]
 
 const [account, setAccount] = useState(null)
 const [amount, setAmount] = useState(0)
 const [accounts, setAccounts] = useState([])
+const [savedNumber, setSavedNumber] = useState([])
 
 console.log('accounts', accounts)
 console.log('account', account)
@@ -232,75 +343,59 @@ useEffect(() => {
     })
 }, [])
 
+useEffect(() => {
+  // create a contract instance
+  const wEthContract = new ethers.Contract(
+    '0x8777f5D4e404DC9d8F4245e0687902D32aBD6407',
+    abi,
+    Ethers.provider().getSigner(account)
+  )
+  wEthContract.retrieve().then((res) => setSavedNumber(res.toString()))
+}, [account])
+
+const handleSave = () => {
+  // create a contract instance
+  const wEthContract = new ethers.Contract(
+    '0x8777f5D4e404DC9d8F4245e0687902D32aBD6407',
+    abi,
+    Ethers.provider().getSigner(account)
+  )
+  // perform a given method (withdraw in this case)
+  wEthContract.store(amount).then((receipt) => {
+    console.log(receipt)
+    receipt.wait().then((res) => console.log(res))
+  })
+}
+
 Ethers.provider()
   .send('eth_chainId', [])
   .then((chainId) => {
     console.log('chainId', Number.parseInt(chainId, 16))
   })
 
-// create a contract instance
-const wEthContract = new ethers.Contract(
-  '0x8777f5D4e404DC9d8F4245e0687902D32aBD6407',
-  [
-    {
-      inputs: [
-        {
-          internalType: 'uint256',
-          name: 'num',
-          type: 'uint256',
-        },
-      ],
-      name: 'store',
-      outputs: [],
-      stateMutability: 'nonpayable',
-      type: 'function',
-    },
-    {
-      inputs: [],
-      name: 'retrieve',
-      outputs: [
-        {
-          internalType: 'uint256',
-          name: '',
-          type: 'uint256',
-        },
-      ],
-      stateMutability: 'view',
-      type: 'function',
-    },
-  ],
-  Ethers.provider().getSigner(account)
-)
-
-return (
-  <Container>
-    <button
-      onClick={() => {
-        if (!account) {
-          Ethers.provider()
-            .send('eth_requestAccounts', [])
-            .then((accounts) => setAccount(accounts?.[0]))
-        } else {
-          console.log('Account, context:', { account, context: props.context })
-          wEthContract.retrieve().then((res) => console.log(res.toString()))
-        }
-      }}
-    >
-      <MetamaskIcon />
-      {account || 'Connect'}
-    </button>
-    {account ? (
+return !account ? (
+  <ConnectButton
+    onClick={(e) => {
+      e.stopPropagation()
+      Ethers.provider()
+        .send('eth_requestAccounts', [])
+        .then((accounts) => {
+          setAccounts(accounts)
+          setAccount(accounts?.[0])
+        })
+    }}
+  >
+    <MetaMaskLinesIcon />
+    Connect
+  </ConnectButton>
+) : (
+  <OuterContainer>
+    <InnerContainer>
+      <Header />
       <Container>
-        <input
-          style={{ width: 50 }}
-          onChange={(v) => {
-            console.log('v', v)
-            setAmount(v.target.value)
-          }}
-          value={amount}
-        />
-        <label htmlFor="a-select">Choose an account:</label>
-        <select
+        <label htmlFor="a-select">Choose an account</label>
+        <Select
+          size="1"
           name="accounts"
           id="a-select"
           onChange={(res) => {
@@ -312,20 +407,67 @@ return (
               {acc}
             </option>
           ))}
-        </select>
-        <button
-          onClick={() =>
-            // perform a given method (withdraw in this case)
-            wEthContract.store(amount).then((receipt) => {
-              console.log(receipt)
-              receipt.wait().then((res) => console.log(res))
-            })
-          }
-        >
-          <MetamaskIcon />
-          Write to Ethereum contract
-        </button>
+        </Select>
+        Current number
+        <ShowerContainer>
+          <Shower>{savedNumber}</Shower>
+        </ShowerContainer>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          Set new number
+          <div
+            style={{
+              background: '#2c393d',
+              border: '4px solid black',
+              height: 16,
+              width: 16,
+              borderRadius: 10,
+            }}
+          ></div>
+          <div
+            style={{
+              background: '#16bcdb',
+              border: '4px solid black',
+              height: 16,
+              width: 16,
+              borderRadius: 10,
+            }}
+          ></div>
+          <div
+            style={{
+              background: '#f7136d',
+              border: '4px solid black',
+              height: 16,
+              width: 16,
+              borderRadius: 10,
+            }}
+          ></div>
+          <Input
+            onChange={(v) => {
+              if (/^[0-9]{0,4}$/.test(v.target.value)) {
+                if (v.target.value.length > 1 && v.target.value[0] === '0') {
+                  setAmount(v.target.value.slice(1))
+                } else if (v.target.value === '') {
+                  setAmount('0')
+                } else {
+                  setAmount(v.target.value)
+                }
+              }
+            }}
+            value={amount}
+          />
+        </div>
+        <ButtonGroup>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <MetaMaskLinesIcon />
+            <p style={{ fontFamily: 'monospace', fontSize: 20, margin: 0 }}>
+              <p style={{ fontFamily: 'monospace', fontSize: 20, margin: 0 }}>Ethereum</p>
+              <p style={{ fontFamily: 'monospace', fontSize: 20, margin: 0 }}>contract</p>
+            </p>
+          </div>
+          <Button onClick={handleSave}>Save</Button>
+        </ButtonGroup>
       </Container>
-    ) : null}
-  </Container>
+      <Footer />
+    </InnerContainer>
+  </OuterContainer>
 )
