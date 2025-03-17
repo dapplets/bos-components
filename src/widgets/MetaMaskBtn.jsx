@@ -231,7 +231,44 @@ const ButtonGroup = styled.div`
   }
 `
 
-const Button = styled.button`
+const BlueButton = styled.button`
+  cursor: pointer;
+  border-radius: 18px;
+  border: 4px solid black;
+  background: linear-gradient(#f3fedb, #5efdda, #32e8dc, #21ced3, #16bcdb);
+  width: fit-content;
+  text-transform: inherit;
+  font-weight: inherit;
+  font-size: 24px;
+  line-height: 150%;
+  padding: 0 12px;
+
+  @keyframes pulse2 {
+    0% {
+      background: linear-gradient(#16bcdb, #99f3df, #5efdda, #32e8dc, #21ced3);
+    }
+    33% {
+      background: linear-gradient(#21ced3, #16bcdb, #99f3df, #5efdda, #32e8dc);
+    }
+    66% {
+      background: linear-gradient(#32e8dc, #21ced3, #16bcdb, #99f3df, #5efdda);
+    }
+    100% {
+      background: linear-gradient(#5efdda, #32e8dc, #21ced3, #16bcdb, #99f3df);
+    }
+  }
+
+  &:hover {
+    animation: pulse2 0.5s infinite;
+  }
+
+  &:active {
+    animation: none;
+    background: linear-gradient(#f3fedb, #5efdda, #32e8dc, #21ced3, #16bcdb);
+  }
+`
+
+const RedButton = styled.button`
   cursor: pointer;
   border-radius: 18px;
   border: 4px solid black;
@@ -332,6 +369,11 @@ const [chainName, setChainName] = useState('')
 const [contractAddress, setContractAddress] = useState('')
 const [savedNumber, setSavedNumber] = useState([])
 const [amount, setAmount] = useState(0)
+// console.log('account', account)
+// console.log('accounts', accounts)
+// console.log('chainName', chainName)
+// console.log('contractAddress', contractAddress)
+// console.log('savedNumber', savedNumber)
 
 useEffect(() => {
   Ethers.provider()
@@ -343,7 +385,7 @@ useEffect(() => {
   Ethers.provider()
     .send('eth_chainId', [])
     .then((chainId) => {
-      console.log('chainId', Number.parseInt(chainId, 16))
+      // console.log('chainId', Number.parseInt(chainId, 16))
       if (chainId === '0xaa36a7') {
         setContractAddress(SEPOLIA_CONTRACT_ADDRESS)
         setChainName('Sepolia')
@@ -373,17 +415,20 @@ useEffect(() => {
 }, [Ethers.provider])
 
 useEffect(() => {
-  if (!account || !contractAddress) return
+  if (!contractAddress) return
   // create a contract instance
   const wEthContract = new ethers.Contract(
     contractAddress,
     ABI,
-    Ethers.provider().getSigner(account)
+    account ? Ethers.provider().getSigner(account) : Ethers.provider()
   )
   // console.log('wEthContract', wEthContract)
   wEthContract
     .retrieve()
-    .then((res) => setSavedNumber(res.toString()))
+    .then((res) => {
+      // console.log('retrieve() res', res)
+      setSavedNumber(res.toString())
+    })
     .catch((err) => console.error('This is the error: ', err))
 }, [Ethers.provider, account, contractAddress])
 
@@ -401,46 +446,80 @@ const handleSave = () => {
   })
 }
 
-return !account ? (
-  <ConnectButton
-    onClick={(e) => {
-      e.stopPropagation()
-      Ethers.provider()
-        .send('eth_requestAccounts', [])
-        .then((accounts) => {
-          setAccounts(accounts)
-          setAccount(accounts?.[0])
-        })
-    }}
-  >
-    <MetaMaskLinesIcon />
-    Connect
-  </ConnectButton>
-) : (
+const handleSwitch = (newChainId) => () => {
+  Ethers.provider().send('wallet_switchEthereumChain', [
+    {
+      chainId: newChainId,
+    },
+  ])
+}
+
+return (
   <OuterContainer>
     <InnerContainer>
       <Header />
       <Container>
-        <label htmlFor="a-select">Choose an account</label>
-        <Select
-          size="1"
-          name="accounts"
-          id="a-select"
-          onChange={(res) => {
-            setAccount(res.target.value)
-          }}
-          value={account}
-        >
-          {accounts.map((acc) => (
-            <option key={acc} value={acc}>
-              {acc}
-            </option>
-          ))}
-        </Select>
-        Current number
-        <ShowerContainer>
-          <Shower>{savedNumber}</Shower>
-        </ShowerContainer>
+        {account ? (
+          <>
+            <label htmlFor="a-select">Choose an account</label>
+            <Select
+              size="1"
+              name="accounts"
+              id="a-select"
+              onChange={(res) => {
+                setAccount(res.target.value)
+              }}
+              value={account}
+            >
+              {accounts.map((acc) => (
+                <option key={acc} value={acc}>
+                  {acc}
+                </option>
+              ))}
+            </Select>
+          </>
+        ) : (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              gap: 12,
+              paddingBottom: 8,
+            }}
+          >
+            <ConnectButton
+              onClick={(e) => {
+                e.stopPropagation()
+                Ethers.provider()
+                  .send('eth_requestAccounts', [])
+                  .then((accounts) => {
+                    setAccounts(accounts)
+                    setAccount(accounts?.[0])
+                  })
+              }}
+            >
+              <MetaMaskLinesIcon />
+              Connect
+            </ConnectButton>
+            <p style={{ fontFamily: 'monospace', fontSize: 10, margin: 0, width: 166 }}>
+              Connect MetaMask to the app to store a new number in a smart contract on the Gnosis or
+              Sepolia network
+            </p>
+          </div>
+        )}
+        {chainName ? (
+          <>
+            Current number
+            <ShowerContainer>
+              <Shower>{savedNumber}</Shower>
+            </ShowerContainer>
+          </>
+        ) : (
+          <>
+            <BlueButton onClick={handleSwitch('0x64')}>Switch to Gnosis</BlueButton>
+            <BlueButton onClick={handleSwitch('0xaa36a7')}>Switch to Sepolia</BlueButton>
+          </>
+        )}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           Set new number
           <div
@@ -502,9 +581,9 @@ return !account ? (
               </p>
             </div>
           </div>
-          <Button disabled={!account || !chainName || !contractAddress} onClick={handleSave}>
+          <RedButton disabled={!account || !chainName || !contractAddress} onClick={handleSave}>
             Save
-          </Button>
+          </RedButton>
         </ButtonGroup>
       </Container>
       <Footer />
