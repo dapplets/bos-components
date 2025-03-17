@@ -296,7 +296,7 @@ const MetaMaskLinesIcon = () => (
   </svg>
 )
 
-const abi = [
+const ABI = [
   {
     inputs: [
       {
@@ -324,11 +324,15 @@ const abi = [
     type: 'function',
   },
 ]
+const SEPOLIA_CONTRACT_ADDRESS = '0x8777f5D4e404DC9d8F4245e0687902D32aBD6407'
+const GNOSIS_CONTRACT_ADDRESS = '0x7AD2e729E0398D96ee22A31E64e3c6E44498118f'
 
 const [account, setAccount] = useState(null)
 const [amount, setAmount] = useState(0)
 const [accounts, setAccounts] = useState([])
 const [savedNumber, setSavedNumber] = useState([])
+const [contractAddress, setContractAddress] = useState('')
+// console.log('contractAddress', contractAddress)
 
 useEffect(() => {
   Ethers.provider()
@@ -337,36 +341,52 @@ useEffect(() => {
       setAccounts(accounts)
       setAccount(accounts?.[0])
     })
+  Ethers.provider()
+    .send('eth_chainId', [])
+    .then((chainId) => {
+      console.log('chainId', Number.parseInt(chainId, 16))
+      if (chainId === '0xaa36a7') setContractAddress(SEPOLIA_CONTRACT_ADDRESS)
+      if (chainId === '0x64') setContractAddress(GNOSIS_CONTRACT_ADDRESS)
+    })
+
   Ethers.provider().provider.on('ethAccountsChanged', ({ account, accounts }) => {
     setAccount(account ?? null)
     setAccounts(accounts)
   })
-
-  Ethers.provider().provider.on('connect', (...args) => console.log('connect', args))
-  Ethers.provider().provider.on('disconnect', (...args) => console.log('disconnect', args))
-  Ethers.provider().provider.on('message', (...args) => console.log('message', args))
-  Ethers.provider().provider.on('chainChanged', (...args) => console.log('chainChanged', args))
-  Ethers.provider().provider.on('accountsChanged', (...args) =>
-    console.log('accountsChanged', args)
-  )
-}, [])
+  // Ethers.provider().provider.on('ethChainChanged', (args) => {
+  //   console.log('ethChainChanged', args)
+  //   if (!args?.chainName) return
+  //   if (args.chainName === 'sepolia') setContractAddress(SEPOLIA_CONTRACT_ADDRESS)
+  //   if (args.chainName === 'xdai') setContractAddress(GNOSIS_CONTRACT_ADDRESS)
+  // })
+  // Ethers.provider().provider.on('connect', (...args) => console.log('connect', args))
+  // Ethers.provider().provider.on('disconnect', (...args) => console.log('disconnect', args))
+  // Ethers.provider().provider.on('message', (...args) => console.log('message', args))
+  // Ethers.provider().provider.on('accountsChanged', (...args) =>
+  //   console.log('accountsChanged', args)
+  // )
+}, [Ethers.provider])
 
 useEffect(() => {
-  if (!account) return
+  if (!account || !contractAddress) return
   // create a contract instance
   const wEthContract = new ethers.Contract(
-    '0x8777f5D4e404DC9d8F4245e0687902D32aBD6407',
-    abi,
+    contractAddress,
+    ABI,
     Ethers.provider().getSigner(account)
   )
-  wEthContract.retrieve().then((res) => setSavedNumber(res.toString()))
-}, [account])
+  // console.log('wEthContract', wEthContract)
+  wEthContract
+    .retrieve()
+    .then((res) => setSavedNumber(res.toString()))
+    .catch((err) => console.error('This is the error: ', err))
+}, [Ethers.provider, account, contractAddress])
 
 const handleSave = () => {
   // create a contract instance
   const wEthContract = new ethers.Contract(
-    '0x8777f5D4e404DC9d8F4245e0687902D32aBD6407',
-    abi,
+    contractAddress,
+    ABI,
     Ethers.provider().getSigner(account)
   )
   // perform a given method (withdraw in this case)
@@ -375,12 +395,6 @@ const handleSave = () => {
     receipt.wait().then((res) => console.log(res))
   })
 }
-
-Ethers.provider()
-  .send('eth_chainId', [])
-  .then((chainId) => {
-    console.log('chainId', Number.parseInt(chainId, 16))
-  })
 
 return !account ? (
   <ConnectButton
