@@ -271,7 +271,7 @@ const Button = styled.button`
 
 const MetaMaskLinesIcon = () => (
   <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-    <g fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round">
+    <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
       <path d="m23.971 35.016h2.262l.726 3.415h-3.335" />
       <path d="m42.158 31.771-11.57.213-4.355 3.032.384-18.232 2.391-5.934 11.613-4.611 1.879 5.721-1.708 6.746.171 3.415-1.11 1.638 2.305 8.012-2.092 8.496-8.539-2.647-4.568 4.141h-2.988" />
       <path d="m39.8529 23.7591-8.1549-2.4062" />
@@ -330,10 +330,6 @@ const [amount, setAmount] = useState(0)
 const [accounts, setAccounts] = useState([])
 const [savedNumber, setSavedNumber] = useState([])
 
-console.log('accounts', accounts)
-console.log('account', account)
-console.log('amount', amount)
-
 useEffect(() => {
   Ethers.provider()
     .send('eth_accounts', [])
@@ -341,9 +337,22 @@ useEffect(() => {
       setAccounts(accounts)
       setAccount(accounts?.[0])
     })
+  Ethers.provider().provider.on('ethAccountsChanged', ({ account, accounts }) => {
+    setAccount(account ?? null)
+    setAccounts(accounts)
+  })
+
+  Ethers.provider().provider.on('connect', (...args) => console.log('connect', args))
+  Ethers.provider().provider.on('disconnect', (...args) => console.log('disconnect', args))
+  Ethers.provider().provider.on('message', (...args) => console.log('message', args))
+  Ethers.provider().provider.on('chainChanged', (...args) => console.log('chainChanged', args))
+  Ethers.provider().provider.on('accountsChanged', (...args) =>
+    console.log('accountsChanged', args)
+  )
 }, [])
 
 useEffect(() => {
+  if (!account) return
   // create a contract instance
   const wEthContract = new ethers.Contract(
     '0x8777f5D4e404DC9d8F4245e0687902D32aBD6407',
@@ -401,6 +410,7 @@ return !account ? (
           onChange={(res) => {
             setAccount(res.target.value)
           }}
+          value={account}
         >
           {accounts.map((acc) => (
             <option key={acc} value={acc}>
@@ -459,10 +469,10 @@ return !account ? (
         <ButtonGroup>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <MetaMaskLinesIcon />
-            <p style={{ fontFamily: 'monospace', fontSize: 20, margin: 0 }}>
+            <div>
               <p style={{ fontFamily: 'monospace', fontSize: 20, margin: 0 }}>Ethereum</p>
               <p style={{ fontFamily: 'monospace', fontSize: 20, margin: 0 }}>contract</p>
-            </p>
+            </div>
           </div>
           <Button onClick={handleSave}>Save</Button>
         </ButtonGroup>
