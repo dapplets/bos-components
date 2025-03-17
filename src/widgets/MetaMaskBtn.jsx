@@ -221,13 +221,12 @@ const Input = styled.input`
 const ButtonGroup = styled.div`
   display: flex;
   width: 100%;
-  height: 68px;
   align-items: center;
   justify-content: space-between;
 
   svg {
-    height: 60px;
-    margin: 1rem;
+    height: 68px;
+    margin: 0 1rem;
     stroke-width: 2px;
   }
 `
