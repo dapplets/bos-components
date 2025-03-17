@@ -221,7 +221,7 @@ const Input = styled.input`
 const ButtonGroup = styled.div`
   display: flex;
   width: 100%;
-  height: 60px;
+  height: 68px;
   align-items: center;
   justify-content: space-between;
 
@@ -270,7 +270,7 @@ const Button = styled.button`
 `
 
 const MetaMaskLinesIcon = () => (
-  <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
     <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
       <path d="m23.971 35.016h2.262l.726 3.415h-3.335" />
       <path d="m42.158 31.771-11.57.213-4.355 3.032.384-18.232 2.391-5.934 11.613-4.611 1.879 5.721-1.708 6.746.171 3.415-1.11 1.638 2.305 8.012-2.092 8.496-8.539-2.647-4.568 4.141h-2.988" />
@@ -328,11 +328,11 @@ const SEPOLIA_CONTRACT_ADDRESS = '0x8777f5D4e404DC9d8F4245e0687902D32aBD6407'
 const GNOSIS_CONTRACT_ADDRESS = '0x7AD2e729E0398D96ee22A31E64e3c6E44498118f'
 
 const [account, setAccount] = useState(null)
-const [amount, setAmount] = useState(0)
 const [accounts, setAccounts] = useState([])
-const [savedNumber, setSavedNumber] = useState([])
+const [chainName, setChainName] = useState('')
 const [contractAddress, setContractAddress] = useState('')
-// console.log('contractAddress', contractAddress)
+const [savedNumber, setSavedNumber] = useState([])
+const [amount, setAmount] = useState(0)
 
 useEffect(() => {
   Ethers.provider()
@@ -345,8 +345,14 @@ useEffect(() => {
     .send('eth_chainId', [])
     .then((chainId) => {
       console.log('chainId', Number.parseInt(chainId, 16))
-      if (chainId === '0xaa36a7') setContractAddress(SEPOLIA_CONTRACT_ADDRESS)
-      if (chainId === '0x64') setContractAddress(GNOSIS_CONTRACT_ADDRESS)
+      if (chainId === '0xaa36a7') {
+        setContractAddress(SEPOLIA_CONTRACT_ADDRESS)
+        setChainName('Sepolia')
+      }
+      if (chainId === '0x64') {
+        setContractAddress(GNOSIS_CONTRACT_ADDRESS)
+        setChainName('Gnosis')
+      }
     })
 
   Ethers.provider().provider.on('ethAccountsChanged', ({ account, accounts }) => {
@@ -483,12 +489,23 @@ return !account ? (
         <ButtonGroup>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <MetaMaskLinesIcon />
-            <div>
-              <p style={{ fontFamily: 'monospace', fontSize: 20, margin: 0 }}>Ethereum</p>
-              <p style={{ fontFamily: 'monospace', fontSize: 20, margin: 0 }}>contract</p>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <p style={{ fontFamily: 'monospace', fontSize: 18, margin: 0 }}>Ethereum</p>
+              <p style={{ fontFamily: 'monospace', fontSize: 18, margin: 0 }}>contract</p>
+              <p style={{ fontFamily: 'monospace', fontSize: 18, margin: 0 }}>
+                {chainName ? `(${chainName})` : ''}
+              </p>
             </div>
           </div>
-          <Button onClick={handleSave}>Save</Button>
+          <Button disabled={!account || !chainName || !contractAddress} onClick={handleSave}>
+            Save
+          </Button>
         </ButtonGroup>
       </Container>
       <Footer />
