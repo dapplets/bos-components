@@ -1,0 +1,53 @@
+{
+  "metadata": {
+    "name": "MetaMask btn",
+    "description": "Interactions with Ethereum smart contract using MetaMask",
+    "image": {
+      "ipfs_cid": "bafkreiaeiruoy4hkwoqgimgca5hoovcflsjtt2z2taj7346z3ungfx5wkq"
+    }
+  },
+  "$targets": [
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/near-social",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "beforeText",
+      "componentId": "${REPL_ACCOUNT}/widget/MetaMaskBtn"
+    },
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/twitter",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "beforeText",
+      "componentId": "${REPL_ACCOUNT}/widget/MetaMaskBtn"
+    },
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/github",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "beforeText",
+      "componentId": "${REPL_ACCOUNT}/widget/MetaMaskBtn"
+    },
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/youtube",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "beforeText",
+      "componentId": "${REPL_ACCOUNT}/widget/MetaMaskBtn"
+    },
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/linkedin",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "beforeText",
+      "componentId": "${REPL_ACCOUNT}/widget/MetaMaskBtn"
+    },
+    {
+      "namespace": "${REPL_ACCOUNT}/parser/reddit-new",
+      "contextType": "post",
+      "if": { "id": { "not": null, "index": true } },
+      "injectTo": "beforeText",
+      "componentId": "${REPL_ACCOUNT}/widget/MetaMaskBtn"
+    }
+  ]
+}
