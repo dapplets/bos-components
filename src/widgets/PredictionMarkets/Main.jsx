@@ -1,9 +1,9 @@
 const NetworkConfigs = {
   mainnet: {
-    backendUrl: 'https://api.aigency.augm.link',
+    backendUrl: 'https://api.aigency.augm.link', // 'http://localhost:3001',
   },
   testnet: {
-    backendUrl: 'https://api.aigency.augm.link',
+    backendUrl: 'https://api.aigency.augm.link', //  'http://localhost:3001',
   },
 }
 

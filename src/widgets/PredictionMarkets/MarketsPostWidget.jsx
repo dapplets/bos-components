@@ -1,9 +1,3 @@
-const ButtonTypes = {
-  LAME: 'Lame',
-  UNCLEAR: 'Unclear',
-  CONVINCINGLY: 'Convincingly',
-}
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -18,11 +12,11 @@ const Button = styled.button`
   justify-content: space-between;
   align-items: center;
   text-align: center;
-  border: none !important;
+  border: 1px solid rgb(207, 217, 222) !important;
   border-radius: 10px 10px 0 0 !important;
-  padding: 4px 10px !important;
+  padding: 8px !important;
   gap: 5px;
-  width: 100%;
+  width: 100% !important;
   cursor: pointer;
 
   font-family: system-ui, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
@@ -33,60 +27,38 @@ const Button = styled.button`
   -ms-user-select: none; /* IE/Edge */
   user-select: none;
 
-  color: white !important;
-  background-color: ${({ $type }) =>
-    $type === ButtonTypes.LAME
-      ? 'rgba(217, 48, 79, 1) !important'
-      : $type === ButtonTypes.UNCLEAR
-        ? 'rgba(235, 165, 0, 1) !important'
-        : 'rgba(25, 206, 174, 1) !important'};
+  color: rgba(165, 167, 169, 1) !important;
+  background: rgba(248, 249, 255, 1) !important;
+
+  p {
+    color: rgba(2, 25, 58, 1) !important;
+    margin: 0;
+    padding: 0;
+  }
 
   &.collapsed {
     border-radius: 10px 10px 10px 10px !important;
-    padding: 4px 6px !important;
-    width: auto;
   }
 
-  > div {
+  .badge,
+  .header-second-part {
     display: flex;
-    gap: 5px;
-    align-items: center;
-
     font-weight: 400;
     font-size: 12px;
     line-height: 17.88px;
     letter-spacing: 0;
     text-align: center;
-  }
-
-  .badge {
-    display: inline-flex;
     align-items: center !important;
     top: 0 !important;
     height: 18px !important;
-    border-radius: 4px !important;
     padding-right: 2px !important;
     padding-left: 2px !important;
     gap: 2px !important;
-    background-color: white !important;
-    color: ${({ $type }) =>
-      $type === ButtonTypes.LAME
-        ? 'rgba(217, 48, 79, 1) !important'
-        : $type === ButtonTypes.UNCLEAR
-          ? 'rgba(235, 165, 0, 1) !important'
-          : 'rgba(25, 206, 174, 1) !important'};
-
     font-weight: 700 !important;
     font-size: 12px !important;
     line-height: 17.88px !important;
     letter-spacing: 0 !important;
-  }
-
-  span {
-    font-weight: 400 !important;
-    font-size: 12px !important;
-    line-height: 17.88px !important;
-    letter-spacing: 0% !important;
+    color: inherit !important;
   }
 `
 
@@ -113,20 +85,26 @@ const Content = styled.div`
   border-top: none !important;
 `
 
-const RIcon = (
-  <svg width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M3.875 2.29167V7.70833H4.95833V5.54167H5.39167L6.04167 7.70833H7.125L6.45333 5.46042C6.85417 5.29792 7.125 4.91333 7.125 4.45833V3.375C7.125 3.08768 7.01086 2.81213 6.8077 2.60897C6.60453 2.4058 6.32898 2.29167 6.04167 2.29167H3.875ZM4.95833 3.375H6.04167V4.45833H4.95833V3.375ZM1.70833 0.125H9.29167C9.57899 0.125 9.85454 0.239137 10.0577 0.442301C10.2609 0.645465 10.375 0.921016 10.375 1.20833V8.79167C10.375 9.07899 10.2609 9.35454 10.0577 9.5577C9.85454 9.76086 9.57899 9.875 9.29167 9.875H1.70833C1.42102 9.875 1.14547 9.76086 0.942301 9.5577C0.739137 9.35454 0.625 9.07899 0.625 8.79167V1.20833C0.625 0.921016 0.739137 0.645465 0.942301 0.442301C1.14547 0.239137 1.42102 0.125 1.70833 0.125Z"
-      fill="currentColor"
-    />
-  </svg>
-)
+const LeadingOutcome = styled.span`
+  color: rgba(25, 206, 174, 1);
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  line-height: 110% !important;
+  text-transform: capitalize;
+`
+
+const DownButton = styled.span`
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  line-height: 17.88px !important;
+  letter-spacing: 0% !important;
+`
 
 const DownIcon = (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M12 6L8 10L4 6"
-      stroke="white"
+      stroke="currentColor"
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -171,8 +149,152 @@ const AigencyLabel = (
   </svg>
 )
 
+// ToDo: delete mocket data
+
+const CURRENCY = '$'
+
+const MOCKED_DATA = {
+  '1825873485937156473': {
+    markets: [
+      {
+        id: '7658767547543',
+        question:
+          'Will the Trump administration announce a new tariff policy targeting European car imports by March 22, 2025?',
+        image: 'bafkreifc7ov3gg64snbk4tfilcyeth37ala6k2tvcxctbjnnw34jtqdxqi',
+        outcomes: [
+          {
+            index: '897585',
+            name: 'yes',
+            marketId: '89kljafgjefkhjg76585',
+            percentage: 0.2902,
+          },
+          {
+            index: '89765',
+            name: 'no',
+            marketId: '89kljafgjlhjg76585',
+            percentage: 0.7098,
+          },
+        ],
+        usdVolume: 1000,
+        runningDailyVolume: '962426773980799',
+      },
+      {
+        id: '76hsdrthdh7543',
+        question:
+          'Will the Trump administration announce a new tariff policy targeting European car imports by March 22, 2025?',
+        image: 'bafkreifc7ov3gg64snbk4tfilcyeth37ala6k2tvcxctbjnnw34jtqdxqi',
+        outcomes: [
+          {
+            index: '897uoioyu6585',
+            name: 'yes',
+            marketId: '89kljafgjwrwrlaefkhjg76585',
+            percentage: 0.5,
+          },
+          {
+            index: '897uytru6585',
+            name: 'no',
+            marketId: '89kljafgjlaefkhtertejg76585',
+            percentage: 0.5,
+          },
+        ],
+        usdVolume: 1524.92,
+        runningDailyVolume: '222426773980799',
+      },
+      {
+        id: '765jhlhkjlhkl43',
+        question:
+          'Will the Trump administration announce a new tariff policy targeting European car imports by March 22, 2025?',
+        image: 'bafkreifc7ov3gg64snbk4tfilcyeth37ala6k2tvcxctbjnnw34jtqdxqi',
+        outcomes: [
+          {
+            index: '8976234234585',
+            name: 'yes',
+            marketId: '89kljafgjlaefkhjg76585',
+            percentage: 0,
+          },
+          {
+            index: '89hgjjhg76585',
+            name: 'no',
+            marketId: '89kljafgsdfafadsjlaefkhjg76585',
+            percentage: 1,
+          },
+        ],
+        usdVolume: 1654.23,
+        runningDailyVolume: '832426773980799',
+      },
+      {
+        id: '762342134kjlhkl43',
+        question:
+          'Will the Trump administration announce a new tariff policy targeting European car imports by March 22, 2025?',
+        image: 'bafkreifc7ov3gg64snbk4tfilcyeth37ala6k2tvcxctbjnnw34jtqdxqi',
+        outcomes: [
+          {
+            index: '8976;lkjl;k585',
+            name: 'yes',
+            marketId: '89kljafgjlafghjfgjhefkhjg76585',
+            percentage: 1,
+          },
+          {
+            index: '8976adfda585',
+            name: 'no',
+            marketId: '89kljafgjlaefadfadsfkhjg76585',
+            percentage: 0,
+          },
+        ],
+        usdVolume: 765.98,
+        runningDailyVolume: '442426773980799',
+      },
+    ],
+  },
+}
+
+/**
+ * @param {number} a
+ * @param {number} b
+ * @returns {number}
+ */
+
+const plus = (a, b) => {
+  function countDecimals(num) {
+    if (Math.floor(num) === num) return 0
+    return num.toString().split('.')[1].length
+  }
+
+  const decimalsA = countDecimals(a)
+  const decimalsB = countDecimals(b)
+  const factor = Math.pow(10, Math.max(decimalsA, decimalsB))
+
+  return (Math.round(a * factor) + Math.round(b * factor)) / factor
+}
+
+/**
+ * @param {string} value
+ * @returns {string[]}
+ */
+
+const splitByThreeNumbers = (value) => {
+  const res = []
+  while (value.length > 3) {
+    res.push(value.slice(-3))
+    value = value.slice(0, -3)
+  }
+  res.push(value)
+  return res.reverse()
+}
+
+/**
+ * @param {number} value
+ * @returns {string}
+ */
+
+const processVolume = (value) => {
+  const [integerPart, fractionalPart] = value.toString().split('.')
+  const parts = splitByThreeNumbers(integerPart)
+  if (fractionalPart) parts[parts.length - 1] += '.' + fractionalPart
+  return parts.join(',') // or String.fromCharCode(8239)
+}
+
 const { contextR: context, config } = props
-// console.log('context', context)
 
 const [isOpened, setIsOpened] = useState(false)
 const [isSwitchingState, setIsSwitchingState] = useState(false)
@@ -189,48 +311,43 @@ const payload = {
   agentId,
 }
 
-const data = useCache(
-  () =>
-    asyncFetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((x) => {
-        // console.log('x', x)
-        return x?.body?.context?.parsedContext
-      })
-      .catch((err) => console.log(err)),
-  `fakeDetectorStatus/id=${context.id}`,
-  { subscribe: true }
-)
-// console.log('data', data)
+// ToDo: use real request
+//
+// const data = useCache(
+//   () =>
+//     asyncFetch(url, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(payload),
+//     })
+//       .then((x) => {
+//         // console.log('x', x)
+//         return x?.body?.context?.parsedContext
+//       })
+//       .catch((err) => console.log(err)),
+//   `fakeDetectorStatus/id=${context.id}`,
+//   { subscribe: true }
+// )
+
+const data = context?.parsed?.id && MOCKED_DATA[context.parsed.id] // ToDo: use real request
 
 if (!data) return <></>
 
-let score, explanation
+const usdVolume = data.markets.reduce((acc, v) => plus(acc, v.usdVolume), 0)
 
-if (data.score && data.explanation) {
-  score = data.score
-  explanation = data.explanation
-} else if (data.result?.raw_answer) {
-  const [rawScore, justification] = data.result.raw_answer.split('\n\n')
-  score = isNaN(Number(rawScore)) ? Number(rawScore.split(' ')[1]) : Number(rawScore)
-  explanation = justification
-} else {
-  return <></>
-}
+const marketMaxValue = data.markets.reduce((acc, v) =>
+  Number(v.runningDailyVolume) > acc.runningDailyVolume ? v : acc
+)
 
-score = 100 - score * 100
-const buttonType =
-  score < 34 ? ButtonTypes.LAME : score < 67 ? ButtonTypes.UNCLEAR : ButtonTypes.CONVINCINGLY
+const leadingOutcome = marketMaxValue.outcomes.reduce((acc, v) =>
+  v.percentage > acc.percentage ? v : acc
+)
 
 return (
   <Container>
     <Button
-      $type={buttonType}
       className={isOpened ? 'btn btn-primary' : 'btn btn-primary collapsed'}
       type="button"
       data-bs-toggle="collapse"
@@ -239,26 +356,49 @@ return (
       aria-controls="collapseExample"
       onClick={() => setIsOpened(!isOpened)}
     >
-      <div>
-        <div className="badge">
-          {RIcon}
-          {score}
-        </div>
-        <span>{buttonType}</span>
-        {isOpened ? null : <span>{DownIcon}</span>}
+      <div className="badge">
+        <img
+          style={{ width: 33 }}
+          src="https://ipfs.near.social/ipfs/bafkreibwgipd6cuwpw6yvv5oracel7x4dt3fk742glcxhf6bmonjxqq4m4"
+        />
+        <p>{CURRENCY + processVolume(usdVolume)}</p>
+        <p>in active bets</p>
+        {'(' + data.markets.length + ')'}
       </div>
-      {isOpened ? (
-        <div>
-          powered by
-          {AigencyLabel}
-        </div>
-      ) : null}
+      <div className="header-second-part">
+        <LeadingOutcome>
+          {leadingOutcome.name + ' (' + Math.round(leadingOutcome.percentage * 10000) / 100 + '%)'}
+        </LeadingOutcome>
+        <DownButton>{DownIcon}</DownButton>
+      </div>
     </Button>
     <Collaps
       className={isSwitchingState ? 'collapsing' : isOpened ? 'collapse show' : 'collapse'}
       id="collapseExample"
     >
-      <Content className="card card-body">{explanation}</Content>
+      <Content className="card card-body">
+        <button className="btn arrow-left"></button>
+        {data.markets.map((market) => (
+          <div key={market.id} className="my-card-item">
+            <div className="left-column">
+              <img
+                src={
+                  /^http(s)?:\/\//.test(market.image)
+                    ? market.image
+                    : `https://ipfs.near.social/ipfs/${market.image}`
+                }
+              />
+              <a href="#">Bet now</a>
+            </div>
+            <div className="right-column">
+              <p>{market.question}</p>
+              <div className="statistics"></div>
+              <div className="my-card-footer"></div>
+            </div>
+          </div>
+        ))}
+        <button className="btn arrow-right"></button>
+      </Content>
     </Collaps>
   </Container>
 )
