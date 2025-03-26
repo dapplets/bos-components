@@ -98,6 +98,7 @@ const DownButton = styled.span`
   font-size: 12px !important;
   line-height: 17.88px !important;
   letter-spacing: 0% !important;
+  transform: ${({ $isOpened }) => $isOpened && 'rotate(180deg)'};
 `
 
 const DownIcon = (
@@ -369,7 +370,7 @@ return (
         <LeadingOutcome>
           {leadingOutcome.name + ' (' + Math.round(leadingOutcome.percentage * 10000) / 100 + '%)'}
         </LeadingOutcome>
-        <DownButton>{DownIcon}</DownButton>
+        <DownButton $isOpened={isOpened}>{DownIcon}</DownButton>
       </div>
     </Button>
     <Collaps
