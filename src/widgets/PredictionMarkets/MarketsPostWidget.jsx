@@ -14,14 +14,13 @@ const Button = styled.button`
   text-align: center;
   border: 1px solid rgb(207, 217, 222) !important;
   border-radius: 10px 10px 0 0 !important;
-  padding: 8px !important;
+  padding: 8px 8px 6px !important;
   gap: 5px;
   width: 100% !important;
   cursor: pointer;
 
   font-family: system-ui, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
     sans-serif;
-  font-size: 14px !important;
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE/Edge */
@@ -31,9 +30,12 @@ const Button = styled.button`
   background: rgba(248, 249, 255, 1) !important;
 
   p {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    line-height: 17.88px !important;
     color: rgba(2, 25, 58, 1) !important;
-    margin: 0;
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   &.collapsed {
@@ -43,9 +45,6 @@ const Button = styled.button`
   .badge,
   .header-second-part {
     display: flex;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 17.88px;
     letter-spacing: 0;
     text-align: center;
     align-items: center !important;
@@ -54,12 +53,45 @@ const Button = styled.button`
     padding-right: 2px !important;
     padding-left: 2px !important;
     gap: 2px !important;
-    font-weight: 700 !important;
-    font-size: 12px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
     line-height: 17.88px !important;
     letter-spacing: 0 !important;
     color: inherit !important;
   }
+
+  .badge img {
+    width: 33px;
+    margin-top: -4px;
+  }
+
+  .my-down-button {
+    transition: all 0.15s ease;
+  }
+
+  :hover .my-down-button {
+    color: rgba(56, 75, 255, 0.8);
+  }
+
+  :active .my-down-button {
+    color: rgba(56, 75, 255, 1);
+  }
+`
+
+const LeadingOutcome = styled.span`
+  color: ${({ $isPositive }) => ($isPositive ? 'rgba(25, 206, 174, 1)' : 'rgba(244, 36, 94, 1)')};
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  line-height: 17.88px !important;
+  text-transform: capitalize;
+`
+
+const DownButton = styled.span`
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  line-height: normal !important;
+  letter-spacing: 0% !important;
+  transform: ${({ $isOpened }) => $isOpened && 'rotate(180deg)'};
 `
 
 const Collaps = styled.div`
@@ -72,33 +104,206 @@ const Collaps = styled.div`
   }
 `
 
-const Content = styled.div`
+const Carousel = styled.div`
+  display: flex;
+  position: relative;
+  width: 518px;
+  overflow: hidden;
   padding: 10px !important;
   border-radius: 0 0 10px 10px !important;
   font-family: system-ui, Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
     sans-serif;
   font-weight: 400 !important;
-  font-size: 12px !important;
+  font-size: 14px !important;
   line-height: 17.88px !important;
   letter-spacing: 0 !important;
   color: rgba(2, 25, 58, 1) !important;
   border-top: none !important;
+
+  .carousel-track {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+  }
+
+  .slide {
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 26px;
+    gap: 10px;
+
+    p {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+  }
+
+  .left-column,
+  .right-column {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    gap: 6px;
+  }
+
+  .left-column {
+    a {
+      text-decoration: none !important;
+      color: rgba(2, 25, 58, 1) !important;
+      background: rgba(238, 245, 245, 1) !important;
+      border-radius: 6px !important;
+      padding: 2px !important;
+      font-weight: 400 !important;
+      font-size: 12px !important;
+      line-height: 150% !important;
+      text-align: center !important;
+      width: 100%;
+      transition: all 0.2s ease;
+
+      :hover {
+        color: rgb(1, 10, 22) !important;
+        background: rgb(207, 212, 212) !important;
+      }
+
+      :active {
+        color: rgb(0, 5, 10) !important;
+        background: rgb(185, 190, 190) !important;
+      }
+    }
+
+    img {
+      width: 86px;
+      height: 86px;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+  }
+
+  .right-column {
+    justify-content: space-between;
+
+    .my-card-footer {
+      font-weight: 400 !important;
+      font-size: 12px !important;
+      line-height: 100% !important;
+      color: rgba(122, 129, 139, 1) !important;
+      display: flex;
+      justify-content: flex-end;
+      padding: 5px 0;
+
+      img {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  .arrow {
+    position: absolute;
+    top: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    color: rgba(165, 167, 169, 1);
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    user-select: none;
+    transition: all 0.15s ease;
+
+    :hover {
+      color: rgba(56, 75, 255, 0.8);
+    }
+
+    :active {
+      color: rgba(56, 75, 255, 1);
+    }
+  }
+
+  .arrow.left {
+    left: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 1) 22%,
+      rgba(255, 255, 255, 0.6) 76%,
+      rgba(255, 255, 255, 0)
+    );
+
+    svg {
+      transform: rotate(90deg);
+    }
+  }
+  .arrow.right {
+    right: 0;
+    background: linear-gradient(
+      270deg,
+      rgba(255, 255, 255, 1) 22%,
+      rgba(255, 255, 255, 0.6) 76%,
+      rgba(255, 255, 255, 0)
+    );
+
+    svg {
+      transform: rotate(270deg);
+    }
+  }
 `
 
-const LeadingOutcome = styled.span`
-  color: rgba(25, 206, 174, 1);
-  font-weight: 600 !important;
-  font-size: 14px !important;
-  line-height: 110% !important;
+const Chart = styled.div`
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  width: 100%;
+  gap: 6px;
+`
+
+const ChartLine = styled.div`
+  display: flex;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  width: 100%;
+  position: relative;
+  gap: 1px;
+`
+
+const ChartOutcome = styled.div`
+  display: flex;
+  height: 4px;
+  border-radius: 2px;
+  align-items: center;
+`
+
+const ChartFirstOutcome = styled(ChartOutcome)`
+  background: rgba(25, 206, 174, 1);
+`
+
+const ChartSecondOutcome = styled(ChartOutcome)`
+  background: rgba(244, 36, 94, 1);
+`
+
+const ChartLabels = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 110%;
+`
+
+const ChartLabel = styled.p`
+  width: 100%;
   text-transform: capitalize;
 `
 
-const DownButton = styled.span`
-  font-weight: 400 !important;
-  font-size: 12px !important;
-  line-height: 17.88px !important;
-  letter-spacing: 0% !important;
-  transform: ${({ $isOpened }) => $isOpened && 'rotate(180deg)'};
+const ChartFirstLabel = styled(ChartLabel)`
+  color: rgba(25, 206, 174, 1);
+  text-align: left;
+`
+
+const ChartSecondLabel = styled(ChartLabel)`
+  color: rgba(244, 36, 94, 1);
+  text-align: right;
 `
 
 const DownIcon = (
@@ -178,6 +383,11 @@ const MOCKED_DATA = {
         ],
         usdVolume: 1000,
         runningDailyVolume: '962426773980799',
+        openingTimestamp: '1746511140',
+        scaledCollateralVolume: '223.216344542446512972',
+        collateralToken: '0xaf204776c7245bf4147c2612bf6e5972ee483701',
+        prsagioUrl:
+          'https://presagio.pages.dev/markets?id=0x1b93917d75f80d14e15213cd41068089cb7492b9',
       },
       {
         id: '76hsdrthdh7543',
@@ -200,6 +410,11 @@ const MOCKED_DATA = {
         ],
         usdVolume: 1524.92,
         runningDailyVolume: '222426773980799',
+        openingTimestamp: '1746511140',
+        scaledCollateralVolume: '223.216344542446512972',
+        collateralToken: '0xaf204776c7245bf4147c2612bf6e5972ee483701',
+        prsagioUrl:
+          'https://presagio.pages.dev/markets?id=0x1b93917d75f80d14e15213cd41068089cb7492b9',
       },
       {
         id: '765jhlhkjlhkl43',
@@ -222,6 +437,11 @@ const MOCKED_DATA = {
         ],
         usdVolume: 1654.23,
         runningDailyVolume: '832426773980799',
+        openingTimestamp: '1746511140',
+        scaledCollateralVolume: '223.216344542446512972',
+        collateralToken: '0xaf204776c7245bf4147c2612bf6e5972ee483701',
+        prsagioUrl:
+          'https://presagio.pages.dev/markets?id=0x1b93917d75f80d14e15213cd41068089cb7492b9',
       },
       {
         id: '762342134kjlhkl43',
@@ -244,6 +464,11 @@ const MOCKED_DATA = {
         ],
         usdVolume: 765.98,
         runningDailyVolume: '442426773980799',
+        openingTimestamp: '1746511140',
+        scaledCollateralVolume: '223.216344542446512972',
+        collateralToken: '0xaf204776c7245bf4147c2612bf6e5972ee483701',
+        prsagioUrl:
+          'https://presagio.pages.dev/markets?id=0x1b93917d75f80d14e15213cd41068089cb7492b9',
       },
     ],
   },
@@ -295,12 +520,149 @@ const processVolume = (value) => {
   return parts.join(',') // or String.fromCharCode(8239)
 }
 
+const toPercent = (value) => (value * 100).toFixed(2)
+
+const differenceInSeconds = (laterDate, earlierDate) =>
+  Math.floor((laterDate.getTime() - earlierDate.getTime()) / 1000)
+
+/**
+ * @name FormatDistance
+ * @param {Date} laterDate
+ * @param {Date} earlierDate
+ * @return {string}
+ *
+ *   === Examples ===
+ * console.log(formatDistance(new Date(), new Date(Date.now() - 3 * 60 * 60 * 1000)));
+ * about 3 hours ago
+ *
+ * console.log(formatDistance(new Date(Date.now() + 60 * 60 * 1000), new Date(), { addSuffix: true }));
+ * in about 1 hour
+ *
+ * console.log(formatDistance(new Date(Date.now() + 25 * 1000), new Date(), { addSuffix: true }));
+ * in less than 30 seconds
+ */
+
+const locales = {
+  en: {
+    lessThanXSeconds: 'less than {{count}} seconds',
+    xSeconds: '{{count}} seconds',
+    halfAMinute: 'half a minute',
+    lessThanXMinutes: 'less than {{count}} minutes',
+    xMinutes: '{{count}} minutes',
+    aboutXHours: 'about {{count}} hours',
+    xHours: '{{count}} hours',
+    xDays: '{{count}} days',
+    aboutXMonths: 'about {{count}} months',
+    xMonths: '{{count}} months',
+    aboutXYears: 'about {{count}} years',
+    xYears: '{{count}} years',
+    overXYears: 'over {{count}} years',
+    almostXYears: 'almost {{count}} years',
+    suffixAgo: '{{distance}} ago',
+    suffixIn: 'in {{distance}}',
+  },
+}
+
+const formatDistance = (laterDate, earlierDate) => {
+  const locale = 'en'
+  const addSuffix = false
+  const dict = locales[locale] || locales['en']
+
+  const seconds = Math.abs(differenceInSeconds(laterDate, earlierDate))
+
+  let token
+  let count
+
+  if (seconds < 30) {
+    token = 'lessThanXSeconds'
+    count = 30
+  } else if (seconds < 60) {
+    token = 'xSeconds'
+    count = seconds
+  } else if (seconds < 90) {
+    token = 'halfAMinute'
+  } else if (seconds < 60 * 60) {
+    token = 'xMinutes'
+    count = Math.round(seconds / 60)
+  } else if (seconds < 60 * 60 * 24) {
+    token = 'xHours'
+    count = Math.round(seconds / 3600)
+  } else if (seconds < 60 * 60 * 24 * 30) {
+    token = 'xDays'
+    count = Math.round(seconds / (3600 * 24))
+  } else if (seconds < 60 * 60 * 24 * 365) {
+    token = 'xMonths'
+    count = Math.round(seconds / (3600 * 24 * 30))
+  } else {
+    token = 'xYears'
+    count = Math.round(seconds / (3600 * 24 * 365))
+  }
+
+  let template = dict[token] || ''
+
+  if (template.includes('{{count}}')) {
+    template = template.replace('{{count}}', String(count))
+  }
+
+  if (addSuffix) {
+    const isFuture = laterDate > earlierDate
+    const suffixTemplate = isFuture ? dict.suffixIn : dict.suffixAgo
+    template = suffixTemplate.replace('{{distance}}', template)
+  }
+
+  return template
+}
+
+/**
+ * @param {Date} date
+ * @returns {boolean}
+ */
+
+const isPast = (date) => Number(date) < Date.now()
+
+/**
+ * @param {Date} date
+ * @returns {string}
+ */
+
+const remainingTime = (date) => {
+  const now = new Date()
+  if (isPast(date)) {
+    return `Happened ${formatDistance(date, now)} ago`
+  } else {
+    return `${formatDistance(date, now)} remaining`
+  }
+}
+
+/**
+ * @param {number | string} value
+ * @param {number} fixedDecimals
+ * @returns {string}
+ */
+
+const formatValueWithFixedDecimals = (value, fixedDecimals) => {
+  if (fixedDecimals === undefined) fixedDecimals = 5
+  const isAnInteger = Number(value) % 1 === 0
+  const smallestNumber = Math.pow(1 / 10, fixedDecimals)
+  const smallNumberString = `<${smallestNumber.toFixed(fixedDecimals)}`
+  const isVerySmallNumber = Number(value) < smallestNumber
+
+  if (isAnInteger) return value.toString()
+  if (isVerySmallNumber) return smallNumberString
+
+  return Number(value).toFixed(fixedDecimals)
+}
+
 const { contextR: context, config } = props
 
 const [isOpened, setIsOpened] = useState(false)
-const [isSwitchingState, setIsSwitchingState] = useState(false)
+const [activeSlide, setActiveSlide] = useState(0)
 
-const agentId = 'dapplets.near/agent/nearai-fake-detector'
+const nextSlide = () => setActiveSlide((i) => (i + 1) % data.markets.length)
+
+const prevSlide = () => setActiveSlide((i) => (i - 1 + data.markets.length) % data.markets.length)
+
+const agentId = 'dapplets.near/agent/prediction-markets'
 const url = `${config.backendUrl}/context/invoke-agent`
 const payload = {
   context: {
@@ -328,7 +690,7 @@ const payload = {
 //         return x?.body?.context?.parsedContext
 //       })
 //       .catch((err) => console.log(err)),
-//   `fakeDetectorStatus/id=${context.id}`,
+//   `predictionMarkets/id=${context.id}`,
 //   { subscribe: true }
 // )
 
@@ -342,8 +704,8 @@ const marketMaxValue = data.markets.reduce((acc, v) =>
   Number(v.runningDailyVolume) > acc.runningDailyVolume ? v : acc
 )
 
-const leadingOutcome = marketMaxValue.outcomes.reduce((acc, v) =>
-  v.percentage > acc.percentage ? v : acc
+const leadingOutcome = marketMaxValue.outcomes.reduce((acc, v, i) =>
+  v.percentage > acc.percentage ? { ...v, index: i } : acc
 )
 
 return (
@@ -352,54 +714,97 @@ return (
       className={isOpened ? 'btn btn-primary' : 'btn btn-primary collapsed'}
       type="button"
       data-bs-toggle="collapse"
-      data-bs-target="#collapseExample"
+      data-bs-target="#collapseMarkets"
       aria-expanded={isOpened ? 'true' : 'false'}
-      aria-controls="collapseExample"
+      aria-controls="collapseMarkets"
       onClick={() => setIsOpened(!isOpened)}
     >
       <div className="badge">
-        <img
-          style={{ width: 33 }}
-          src="https://ipfs.near.social/ipfs/bafkreibwgipd6cuwpw6yvv5oracel7x4dt3fk742glcxhf6bmonjxqq4m4"
-        />
+        <img src="https://ipfs.near.social/ipfs/bafkreibwgipd6cuwpw6yvv5oracel7x4dt3fk742glcxhf6bmonjxqq4m4" />
         <p>{CURRENCY + processVolume(usdVolume)}</p>
         <p>in active bets</p>
         {'(' + data.markets.length + ')'}
       </div>
       <div className="header-second-part">
-        <LeadingOutcome>
-          {leadingOutcome.name + ' (' + Math.round(leadingOutcome.percentage * 10000) / 100 + '%)'}
+        <LeadingOutcome $isPositive={!leadingOutcome.index}>
+          {leadingOutcome.name + ' (' + toPercent(leadingOutcome.percentage) + '%)'}
         </LeadingOutcome>
-        <DownButton $isOpened={isOpened}>{DownIcon}</DownButton>
+        <DownButton className="my-down-button" $isOpened={isOpened}>
+          {DownIcon}
+        </DownButton>
       </div>
     </Button>
-    <Collaps
-      className={isSwitchingState ? 'collapsing' : isOpened ? 'collapse show' : 'collapse'}
-      id="collapseExample"
-    >
-      <Content className="card card-body">
-        <button className="btn arrow-left"></button>
-        {data.markets.map((market) => (
-          <div key={market.id} className="my-card-item">
-            <div className="left-column">
-              <img
-                src={
-                  /^http(s)?:\/\//.test(market.image)
-                    ? market.image
-                    : `https://ipfs.near.social/ipfs/${market.image}`
-                }
-              />
-              <a href="#">Bet now</a>
+    <Collaps className={isOpened ? 'collapse show' : 'collapse'} id="collapseMarkets">
+      <Carousel className="card card-body">
+        <div className="carousel-track" style={{ transform: `translateX(-${activeSlide * 100}%)` }}>
+          {data.markets.map((market, i) => (
+            <div key={market.id} className="slide">
+              <div className="left-column">
+                <img
+                  src={
+                    /^http(s)?:\/\//.test(market.image)
+                      ? market.image
+                      : `https://ipfs.near.social/ipfs/${market.image}`
+                  }
+                />
+                <a type="button" href={market.prsagioUrl} target="_blank">
+                  Bet now
+                </a>
+              </div>
+              <div className="right-column">
+                <p>{market.question}</p>
+                <div className="statistics">
+                  <Chart>
+                    <ChartLine>
+                      <ChartFirstOutcome
+                        style={{ width: toPercent(market.outcomes[0].percentage) + '%' }}
+                      />
+                      <ChartSecondOutcome
+                        style={{ width: toPercent(market.outcomes[1].percentage) + '%' }}
+                      />
+                    </ChartLine>
+                    <ChartLabels>
+                      <ChartFirstLabel>
+                        {market.outcomes[0].name} ({toPercent(market.outcomes[0].percentage) + '%'})
+                      </ChartFirstLabel>
+                      <ChartSecondLabel>
+                        {market.outcomes[1].name} ({toPercent(market.outcomes[1].percentage) + '%'})
+                      </ChartSecondLabel>
+                    </ChartLabels>
+                  </Chart>
+                </div>
+                <div className="my-card-footer">
+                  <p>
+                    {market.scaledCollateralVolume ? (
+                      <span>
+                        {market.collateralToken && (
+                          <img
+                            src={`https://raw.githubusercontent.com/cowprotocol/token-lists/main/src/public/images/100/${market.collateralToken}/logo.png`}
+                          />
+                        )}
+                        {formatValueWithFixedDecimals(market.scaledCollateralVolume, 2)}
+                        <span title="volume"> Volume</span>
+                      </span>
+                    ) : null}
+                    {market.scaledCollateralVolume && market.openingTimestamp ? (
+                      <span> • </span>
+                    ) : null}
+                    {market.openingTimestamp ? (
+                      <span>{remainingTime(new Date(Number(market.openingTimestamp) * 1000))}</span>
+                    ) : null}
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="right-column">
-              <p>{market.question}</p>
-              <div className="statistics"></div>
-              <div className="my-card-footer"></div>
-            </div>
-          </div>
-        ))}
-        <button className="btn arrow-right"></button>
-      </Content>
+          ))}
+        </div>
+        <button className="arrow left" onClick={prevSlide}>
+          {DownIcon}
+        </button>
+        <button className="arrow right" onClick={nextSlide}>
+          {DownIcon}
+        </button>
+      </Carousel>
     </Collaps>
   </Container>
 )
