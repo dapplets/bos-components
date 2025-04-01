@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "name": "Prediction Markets",
+    "image": {
+      "ipfs_cid": "bafkreiaw37nyutsgsoyjahqectbcbwnkecjyg7pihb4ngxdh7qjk7ubrpi"
+    }
+  },
+  "controller": "${REPL_ACCOUNT}/widget/PredictionMarkets.Main",
+  "$targets": [
+    {
+      "namespace": "engine",
+      "contextType": "website"
+    }
+  ],
+  "$parsers": "any"
+}
