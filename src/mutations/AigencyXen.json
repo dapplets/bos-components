@@ -1,0 +1,21 @@
+{
+  "metadata": {
+    "name": "AigencyXen",
+    "description": "Mutation for application testing",
+    "image": {
+      "ipfs_cid": "bafkreid7zpbpy44sovkxvvatmrq3cplvnsxrw23y5enj5eip3scrt774fa"
+    }
+  },
+  "$targets": [
+    {
+      "namespace": "engine",
+      "contextType": "website",
+      "if": {
+        "id": {
+          "in": ["x.com", "twitter.com"]
+        }
+      }
+    }
+  ],
+  "$apps": ["${REPL_ACCOUNT}/app/AigencyXen"]
+}

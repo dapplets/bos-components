@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "name": "Aigency x Xen",
+    "image": {
+      "ipfs_cid": "bafkreid7zpbpy44sovkxvvatmrq3cplvnsxrw23y5enj5eip3scrt774fa"
+    }
+  },
+  "controller": "${REPL_ACCOUNT}/widget/AigencyXen.Main",
+  "$targets": [
+    {
+      "namespace": "engine",
+      "contextType": "website"
+    }
+  ],
+  "$parsers": "any"
+}
