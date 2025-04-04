@@ -1,9 +1,9 @@
 const NetworkConfigs = {
   mainnet: {
-    backendUrl: 'https://n8n.aigency.dapplets.org/webhook-test/n2e', // 'http://localhost:3001',
+    backendUrl: 'https://n8n.aigency.dapplets.org/webhook/n2e', // 'http://localhost:3001',
   },
   testnet: {
-    backendUrl: 'https://n8n.aigency.dapplets.org/webhook-test/n2e', // 'http://localhost:3001',
+    backendUrl: 'https://n8n.aigency.dapplets.org/webhook/n2e', // 'http://localhost:3001',
   },
 }
 
