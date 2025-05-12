@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "name": "Aigency Crawler",
+    "image": {
+      "ipfs_cid": "bafkreid7zpbpy44sovkxvvatmrq3cplvnsxrw23y5enj5eip3scrt774fa"
+    }
+  },
+  "controller": "${REPL_ACCOUNT}/widget/AigencyCrawler.Main",
+  "$targets": [
+    {
+      "namespace": "engine",
+      "contextType": "website"
+    }
+  ],
+  "$parsers": "any"
+}
