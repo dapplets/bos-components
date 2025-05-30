@@ -15,7 +15,7 @@ const Label = styled.div`
   line-height: 150%;
   text-transform: capitalize;
 
-  background-color: ${({ $color }) => ($color ? `#${$color}` : 'grey')};
+  background-color: ${({ $color }) => $color ?? 'grey'};
 `
 
 const { contextR: context, config } = props
@@ -46,13 +46,14 @@ const data = useCache(
       },
       body: JSON.stringify(payload),
     }).then((x) => x?.body?.context.content),
-  `fact-checker3/id=${context.id}`
+  `fact-checker4/id=${context.id}`
 )
 // console.log('data', data)
 if (!data?.label) return <></>
+const color = data.color ? (data.color[0] === '#' ? data.color : `#${data.color}`) : ''
 
 return (
-  <Label $color={data.color} title="Assessment by Xen">
+  <Label $color={color} title="Assessment by Xen">
     {data.label}
   </Label>
 )
