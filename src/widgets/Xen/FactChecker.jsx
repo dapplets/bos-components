@@ -53,7 +53,7 @@ if (!data?.label) return <></>
 const color = data.color ? (data.color[0] === '#' ? data.color : `#${data.color}`) : ''
 
 return (
-  <Label $color={color} title="Assessment by Xen">
+  <Label $color={color} title={data.reason ?? 'Assessment by Xen'}>
     {data.label}
   </Label>
 )
