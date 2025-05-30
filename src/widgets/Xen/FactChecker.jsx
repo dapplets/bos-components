@@ -30,7 +30,7 @@ console.log('context', context)
 // const [isOpened, setIsOpened] = useState(false)
 // const [isSwitchingState, setIsSwitchingState] = useState(false)
 
-const url = `${config.backendUrl}/webhook-test/tweets-analyzer`
+const url = `${config.backendUrl}/webhook/tweets-analyzer`
 const payload = {
   content: {
     id: context.id,
