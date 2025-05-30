@@ -64,7 +64,7 @@ const data = useCache(
       },
       body: JSON.stringify(payload),
     }).then((x) => x?.body?.context.content),
-  `trust-raiting/id=${context.id}`
+  `trust-rating/id=${context.id}`
 )
 // console.log('data', data)
 if (!data?.rating) return <></>
