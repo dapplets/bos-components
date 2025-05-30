@@ -15,33 +15,29 @@ const Label = styled.div`
   line-height: 150%;
   text-transform: capitalize;
 
-  background-color: ${({ $type }) =>
-    $type === 'convincingly'
-      ? 'rgba(25, 206, 174, 1)'
-      : $type === 'unclear'
-        ? 'rgba(235, 165, 0, 1)'
-        : 'rgba(217, 48, 79, 1)'};
+  background-color: ${({ $color }) => ($color ? `#${$color}` : 'grey')};
 `
 
 const { contextR: context, config } = props
-
-console.log('context', context)
-
-// const [isOpened, setIsOpened] = useState(false)
-// const [isSwitchingState, setIsSwitchingState] = useState(false)
+// console.log('context', context)
+if (!context?.parsed) return <></>
 
 const url = `${config.backendUrl}/webhook/tweets-analyzer`
 const payload = {
-  content: {
+  context: {
+    namespace: context.namespace,
+    type: context.type,
     id: context.id,
-    text: context.parsed.text,
-    authorUsername: context.parsed.authorUsername,
-    createdAt: context.parsed.createdAt,
-    url: context.parsed.url,
+    content: {
+      id: context.id,
+      text: context.parsed.text,
+      authorUsername: context.parsed.authorUsername,
+      createdAt: context.parsed.createdAt,
+      url: context.parsed.url,
+    },
   },
 }
-
-const data2 = useCache(
+const data = useCache(
   () =>
     asyncFetch(url, {
       method: 'POST',
@@ -49,28 +45,14 @@ const data2 = useCache(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
-    }).then((x) => x?.body),
-  `fact-checker/id=${context.id}`,
-  { subscribe: true }
+    }).then((x) => x?.body?.context.content),
+  `fact-checker3/id=${context.id}`
 )
-console.log('data2', data2)
-
-// if (!data) return <></>
-
-// TODO: use real request
-const data = {
-  convincingly: Math.round(Math.random() * 10) / 10,
-  unclear: Math.round(Math.random() * 10) / 10,
-  lame: Math.round(Math.random() * 10) / 10,
-}
-
-const highest = Object.entries(data)
-  // .filter(([k]) => k !== 'compound')
-  .reduce((acc, value) => (acc[1] > value[1] ? acc : value))
-// console.log('highest', highest)
+// console.log('data', data)
+if (!data?.label) return <></>
 
 return (
-  <Label $type={highest[0]} title="Assessment by Xen">
-    {highest[0]}
+  <Label $color={data.color} title="Assessment by Xen">
+    {data.label}
   </Label>
 )
