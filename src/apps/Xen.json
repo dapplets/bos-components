@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "name": "Xen",
+    "image": {
+      "ipfs_cid": "bafkreih2rksvpgoxov6svejiley4pztlhuur2ruvhlwlsckp7slh3rlbzm"
+    }
+  },
+  "controller": "${REPL_ACCOUNT}/widget/Xen.Main",
+  "$targets": [
+    {
+      "namespace": "engine",
+      "contextType": "website"
+    }
+  ],
+  "$parsers": "any"
+}

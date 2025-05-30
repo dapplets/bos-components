@@ -11,7 +11,8 @@
     "${REPL_ACCOUNT}/app/Capybara",
     "${REPL_ACCOUNT}/app/CapybaraTestMWeb",
     "${REPL_ACCOUNT}/app/CrossPost",
-    "${REPL_ACCOUNT}/app/AigencyCrawler"
+    "${REPL_ACCOUNT}/app/AigencyCrawler",
+    "${REPL_ACCOUNT}/app/Xen"
   ],
   "$targets": [
     {
