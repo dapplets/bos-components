@@ -4,7 +4,7 @@
     {
       "namespace": "engine",
       "contextType": "website",
-      "if": { "id": { "eq": "app.near.ai/agents" } }
+      "if": { "id": { "eq": "app.near.ai" } }
     }
   ],
   "$contexts": {
