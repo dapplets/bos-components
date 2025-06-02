@@ -1,0 +1,81 @@
+{
+  "parserType": "json",
+  "$targets": [
+    {
+      "namespace": "engine",
+      "contextType": "website",
+      "if": { "id": { "eq": "app.near.ai/agents" } }
+    }
+  ],
+  "$contexts": {
+    "root": {
+      "props": {
+        "id": "string('global')",
+        "websiteName": "string('NEAR AI: Agents')",
+        "username": "",
+        "fullname": "",
+        "img": "",
+        "url": "string('https://app.near.ai/agents')"
+      },
+      "children": ["table"]
+    },
+    "table": {
+      "selector": "table",
+      "props": {
+        "id": "string(./../..//h2)",
+        "title": "string(./../..//h2)",
+        "description": "string(./../..//p)"
+      },
+      "insertionPoints": {},
+      "children": ["agents-list", "table-header"]
+    },
+    "table-header": {
+      "selector": "thead",
+      "props": { "id": "string(./../../..//h2)" },
+      "insertionPoints": {
+        "addCell": {
+          "selector": "th:last-child",
+          "insertionType": "before"
+        }
+      },
+      "children": ["table-header-item"]
+    },
+    "table-header-item": {
+      "selector": "th",
+      "props": {
+        "id": "string(./span)",
+        "name": "string(./span)"
+      },
+      "insertionPoints": {}
+    },
+    "agents-list": {
+      "selector": "tbody",
+      "props": { "id": "string(./../../..//h2)" },
+      "insertionPoints": {},
+      "children": ["agent"]
+    },
+    "agent": {
+      "selector": "tr",
+      "props": {
+        "id": "substring-before(substring-after(string(.//a/@href), '/agents/'), '/latest')",
+        "name": "string(.//p)",
+        "description": "string(.//p[2])",
+        "authorUsername": "string(.//td[2]//p)",
+        "version": "string(.//td[3]//p)",
+        "updatedAt": "string(.//td[4]//p)",
+        "stars": "string(.//td[6]//span/span[2])",
+        "url": "concat('https://app.near.ai', string(.//a/@href))"
+      },
+      "insertionPoints": {
+        "addCell": {
+          "selector": "td:last-child",
+          "insertionType": "before"
+        },
+        "buttons": {
+          "selector": "td:last-child > div",
+          "insertionType": "end"
+        }
+      }
+    }
+  }
+}
