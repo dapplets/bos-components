@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "name": "Capybara Everywhere",
+    "image": {
+      "ipfs_cid": "bafkreih2rksvpgoxov6svejiley4pztlhuur2ruvhlwlsckp7slh3rlbzm"
+    }
+  },
+  "controller": "${REPL_ACCOUNT}/widget/CapybaraController",
+  "$targets": [
+    {
+      "namespace": "engine",
+      "contextType": "website"
+    }
+  ],
+  "$parsers": "any"
+}
