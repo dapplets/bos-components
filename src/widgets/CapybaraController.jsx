@@ -8,7 +8,9 @@ return (
         injectTo: 'addCell',
         componentId: '${REPL_ACCOUNT}/widget/CapybaraBtn',
       }}
-      component={() => <Widget src="${REPL_ACCOUNT}/widget/CapybaraBtn" />}
+      component={(props) => (
+        <Widget src="${REPL_ACCOUNT}/widget/CapybaraBtn" props={{ context: props.context }} />
+      )}
     />
     <DappletPortal
       target={{
@@ -18,7 +20,9 @@ return (
         injectTo: 'buttons',
         componentId: '${REPL_ACCOUNT}/widget/CapybaraBtn',
       }}
-      component={() => <Widget src="${REPL_ACCOUNT}/widget/CapybaraBtn" />}
+      component={(props) => (
+        <Widget src="${REPL_ACCOUNT}/widget/CapybaraBtn" props={{ context: props.context }} />
+      )}
     />
     <DappletPortal
       target={{
@@ -28,7 +32,9 @@ return (
         injectTo: 'addCell',
         componentId: '${REPL_ACCOUNT}/widget/CapybaraBtn',
       }}
-      component={() => <Widget src="${REPL_ACCOUNT}/widget/CapybaraBtn" />}
+      component={(props) => (
+        <Widget src="${REPL_ACCOUNT}/widget/CapybaraBtn" props={{ context: props.context }} />
+      )}
     />
   </>
 )
