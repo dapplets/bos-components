@@ -79,26 +79,10 @@ const Container = styled.div`
   font-size: 12px;
   color: #82827c;
 `
-
-/* ─────────────────── config ─────────────────── */
-// const NETWORK_ID = process.env.NEXT_PUBLIC_NETWORK_ID || 'mainnet'
-// const NODE_URL = process.env.NEXT_PUBLIC_NODE_URL || 'https://rpc.mainnet.near.org'
-// const WALLET_URL = process.env.NEXT_PUBLIC_WALLET_URL || 'https://app.mynearwallet.com'
-// const HELPER_URL = process.env.NEXT_PUBLIC_HELPER_URL || 'https://helper.mainnet.near.org'
 const CONTRACT_NAME = 'market.aigency.near'
 const NFT_CONTRACT_ID = 'nft.aigency.near'
 
-// const GAS_BN = 150_000_000_000_000n // 150 Tgas
-// const STORAGE_FOR_SALE = 8_590_000_000_000_000_000_000n // 0.00859 Ⓝ
-// const STORAGE_PRICE_PER_BYTE = 10_000_000_000_000_000_000n // 0.00001 Ⓝ per byte
-
-// console.log('props', props)
-// console.log('context', context)
-
-const nftTokens = Near.view(NFT_CONTRACT_ID, 'nft_tokens', { from_index: '0', limit: 100 }, 'final')
-// console.log('nftTokens', nftTokens)
-
-if (!nftTokens) return <></>
+const { nftTokens } = props
 
 const nftToken = nftTokens.find(
   (token) => JSON.parse(token.metadata.extra)?.agent_id === props.context.id
@@ -119,6 +103,7 @@ const marketData = Near.view(
 )
 
 console.log('marketData', marketData)
+
 if (!marketData) return <Container>-</Container>
 
-return <Container>{formatNear(marketData.price)} NEAR</Container>
+return <Container>{formatNear(marketData.price)} Ⓝ</Container>

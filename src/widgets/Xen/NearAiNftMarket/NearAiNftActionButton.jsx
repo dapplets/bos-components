@@ -32,6 +32,17 @@ const icon = (
   </svg>
 )
 
+const CONTRACT_NAME = 'market.aigency.near'
+const NFT_CONTRACT_ID = 'nft.aigency.near'
+
+const { nftTokens } = props
+
+const nftToken = nftTokens.find(
+  (token) => JSON.parse(token.metadata.extra)?.agent_id === props.context.id
+)
+
+if (!nftToken) return <></>
+
 return (
   <Button
     title="Bid"
