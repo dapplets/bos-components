@@ -42,47 +42,9 @@ return (
   <>
     <DappletPortal target={postContextTarget('userName')} component={SentimentAnalysisAgent} />
     <DappletPortal target={postContextTarget('avatar')} component={TrustRating} />
-    <DappletPortal
-      target={{
-        namespace: '${REPL_ACCOUNT}/parser/near-ai',
-        contextType: 'agent',
-        if: { id: { not: null, index: true } },
-        injectTo: 'buttons',
-      }}
-      component={(props) => (
-        <Widget
-          src="${REPL_ACCOUNT}/widget/Xen.NearAiNftActionButton"
-          props={{ context: props.context }}
-        />
-      )}
-    />
-    <DappletPortal
-      target={{
-        namespace: '${REPL_ACCOUNT}/parser/near-ai',
-        contextType: 'table-header',
-        if: { id: { not: null, index: true } },
-        injectTo: 'addCell',
-      }}
-      component={() => (
-        <Widget
-          src="${REPL_ACCOUNT}/widget/Xen.PriceColumnHeader"
-          props={{ context: props.context }}
-        />
-      )}
-    />
-    <DappletPortal
-      target={{
-        namespace: '${REPL_ACCOUNT}/parser/near-ai',
-        contextType: 'agent',
-        if: { id: { not: null, index: true } },
-        injectTo: 'addCell',
-      }}
-      component={(props) => (
-        <Widget
-          src="${REPL_ACCOUNT}/widget/Xen.PriceNftItem"
-          props={{ nearAccountId: props.nearAccountId, context: props.context }}
-        />
-      )}
+    <Widget
+      src="${REPL_ACCOUNT}/widget/Xen.NearAiNftMarket.Main"
+      props={{ context: props.context }}
     />
   </>
 )
