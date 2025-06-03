@@ -12,9 +12,6 @@
       "props": {
         "id": "string('global')",
         "websiteName": "string('NEAR AI: Agents')",
-        "username": "",
-        "fullname": "",
-        "img": "",
         "url": "string('https://app.near.ai/agents')"
       },
       "children": ["table"]
@@ -35,7 +32,8 @@
       "insertionPoints": {
         "addCell": {
           "selector": "th:last-child",
-          "insertionType": "before"
+          "insertionType": "before",
+          "bosLayoutManager": "${REPL_ACCOUNT}/widget/InlineLayoutManager"
         }
       },
       "children": ["table-header-item"]
@@ -69,11 +67,13 @@
       "insertionPoints": {
         "addCell": {
           "selector": "td:last-child",
-          "insertionType": "before"
+          "insertionType": "before",
+          "bosLayoutManager": "${REPL_ACCOUNT}/widget/InlineLayoutManager"
         },
         "buttons": {
           "selector": "td:last-child > div",
-          "insertionType": "end"
+          "insertionType": "end",
+          "bosLayoutManager": "${REPL_ACCOUNT}/widget/InlineLayoutManager"
         }
       }
     }

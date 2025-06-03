@@ -18,16 +18,6 @@ const postContextTarget = (injectTo) => ({
   if: { id: { not: null } },
 })
 
-// const FakeDetectorAgent = (props) => {
-//   return (
-//     <Widget
-//       src="${REPL_ACCOUNT}/widget/AiAgent.FakeDetectorAgent"
-//       props={{ contextR: props.context, config }}
-//       loading={<></>}
-//     />
-//   )
-// }
-
 const SentimentAnalysisAgent = (props) => {
   return (
     <Widget
@@ -48,21 +38,51 @@ const TrustRating = (props) => {
   )
 }
 
-// const AssociativeSummarizer = (props) => {
-//   return (
-//     <Widget
-//       src="${REPL_ACCOUNT}/widget/AiAgent.AssociativeSummarizer"
-//       props={{ contextR: props.context, config }}
-//       loading={<></>}
-//     />
-//   )
-// }
-
 return (
   <>
-    {/* <DappletPortal target={postContextTarget('beforeText')} component={FakeDetectorAgent} /> */}
     <DappletPortal target={postContextTarget('userName')} component={SentimentAnalysisAgent} />
     <DappletPortal target={postContextTarget('avatar')} component={TrustRating} />
-    {/* <DappletPortal target={postContextTarget('northPanel')} component={AssociativeSummarizer} /> */}
+    <DappletPortal
+      target={{
+        namespace: '${REPL_ACCOUNT}/parser/near-ai',
+        contextType: 'agent',
+        if: { id: { not: null, index: true } },
+        injectTo: 'buttons',
+      }}
+      component={(props) => (
+        <Widget
+          src="${REPL_ACCOUNT}/widget/Xen.NearAiNftActionButton"
+          props={{ context: props.context }}
+        />
+      )}
+    />
+    <DappletPortal
+      target={{
+        namespace: '${REPL_ACCOUNT}/parser/near-ai',
+        contextType: 'table-header',
+        if: { id: { not: null, index: true } },
+        injectTo: 'addCell',
+      }}
+      component={() => (
+        <Widget
+          src="${REPL_ACCOUNT}/widget/Xen.PriceColumnHeader"
+          props={{ context: props.context }}
+        />
+      )}
+    />
+    <DappletPortal
+      target={{
+        namespace: '${REPL_ACCOUNT}/parser/near-ai',
+        contextType: 'agent',
+        if: { id: { not: null, index: true } },
+        injectTo: 'addCell',
+      }}
+      component={(props) => (
+        <Widget
+          src="${REPL_ACCOUNT}/widget/Xen.PriceNftItem"
+          props={{ nearAccountId: props.nearAccountId, context: props.context }}
+        />
+      )}
+    />
   </>
 )
