@@ -3,7 +3,7 @@
     "name": "Welcome",
     "description": "Playground where anyone can inject BOS components",
     "image": {
-      "ipfs_cid": "bafkreiabiz6v57rwmj2h2mjmzreumbkfq2an3bxo3f7dtu6io6tqnc5l7i"
+      "url": "https://raw.githubusercontent.com/dapplets/bos-components/master/src/assets/Welcome.png"
     }
   },
   "$apps": [
