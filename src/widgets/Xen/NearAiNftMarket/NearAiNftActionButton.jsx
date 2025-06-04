@@ -104,7 +104,7 @@ const marketData = Near.view(
 
 console.log('marketData', marketData)
 
-if (!marketData) return <></>
+if (!marketData && context.accountId !== nftToken.owner_id) return <></>
 
 const storagePaid = Near.view(
   CONTRACT_NAME,
@@ -204,29 +204,45 @@ return (
   <>
     <Button
       title={
-        !context.accountId
-          ? 'Connect wallet'
-          : Number(marketData.ended_at.slice(0, -6)) < Date.now()
-            ? 'Ended'
-            : context.accountId === nftToken.owner_id
-              ? 'List auction'
-              : marketData.bids.length &&
-                  marketData.bids[marketData.bids.length - 1].bidder_id === context.accountId
-                ? 'Your bid is the highest'
-                : 'Place a bid (+5 % minimum increment)'
+        !marketData
+          ? 'List auction'
+          : !context.accountId
+            ? 'Connect wallet'
+            : Number(marketData.ended_at.slice(0, -6)) < Date.now()
+              ? 'Ended'
+              : context.accountId === nftToken.owner_id
+                ? 'Transfer NFT to highest bidder'
+                : marketData.bids.length &&
+                    marketData.bids[marketData.bids.length - 1].bidder_id === context.accountId
+                  ? 'Your bid is the highest'
+                  : 'Place a bid (+5 % minimum increment)'
       }
       disabled={
-        !context.accountId ||
-        Number(marketData.ended_at.slice(0, -6)) < Date.now() ||
-        (marketData.bids.length
-          ? marketData.bids[marketData.bids.length - 1].bidder_id === context.accountId
-          : context.accountId === nftToken.owner_id)
+        marketData &&
+        (!context.accountId ||
+          Number(marketData.ended_at.slice(0, -6)) < Date.now() ||
+          (marketData.bids.length
+            ? marketData.bids[marketData.bids.length - 1].bidder_id === context.accountId
+            : context.accountId === nftToken.owner_id))
       }
       onClick={(e) => {
         e.preventDefault()
         e.stopPropagation()
         if (context.accountId === nftToken.owner_id) {
-          setOverlay('list')
+          if (!marketData) {
+            setOverlay('list')
+          } else {
+            Near.call(
+              CONTRACT_NAME,
+              'accept_bid',
+              {
+                nft_contract_id: marketData.nft_contract_id,
+                token_id: marketData.token_id,
+              },
+              gas,
+              '1'
+            )
+          }
         } else {
           setOverlay('bid')
         }
