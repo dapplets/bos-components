@@ -3,7 +3,7 @@
     "name": "Testing",
     "description": "Mutation for application testing",
     "image": {
-      "url": "https://raw.githubusercontent.com/dapplets/bos-components/master/src/assets/Testing.svg"
+      "url": "https://raw.githubusercontent.com/dapplets/bos-components/master/src/assets/Capybara.svg"
     }
   },
   "$apps": [

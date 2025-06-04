@@ -3,7 +3,7 @@
     "name": "Onboarding",
     "description": "Onboarding for the mutation",
     "image": {
-      "ipfs_cid": "bafkreih235nlz4vricl2h5s3ti7fmwsrkqerrqhspcan7z2vzhh5ebjk7y"
+      "url": "https://raw.githubusercontent.com/dapplets/bos-components/master/src/assets/Desktop.svg"
     }
   },
   "$targets": [

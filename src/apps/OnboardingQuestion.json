@@ -3,7 +3,7 @@
     "name": "Onboarding Question",
     "description": "Onboarding callout for testing purposes",
     "image": {
-      "ipfs_cid": "bafkreigx7d64p4tie7hrldb4gwiozde3vdig2eoimtjbdjvjqopgzd57re"
+      "url": "https://raw.githubusercontent.com/dapplets/bos-components/master/src/assets/Desktop.svg"
     }
   },
   "$targets": [

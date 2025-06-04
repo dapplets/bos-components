@@ -3,7 +3,7 @@
     "name": "MetaMask btn",
     "description": "Interactions with Ethereum smart contract using MetaMask",
     "image": {
-      "ipfs_cid": "bafkreiaeiruoy4hkwoqgimgca5hoovcflsjtt2z2taj7346z3ungfx5wkq"
+      "url": "https://raw.githubusercontent.com/dapplets/bos-components/master/src/assets/MetaMaskLines.svg"
     }
   },
   "$targets": [

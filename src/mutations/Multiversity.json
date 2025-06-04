@@ -3,7 +3,7 @@
     "name": "Multiversity",
     "description": "Discover Accessible Intelligence",
     "image": {
-      "ipfs_cid": "bafkreicluble6uaofpunfz7kyetzenvsahu6aecqjjyv5odmwk3wz3lbcu"
+      "url": "https://raw.githubusercontent.com/dapplets/bos-components/master/src/assets/Multiversity.svg"
     }
   },
   "$apps": ["${REPL_ACCOUNT}/app/Multiversity"],

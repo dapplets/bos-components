@@ -2,7 +2,7 @@
   "metadata": {
     "name": "Xen",
     "image": {
-      "ipfs_cid": "bafkreih2rksvpgoxov6svejiley4pztlhuur2ruvhlwlsckp7slh3rlbzm"
+      "url": "https://raw.githubusercontent.com/dapplets/bos-components/master/src/assets/Xen.png"
     }
   },
   "controller": "${REPL_ACCOUNT}/widget/Xen.Main",

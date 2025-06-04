@@ -3,7 +3,7 @@
     "name": "Picker Example",
     "description": "Use case for Picker",
     "image": {
-      "ipfs_cid": "bafkreiev3ms6hw27s3uildcy6pnxxilv2fvh2c6juv3mrav76d2j4c4fyu"
+      "url": "https://raw.githubusercontent.com/dapplets/bos-components/master/src/assets/Picker.svg"
     }
   },
   "controller": "${REPL_ACCOUNT}/widget/PickerExample.Main",

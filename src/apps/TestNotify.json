@@ -3,7 +3,7 @@
     "name": "NotifyTest",
     "description": "Notification API Example",
     "image": {
-      "ipfs_cid": "bafkreie4tum66dxhl4twu6ak3d2vgtxkwc3rkoay2rriqzdwm4m2hflgwy"
+      "url": "https://raw.githubusercontent.com/dapplets/bos-components/master/src/assets/Cat.svg"
     }
   },
   "$targets": [

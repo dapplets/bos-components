@@ -2,7 +2,7 @@
   "metadata": {
     "name": "Web Guide",
     "image": {
-      "ipfs_cid": "bafkreihwu5plfrt7ndwsodrnjsjlkqbx3lqfua7sbfpcdfagz5kjpwj55y"
+      "url": "https://raw.githubusercontent.com/dapplets/bos-components/master/src/assets/WebGuide.svg"
     }
   },
   "controller": "${REPL_ACCOUNT}/widget/WebGuide.Main",

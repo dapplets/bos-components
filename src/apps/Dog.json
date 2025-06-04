@@ -3,7 +3,7 @@
     "name": "Dog",
     "description": "Just a vector image for testing purposes",
     "image": {
-      "ipfs_cid": "bafkreiconobvmlnm3vjjyvmcvy3sruppk2e3g7b6sxampmy6ajbm2ln54q"
+      "url": "https://raw.githubusercontent.com/dapplets/bos-components/master/src/assets/Dog.svg"
     }
   },
   "$targets": [

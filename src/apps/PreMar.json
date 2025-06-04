@@ -2,7 +2,7 @@
   "metadata": {
     "name": "Prediction Markets",
     "image": {
-      "ipfs_cid": "bafkreiaw37nyutsgsoyjahqectbcbwnkecjyg7pihb4ngxdh7qjk7ubrpi"
+      "url": "https://raw.githubusercontent.com/dapplets/bos-components/master/src/assets/PredictionMarkets.svg"
     }
   },
   "controller": "${REPL_ACCOUNT}/widget/PredictionMarkets.Main",

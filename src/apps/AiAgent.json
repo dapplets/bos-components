@@ -2,7 +2,7 @@
   "metadata": {
     "name": "AI Agent",
     "image": {
-      "ipfs_cid": "bafkreifw5rwd7r2k7sk6xo45wc7g2y3pe5wewqztlnipo2wnjatz6fsp34"
+      "url": "https://raw.githubusercontent.com/dapplets/bos-components/master/src/assets/Robot.svg"
     }
   },
   "controller": "${REPL_ACCOUNT}/widget/AiAgent.Main",

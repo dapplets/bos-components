@@ -3,7 +3,7 @@
     "name": "CalloutCat",
     "description": "Just a vector image for testing purposes",
     "image": {
-      "ipfs_cid": "bafkreie4tum66dxhl4twu6ak3d2vgtxkwc3rkoay2rriqzdwm4m2hflgwy"
+      "url": "https://raw.githubusercontent.com/dapplets/bos-components/master/src/assets/Cat.svg"
     }
   },
   "$targets": [
