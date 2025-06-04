@@ -1,3 +1,44 @@
+/**
+ * From near-api-js/packages/near-api-js/src/utils/format.ts
+ */
+const NEAR_NOMINATION_EXP = 24
+
+function cleanupAmount(amount) {
+  return amount.replace(/,/g, '').trim()
+}
+
+function trimLeadingZeroes(value) {
+  value = value.replace(/^0+/, '')
+  if (value === '') {
+    return '0'
+  }
+  return value
+}
+
+function parseNearAmount(amt) {
+  if (!amt) {
+    return null
+  }
+  amt = cleanupAmount(amt)
+  const split = amt.split('.')
+  const wholePart = split[0]
+  const fracPart = split[1] || ''
+  if (split.length > 2 || fracPart.length > NEAR_NOMINATION_EXP) {
+    throw new Error(`Cannot parse '${amt}' as NEAR amount`)
+  }
+  return trimLeadingZeroes(wholePart + fracPart.padEnd(NEAR_NOMINATION_EXP, '0'))
+}
+/**
+ * End
+ */
+const TGas = Big(10).pow(12)
+const OneNear = Big(10).pow(24)
+const gas = TGas.mul(100).toFixed(0)
+const deposit = OneNear.div(100) // 0.01 NEAR // ToDo: calculate storage deposit
+
+const STORAGE_FOR_SALE = new BN(8590, 10).mul(new BN(1_000_000, 10)).mul(new BN(1_000_000_000, 10)) // 0.00859 Ⓝ
+const GAS_BN = new BN(150).mul(new BN(1_000_000, 10)).mul(new BN(1_000_000, 10)) // 150 Tgas
+
 const Button = styled.button`
   display: flex;
   justify-content: center;
@@ -36,6 +77,10 @@ const CONTRACT_NAME = 'market.aigency.near'
 const NFT_CONTRACT_ID = 'nft.aigency.near'
 
 const { nftTokens } = props
+const [isOverlayOpen, setIsOverlayOpen] = useState(false)
+const [isAuction, setIsAuction] = useState(true)
+const [priceNear, setPriceNear] = useState('')
+const [auctionLength, setAuctionLength] = useState('')
 
 const nftToken = nftTokens.find(
   (token) => JSON.parse(token.metadata.extra)?.agent_id === props.context.id
@@ -43,15 +88,135 @@ const nftToken = nftTokens.find(
 
 if (!nftToken) return <></>
 
+const storagePaid = Near.view(
+  CONTRACT_NAME,
+  'storage_balance_of',
+  {
+    account_id: context.accountId,
+  },
+  'final'
+)
+
+const supply = Near.view(
+  CONTRACT_NAME,
+  'get_supply_by_owner_id',
+  {
+    account_id: context.accountId,
+  },
+  'final'
+)
+
+const handleListSale = () => {
+  console.log('props', props)
+  console.log('context', context)
+  console.log('storagePaid', storagePaid)
+  console.log('supply', supply)
+  const priceYocto = parseNearAmount(priceNear)
+  console.log('priceYocto', priceYocto)
+
+  const hours = Math.max(1, parseInt(auctionLength))
+  const endedAt = new BN(Date.now() + hours * 60 * 60 * 1000).mul(new BN(1000000)).toString()
+  console.log('endedAt', endedAt)
+
+  const required = new BN(supply, 10)
+    .add(new BN(1, 10))
+    .mul(new BN(1_000_000, 10))
+    .mul(STORAGE_FOR_SALE)
+  console.log('required.toString()', required.toString())
+
+  // const shortfall = required.gt(new BN(storagePaid, 10))
+  //   ? required.sub(new BN(storagePaid, 10))
+  //   : new BN(0, 10)
+  // console.log('shortfall.toString()', shortfall.toString())
+
+  // if (shortfall) {
+  // }
+
+  Near.call([
+    {
+      contractName: CONTRACT_NAME,
+      methodName: 'storage_deposit',
+      args: {},
+      gas,
+      deposit,
+    },
+    {
+      contractName: NFT_CONTRACT_ID,
+      methodName: 'nft_approve',
+      args: {
+        token_id: nftToken.token_id,
+        account_id: CONTRACT_NAME,
+        msg: JSON.stringify({
+          market_type: 'sale',
+          price: priceYocto,
+          ft_token_id: 'near',
+          is_auction: true,
+          ended_at: endedAt,
+        }),
+      },
+      gas,
+      deposit,
+    },
+  ])
+}
+
 return (
-  <Button
-    title="Bid"
-    onClick={(e) => {
-      e.preventDefault()
-      e.stopPropagation()
-      console.log(props)
-    }}
-  >
-    {icon}
-  </Button>
+  <>
+    <Button
+      title={context.accountId === nftToken.owner_id ? 'List auction' : 'Bid'}
+      onClick={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        if (context.accountId === nftToken.owner_id) {
+          setIsAuction(true)
+          setIsOverlayOpen(true)
+        } else {
+          console.log(props)
+        }
+      }}
+    >
+      {icon}
+    </Button>
+    {isOverlayOpen ? (
+      <DappletOverlay>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+            background: 'var(--sand-1)',
+            color: 'var(--sand-12)',
+            borderRadius: '10px',
+            padding: '20px',
+            border: '1px solid var(--sand-8)',
+          }}
+        >
+          <p style={{ margin: 0 }}>Starting price (NEAR):</p>
+          <input type="text" onChange={(e) => setPriceNear(e.target.value)} />
+          <p style={{ margin: 0 }}>Auction length (hours):</p>
+          <input type="text" onChange={(e) => setAuctionLength(e.target.value)} />
+          <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+            <button
+              onClick={() => {
+                setPriceNear('')
+                setAuctionLength('')
+                setIsOverlayOpen(false)
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              disabled={!priceNear || !auctionLength}
+              onClick={() => {
+                handleListSale()
+                setIsOverlayOpen(false)
+              }}
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </DappletOverlay>
+    ) : null}
+  </>
 )
