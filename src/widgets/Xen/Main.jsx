@@ -45,6 +45,7 @@ return (
     <Widget
       src="${REPL_ACCOUNT}/widget/Xen.NearAiNftMarket.Main"
       props={{ context: props.context }}
+      loading={<></>}
     />
   </>
 )

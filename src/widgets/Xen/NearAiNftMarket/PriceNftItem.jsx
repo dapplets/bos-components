@@ -106,4 +106,8 @@ console.log('marketData', marketData)
 
 if (!marketData) return <Container>-</Container>
 
-return <Container>{formatNear(marketData.price)} Ⓝ</Container>
+return (
+  <Container>
+    {formatNear(marketData.bids.length ? marketData.bids.at(-1).price : marketData.price)} Ⓝ
+  </Container>
+)

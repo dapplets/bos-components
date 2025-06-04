@@ -56,7 +56,12 @@ const Button = styled.button`
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 
-  &:hover {
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  &:hover:not(:disabled) {
     border-color: #8c8cf3;
   }
 `
@@ -77,8 +82,7 @@ const CONTRACT_NAME = 'market.aigency.near'
 const NFT_CONTRACT_ID = 'nft.aigency.near'
 
 const { nftTokens } = props
-const [isOverlayOpen, setIsOverlayOpen] = useState(false)
-const [isAuction, setIsAuction] = useState(true)
+const [openOverlay, setOverlay] = useState(null) // 'list', 'bid', null
 const [priceNear, setPriceNear] = useState('')
 const [auctionLength, setAuctionLength] = useState('')
 
@@ -87,6 +91,20 @@ const nftToken = nftTokens.find(
 )
 
 if (!nftToken) return <></>
+
+const marketData = Near.view(
+  CONTRACT_NAME,
+  'get_market_data',
+  {
+    nft_contract_id: NFT_CONTRACT_ID,
+    token_id: nftToken.token_id,
+  },
+  'final'
+)
+
+console.log('marketData', marketData)
+
+if (!marketData) return <></>
 
 const storagePaid = Near.view(
   CONTRACT_NAME,
@@ -160,24 +178,63 @@ const handleListSale = () => {
   ])
 }
 
+const handleBid = () => {
+  console.log('props', props)
+  console.log('context', context)
+  console.log('storagePaid', storagePaid)
+  console.log('supply', supply)
+  const priceYocto = parseNearAmount(priceNear)
+  console.log('priceYocto', priceYocto)
+
+  Near.call(
+    CONTRACT_NAME,
+    'add_bid',
+    {
+      nft_contract_id: marketData.nft_contract_id,
+      ft_token_id: 'near',
+      token_id: marketData.token_id,
+      amount: priceYocto,
+    },
+    gas,
+    priceYocto
+  )
+}
+
 return (
   <>
     <Button
-      title={context.accountId === nftToken.owner_id ? 'List auction' : 'Bid'}
+      title={
+        !context.accountId
+          ? 'Connect wallet'
+          : Number(marketData.ended_at.slice(0, -6)) < Date.now()
+            ? 'Ended'
+            : context.accountId === nftToken.owner_id
+              ? 'List auction'
+              : marketData.bids.length &&
+                  marketData.bids[marketData.bids.length - 1].bidder_id === context.accountId
+                ? 'Your bid is the highest'
+                : 'Place a bid (+5 % minimum increment)'
+      }
+      disabled={
+        !context.accountId ||
+        Number(marketData.ended_at.slice(0, -6)) < Date.now() ||
+        (marketData.bids.length
+          ? marketData.bids[marketData.bids.length - 1].bidder_id === context.accountId
+          : context.accountId === nftToken.owner_id)
+      }
       onClick={(e) => {
         e.preventDefault()
         e.stopPropagation()
         if (context.accountId === nftToken.owner_id) {
-          setIsAuction(true)
-          setIsOverlayOpen(true)
+          setOverlay('list')
         } else {
-          console.log(props)
+          setOverlay('bid')
         }
       }}
     >
       {icon}
     </Button>
-    {isOverlayOpen ? (
+    {openOverlay ? (
       <DappletOverlay>
         <div
           style={{
@@ -191,30 +248,60 @@ return (
             border: '1px solid var(--sand-8)',
           }}
         >
-          <p style={{ margin: 0 }}>Starting price (NEAR):</p>
-          <input type="text" onChange={(e) => setPriceNear(e.target.value)} />
-          <p style={{ margin: 0 }}>Auction length (hours):</p>
-          <input type="text" onChange={(e) => setAuctionLength(e.target.value)} />
-          <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-            <button
-              onClick={() => {
-                setPriceNear('')
-                setAuctionLength('')
-                setIsOverlayOpen(false)
-              }}
-            >
-              Cancel
-            </button>
-            <button
-              disabled={!priceNear || !auctionLength}
-              onClick={() => {
-                handleListSale()
-                setIsOverlayOpen(false)
-              }}
-            >
-              Submit
-            </button>
-          </div>
+          {openOverlay === 'list' ? (
+            <>
+              <p style={{ margin: 0 }}>Starting price (NEAR):</p>
+              <input type="text" onChange={(e) => setPriceNear(e.target.value)} />
+              <p style={{ margin: 0 }}>Auction length (hours):</p>
+              <input type="text" onChange={(e) => setAuctionLength(e.target.value)} />
+              <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                <button
+                  class="btn btn-secondary"
+                  onClick={() => {
+                    setPriceNear('')
+                    setAuctionLength('')
+                    setOverlay(null)
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  disabled={!priceNear || !auctionLength}
+                  onClick={() => {
+                    handleListSale()
+                    setOverlay(null)
+                  }}
+                >
+                  Submit
+                </button>
+              </div>
+            </>
+          ) : openOverlay === 'bid' ? (
+            <>
+              <p style={{ margin: 0 }}>Your bid in NEAR:</p>
+              <input type="text" onChange={(e) => setPriceNear(e.target.value)} />
+              <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                <button
+                  class="btn btn-secondary"
+                  onClick={() => {
+                    setPriceNear('')
+                    setOverlay(null)
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  disabled={!priceNear}
+                  onClick={() => {
+                    handleBid()
+                    setOverlay(null)
+                  }}
+                >
+                  Submit
+                </button>
+              </div>
+            </>
+          ) : null}
         </div>
       </DappletOverlay>
     ) : null}

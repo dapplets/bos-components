@@ -31,6 +31,7 @@ return (
       component={() => (
         <Widget src="${REPL_ACCOUNT}/widget/Xen.NearAiNftMarket.PriceColumnHeader" />
       )}
+      loading={<></>}
     />
     <DappletPortal
       target={createTarget('agent', 'addCell')}
@@ -40,6 +41,7 @@ return (
           props={{ context: props.context, nftTokens }}
         />
       )}
+      loading={<></>}
     />
     <DappletPortal
       target={createTarget('agent', 'buttons')}
@@ -49,6 +51,7 @@ return (
           props={{ context: props.context, nftTokens }}
         />
       )}
+      loading={<></>}
     />
   </>
 )
